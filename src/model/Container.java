@@ -105,7 +105,7 @@ public abstract class Container implements Comparable<Container>, Iterable<Conta
 	 * @param groupName				String name in question 			
 	 * @return						True if all of the qualifications are met and false otherwise.
 	 */
-	public abstract boolean isUniqueProductGroupName( String groupName );
+	public abstract boolean isContainerValid( Container container );
 	
 	/**Getter for container
 	 * @pre							none

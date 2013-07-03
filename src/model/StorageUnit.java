@@ -41,4 +41,15 @@ public class StorageUnit extends Container {
 		return null;
 	}
 
+	/**Checks to see if current container has different name than sibling containers
+	 * @pre							none
+	 * @post						if uniqueName { container.isValid = true }
+	 * @param container				current container to be validated
+	 */
+	@Override
+	public boolean isContainerValid(Container container) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -74,4 +74,15 @@ public class ProductGroup extends Container {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	/**Checks to see if current container has different name than sibling containers
+	 * @pre							none
+	 * @post						if uniqueName & threeMonthSupply.isValid { container.isValid = true }
+	 * @param container				current container to be validated
+	 */
+	@Override
+	public boolean isContainerValid(Container container) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
