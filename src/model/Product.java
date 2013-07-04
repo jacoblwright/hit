@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Date;
+import java.util.Set;
+
 /** Product holds a number of attributes pertaining to a product including
  * the creation date, upc, description, size, shelf life, three month supply,
  * and storage unit. It also contains all the containers in which it is 
@@ -32,9 +35,6 @@ public class Product {
 	
 	/** the set of containers that contain this Product */
 	private Set<Container> containers;
-	
-	/** the StorageUnit that contains this Product */
-	private Set<StorageUnit> storageUnits;
 	
 	/** Simple constructor for Product. Date will be initially set to today's date. */
 	public Product(){}
@@ -116,47 +116,43 @@ public class Product {
 	 * @pre			none
 	 * @return 		date of most recently added item to Product
 	 */
-	public Date getCreationDate(){}
+	public Date getCreationDate(){ return null; }
 	
 	/**
 	 * @pre			none
 	 * @return 		barcode of Product
 	 */
-	public Barcode getUPC(){}
+	public Barcode getUPC(){ return null; }
 	
 	/**
 	 * @pre			none
 	 * @return 		description of Product
 	 */
-	public String getDescription(){}
+	public String getDescription(){ return null; }
 	
 	/**
 	 * @pre			none
 	 * @return 		size of Product
 	 */
-	public Quantity getSize(){}
+	public Quantity getSize(){ return null; }
 	
 	/**
 	 * @pre			none
 	 * @return 		shelfLife of Product
 	 */
-	public int getShelfLife(){}
+	public int getShelfLife(){ return 0; }
 	
 	/**
 	 * @pre			none
 	 * @return		threeMonthSupply of Product
 	 */
-	public int getThreeMonthSupply(){}
+	public int getThreeMonthSupply(){ return 0; }
 	
 	/**
 	 * @pre			none
 	 * @return		containers in which this Product currently resides
 	 */
-	public Set<Container> getContainers(){}
+	public Set<Container> getContainers(){ return null; }
 	
-	/**
-	 * @pre			none
-	 * @return 		storageUnit in which this Product currently resides
-	 */
-	public StorageUnit getStorageUnits(){}
+
 }
