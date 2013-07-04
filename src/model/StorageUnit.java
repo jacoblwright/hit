@@ -35,12 +35,6 @@ public class StorageUnit extends Container {
 		this.container = null;
 	}
 
-	@Override
-	public Iterator<Container> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**Checks to see if current container has different name than sibling containers
 	 * @pre							none
 	 * @post						if uniqueName { container.isValid = true }

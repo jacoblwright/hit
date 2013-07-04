@@ -3,6 +3,7 @@ package model;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 
@@ -12,32 +13,22 @@ public class ContainerManager {
 	private List<StorageUnit> storageUnits;
 	
 	/** Map where the key is the containers id and the value is the container */
-	private HashMap<String, Container> idToContainerMap;
+	private HashMap<String, Container> containersById;
 	
-	/** Iterator for children of the current container
+	/** Returns a list of all the storage units
 	 * @pre						none
-	 * @param container			Parent conainer
-	 * @return iterator
+	 * @return iterator			
 	 */
-	public Iterator<Container> getAllDescendants( Container container ) {
-		return null;
+	public Set<StorageUnit> getRoot() {
+		return null;	
 	}
 	
-	/** Iterator for all of the storageUnits
-	 * @pre	none
-	 * @return iterator
+	/**Given a container the StorageUnit of that container
+	 * @pre non
+	 * @param container
+	 * @return returns StorageUnit 
 	 */
-	public Iterator<Container> getAllStorageUnits() {
-		return null;
-		
-	}
-	
-	/**Gets list of containers associated with given storage unit
-	 * @pre					none
-	 * @param storageUnit
-	 * @return				if valid storageUnit then returns the list of productGroups associated with it.
-	 */
-	public List<Container> getContainerList( StorageUnit storageUnit ) {
+	public StorageUnit getAncestorStorageUnit( Container container ) {
 		return null;
 	}
 	
@@ -50,10 +41,9 @@ public class ContainerManager {
 	 * @param parent			parent container to the current container
 	 * @param container			Current container to be deleted
 	 * @return					True upon successfully adding, otherwise false
-	 * @throws					InvalidParemeters
+	 * @throws IllegalArgumentException
 	 */
-	public boolean add( Container parent, Container container ) {
-		return false;
+	public void addContainer( Container parent, Container container ) throws IllegalArgumentException {
 		
 	}
 	
@@ -63,10 +53,9 @@ public class ContainerManager {
 	 * @pre						container.isStorageUnit(storageUnit)
 	 * @post					if( checkCanEdit(container) ) { edit(container); }
 	 * @param container			New values for container, changes container with same id
-	 * @return					True upon successfully editing, otherwise false
+	 * @throws IllegalArgumentException
 	 */
-	public boolean edit( Container container ) {
-		return false;
+	public void editContainer( Container container ) throws IllegalArgumentException {
 		
 	}
 	
@@ -75,13 +64,11 @@ public class ContainerManager {
 	 * @pre						Container.items() == 0, recursively
 	 * @post					delete(container), recursively
 	 * @param container			Current container to be deleted
-	 * @return					True upon successful deletion, otherwise false
+	 * @throws IllegalArgumentException
 	 */
-	public boolean delete( Container container ) {
-		return false;
-	}
+	public void deleteContainer( Container container ) throws IllegalArgumentException {
 	
-	// getIndex( StorageUnit storageUnit ) {}
+	}
 	
 	/**Checks to see if all of the qualifications are met to add the current container.
 	 * Qualifications are set in containers.
@@ -92,7 +79,7 @@ public class ContainerManager {
 	 * @param container 		Current container that will be checked to see if it can be added
 	 * @return					True if all of the qualifications are met and false otherwise.
 	 */
-	public boolean canAdd( Container container ) {
+	public boolean canAddContainer( Container container ) {
 		return false;
 	}
 	
@@ -104,7 +91,7 @@ public class ContainerManager {
 	 * @param container 		Current container that will be checked to see if it can be added
 	 * @return					True if all of the qualifications are met and false otherwise.
 	 */
-	public boolean canEdit( Container container ) {
+	public boolean canEditContainer( Container container ) {
 		return false;
 	}
 	

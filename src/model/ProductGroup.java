@@ -69,12 +69,6 @@ public class ProductGroup extends Container {
 		return false;
 	}
 
-	@Override
-	public Iterator<Container> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**Checks to see if current container has different name than sibling containers
 	 * @pre							none
 	 * @post						if uniqueName & threeMonthSupply.isValid { container.isValid = true }

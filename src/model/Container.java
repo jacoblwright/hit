@@ -8,7 +8,7 @@ import java.util.List;
  * @author jake
  *
  */
-public abstract class Container implements Comparable<Container>, Iterable<Container> {
+public abstract class Container implements Comparable<Container> {
 
 	/** name- Must be non-empty */
 	private String name;
@@ -92,8 +92,9 @@ public abstract class Container implements Comparable<Container>, Iterable<Conta
 	 * @post					if(productGroup == null) create new ArrayList<ProductGroup>()
 	 * @post					productGroups.add(productGroup)
 	 * @param productGroup
+	 * @throws IllegalArgumentException
 	 */
-	public void addProductGroup( ProductGroup productGroup ) {
+	public void addProductGroup( ProductGroup productGroup ) throws IllegalArgumentException{
 		if( productGroups == null ) {
 			productGroups = new ArrayList<ProductGroup>();
 		}

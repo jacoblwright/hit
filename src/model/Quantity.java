@@ -20,9 +20,9 @@ public class Quantity {
 	 * @post			this.number = number && this.unit = unit
 	 * @param number	number associated with the specified unit
 	 * @param unit		various types of measurement such as count, pounds, ounces, etc...
-	 * 
+	 * @throws IllegalArgumentException
 	 */
-	public void setQuantity( float number, Unit unit ) {
+	public void setQuantity( float number, Unit unit ) throws IllegalArgumentException {
 		this.number = number;
 		this.unit = unit;
 	}
