@@ -23,23 +23,23 @@ public class ProductManager {
 	public ProductManager(){}
 	
 	/** Adds a product to the system
-	 * @pre 	product must not already exist in the set
+	 * @pre 	product must not already exist in the map
 	 * @post	product is added to the set
 	 */
-	public void addProduct(Product product){}
+	public void addProduct(Product product) throws IllegalArgumentException{}
 	
 	/** Deletes a Product from the set all of products.
 	 * @pre 	product must exist in the set
 	 * @pre		product must not have any Items attached to it
 	 * @post	removes the Product from the set
 	 */
-	public void deleteProduct(Product product){}
+	public void deleteProduct(Product product) throws IllegalArgumentException{}
 	
 	/** Edits a Product by updating by replacing an older Product with a newer Product.
 	 * @pre		oldProduct must exist in the set of products
 	 * @post	replaces the oldProduct with the new Product
 	 */
-	public void editProduct(Product newProduct, Product oldProduct){}
+	public void editProduct(Product newProduct, Product oldProduct) throws IllegalArgumentException{}
 	
 	/** Moves a product to a new container as long as that product is not already located in that storage unit.
 	 * @pre 		product is not already in the container it is being moved into
@@ -47,7 +47,7 @@ public class ProductManager {
 	 * @param 		before	the container before the product was moved
 	 * @param 		after	the new container that the product is being move to
 	 */
-	public void moveProduct(Product product, Container before, Container after){}
+	public void moveProduct(Product product, Container before, Container after) throws IllegalStateException{}
 	
 	/** Returns true if a Product can be added to a particular storage unit. This will return 
 	 * true if product is not already contained within that particular storage unit.
@@ -89,7 +89,7 @@ public class ProductManager {
 	 * @param 		container all Products contained within container should be returned
 	 * @return		returns all the Products associated with this particular container
 	 */
-	public Collection getProducts(Container container){ return null; }
+	public Collection getProducts(Container container) throws IllegalArgumentException{ return null; }
 	
 	/** Returns a Collection of all Products.
 	 * 
@@ -102,7 +102,7 @@ public class ProductManager {
 	 * @param barcode
 	 * @return returns the Product associate to barcode
 	 */
-	public Product getProductByBarcode(Barcode barcode){ return null; }
+	public Product getProductByBarcode(Barcode barcode) throws IllegalArgumentException{ return null; }
 	
 
 }
