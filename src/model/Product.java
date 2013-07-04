@@ -3,7 +3,6 @@ package model;
 import java.util.Date;
 import java.util.Set;
 
-
 /** Product holds a number of attributes pertaining to a product including
  * the creation date, upc, description, size, shelf life, three month supply,
  * and storage unit. It also contains all the containers in which it is 
@@ -36,9 +35,6 @@ public class Product {
 	
 	/** the set of containers that contain this Product */
 	private Set<Container> containers;
-	
-	/** the StorageUnit that contains this Product */
-	private Set<StorageUnit> storageUnits;
 	
 	/** Simple constructor for Product. Date will be initially set to today's date. */
 	public Product(){}
@@ -158,9 +154,5 @@ public class Product {
 	 */
 	public Set<Container> getContainers(){ return null; }
 	
-	/**
-	 * @pre			none
-	 * @return 		storageUnit in which this Product currently resides
-	 */
-	public StorageUnit getStorageUnits(){ return null; }
+
 }
