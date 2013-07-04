@@ -1,6 +1,6 @@
 package model;
 
-public class ContainerEditor {
+public class ContainerEditor extends Entity{
 	
 	/** Adds the container under the parent container.
 	 * 
