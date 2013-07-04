@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Iterator;
+import java.util.Set;
+
 /** Manages alterations to all the Products in the system and handles passing the products structure to higher level classes 
  * 
  * @author andrew
@@ -15,7 +18,7 @@ public class ProductManager {
 	 * @pre none
 	 * @return an iterator to the set of all products in the system
 	 */
-	public Iterator<Product> getAllProducts(){}
+	public Iterator<Product> getAllProducts(){ return null; }
 	
 	/** Adds a product to the system
 	 * @pre 	product must not already exist in the set
