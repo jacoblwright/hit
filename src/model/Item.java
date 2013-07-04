@@ -1,3 +1,5 @@
+package model;
+
 /**
 *
 * Item Description:
@@ -18,6 +20,9 @@ public class Item {
 	/** date the item entered */
 	private Date entryDate;
 	
+	/** time the item was removed */
+	private Date exitDate;
+	
 	/** date the item was removed */
 	private Date exitTime;
 	
@@ -27,11 +32,6 @@ public class Item {
 	/** pointer to the product container that holds the item */
 	private Container container;
 	
-	/** 
-	 * pointer to the root storage unit
-	 */
-	private Container storageUnit;
-	
 	
 	/**
 	*
@@ -39,11 +39,12 @@ public class Item {
 	* @param _expires - date the product expires
 	*
 	* @pre _container != null, _prod != null
-	* @return Item instance with and initializes members to default values
+	* 
+	* Builds Item instance and initializes members to default values
 	*	entry date is captured, sets expires, sets container, barcode generated automatically
 	*
 	*/
-	public Item(Container _container, Product _prod, Date _expirationDate) {
+	public Item(Container container, Product product, Date expirationDate) {
 		
 	}
 

@@ -13,7 +13,7 @@ public class Barcode {
 	private String barcode;
 	
 	/**
-	 * @return barcode object with automatically generated unique barcode
+	 * barcode object with automatically generated unique barcode
 	 */
 	public Barcode() {
 		

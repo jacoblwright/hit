@@ -1,3 +1,5 @@
+package model;
+
 /**
 *
 * Item Manager Description:
@@ -5,60 +7,87 @@
 *
 */
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.List;
 import java.util.Date;
+import java.util.Set;
 
 public class ItemManager {
 
 	/**
-	* contains all the current items in the system
-	*/
-	private List<Item> items;
+	 * Index for quick item lookup by container.
+	 */
+	private Map<Container, Set<Item>> itemsByContainer;
 
 	/**
-	* index for quick item lookup from barcode
+	* Index for quick item lookup from the UPC.
 	*/
-	private Map<Barcode, Item> indexItemByTag;
+	private Map<Barcode, Set<Item>> itemsByUPC;
 	
 	/**
-	* index for quick item lookup from barcode
+	* Index for quick item lookup from the tag.
 	*/
-	private Map<Barcode, Item> indexItemByUPC;
-	
-	
-//	/**
-//	* stores the items that have been removed
-//	*/
-//	private List<Item> removedItems;
+	private Map<Barcode, Item> itemByTag;
 	
 	/**
-	 * indexes the items that were removed on a specific date
+	 * Indexes the items that were removed on a specific date.
 	 */
-	private Map<Date, List<Item>> itemsRemovedOn;
+	private Map<Date, Set<Item>> removedItems;
 	
 	/**
-	* @returns item manger
+	* Constructs the ItemManager
 	*/
 	ItemManager() {
 	
 	}
 	
 	/**
-	* creates item instance and provides date it expires
+	 * 
+	 * @param container
+	 * @param product
+	 * 
+	 * @pre container exists, product exists
+	 * @return collection of all items inside container that are of the type product
+	 */
+	public Collection getItems(Container container, Product product) { return null; }
+	
+	/**
+	 * 
+	 * @param container
+	 * 
+	 * @pre container exists
+	 * @return collection of all items inside that container
+	 */
+	public Collection getItems(Container container) { return null; }
+	
+	/**
+	 * 
+	 * @return all items in any storage unit
+	 */
+	public Collection getItems() { return null; }
+	
+	/**
 	* 
-	* @pre item does not exist in another storage unit nor in current storage unit, itemToAdd.entryDate == null
+	* @pre canAddItem() == true
 	* @post !items.isEmpty(), itemToAdd.container = container, itemToAdd.prodcut = product, itemToAdd.expirationDate = expirationDate
 	* 
-	* @throws IllegalStateException if pre-conditions are not met
+	* @throws IllegalStateException if !canAddItem()
 	*/
-	public void addItem(Item itemToAdd, Container container, Product product, Date expirationDate) throws IllegalStateException {
+	public void addItem(Item itemToAdd, Date expirationDate) throws IllegalStateException {
 	
+	}
+
+	/**
+	 * can add item
+	 */
+	public boolean canAddItem(Item item, Container storageUnit){
+		return false;
 	}
 	
 	/**
-	* Places item into desired Product Container, updates indexes.
+	* Updates indexes for the move.
 	* 
 	* @pre itemToMove.product exists (only) in the target container
 	* @post itemToMove.container = target, itemToMove.storageUnit = target's storage unit
@@ -70,9 +99,9 @@ public class ItemManager {
 	}
 	
 	
-	/**
+	/** Removes the item from any container but keeps track of it in the item history.
 	 * 
-	 * @param itemToMove - item to be removed
+	 * @param itemToRemove - item to be removed
 	 * 
 	 * @pre itemToRemove.container != null, !removedItems.contains(itemToMove), itemToMove.exitTime == null
 	 * @post captures and sets itemToRemove.exitTime, sets itemToRemove.container to null, adds to removedItems, updates indexItemsByRemovalDate
@@ -90,43 +119,32 @@ public class ItemManager {
 	
 	}
 	
-	/**
-	 * can edit item
+	
+	/** Validates that the after item is valid, so that the edit will happen successfully.
+	 * 
+	 * @param before
+	 * @param after
+	 * @return
 	 */
-	public boolean canEditItem(Item oldItem, Item newItem){
-		
+	public boolean canEditItem(Item before, Item after){
+		return false;
 	}
 	
 	
-//	/**
-//	* gets items associated with that upc barcode
-//	*
-//	* @pre barcode exists
-//	*/
-//	public Iterator<Item> getItemsByUPC(Barcode upc){
-//	
-//	}
-	
-	/**
-	* gets item by tag barcode
+	/** 
 	*
-	* @pre barcode exists
+	* @pre barcode exists and is unique
+	* @return Item associated with tag
 	*/
 	public Iterator<Item> getItemByTag(Barcode tag){
-	
-	}
-	
-	/**
-	 * @return all the removed items
-	 */
-	public Iterator<Item> getAllRemovedItems(){
-	
+		return null;
 	}
 	
 	/**
 	 * @return all items removed on a specific date
 	 */
-	public Iterator<Item> getItemsRemovedOn(Date exitTime){
-		
+	public Iterator<Item> getRemovedItems(Date exitTime){
+		return null;
 	}
+	
 }
