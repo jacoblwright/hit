@@ -36,9 +36,8 @@ public class ProductAndItemEditor {
      * @pre canAddItem() == true
      * @post itemToAdd.container = container, itemToAdd.prodcut = product, itemToAdd.expirationDate = expirationDate
      * 
-     * @throws IllegalArgumentException if !canAddItem()
      */
-     public void addItem(Item itemToAdd, Date expirationDate) throws IllegalArgumentException {
+     public void addItem(Item itemToAdd, Date expirationDate) {
      
      }
     
@@ -47,9 +46,8 @@ public class ProductAndItemEditor {
       * @param oldItem - item before edit
       * @param newItem - item after edit
       * 
-      * @throws IllegalArgumentException
       */
-     public void editItem(Item oldItem, Item newItem) throws IllegalArgumentException {
+     public void editItem(Item oldItem, Item newItem) {
     
      }
 
@@ -58,11 +56,8 @@ public class ProductAndItemEditor {
      * 
      * @pre itemToMove.product exists (only) in the target container
      * @post itemToMove.container = target, itemToMove.storageUnit = target's storage unit
-     * 
-     * @throws IllegalStateException if pre-conditions are not met
-     * @throws IllegalArgumentExcpetion if itemToMove is bad
      */
-     public void moveItem(Item itemToMove, Container target) throws IllegalStateException, IllegalArgumentException {
+     public void moveItem(Item itemToMove, Container target) {
      
      }
      
@@ -73,11 +68,8 @@ public class ProductAndItemEditor {
       * @pre itemToRemove.container != null, !removedItems.contains(itemToMove), itemToMove.exitTime == null
       * @post captures and sets itemToRemove.exitTime, sets itemToRemove.container to null, adds to removedItems, updates indexItemsByRemovalDate
       * 
-      * @throws IllegalStateException if preconditions are not met
-      * @throws IllegalArgumentException if itemToRemove is bad
-      * 
       */
-     public void removeItem(Item itemToRemove) throws IllegalStateException, IllegalArgumentException {
+     public void removeItem(Item itemToRemove) {
      
      }
 
