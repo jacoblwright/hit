@@ -8,7 +8,7 @@ import java.util.List;
  * @author jake
  *
  */
-public abstract class Container implements Comparable<Container> {
+public abstract class Container extends Entity implements Comparable<Container> {
 
 	/** name- Must be non-empty */
 	private String name;
