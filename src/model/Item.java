@@ -144,23 +144,7 @@ public class Item {
 	public void setContainer(Container container) {
 		this.container = container;
 	}
-	
-	/**
-	 * 
-	 * @return the root storage unit for the item (may or may not be item.container)
-	 */
-	public Container getStorageUnit() {
-		return storageUnit;
-	}
 
-	/**
-	 * sets the root storage unit that contains the item
-	 * 
-	 * @param storageUnit
-	 */
-	public void setStorageUnit(Container storageUnit) {
-		this.storageUnit = storageUnit;
-	}
 	
 	
 	

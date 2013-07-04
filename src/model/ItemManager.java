@@ -71,11 +71,11 @@ public class ItemManager {
 	/**
 	* 
 	* @pre canAddItem() == true
-	* @post !items.isEmpty(), itemToAdd.container = container, itemToAdd.prodcut = product, itemToAdd.expirationDate = expirationDate
+	* @post itemToAdd.container = container, itemToAdd.prodcut = product, itemToAdd.expirationDate = expirationDate
 	* 
-	* @throws IllegalStateException if !canAddItem()
+	* @throws IllegalArgumentException if !canAddItem()
 	*/
-	public void addItem(Item itemToAdd, Date expirationDate) throws IllegalStateException {
+	public void addItem(Item itemToAdd, Date expirationDate) throws IllegalArgumentException {
 	
 	}
 
@@ -93,8 +93,9 @@ public class ItemManager {
 	* @post itemToMove.container = target, itemToMove.storageUnit = target's storage unit
 	* 
 	* @throws IllegalStateException if pre-conditions are not met
+	* @throws IllegalArgumentExcpetion if itemToMove is bad
 	*/
-	public void moveItem(Item itemToMove, Container target) throws IllegalStateException {
+	public void moveItem(Item itemToMove, Container target) throws IllegalStateException, IllegalArgumentException {
 	
 	}
 	
@@ -105,8 +106,12 @@ public class ItemManager {
 	 * 
 	 * @pre itemToRemove.container != null, !removedItems.contains(itemToMove), itemToMove.exitTime == null
 	 * @post captures and sets itemToRemove.exitTime, sets itemToRemove.container to null, adds to removedItems, updates indexItemsByRemovalDate
+	 * 
+	 * @throws IllegalStateException if preconditions are not met
+	 * @throws IllegalArgumentException if itemToRemove is bad
+	 * 
 	 */
-	public void removeItem(Item itemToRemove) {
+	public void removeItem(Item itemToRemove) throws IllegalStateException, IllegalArgumentException {
 	
 	}
 	
@@ -114,8 +119,10 @@ public class ItemManager {
 	 * 
 	 * @param oldItem - item before edit
 	 * @param newItem - item after edit
+	 * 
+	 * @throws IllegalArgumentException
 	 */
-	public void editItem(Item oldItem, Item newItem){
+	public void editItem(Item oldItem, Item newItem) throws IllegalArgumentException {
 	
 	}
 	
@@ -135,6 +142,8 @@ public class ItemManager {
 	*
 	* @pre barcode exists and is unique
 	* @return Item associated with tag
+	* 
+	* @throws IllegalArgumentException if lookup does not contain tag
 	*/
 	public Iterator<Item> getItemByTag(Barcode tag){
 		return null;
