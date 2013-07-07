@@ -1,12 +1,33 @@
 package model;
 
-import java.util.Date;
+import java.util.*;
 
 public class ProductAndItemEditor {
     
-    /** Adds a product to the system
-     * @pre     product must not already exist in the set
-     * @post    product is added to the set
+    private ProductManager productManager;
+    private ItemManager itemManager;
+    
+    /**
+     * 
+     * @param productManager
+     * @param itemManager
+     */
+    public ProductAndItemEditor(ProductManager productManager,
+            ItemManager itemManager) {
+        
+        assert productManager != null;
+        assert itemManager != null;
+        
+        this.productManager = productManager;
+        this.itemManager = itemManager;
+        
+    }
+    
+    /**
+     * Adds a product to the system.
+     * @param   product the product to be added
+     * @pre     product must not already exist in the system.
+     * @post    product has been added to the system.
      */
     public void addProduct(Product product) {}
     

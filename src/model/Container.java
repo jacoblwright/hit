@@ -13,32 +13,11 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	/** name- Must be non-empty */
 	private String name;
 	
-	/** unique id associated with container */
-	private String id;
-	
 	/** productGroups- unique ProductGroup list based on ProductGroup.name	*/
 	private List<ProductGroup> productGroups;
 	
-	
 	/**	container- Must be non-empty for ProductGroups */
 	protected Container container;
-	
-	/**Unique id that is based on the name and parent id
-	 * @pre			none
-	 * @return		id of current container
-	 */
-	public String getId() {
-		return "";
-	}
-	
-	/**
-	 * @pre			Needs to be unique among other containers
-	 * @post		sets the id variable
-	 * @param		id unique string associated with the container
-	 */
-	public void setId( String id ) {
-		this.id = id;
-	}
 
 	/**Getter for name
 	 * @pre 			none
