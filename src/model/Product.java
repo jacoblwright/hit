@@ -13,7 +13,7 @@ import java.util.Set;
  * @version 1.0
  */
 
-public class Product {
+public class Product extends Entity {
 
 	/** the date this Product was added to the system and is always equal to the earliest entry date for any item of this product */
 	private Date creationDate;

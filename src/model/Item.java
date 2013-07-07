@@ -9,7 +9,7 @@ package model;
 *
 */
 import java.util.Date;
-public class Item {
+public class Item extends Entity {
 	
 	/** Points to the product that describes the item. */
 	private Product product;
@@ -45,7 +45,10 @@ public class Item {
 	*
 	*/
 	public Item(Container container, Product product, Date expirationDate) {
-		
+		this.container = container;
+		this.product = product;
+		this.expirationDate = expirationDate;
+		this.tag = new Barcode(); // generates unique barcode on initliazation
 	}
 
 	/**

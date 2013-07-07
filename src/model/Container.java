@@ -27,8 +27,8 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @pre			none
 	 * @return		id of current container
 	 */
-	public String getId() {
-		return "";
+	public int getId() {
+		return 0;
 	}
 	
 	/**

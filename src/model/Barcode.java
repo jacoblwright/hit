@@ -16,7 +16,7 @@ public class Barcode {
 	 * barcode object with automatically generated unique barcode
 	 */
 	public Barcode() {
-		
+		barcode = "lalalBarcode";
 	}
 	
 	/**
@@ -28,14 +28,16 @@ public class Barcode {
 	 * @throws IllegalArgumentException
 	 */
 	public Barcode (String barcode) throws IllegalArgumentException {
-		
+		if (!isValidBarcode(barcode)) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
 	/**
 	 * 
 	 * @return if this.barcode is valid
 	 */
-	public boolean isValid() {
+	public boolean isValidBarcode(String barcode) {
 		return false;
 	}
 	

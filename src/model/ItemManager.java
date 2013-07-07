@@ -43,7 +43,7 @@ public class ItemManager {
 	
 	}
 	
-	/**
+	/** gets items by container and product
 	 * 
 	 * @param container
 	 * @param product
@@ -53,7 +53,7 @@ public class ItemManager {
 	 */
 	public Collection getItems(Container container, Product product) { return null; }
 	
-	/**
+	/** gets items by container
 	 * 
 	 * @param container
 	 * 
@@ -62,13 +62,13 @@ public class ItemManager {
 	 */
 	public Collection getItems(Container container) { return null; }
 	
-	/**
+	/** get all items
 	 * 
 	 * @return all items in any storage unit
 	 */
 	public Collection getItems() { return null; }
 	
-	/**
+	/** updates item manager indexes
 	* 
 	* @pre canAddItem() == true
 	* @post itemToAdd.container = container, itemToAdd.prodcut = product, itemToAdd.expirationDate = expirationDate

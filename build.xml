@@ -278,7 +278,7 @@
 			<formatter type="plain"/>
 			
 			<batchtest fork="yes" todir="${test-reports}">
-				<fileset dir="${test-src}">
+				<fileset dir="${da}">
 					<include name="**/*.java"/>
 				</fileset>
 			</batchtest>
