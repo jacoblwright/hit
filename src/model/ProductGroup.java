@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Iterator;
+import static org.junit.Assert.*;
 
 /**ProductGroup is used to group similar Products together.  
  * ex.  If you have 4 different kinds of toothpaste 
@@ -14,16 +14,15 @@ import java.util.Iterator;
  */
 public class ProductGroup extends Container {
 	
+	private static final long serialVersionUID = -4392414123711461754L;
 	/**	threeMonthSupply- zero means unspecified, default 0 and Unspecified used for ProductGroups*/
-	protected Quantity threeMonthSupply;
-
-	/**Abstract Method, Checks to see if given productsName is unique among the list of ProductGroups
-	 * @pre							none
-	 * @param groupName				String name in question 			
-	 * @return						True if all of the qualifications are met and false otherwise.
-	 */
-	public boolean isUniqueProductGroupName( String groupName ) {
-		return false;
+	private Quantity threeMonthSupply;
+	
+	private float unspecified = 0;
+	
+	public ProductGroup() {
+		threeMonthSupply = new Quantity();
+		threeMonthSupply.setQuantity( unspecified, Unit.unspecified );
 	}
 	
 	/**Getter for container
@@ -31,6 +30,7 @@ public class ProductGroup extends Container {
 	 * @return						parent container
 	 */
 	public Container getContainer() {
+		assertTrue( true );
 		return container;		
 	}
 
@@ -39,7 +39,8 @@ public class ProductGroup extends Container {
 	 * @param container				sets parent container
 	 */
 	public void setContainer(Container container) {
-		
+		assertTrue( true );
+		this.container = container;
 	}
 
 	/**Getter for threeMonthSupply
@@ -47,7 +48,8 @@ public class ProductGroup extends Container {
 	 * @return						three month supply for everything in 
 	 */
 	public Quantity getThreeMonthSupply() {
-		return null;
+		assertTrue( true );
+		return threeMonthSupply;
 	}
 
 	/**Setter for threeMonthSupply
@@ -55,28 +57,63 @@ public class ProductGroup extends Container {
 	 * @param threeMonthSupply		adds threeMonthSupply if it is properly formatted
 	 */
 	public void setThreeMonthSupply(Quantity threeMonthSupply) {
-		
+		assertTrue( true );
+		this.threeMonthSupply = threeMonthSupply;
 	}
 
 	/**Checks to see if threeMonthSupply meets all of the specified qualifications defined by class that extend Container
 	 * Rule- if Unit == count then number must be an integer value
 	 * otherwise number can be a float.
 	 * @pre							none
-	 * @param threeMonthSupply		threeMonthSupply in question
 	 * @return						true if threeMonthSupply is valid, otherwise false
 	 */
-	public boolean canAddThreeMonthSupply( Quantity threeMonthSupply ) {
-		return false;
+	public boolean canAddThreeMonthSupply() {
+		assertTrue( true );
+		if( threeMonthSupply != null ) {
+			if( threeMonthSupply.getUnit().equals( Unit.count ) ) {
+				return threeMonthSupply.getNumber() == Math.round( threeMonthSupply.getNumber() );
+			}
+		}
+		return true;
 	}
 
 	/**Checks to see if current container has different name than sibling containers
 	 * @pre							none
-	 * @post						if uniqueName & threeMonthSupply.isValid { container.isValid = true }
+	 * @post						if uniqueName & nonEmptyName & threeMonthSupply.isValid { container.isValid = true }
 	 * @param container				current container to be validated
 	 */
 	@Override
-	public boolean isContainerValid(Container container) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isContainerValid() {
+		assertTrue( true );
+		return ( getName() != null ) && nonEmptyName() && canAddThreeMonthSupply();
 	}
+	
+	private boolean nonEmptyName() {
+		
+		return getName().trim().length() > 0;
+	}
+
+	@Override
+	public int hashCode() {
+		assertTrue( true );
+		int hash = super.hashCode();
+		hash = createHash( hash, threeMonthSupply );
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		assertTrue( true );
+		return super.equals(obj) && 
+						( this.threeMonthSupply != null ? this.threeMonthSupply.equals( ((ProductGroup)obj).threeMonthSupply )
+						:((ProductGroup)obj).threeMonthSupply == null );
+	}
+
+	@Override
+	public String toString() {
+		assertTrue( true );
+		return super.toString() + " ProductGroup [threeMonthSupply=" + threeMonthSupply + "]";
+	}
+	
+	
 }

@@ -1,13 +1,17 @@
 package model;
 
+import java.io.Serializable;
+
 /** Quantity holds a Unit and a number value associated with that Unit
  * ex. unit = 'count' & number = 1, or unit = 'pounds' & number = 2.4.
  * 
  * @author jake
  * @invariant	Quantity.alwaysExists(number, unit)
  */
-public class Quantity {
+public class Quantity implements Serializable {
 	
+	private static final long serialVersionUID = 3907772370880513015L;
+
 	/**	number associated with unit */
 	private float number;
 	
@@ -31,7 +35,7 @@ public class Quantity {
 	 * @pre 			none
 	 * @return 			Returns the float value of number.
 	 */
-	public float number() {
+	public float getNumber() {
 		return number;
 	}
 	
@@ -39,9 +43,38 @@ public class Quantity {
 	 * @pre 			none
 	 * @return			Returns the unit.
 	 */
-	public Unit unit() {
+	public Unit getUnit() {
 		return unit;
 	}
-	
 
+	@Override
+	public String toString() {
+		return "Quantity [number=" + number + ", unit=" + unit + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(number);
+		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if ( this == obj ) {
+			return true;
+		}
+		if( !( obj instanceof Quantity ) )
+		{
+			return false;
+		}
+		return this.number == ((Quantity)obj).number &&
+				( this.unit != null ? this.unit.name().equals( ((Quantity)obj).unit.name() )
+						:((Quantity)obj).unit.name() == null );
+	}
+	
+	
+	
 }
