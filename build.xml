@@ -278,7 +278,7 @@
 			<formatter type="plain"/>
 			
 			<batchtest fork="yes" todir="${test-reports}">
-				<fileset dir="${da}">
+				<fileset dir="${test-src}">
 					<include name="**/*.java"/>
 				</fileset>
 			</batchtest>
@@ -313,7 +313,6 @@
 			<packageset dir="${src}">
 				<include name="common/**"/>
 				<include name="gui/**"/>
-				<include name="model/**"/>
 			</packageset>
 			<taglet name="tools.PreTaglet" path="${build}"/>
 			<taglet name="tools.PostTaglet" path="${build}"/>

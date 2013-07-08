@@ -1,5 +1,8 @@
 package model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 /**
 *
 * Item Description:
@@ -44,11 +47,13 @@ public class Item extends Entity {
 	*	entry date is captured, sets expires, sets container, barcode generated automatically
 	*
 	*/
-	public Item(Container container, Product product, Date expirationDate) {
+	public Item(Container container, Product product, Date expirationDate)  {
 		this.container = container;
 		this.product = product;
 		this.expirationDate = expirationDate;
 		this.tag = new Barcode(); // generates unique barcode on initliazation
+		this.entryDate = new Date();
+		
 	}
 
 	/**
@@ -83,7 +88,13 @@ public class Item extends Entity {
 	public void setTag(Barcode tag) {
 		this.tag = tag;
 	}
-
+	/**
+	 * 
+	 * sets entry date
+	 */
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
+	}
 	/**
 	 * 
 	 * @return entry date of the item
