@@ -134,14 +134,16 @@ public class ProductManager {
 	 */
 	public boolean isQuantityValid(Quantity qty){
 		
-		/* If enum is COUNT, then check to see if the value is 1 */
+	    /*
+		// If enum is COUNT, then check to see if the value is 1
 		if(qty.unit().equals(Unit.count) && qty.number() != 1){
 			return false;
 		}
-		/* If enum is anything but COUNT, check that value is greater than zero */
+		If enum is anything but COUNT, check that value is greater than zero
 		else if (qty.number() <= 0 ){
 			return false;
 		}
+		*/
 		return true; 
 	}
 	

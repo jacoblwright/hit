@@ -47,10 +47,10 @@ public class ContainerEditor {
 	 * @param container new values for container, changes container with same id
 	 * @throws IllegalArgumentException
 	 */
-	public void editContainer(Container container)
+	public void editContainer(Container oldContainer, Container newContainer)
 	        throws IllegalArgumentException {
 		
-	    containerManager.editContainer(container);
+	    containerManager.editContainer(oldContainer, newContainer);
 	    
 	}
 	
