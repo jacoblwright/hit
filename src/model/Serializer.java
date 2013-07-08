@@ -7,14 +7,13 @@ import java.io.*;
 import sun.misc.IOUtils;
 
 /**
- * Serializes and deserializes objects
- * @author jake
+ * Serializes and deserializes objects.
  */
 public class Serializer {
 	
 	/**
-	 * Given a file it writes the state of the core object model there
-      * @pre valid file
+	 * Writes the state of the specified object to the specified file.
+      * @pre file is valid
       * @post saveState(file)
       * @throws IOException
       */
@@ -27,11 +26,11 @@ public class Serializer {
      }
 
      /**
-      * Given a file it reads it and loads the state of the core object model
-      * @pre valid file
+      * Loads the object data in the specified File.
+      * @pre file is valid
       * @post loadState(file)
-      * @throws IOException
-     * @throws ClassNotFoundException 
+      * @return an object whose data was stored in the specified File.
+      * @throws ClassNotFoundException 
       */
      public static Object load(File file)
              throws IOException, ClassNotFoundException {

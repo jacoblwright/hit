@@ -47,10 +47,10 @@ public class ContainerEditor {
 	 * @param container new values for container, changes container with same id
 	 * @throws IllegalArgumentException
 	 */
-	public void editContainer(Container container)
+	public void editContainer(Container oldContainer, Container newContainer)
 	        throws IllegalArgumentException {
 		
-	    containerManager.editContainer(container);
+	    containerManager.editContainer(oldContainer, newContainer);
 	    
 	}
 	
@@ -65,7 +65,7 @@ public class ContainerEditor {
 	        throws IllegalStateException {
 	
 	    if (!itemManager.getItems(container).isEmpty()) {
-	        throw new IllegalStateException(
+	        throw new IllegalArgumentException(
 	                "Attempted to delete a nonempty container.");
 	    }
 	    

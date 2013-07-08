@@ -44,7 +44,7 @@ public class ProductAndItemEditor {
      */
     public void editProduct(Product oldProduct, Product newProduct) {
         
-        productManager.editProduct(oldProduct, newProduct);
+        //productManager.editProduct(oldProduct, newProduct);
         
     }
     
@@ -60,6 +60,8 @@ public class ProductAndItemEditor {
             Container before, Container after) {
         
         productManager.moveProduct(product, before, after);
+        
+        
         
     }
     

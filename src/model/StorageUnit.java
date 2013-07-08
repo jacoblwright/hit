@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * 
@@ -10,21 +8,14 @@ import java.util.List;
  */
 public class StorageUnit extends Container {
 
-	/**Abstract Method, Checks to see if given productsName is unique among the list of ProductGroups
-	 * @pre							none
-	 * @param groupName				String name in question 			
-	 * @return						True if all of the qualifications are met and false otherwise.
-	 */
-	public boolean isUniqueProductGroupName( String groupName ) {
-		return false;
-	}
+	private static final long serialVersionUID = 8934631064019112473L;
 	
 	/**Getter for container
 	 * @pre							none
 	 * @return						null
 	 */
 	public Container getContainer() {
-		return null;		
+		return this.container;		
 	}
 
 	/**Setter for container
@@ -38,12 +29,15 @@ public class StorageUnit extends Container {
 	/**Checks to see if current container has different name than sibling containers
 	 * @pre							none
 	 * @post						if uniqueName { container.isValid = true }
-	 * @param container				current container to be validated
 	 */
 	@Override
-	public boolean isContainerValid(Container container) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isContainerValid() {
+		return ( getName() != null ) && nonEmptyName();
 	}
+
+	private boolean nonEmptyName() {
+		
+		return getName().trim().length() > 0;
+	}	
 
 }

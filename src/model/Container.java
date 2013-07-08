@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**Abstract Class that implements similar methods that storage unit and product groups need.
  * implements Comparable<Container> and Iterable<Container>
@@ -10,11 +12,13 @@ import java.util.List;
  */
 public abstract class Container extends Entity implements Comparable<Container> {
 
+	private static final long serialVersionUID = -7361136874079102442L;
+
 	/** name- Must be non-empty */
 	private String name;
 	
 	/** productGroups- unique ProductGroup list based on ProductGroup.name	*/
-	private List<ProductGroup> productGroups;
+	protected Set<ProductGroup> productGroups;
 	
 	/**	container- Must be non-empty for ProductGroups */
 	protected Container container;
@@ -39,9 +43,9 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @pre				none
 	 * @return			list of product groups, if productGroups == null returns an empty list
 	 */
-	public List<ProductGroup> getProductGroups() {
+	public Set<ProductGroup> getProductGroups() {
 		if( productGroups == null ) {
-			productGroups = new ArrayList<ProductGroup>();
+			productGroups = new TreeSet<ProductGroup>();
 		}
 		return productGroups;
 	}
@@ -51,7 +55,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @post			sets a list of product groups to productGroups
 	 * @param productGroups
 	 */
-	public void setProductGroups(List<ProductGroup> productGroups) {
+	public void setProductGroups(Set<ProductGroup> productGroups) {
 		this.productGroups = productGroups;
 	}
 	
@@ -61,7 +65,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 */
 	public int getProductGroupsSize() {
 		if( productGroups == null ) {
-			productGroups = new ArrayList<ProductGroup>();
+			productGroups = new TreeSet<ProductGroup>();
 		}
 		return productGroups.size();
 	}
@@ -75,17 +79,16 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 */
 	public void addProductGroup( ProductGroup productGroup ) throws IllegalArgumentException{
 		if( productGroups == null ) {
-			productGroups = new ArrayList<ProductGroup>();
+			productGroups = new TreeSet<ProductGroup>();
 		}
 		this.productGroups.add( productGroup );
 	}
 	
 	/**Abstract Method, Checks to see if given productsName is unique among the list of ProductGroups
-	 * @pre							none
-	 * @param groupName				String name in question 			
+	 * @pre							none			
 	 * @return						True if all of the qualifications are met and false otherwise.
 	 */
-	public abstract boolean isContainerValid( Container container );
+	public abstract boolean isContainerValid();
 	
 	/**Getter for container
 	 * @pre							none
@@ -109,8 +112,39 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	}
 	
 	@Override
-	public boolean equals(Object o) {
-		return false;
+	public int hashCode() {
+		int hash = HASH_BASE_PRIME;
+		hash = ( hash * HASH_MULTIPLIER_PRIME ) + this.getId();
+		hash = createHash( hash, this.name );
+		if( container != null ) {
+			hash = hash + container.name.hashCode();
+		}
+		hash = createHash( hash, this.productGroups );
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if ( this == obj ) {
+			return true;
+		}
+		if( !( obj instanceof Container ) )
+		{
+			return false;
+		}
+		return this.getId() == ((Container)obj).getId() &&
+				this.getName() == ((Container)obj).getName() &&
+				this.getProductGroupsSize() == ((Container)obj).getProductGroupsSize() &&
+				( this.container != null ? this.container.name.equals( ((Container)obj).container.name )
+						:((Container)obj).container == null ) &&
+				( this.productGroups != null ? this.productGroups.equals( ((Container)obj).productGroups )
+						:((Container)obj).productGroups == null );
+	}
+
+	@Override
+	public String toString() {
+		return "Container [name=" + name + ", productGroups=" + ( productGroups != null ? productGroups.toString() : "null" )
+				+ ", container=" + ( container != null ? container.name : "null" ) + "]";
 	}
 
 }
