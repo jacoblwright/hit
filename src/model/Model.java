@@ -32,7 +32,7 @@ public class Model {
             File f;
             
             f = new File(C_MANAGER_DATA_PATH);
-            if (f.exists()) {
+            if (f.exists() && f.canRead()) {
                 this.containerManager = (ContainerManager)Serializer.load(f);
             }
             else {
@@ -40,7 +40,7 @@ public class Model {
             }
             
             f = new File(P_MANAGER_DATA_PATH);
-            if (f.exists()) {
+            if (f.exists() && f.canRead()) {
                 this.productManager = (ProductManager)Serializer.load(f);
             }
             else {
@@ -48,7 +48,7 @@ public class Model {
             }
             
             f = new File(I_MANAGER_DATA_PATH);
-            if (f.exists()) {
+            if (f.exists() && f.canRead()) {
                 this.itemManager = (ItemManager)Serializer.load(f);
             }
             else {

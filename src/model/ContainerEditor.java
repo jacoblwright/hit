@@ -65,7 +65,7 @@ public class ContainerEditor {
 	        throws IllegalStateException {
 	
 	    if (!itemManager.getItems(container).isEmpty()) {
-	        throw new IllegalStateException(
+	        throw new IllegalArgumentException(
 	                "Attempted to delete a nonempty container.");
 	    }
 	    
