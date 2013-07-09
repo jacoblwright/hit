@@ -48,6 +48,11 @@ public class Item extends Entity {
 	*
 	*/
 	public Item(Container container, Product product, Date expirationDate, Barcode barcode)  {
+		assert container != null;
+		assert product != null;
+		assert expirationDate != null;
+		assert barcode != null;
+		
 		this.container = container;
 		this.product = product;
 		this.expirationDate = expirationDate;
@@ -61,6 +66,8 @@ public class Item extends Entity {
 	 * @return the item's product
 	 */
 	public Product getProduct() {
+		assert true;
+		
 		return product;
 	}
 
@@ -70,6 +77,8 @@ public class Item extends Entity {
 	 *
 	 */
 	public void setProduct(Product product) {
+		assert true;
+		
 		this.product = product;
 	}
 
@@ -78,6 +87,8 @@ public class Item extends Entity {
 	 * @return this.tag
 	 */
 	public Barcode getTag() {
+		assert true;
+		
 		return tag;
 	}
 
@@ -86,6 +97,8 @@ public class Item extends Entity {
 	 * @param tag - must be unique to the product upc
 	 */
 	public void setTag(Barcode tag) {
+		assert true;
+		
 		this.tag = tag;
 	}
 	/**
@@ -93,6 +106,8 @@ public class Item extends Entity {
 	 * sets entry date
 	 */
 	public void setEntryDate(Date entryDate) {
+		assert true;
+		
 		this.entryDate = entryDate;
 	}
 	/**
@@ -100,6 +115,8 @@ public class Item extends Entity {
 	 * @return entry date of the item
 	 */
 	public Date getEntryDate() {
+		assert true;
+		
 		return entryDate;
 	}
 
@@ -108,6 +125,8 @@ public class Item extends Entity {
 	 * @return the exit time of the item
 	 */
 	public Date getExitTime() {
+		assert true;
+		
 		return exitTime;
 	}
 
@@ -120,6 +139,8 @@ public class Item extends Entity {
 	 * @post sets item.exitTime
 	 */
 	public void setExitTime(Date exitTime) {
+		assert true;
+		
 		this.exitTime = exitTime;
 	}
 
@@ -128,6 +149,8 @@ public class Item extends Entity {
 	 * @return the date the item expires
 	 */
 	public Date getExpirationDate() {
+		assert true;
+		
 		return expirationDate;
 	}
 
@@ -137,6 +160,8 @@ public class Item extends Entity {
 	 * @param expirationDate
 	 */
 	public void setExpirationDate(Date expirationDate) {
+		assert true;
+		
 		this.expirationDate = expirationDate;
 	}
 
@@ -145,6 +170,8 @@ public class Item extends Entity {
 	 * @return the items Container (storage unit, or product group
 	 */
 	public Container getContainer() {
+		assert true;
+		
 		return container;
 	}
 
@@ -156,11 +183,15 @@ public class Item extends Entity {
 	 * @post sets this.container
 	 */
 	public void setContainer(Container container) {
+		assert true;
+		
 		this.container = container;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
+		assert true;
+		
 		if ( this == obj ) {
 			return true;
 		}
