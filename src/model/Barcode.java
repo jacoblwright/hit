@@ -1,11 +1,14 @@
 package model;
+
+import java.io.*;
+
 /**
  * Class used to store and validate barcodes
  * 
  * @author Nick
  *
  */
-public class Barcode {
+public class Barcode implements Serializable {
 
 	/**
 	 * string that holds a valid barcode
