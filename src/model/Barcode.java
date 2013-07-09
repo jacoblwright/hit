@@ -1,11 +1,14 @@
 package model;
+
+import java.io.*;
+
 /**
  * Class used to store and validate barcodes
  * 
  * @author Nick
  *
  */
-public class Barcode {
+public class Barcode implements Serializable {
 
 	/**
 	 * string that holds a valid barcode
@@ -40,15 +43,9 @@ public class Barcode {
 	 * @return if this.barcode is valid
 	 */
 	public boolean isValidBarcode(String barcode) {
+		if(barcode.isEmpty())
+			return false;
 		return true;
-	}
-	
-	/**
-	 * 
-	 * @return if the given barcode is unique to the system
-	 */
-	public boolean isUnique() {
-		return false;
 	}
 
 	/**

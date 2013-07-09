@@ -27,9 +27,8 @@ public class ProductAndItemEditor {
     
     /**
      * Adds a product to the system.
-     * @param product the product to be added
-     * @pre product must not already exist in the system.
-     * @post product has been added to the system.
+     * @pre same as those for ProductManager.addProduct()
+     * @post same as those for ProductManager.addProduct()
      */
     public void addProduct(Product product) {
         
@@ -39,8 +38,8 @@ public class ProductAndItemEditor {
     
     /**
      * Edits a Product by replacing an older Product with a newer Product.
-     * @pre oldProduct must exist in the system.
-     * @post oldProduct has been replaced with the newProduct.
+     * @pre same as those for ProductManager.editProduct()
+     * @post same as those for ProductManager.editProduct()
      */
     public void editProduct(Product oldProduct, Product newProduct) {
         
@@ -52,23 +51,32 @@ public class ProductAndItemEditor {
      * Moves a product to a new container as long as that product is not
      * already located in that storage unit.
      * @pre product is not already in the container it is being moved into.
-     * @param product the product being moved
-     * @param before the container before the product was moved
-     * @param after the new container that the product is being moved to
+     * @post product is moved from the source container to the target
+     * container, and all of the Item of that Product in the source container
+     * are moved to the target container.
+     * @param product the Product to be moved
+     * @param before the source Container
+     * @param after the target Container
+     * @throws IllegalArgumentException
      */
     public void moveProduct(Product product,
             Container before, Container after) {
         
         productManager.moveProduct(product, before, after);
         
-        
+        Collection<Item> items = itemManager.getItems(after, product);
+        for (Item item : items) {
+            
+            itemManager.moveItem(item, after);
+            
+        }
         
     }
     
     /** Deletes a Product from the set all of products.
-     * @pre product must exist in the set
-     * @pre product must not have any Items attached to it
-     * @post removes the Product from the set
+     * @pre same as those for ProductManager.deleteProduct()
+     * @post same as those for ProductManager.deleteProduct()
+     * @throws IllegalArgumentException()
      */
     public void deleteProduct(Product product) {
         
@@ -77,9 +85,10 @@ public class ProductAndItemEditor {
     }
 
     /**
-     * @pre canAddItem() == true
-     * @post itemToAdd.container = container, itemToAdd.prodcut = product,
-     * itemToAdd.expirationDate = expirationDate
+     * Adds an Item to the system.
+     * @pre same as those for ItemManager.addItem()
+     * @post same as those for ItemManager.addItem()
+     * @throws IllegalArgumentException()
      */
      public void addItem(Item itemToAdd) {
      
@@ -87,9 +96,11 @@ public class ProductAndItemEditor {
          
      }
     
-    /**
-      * @param oldItem - item before edit
-      * @param newItem - item after edit 
+     /**
+      * Edits an Item.
+      * @pre same as those for ItemManager.editItem()
+      * @post same as those for ItemManager.editItem()
+      * @throws IllegalArgumentException() 
       */
      public void editItem(Item oldItem, Item newItem) {
     
@@ -97,11 +108,12 @@ public class ProductAndItemEditor {
          
      }
 
-    /**
-     * Updates indexes for the move.
-     * @pre itemToMove.product exists (only) in the target container
-     * @post itemToMove.container = target, itemToMove.storageUnit = target's storage unit
-     */
+     /**
+      * Moves and Item.
+      * @pre same as those for ItemManager.moveItem()
+      * @post same as those for ItemManager.moveItem()
+      * @throws IllegalArgumentException()
+      */
      public void moveItem(Item itemToMove, Container target) {
      
          itemManager.moveItem(itemToMove, target);
@@ -109,14 +121,11 @@ public class ProductAndItemEditor {
      }
      
      /**
-      * Removes the item from any container but keeps track of it in the item
+      * Removes the item from all containers but keeps track of it in the item
       * history.
-      * @param itemToRemove - item to be removed.
-      * @pre itemToRemove.container != null,
-      * !removedItems.contains(itemToMove), itemToMove.exitTime == null
-      * @post captures and sets itemToRemove.exitTime,
-      * sets itemToRemove.container to null, adds to removedItems,
-      * updates indexItemsByRemovalDate
+      * @pre same as those for ItemManager.removeItem()
+      * @post same as those for ItemManager.removeItem()
+      * @throws IllegalArgumentException()
       */
      public void removeItem(Item itemToRemove) {
      
