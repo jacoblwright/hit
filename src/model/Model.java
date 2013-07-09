@@ -69,7 +69,8 @@ public class Model {
         this.containerEditor =
                 new ContainerEditor(containerManager, itemManager);
         this.productAndItemEditor =
-                new ProductAndItemEditor(productManager, itemManager);
+                new ProductAndItemEditor(containerManager, 
+                        productManager, itemManager);
         
     }
     

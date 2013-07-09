@@ -4,6 +4,7 @@ import java.util.*;
 
 public class ProductAndItemEditor {
     
+    private ContainerManager containerManager;
     private ProductManager productManager;
     private ItemManager itemManager;
     
@@ -14,12 +15,15 @@ public class ProductAndItemEditor {
      * @pre productManager and itemManager must not be null.
      * @post This editor has been initialized using the specified managers.
      */
-    public ProductAndItemEditor(ProductManager productManager,
+    public ProductAndItemEditor(ContainerManager containerManager,
+            ProductManager productManager,
             ItemManager itemManager) {
         
+        assert containerManager != null;
         assert productManager != null;
         assert itemManager != null;
         
+        this.containerManager = containerManager;
         this.productManager = productManager;
         this.itemManager = itemManager;
         
@@ -30,9 +34,11 @@ public class ProductAndItemEditor {
      * @pre same as those for ProductManager.addProduct()
      * @post same as those for ProductManager.addProduct()
      */
-    public void addProduct(Product product) {
+    public void addNewProduct(Product product) {
         
-        productManager.addProduct(product);
+        
+        
+        
         
     }
     
@@ -80,7 +86,7 @@ public class ProductAndItemEditor {
      */
     public void deleteProduct(Product product) {
         
-        productManager.deleteProduct(product);
+        //productManager.deleteProduct(product);
         
     }
 
