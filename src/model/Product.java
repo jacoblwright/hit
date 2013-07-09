@@ -132,10 +132,13 @@ public class Product extends Entity {
 	 * @param 		number is a non-zero float assigned to Quantity size
 	 */
 	public void setSize(Unit unit, float number){
-		/* Enum should be checked on unit creation */
-		if(number < 0){
+		/* number should never be less than zero */
+		if(number < 0)
 			throw new IllegalArgumentException();
-		}
+		
+		/* if Unit == count, number has to equal */
+		if(unit == Unit.count && number != 1)
+			throw new IllegalArgumentException();
 		
 		size = new Quantity();
 		size.setQuantity(number, unit);
