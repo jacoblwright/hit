@@ -30,8 +30,10 @@ public class Model {
         try {
             
             File f;
+            String pathBase = getClass().getProtectionDomain().getCodeSource()
+                    .getLocation().getFile();
             
-            f = new File(C_MANAGER_DATA_PATH);
+            f = new File(pathBase + C_MANAGER_DATA_PATH);
             if (f.exists() && f.canRead()) {
                 this.containerManager = (ContainerManager)Serializer.load(f);
             }
@@ -39,7 +41,7 @@ public class Model {
                 this.containerManager = new ContainerManager();
             }
             
-            f = new File(P_MANAGER_DATA_PATH);
+            f = new File(pathBase + P_MANAGER_DATA_PATH);
             if (f.exists() && f.canRead()) {
                 this.productManager = (ProductManager)Serializer.load(f);
             }
@@ -47,7 +49,7 @@ public class Model {
                 this.productManager = new ProductManager();
             }
             
-            f = new File(I_MANAGER_DATA_PATH);
+            f = new File(pathBase + I_MANAGER_DATA_PATH);
             if (f.exists() && f.canRead()) {
                 this.itemManager = (ItemManager)Serializer.load(f);
             }
@@ -70,24 +72,28 @@ public class Model {
         
     }
 
-    public ContainerEditor getContainerEditor() {
-        return containerEditor;
-    }
-
     public ContainerManager getContainerManager() {
         return containerManager;
     }
 
-    public ProductAndItemEditor getProductAndItemEditor() {
-        return productAndItemEditor;
+    public void setContainerManager(ContainerManager containerManager) {
+        this.containerManager = containerManager;
     }
 
     public ProductManager getProductManager() {
         return productManager;
     }
 
+    public void setProductManager(ProductManager productManager) {
+        this.productManager = productManager;
+    }
+
     public ItemManager getItemManager() {
         return itemManager;
+    }
+
+    public void setItemManager(ItemManager itemManager) {
+        this.itemManager = itemManager;
     }
     
 }

@@ -81,9 +81,9 @@ public class ProductAndItemEditor {
      * @post itemToAdd.container = container, itemToAdd.prodcut = product,
      * itemToAdd.expirationDate = expirationDate
      */
-     public void addItem(Item itemToAdd, Date expirationDate) {
+     public void addItem(Item itemToAdd) {
      
-         itemManager.addItem(itemToAdd, expirationDate);
+         itemManager.addItem(itemToAdd);
          
      }
     
