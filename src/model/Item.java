@@ -1,8 +1,5 @@
 package model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 /**
 *
 * Item Description:
@@ -11,7 +8,10 @@ import java.util.Calendar;
 *	that holds the item.
 *
 */
+
 import java.util.Date;
+
+
 public class Item extends Entity {
 	
 	/** Points to the product that describes the item. */
@@ -47,11 +47,11 @@ public class Item extends Entity {
 	*	entry date is captured, sets expires, sets container, barcode generated automatically
 	*
 	*/
-	public Item(Container container, Product product, Date expirationDate)  {
+	public Item(Container container, Product product, Date expirationDate, Barcode barcode)  {
 		this.container = container;
 		this.product = product;
 		this.expirationDate = expirationDate;
-		this.tag = new Barcode(); // generates unique barcode on initliazation
+		this.tag = barcode; // generates unique barcode on initliazation
 		this.entryDate = new Date();
 		
 	}
@@ -158,15 +158,30 @@ public class Item extends Entity {
 	public void setContainer(Container container) {
 		this.container = container;
 	}
-	
-	/** override equals operation
-	 * 
-	 * @param other
-	 * @return true if items are equal
-	 */
-	public boolean equals(Item other){
-		return this.getTag() == other.getTag();
+
+	@Override
+	public boolean equals(Object obj) {
+		if ( this == obj ) {
+			return true;
+		}
+		
+		if ( !( obj instanceof Item ) ){
+			return false;
+		}
+		
+		Item item = (Item) obj;
+		return this.getTag().getBarcode() == item.getTag().getBarcode();
 	}
+//	/** override equals operation
+//	 * 
+//	 * @param other
+//	 * @return true if items are equal
+//	 */
+//	@Override
+//	public boolean equals(Entity other){
+//		return this.getTag().getBarcode() == other.getTag().getBarcode();
+//	}
+	
 
 	
 	

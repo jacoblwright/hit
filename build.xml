@@ -246,7 +246,7 @@
 		</cobertura-instrument>
 	</target>
 	
-	<target name="compile-tests"
+	<target name="compile-tests" depends="instrument"
 		description="compile unit tests " >
 		<javac srcdir="${test-src}" destdir="${test-build}" debug="true">
 			<classpath>

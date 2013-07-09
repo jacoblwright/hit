@@ -24,9 +24,12 @@ public class ItemTest {
 		Container c1 = new ProductGroup();
 		Product p1 = new Product();
 		Date ed1 = dateFormat.parse("2013/12/9");
-		Item i1 = new Item(c1, p1, ed1);
+		Barcode bc1 = new Barcode("blahblah");
+		Item i1 = new Item(c1, p1, ed1, bc1);
+		Item i2 = new Item(c1, p1, ed1, bc1);
 		
-		assertTrue( i1 == i1);
+		assertEquals(i1, i2);
+		assertFalse(i1.equals(p1));
 		
 		// test entry date capture
 		System.out.printf("%s == %s", i1.getEntryDate(), dateFormat.format(cal.getTime()));
@@ -49,7 +52,6 @@ public class ItemTest {
 		i1.setProduct(p2);
 		assertEquals(i1.getProduct(), p2);
 		
-		Barcode bc1 = new Barcode();
 		i1.setTag(bc1);
 		assertEquals(i1.getTag(), bc1);
 		

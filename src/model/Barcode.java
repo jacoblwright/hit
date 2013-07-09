@@ -19,6 +19,7 @@ public class Barcode {
 		barcode = "lalalBarcode";
 	}
 	
+	
 	/**
 	 * 
 	 * @param barcode must be a valid barcode
@@ -31,6 +32,7 @@ public class Barcode {
 		if (!isValidBarcode(barcode)) {
 			throw new IllegalArgumentException();
 		}
+		this.barcode = barcode;
 	}
 	
 	/**
@@ -38,7 +40,7 @@ public class Barcode {
 	 * @return if this.barcode is valid
 	 */
 	public boolean isValidBarcode(String barcode) {
-		return false;
+		return true;
 	}
 	
 	/**
