@@ -1,11 +1,5 @@
 package model;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -26,6 +20,40 @@ public class ContainerManager {
 		uniqueId = 0;
 	}
 	
+	/** Returns all of the productGroup lists of the current container recursively
+	 * @pre none
+	 * @param container
+	 * @return 
+	 * @throws IllegalArgumentException			if container == null
+	 */
+	public Set<ProductGroup> getDescendents( Container container ) throws IllegalArgumentException {
+		assert true;
+		if( container == null ) {
+			throw new IllegalArgumentException();
+		}
+		TreeSet<ProductGroup> result = new TreeSet<ProductGroup>();
+		recursivelyGetDescendents( container, result );
+		return result;
+	}
+	
+	/**Recursively gets all of the productGroups from the given container
+	 * @pre none
+	 * @param container
+	 * @param pgList
+	 */
+	private void recursivelyGetDescendents( Container container, Set<ProductGroup> pgList ) {
+		assert true;
+		Set<ProductGroup> productGroupList = container.getProductGroups();
+		pgList.addAll( productGroupList );
+		if( productGroupList.isEmpty() ) {
+			return ;
+		}
+		for( ProductGroup productGroup : productGroupList ) {
+			recursivelyGetDescendents( productGroup, pgList );
+		}
+	}
+
+
 	/**
 	 * @pre none
 	 * @post sets storageUnits
