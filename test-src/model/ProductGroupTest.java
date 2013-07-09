@@ -86,7 +86,7 @@ public class ProductGroupTest {
 	public void isContainerValidTest() {
 		
 		ProductGroup pg1 = new ProductGroup();
-		assertFalse( pg1.isContainerValid() );
+		assertTrue( pg1.isContainerValid() );
 		
 		pg1.setName( "\t\n" );
 		assertFalse( pg1.isContainerValid() );

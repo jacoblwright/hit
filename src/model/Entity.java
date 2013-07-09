@@ -8,13 +8,13 @@ import static org.junit.Assert.*;
  * @author jake
  *
  */
-public class Entity implements Serializable {
+public abstract class Entity implements Serializable {
 
 	private static final long serialVersionUID = -3691241088688260075L;
 	protected static final int HASH_MULTIPLIER_PRIME = 31;
 	protected static final int HASH_BASE_PRIME = 7;
 	
-	/**Unique Id */
+	/**Id */
 	private int id;
 	
 	/**Gets Id
@@ -23,7 +23,7 @@ public class Entity implements Serializable {
 	 * @return id
 	 */
 	public int getId() {
-		assertTrue( true );
+		assert true;
 		return id;
 	}
 
@@ -33,7 +33,7 @@ public class Entity implements Serializable {
 	 * @param id
 	 */
 	public void setId(int id) {
-		assertTrue( true );
+		assert true;
 		this.id = id;
 	}
 	
@@ -43,7 +43,7 @@ public class Entity implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		assertTrue( true );
+		assert true;
 		return "Entity [id=" + id + "]";
 	}
 
@@ -53,7 +53,7 @@ public class Entity implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		assertTrue( true );
+		assert true;
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id;
@@ -67,7 +67,7 @@ public class Entity implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		assertTrue( true );
+		assert true;
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -87,7 +87,7 @@ public class Entity implements Serializable {
 	 * @return				new hash based on old hash and object passed in
 	 */
 	protected int createHash( int hash, Object obj ) {
-		assertTrue( true );
+		assert true;
 		return ( hash * HASH_MULTIPLIER_PRIME ) + ( obj != null ? obj.hashCode() : 0 );
 	}
 }

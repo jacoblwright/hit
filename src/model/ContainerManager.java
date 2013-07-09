@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -14,25 +15,26 @@ public class ContainerManager {
 	/** Map where the key is the storage unit and the value is a list of Containers	*/
 	private Set<StorageUnit> storageUnits;
 	
+	private int uniqueId;
+	
+	/**initializes uniqueId to 0
+	 * @pre none
+	 * @post uniqueId = 0;
+	 */
+	public ContainerManager() {
+		assert true;
+		uniqueId = 0;
+	}
+	
 	/**
+	 * @pre none
+	 * @post sets storageUnits
 	 * Used for testing and reinitializing the tree, easy way to set up tree
 	 * @param storageUnits Set<StorageUnit>
 	 */
 	public void setStorageUnits( Set<StorageUnit> storageUnits ) {
+		assert true;
 		this.storageUnits = storageUnits;
-	}
-	
-	/** Map where the key is the containers id and the value is the container */
-	private Map<Integer, Container> containersById;
-	
-	/**Used for testing and reinitializing the tree structure
-	 * @pre none
-	 * @post sets containersById
-	 * @param containersById Map<Integer, Container>
-	 */
-	public void setContainersById( Map<Integer, Container> containersById ) {
-		assertTrue( true );
-		this.containersById = containersById;
 	}
 	
 	/** Returns a list of all the storage units
@@ -40,7 +42,7 @@ public class ContainerManager {
 	 * @return iterator			
 	 */
 	public Set<StorageUnit> getRoot() {
-		assertTrue( true );
+		assert true;
 		if( storageUnits == null ) {
 			storageUnits = new TreeSet<StorageUnit>();
 		}
@@ -53,8 +55,8 @@ public class ContainerManager {
 	 * @return returns StorageUnit 
 	 */
 	public StorageUnit getAncestorStorageUnit( Container container ) {
-		assertTrue( true );
-		while( container.container.getName() != null ) {
+		assert true;
+		while( container.container != null ) {
 			container = container.container;
 		}
 		return (StorageUnit) container;
@@ -73,15 +75,14 @@ public class ContainerManager {
 	public void addContainer( Container parent, Container container ) 
 			throws IllegalArgumentException {
 		if( parent == null ) {
-			if( container == null || 
-					!storageUnits.contains( container ) || 
-					!canAddContainer( container ) ) {		// test both su and pg
+			if( container == null || container instanceof ProductGroup ) {
 				throw new IllegalArgumentException();
 			}
 		}
-		if( canAddContainer( container ) ) {
-			addContainerToTree( parent, container );
-		}		
+		if( !canAddContainer( container ) ) {
+			throw new IllegalArgumentException();
+		}
+		addContainerToTree( parent, container );
 	}
 	
 	/** Initializes container and adds it to the parent.
@@ -92,10 +93,9 @@ public class ContainerManager {
 	 * @param container
 	 */
 	private void addContainerToTree(Container parent, Container container) {
-		assertNotNull( container );
+		assert container != null;
 		container.setContainer( parent );
-		container.setId( generateUniqueId( container ) );
-		containersById.put(container.getId(), container );
+		container.setId( uniqueId++ );
 		if( container instanceof ProductGroup ) {
 			parent.addProductGroup( ( ProductGroup ) container );
 		}
@@ -104,24 +104,8 @@ public class ContainerManager {
 		}
 	}
 
-	/**Generates a unique id based on all of the id's contained in this class
-	 * 
-	 * @pre						container != null
-	 * @param container
-	 * @return					unique Id
-	 */
-	private int generateUniqueId( Container container ) {
-		assertNotNull( container );
-		int id = container.hashCode();
-		while( !isIdUnique( id ) ) {
-			id += 1;
-		}
-		return id;
-	}
-
 	/** Edits the container and all of the children containers.
-	 *
-	 * @pre						oldContainer.id == newContainer.id unless oldContainer = StorageUnit
+	 * @pre						parameters != null
 	 * @pre						canEditContainer( newContainer ) == true
 	 * @post					if( checkCanEdit(container) ) { edit(container); }
 	 * @param container			New values for container, changes container with same id
@@ -132,9 +116,7 @@ public class ContainerManager {
 			throws IllegalArgumentException {
 		if( oldContainer == null || 
 				newContainer == null || 
-				!canEditContainer( newContainer ) || 
-				oldContainer.getId() != newContainer.getId() ||
-				!containersById.containsKey( oldContainer.getId() ) ) {
+				!canEditContainer( newContainer ) ) {
 			throw new IllegalArgumentException();
 		}
 		
@@ -155,39 +137,21 @@ public class ContainerManager {
 	 * @pre 					container.exists() == true
 	 * @post					delete(container), recursively
 	 * @param container			Current container to be deleted
-	 * @throws IllegalArgumentException 			if container.exists() == false then throw
+	 * @throws IllegalArgumentException 			if container.container == null && container instanceof ProductGroup
 	 */
 	public void deleteContainer( Container container ) throws IllegalArgumentException {
-		if( containersById.containsKey(container.getId() ) ||
-				!containersById.containsKey( container.getId() ) ) {
-			throw new IllegalArgumentException();
-		}
-		removeContainerRecursively( container );
+		
+		//removeContainerRecursively( container );
 		if( container instanceof ProductGroup ) {
+			if( container.getContainer() == null ) {
+				throw new IllegalArgumentException();
+			}
 			Set<ProductGroup> productGroupList = container.getContainer().getProductGroups();
 			productGroupList.remove( container );
 		}
 		else {
-			storageUnits.remove( container );		// make sure this runs since storageUnits is (StorageUnit) and not (Container)
+			storageUnits.remove( container );
 		}
-	}
-	
-	/**Recursively removes container and children from containersById
-	 * @pre							container != null
-	 * @post						containersById.remove(container) recursively
-	 * @param container
-	 */
-	private void removeContainerRecursively(Container container) {
-		assertNotNull( container );
-		Queue<ProductGroup> q = new LinkedList<ProductGroup>();
-		Set<ProductGroup> productGroupList = container.getProductGroups();
-		for( ProductGroup productGroup : productGroupList ) {
-			removeContainerRecursively( productGroup );
-		}
-		if( productGroupList.size() == 0 ) {
-			containersById.remove( container.getId() );
-			return;
-		}		
 	}
 
 	/**Checks to see if all of the qualifications are met to add the current container.
@@ -199,7 +163,7 @@ public class ContainerManager {
 	 * @return					True if all of the qualifications are met and false otherwise.
 	 */
 	public boolean canAddContainer( Container container ) {
-		assertTrue( true );
+		assert true;
 		return isValidContainer( container );
 	}
 	
@@ -211,18 +175,8 @@ public class ContainerManager {
 	 * @return					True if all of the qualifications are met and false otherwise.
 	 */
 	public boolean canEditContainer( Container container ) {
-		assertTrue( true );
+		assert true;
 		return isValidContainer( container );
-	}
-	
-	/**Compares integer id to current id's for uniqueness
-	 * @pre 					none
-	 * @param id
-	 * @return boolean			True if id.isUnique(), otherwise false.
-	 */
-	private boolean isIdUnique( int id ) {
-		assertTrue( true );
-		return containersById.containsKey( id );
 	}
 	
 	/**Abstract Method, Checks to see if given productsName is unique among the list of ProductGroups
@@ -231,11 +185,11 @@ public class ContainerManager {
 	 * @return						True if all of the qualifications are met and false otherwise.
 	 */
 	private boolean isUniqueProductGroupName( Container container ) {
-		assertNotNull( container );
+		assert container != null;
 		if( container.getName() == null ) {
 			return false;
 		}
-		for( ProductGroup productGroup : container.getContainer().productGroups ) {
+		for( ProductGroup productGroup : container.getContainer().getProductGroups() ) {
 			if( container.getName().equals( productGroup.getName() ) ) {
 				return false;
 			}
@@ -249,7 +203,7 @@ public class ContainerManager {
 	 * @return boolean				true if container.name == Unique, otherwise false.
 	 */
 	private boolean isUniqueStorageUnitName( Container container ) {
-		assertNotNull( container );
+		assert container != null;
 		for( StorageUnit storageUnit : storageUnits ){
 			if( container.getName().equals( storageUnit.getName() ) ) {
 				return false;
@@ -264,10 +218,8 @@ public class ContainerManager {
 	 * @return						true if valid, otherwise false
 	 */
 	private boolean isValidContainer( Container container ) {
-		assertTrue( true );
-		if( container == null || 
-			    container.container == null || 
-			    !containersById.containsKey( container.container.getId() ) ) {
+		assert true;
+		if( container == null ) {
 				return false;
 		}
 		if( container instanceof ProductGroup ) {
