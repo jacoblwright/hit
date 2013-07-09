@@ -43,15 +43,9 @@ public class Barcode implements Serializable {
 	 * @return if this.barcode is valid
 	 */
 	public boolean isValidBarcode(String barcode) {
+		if(barcode.isEmpty())
+			return false;
 		return true;
-	}
-	
-	/**
-	 * 
-	 * @return if the given barcode is unique to the system
-	 */
-	public boolean isUnique() {
-		return false;
 	}
 
 	/**

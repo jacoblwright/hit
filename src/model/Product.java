@@ -40,12 +40,28 @@ public class Product extends Entity {
 
 	
 	/** Simple constructor for Product. Date will be initially set to today's date. */
-	public Product(String code){
-		if(code.isEmpty())
-			throw new IllegalArgumentException();
-		
+	public Product(String code, String desc, Unit u, float num, int life, int supply){
+		assert true;
 		this.creationDate = new Date();
 		setUPC(code);
+		setDescription(desc);
+		setSize(u, num);
+		setShelfLife(life);
+		setThreeMonthSupply(supply);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if ( this == obj ) {
+			return true;
+		}
+		
+		if ( !( obj instanceof Product ) ){
+			return false;
+		}
+		
+		Product product = (Product) obj;
+		return this.getUPC().getBarcode() == product.getUPC().getBarcode();
 	}
 	
 	/**
@@ -120,6 +136,9 @@ public class Product extends Entity {
 		if(number < 0){
 			throw new IllegalArgumentException();
 		}
+		
+		size = new Quantity();
+		size.setQuantity(number, unit);
 	}
 	
 	/**
@@ -151,6 +170,7 @@ public class Product extends Entity {
 	 * @return 		date of most recently added item to Product
 	 */
 	public Date getCreationDate(){
+		assert true;
 		return creationDate; 
 	}
 	
@@ -158,7 +178,8 @@ public class Product extends Entity {
 	 * @pre			none
 	 * @return 		barcode of Product
 	 */
-	public Barcode getUPC(){ 
+	public Barcode getUPC(){
+		assert true;
 		return upc; 
 	}
 	
@@ -167,6 +188,7 @@ public class Product extends Entity {
 	 * @return 		description of Product
 	 */
 	public String getDescription(){ 
+		assert true;
 		return description; 
 	}
 	
@@ -175,6 +197,7 @@ public class Product extends Entity {
 	 * @return 		size of Product
 	 */
 	public Quantity getSize(){
+		assert true;
 		return size; 
 	}
 	
@@ -183,6 +206,7 @@ public class Product extends Entity {
 	 * @return 		shelfLife of Product
 	 */
 	public int getShelfLife(){ 
+		assert true;
 		return shelfLife; 
 	}
 	
@@ -191,6 +215,7 @@ public class Product extends Entity {
 	 * @return		threeMonthSupply of Product
 	 */
 	public int getThreeMonthSupply(){ 
+		assert true;
 		return threeMonthSupply; 
 	}
 	
@@ -199,6 +224,7 @@ public class Product extends Entity {
 	 * @return		containers in which this Product currently resides
 	 */
 	public Set<Container> getContainers(){ 
+		assert true;
 		return containers; 
 	}
 	

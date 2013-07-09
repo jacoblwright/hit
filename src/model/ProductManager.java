@@ -26,15 +26,20 @@ public class ProductManager {
 	 * @pre 	product must not already exist in the map
 	 * @post	product is added to the set
 	 */
-	public void addProduct(Product product, Container container) throws IllegalArgumentException{
+	public void addNewProduct(Product product, Container container, StorageUnit storageUnit) throws IllegalArgumentException{
+		
 		/* Add first to container */
-		addProductToContainer(product, container);
+		addProductToContainer(product, container, storageUnit);
 		
 		/* Add product to Barcode map */
 		productByUPC.put(product.getUPC(), product);
 	}
 	
-	public void addProductToContainer(Product product, Container container) throws IllegalArgumentException{
+	public void addProductToContainer(Product product, Container container,StorageUnit storageUnit) throws IllegalArgumentException{
+		if(!canAddProductToContainer(product, storageUnit)){
+			throw new IllegalArgumentException();
+		}
+		
 		/* Adds Container to the Product */
 		product.addContainer(container);
 		/* Add Product to Container Map */
@@ -42,25 +47,10 @@ public class ProductManager {
 	}
 	
 	public void editProduct(Product before, Product after) throws IllegalArgumentException{
-		
-		/* Copy over correct Creation Date */
-		after.setCreationDate(before.getCreationDate());
-		/* Copy over containers */
-		Iterator it = before.getContainers().iterator();
-		while(it.hasNext())
-			after.addContainer((Container)it.next());
-		
-		/* Remove before product and add after product to containers */
-		this.productByUPC.remove(before.getUPC());
-		this.productByUPC.put(after.getUPC(), after);
-		
-		for(Container key : productsByContainer.keySet()){
-			if(this.productsByContainer.get(key).contains(before)){
-				this.productsByContainer.get(key).remove(before);
-				this.productsByContainer.get(key).add(after);
-			}
-		}
-		
+		before.setDescription(after.getDescription());
+		before.setShelfLife(after.getShelfLife());
+		before.setSize(after.getSize().getUnit(), after.getSize().getNumber());
+		before.setThreeMonthSupply(after.getThreeMonthSupply());
 	}
 	
 	/** Deletes a Product from the set all of products.
@@ -103,7 +93,7 @@ public class ProductManager {
 			product.addContainer(after);
 		}
 		/* Remove from the old container and add to the new container */
-		else if(canAddProduct(product, (StorageUnit)tempAfter)){
+		else if(canAddProductToContainer(product, (StorageUnit)tempAfter)){
 			product.removeContainer(before);
 			product.addContainer(after);
 		}
@@ -117,22 +107,7 @@ public class ProductManager {
 	 * @param 		storage Product checks whether storage is already contained in productsByContainer			
 	 * @return		true if the product can be added to the storage, false otherwise
 	 */
-	public boolean canAddProduct(Product product, StorageUnit storage){
-		
-		Set<Container> productContainers = product.getContainers();
-		
-		/* Grab each container in productContainers, find its storage unit, and check if they're the same as tempContainer */
-		Iterator iterContainers = productContainers.iterator();
-		while(iterContainers.hasNext()){
-			Container productContainer = (Container) iterContainers.next();
-			while(productContainer.getContainer() != null){
-				/* Jake has a method that can be used here, though I don't have access */
-				productContainer = productContainer.getContainer();
-			}
-			/* After storage unit is determined, check to see if it's the same storage unit as tempContainer. If it is the same, throw exception */
-			if(storage == productContainer)
-				return false;
-		}
+	public boolean canAddProductToContainer(Product product, StorageUnit storage){
 		
 		return true;
 	}
