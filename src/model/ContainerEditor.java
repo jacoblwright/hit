@@ -24,27 +24,25 @@ public class ContainerEditor {
     }
     
 	/** 
-	 * Adds the container under the parent container.
-	 * @pre valid(parameters) && arguments != null
-	 * @pre container.isParent(parent)
-	 * @pre container.isStorageUnit(storageUnit)
-	 * @post if( checkCanAdd(container) ) { add(container); }
-	 * @param parent parent container to the current container
-	 * @param container Current container to be deleted
-	 * @return True upon successfully adding, otherwise false
+	 * Adds the specified Container under the specified parent Container.
+	 * @pre same as that of ContainerManager.addContainer()
+	 * @post same as that of ContainerManager.addContainer()
+	 * @param parent parent container to the container to be added
+	 * @param container the container to be added
+	 * @throws IllegalArgumentException
 	 */
 	public void addContainer(Container parent, Container container) {
 		
-	    
+	    containerManager.addContainer(parent, container);
 	    
 	}
 	
 	/**
-	 * Edits the container and all of the children containers.
-	 * @pre valid(parameters) && arguments != null 
-	 * @pre container.isStorageUnit(storageUnit)
-	 * @post if(checkCanEdit(container)) { edit(container); }
-	 * @param container new values for container, changes container with same id
+	 * Replaces the specified old Container with the specified new Container.
+	 * @pre same as that of ContainerManager.editContainer()
+	 * @post same as that of ContainerManager.editContainer()
+	 * @param oldContainer the Container to be replaced
+	 * @param newContainer the new Container
 	 * @throws IllegalArgumentException
 	 */
 	public void editContainer(Container oldContainer, Container newContainer)
@@ -56,9 +54,9 @@ public class ContainerEditor {
 	
 	/**
 	 * Deletes the container and all of the children containers.
-	 * @pre	Container.items() == 0, recursively
+	 * @pre	Container.items().size() 0, recursively
 	 * @post delete(container), recursively
-	 * @param container to be deleted
+	 * @param Container to be deleted
 	 * @throws IllegalArgumentException
 	 */
 	public void deleteContainer(Container container)
