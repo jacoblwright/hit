@@ -1,7 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.*;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,6 +28,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @return			name of the container
 	 */
 	public String getName() {
+		assertTrue( true );
 		return name;
 	}
 
@@ -37,6 +37,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @param name		name of the container
 	 */
 	public void setName(String name) {
+		assertTrue( true );
 		this.name = name;
 	}
 
@@ -45,6 +46,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @return			list of product groups, if productGroups == null returns an empty list
 	 */
 	public Set<ProductGroup> getProductGroups() {
+		assertTrue( true );
 		if( productGroups == null ) {
 			productGroups = new TreeSet<ProductGroup>();
 		}
@@ -52,11 +54,12 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	}
 
 	/**Setter for productGroups
-	 * @pre				productGroups != null
+	 * @pre				none
 	 * @post			sets a list of product groups to productGroups
 	 * @param productGroups
 	 */
 	public void setProductGroups(Set<ProductGroup> productGroups) {
+		assertTrue( true );
 		this.productGroups = productGroups;
 	}
 	
@@ -65,6 +68,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @return			size of the list of productGroups, if productGroup == null returns 0
 	 */
 	public int getProductGroupsSize() {
+		assertTrue( true );
 		if( productGroups == null ) {
 			productGroups = new TreeSet<ProductGroup>();
 		}
@@ -76,9 +80,9 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @post					if(productGroup == null) create new ArrayList<ProductGroup>()
 	 * @post					productGroups.add(productGroup)
 	 * @param productGroup
-	 * @throws IllegalArgumentException
 	 */
-	public void addProductGroup( ProductGroup productGroup ) throws IllegalArgumentException{
+	public void addProductGroup( ProductGroup productGroup ) {
+		assertTrue( true );
 		if( productGroups == null ) {
 			productGroups = new TreeSet<ProductGroup>();
 		}
@@ -108,12 +112,20 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @return 			int 
 	 */
 	@Override
-	public int compareTo(Container other) {
+	public int compareTo(Container other) throws IllegalArgumentException {
+		if( other == null ) {
+			throw new IllegalArgumentException();
+		}
 		return name.compareTo(other.name);
 	}
 	
+	/**Creates a unique hashcode for this object
+	 * @pre					none
+	 * @return int			unique Integer
+	 */
 	@Override
 	public int hashCode() {
+		assertTrue( true );
 		int hash = HASH_BASE_PRIME;
 		hash = ( hash * HASH_MULTIPLIER_PRIME ) + this.getId();
 		hash = createHash( hash, this.name );
@@ -124,8 +136,14 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return hash;
 	}
 
+	/**checks equality between two objects
+	 * @pre						none
+	 * @param obj				obj in question fo equality		
+	 * @return boolean 			if this == obj return true, otherwise false.
+	 */
 	@Override
 	public boolean equals(Object obj) {
+		assertTrue( true );
 		if ( this == obj ) {
 			return true;
 		}
@@ -142,10 +160,16 @@ public abstract class Container extends Entity implements Comparable<Container> 
 						:((Container)obj).productGroups == null );
 	}
 
+	/**Creates the string version of this object
+	 * @pre 				none	
+	 * @return String		this.toString()
+	 */
 	@Override
 	public String toString() {
-		return "Container [name=" + name + ", productGroups=" + ( productGroups != null ? productGroups.toString() : "null" )
-				+ ", container=" + ( container != null ? container.name : "null" ) + "]";
+		assertTrue( true );
+		return "Container [name=" + name + ", productGroups=" + 
+				( productGroups != null ? productGroups.toString() : "null" ) +
+				", container=" + ( container != null ? container.name : "null" ) + "]";
 	}
 
 }

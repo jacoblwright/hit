@@ -12,13 +12,13 @@ public class ProductGroupTest {
 	private int DIFF_ID = 2;
 	private String NAME = "name1";
 	private String DIFF_NAME = "name2";
-	private float NUMBER = 2.3f;
+	private float FLOAT = 2.3f;
 	private Unit UNIT_COUNT = Unit.count;
 	private Unit UNIT_PINTS = Unit.pints;
 	private float unspecified = 0;
 	
 	@Test
-	public void testConstructor() {
+	public void constructorTest() {
 		Quantity expectedResult = new Quantity();
 		expectedResult.setQuantity( unspecified, Unit.unspecified );
 		
@@ -27,7 +27,7 @@ public class ProductGroupTest {
 	}
 	
 	@Test
-	public void testProductGroup() {
+	public void productGroupTest() {
 		ProductGroup pg1 = new ProductGroup();
 		ProductGroup pg2 = null;
 		
@@ -72,7 +72,7 @@ public class ProductGroupTest {
 	}
 	
 	@Test
-	public void testToString() {
+	public void toStringTest() {
 		
 		ProductGroup pg1 = new ProductGroup();
 		initializeProductGroup( pg1 );
@@ -83,7 +83,7 @@ public class ProductGroupTest {
 	}
 	
 	@Test
-	public void testIsContainerValid() {
+	public void isContainerValidTest() {
 		
 		ProductGroup pg1 = new ProductGroup();
 		assertFalse( pg1.isContainerValid() );
@@ -95,11 +95,14 @@ public class ProductGroupTest {
 		assertTrue( pg1.isContainerValid() );
 		
 		Quantity q = new Quantity();
-		q.setQuantity( NUMBER, UNIT_PINTS );
+		q.setQuantity( FLOAT, UNIT_PINTS );
 		pg1.setThreeMonthSupply( q );
 		assertTrue( pg1.isContainerValid() );
 		
-		q.setQuantity( NUMBER, UNIT_COUNT );
+		q.setQuantity( FLOAT, UNIT_COUNT );
+		assertFalse( pg1.isContainerValid() );
+		
+		q.setQuantity( -FLOAT, UNIT_PINTS );
 		assertFalse( pg1.isContainerValid() );
 		
 	}

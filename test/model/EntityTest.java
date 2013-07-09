@@ -10,7 +10,7 @@ public class EntityTest {
 	private int DIFF_ID = 2;
 	
 	@Test
-	public void testEntity() {
+	public void entityTest() {
 		
 		Entity entity1 = new Entity();
 		Entity entity2 = null;
@@ -33,7 +33,7 @@ public class EntityTest {
 	}
 	
 	@Test
-	public void testToString() {
+	public void toStringTest() {
 		
 		Entity entity1 = new Entity();
 		entity1.setId( ID );
