@@ -12,12 +12,12 @@ public class EntityTest {
 	@Test
 	public void entityTest() {
 		
-		Entity entity1 = new Entity();
+		Entity entity1 = new StorageUnit();
 		Entity entity2 = null;
 		
 		assertFalse( entity1.equals( entity2 ) );
 		
-		entity2 = new Entity();
+		entity2 = new StorageUnit();
 		assertTrue( entity1.equals( entity2 ) );
 		assertTrue( entity1.hashCode() == entity2.hashCode() );
 		
@@ -35,10 +35,10 @@ public class EntityTest {
 	@Test
 	public void toStringTest() {
 		
-		Entity entity1 = new Entity();
+		Entity entity1 = new StorageUnit();
 		entity1.setId( ID );
-		String expectedResult = "Entity [id=3]";
-		assertTrue( expectedResult.equals( entity1.toString() ) );
+		String expectedResult = "Container [name=Untitled, productGroups=null, container=null]";
+		assertEquals( expectedResult, entity1.toString() );
 		
 	}
 

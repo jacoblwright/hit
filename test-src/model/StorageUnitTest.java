@@ -67,7 +67,7 @@ public class StorageUnitTest {
 	public void isContainerValidTest() {
 		
 		StorageUnit su1 = new StorageUnit();
-		assertFalse( su1.isContainerValid() );
+		assertTrue( su1.isContainerValid() );
 		
 		su1.setName("");
 		assertFalse( su1.isContainerValid() );
@@ -77,9 +77,6 @@ public class StorageUnitTest {
 		
 		su1.setName( NAME );
 		assertTrue( su1.isContainerValid() );
-		
-		su1.setName( null );
-		assertFalse( su1.isContainerValid() );
 		
 	}
 
