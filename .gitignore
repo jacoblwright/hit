@@ -1,6 +1,9 @@
 *.class
 .metadata
 .DS_Store
+
+coverage-test/*
+
 # Package Files #
 *.war
 *.ear
