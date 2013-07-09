@@ -1,0 +1,7 @@
+Testsuite: model.ItemManagerTest
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.089 sec
+
+Testcase: testAddingAndGetting took 0.056 sec
+Testcase: testAddingAndRemoving took 0.003 sec
+Testcase: testMovingItems took 0.007 sec
+Testcase: testEditingItems took 0.003 sec
