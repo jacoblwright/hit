@@ -14,7 +14,7 @@ public class StorageUnitTest {
 	private String DIFF_NAME = "name2";
 	
 	@Test
-	public void testStorageUnit() {
+	public void storageUnitTest() {
 		StorageUnit su1 = new StorageUnit();
 		StorageUnit su2 = null;
 		
@@ -50,7 +50,7 @@ public class StorageUnitTest {
 	}
 	
 	@Test
-	public void testToString() {
+	public void toStringTest() {
 		
 		StorageUnit su1 = new StorageUnit();
 		su1.setId( ID );
@@ -64,7 +64,7 @@ public class StorageUnitTest {
 	}
 	
 	@Test
-	public void testIsContainerValid() {
+	public void isContainerValidTest() {
 		
 		StorageUnit su1 = new StorageUnit();
 		assertFalse( su1.isContainerValid() );
@@ -77,6 +77,9 @@ public class StorageUnitTest {
 		
 		su1.setName( NAME );
 		assertTrue( su1.isContainerValid() );
+		
+		su1.setName( null );
+		assertFalse( su1.isContainerValid() );
 		
 	}
 

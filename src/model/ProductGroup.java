@@ -18,9 +18,15 @@ public class ProductGroup extends Container {
 	/**	threeMonthSupply- zero means unspecified, default 0 and Unspecified used for ProductGroups*/
 	private Quantity threeMonthSupply;
 	
+	/**	For Quantity threeMonthSupply variable a 0 means unspecified	*/
 	private float unspecified = 0;
 	
+	/**Initializes threeMonthSupply to unspecified
+	 * @pre				none
+	 * @post			threeMonthSupply.Initialize()
+	 */
 	public ProductGroup() {
+		assertTrue( true );
 		threeMonthSupply = new Quantity();
 		threeMonthSupply.setQuantity( unspecified, Unit.unspecified );
 	}
@@ -74,6 +80,9 @@ public class ProductGroup extends Container {
 				return threeMonthSupply.getNumber() == Math.round( threeMonthSupply.getNumber() );
 			}
 		}
+		if( threeMonthSupply.getNumber() < 0 ) {
+			return false;
+		}
 		return true;
 	}
 
@@ -88,11 +97,19 @@ public class ProductGroup extends Container {
 		return ( getName() != null ) && nonEmptyName() && canAddThreeMonthSupply();
 	}
 	
+	/**Removes whitespace to see if the name is nonEmpty
+	 * @pre							name != null
+	 * @return boolean				true if name is nonEmpty, otherwise false.
+	 */
 	private boolean nonEmptyName() {
-		
+		assertNotNull( getName() );
 		return getName().trim().length() > 0;
 	}
 
+	/**Creates a unique hashcode for this object
+	 * @pre					none
+	 * @return int			unique Integer
+	 */
 	@Override
 	public int hashCode() {
 		assertTrue( true );
@@ -101,6 +118,11 @@ public class ProductGroup extends Container {
 		return hash;
 	}
 
+	/**checks equality between two objects
+	 * @pre						none
+	 * @param obj				obj in question fo equality		
+	 * @return boolean 			if this == obj return true, otherwise false.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		assertTrue( true );
@@ -109,11 +131,13 @@ public class ProductGroup extends Container {
 						:((ProductGroup)obj).threeMonthSupply == null );
 	}
 
+	/**Creates the string version of this object
+	 * @pre 				none	
+	 * @return String		this.toString()
+	 */
 	@Override
 	public String toString() {
 		assertTrue( true );
 		return super.toString() + " ProductGroup [threeMonthSupply=" + threeMonthSupply + "]";
 	}
-	
-	
 }

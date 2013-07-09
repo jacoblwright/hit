@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import static org.junit.Assert.*;
 
 /** Quantity holds a Unit and a number value associated with that Unit
  * ex. unit = 'count' & number = 1, or unit = 'pounds' & number = 2.4.
@@ -20,13 +21,16 @@ public class Quantity implements Serializable {
 
 	/**Sets the number and unit variables.
 	 * 
-	 * @pre				number.isAssociatedWith(Unit)
+	 * @pre				unit != null
 	 * @post			this.number = number && this.unit = unit
 	 * @param number	number associated with the specified unit
 	 * @param unit		various types of measurement such as count, pounds, ounces, etc...
 	 * @throws IllegalArgumentException
 	 */
 	public void setQuantity( float number, Unit unit ) throws IllegalArgumentException {
+		if( unit == null ) {
+			throw new IllegalArgumentException();
+		}
 		this.number = number;
 		this.unit = unit;
 	}
@@ -47,13 +51,23 @@ public class Quantity implements Serializable {
 		return unit;
 	}
 
+	/**Creates the string version of this object
+	 * @pre 				none	
+	 * @return String		this.toString()
+	 */
 	@Override
 	public String toString() {
+		assertTrue( true );
 		return "Quantity [number=" + number + ", unit=" + unit + "]";
 	}
 
+	/**Creates a unique hashcode for this object
+	 * @pre					none
+	 * @return int			unique Integer
+	 */
 	@Override
 	public int hashCode() {
+		assertTrue( true );
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Float.floatToIntBits(number);
@@ -61,8 +75,14 @@ public class Quantity implements Serializable {
 		return result;
 	}
 	
+	/**checks equality between two objects
+	 * @pre						none
+	 * @param obj				obj in question fo equality		
+	 * @return boolean 			if this == obj return true, otherwise false.
+	 */
 	@Override
 	public boolean equals(Object obj) {
+		assertTrue( true );
 		if ( this == obj ) {
 			return true;
 		}
@@ -72,9 +92,6 @@ public class Quantity implements Serializable {
 		}
 		return this.number == ((Quantity)obj).number &&
 				( this.unit != null ? this.unit.name().equals( ((Quantity)obj).unit.name() )
-						:((Quantity)obj).unit.name() == null );
+						:((Quantity)obj).unit == null );
 	}
-	
-	
-	
 }
