@@ -13,7 +13,6 @@ import java.util.Set;
  */
 
 public class ProductManager {
-	
 	/** Maps containers to sets of products. */
 	private Map <Container, Set<Product>> productsByContainer;
 	
@@ -27,13 +26,41 @@ public class ProductManager {
 	 * @pre 	product must not already exist in the map
 	 * @post	product is added to the set
 	 */
-	public void addProduct(Product product) throws IllegalArgumentException{
+	public void addProduct(Product product, Container container) throws IllegalArgumentException{
+		/* Add first to container */
+		addProductToContainer(product, container);
 		
-		/* Has this Product already been mapped to a barcode already? If so, throw an exception */		
-		if(productByUPC.containsValue(product))
-			throw new IllegalArgumentException();
-		
+		/* Add product to Barcode map */
 		productByUPC.put(product.getUPC(), product);
+	}
+	
+	public void addProductToContainer(Product product, Container container) throws IllegalArgumentException{
+		/* Adds Container to the Product */
+		product.addContainer(container);
+		/* Add Product to Container Map */
+		productsByContainer.get(container).add(product);
+	}
+	
+	public void editProduct(Product before, Product after) throws IllegalArgumentException{
+		
+		/* Copy over correct Creation Date */
+		after.setCreationDate(before.getCreationDate());
+		/* Copy over containers */
+		Iterator it = before.getContainers().iterator();
+		while(it.hasNext())
+			after.addContainer((Container)it.next());
+		
+		/* Remove before product and add after product to containers */
+		this.productByUPC.remove(before.getUPC());
+		this.productByUPC.put(after.getUPC(), after);
+		
+		for(Container key : productsByContainer.keySet()){
+			if(this.productsByContainer.get(key).contains(before)){
+				this.productsByContainer.get(key).remove(before);
+				this.productsByContainer.get(key).add(after);
+			}
+		}
+		
 	}
 	
 	/** Deletes a Product from the set all of products.
@@ -41,13 +68,15 @@ public class ProductManager {
 	 * @pre		product must not have any Items attached to it
 	 * @post	removes the Product from the set
 	 */
-	public void deleteProduct(Product product) throws IllegalArgumentException{
+	public void deleteProduct(Product product, Container container) throws IllegalArgumentException{
 		/* It will be previously verified if the product can indeed be deleted with the canDeleteProduct method */
 		if(!productsByContainer.containsValue(product))
 			throw new IllegalArgumentException();
 		
-		productByUPC.remove(product.getUPC());
-			
+		/* Remove container from product */
+		product.removeContainer(container);
+		/* Remove product from container */
+		productsByContainer.get(container).remove(product);
 	}
 	
 	/** Moves a product to a new container as long as that product is not already located in that storage unit.
@@ -92,15 +121,12 @@ public class ProductManager {
 		
 		Set<Container> productContainers = product.getContainers();
 		
-		/* Checks whether Product is a direct descendant of the storage unit */
-		if(productContainers.contains(storage))
-			return false;
-		
 		/* Grab each container in productContainers, find its storage unit, and check if they're the same as tempContainer */
 		Iterator iterContainers = productContainers.iterator();
 		while(iterContainers.hasNext()){
 			Container productContainer = (Container) iterContainers.next();
 			while(productContainer.getContainer() != null){
+				/* Jake has a method that can be used here, though I don't have access */
 				productContainer = productContainer.getContainer();
 			}
 			/* After storage unit is determined, check to see if it's the same storage unit as tempContainer. If it is the same, throw exception */
@@ -118,11 +144,13 @@ public class ProductManager {
 	 * @param 		after the value of Product after the edits
 	 * @return		return true if after is a valid Product, false otherwise
 	 */
-	public boolean isProductValid(Product before, Product after){
+	public boolean isProductValid(Product product){
 		
-		/* These errors should happen at the setters */
+		/* Has this Product already been mapped to a barcode already? If so, throw an exception */		
+		if(productByUPC.containsValue(product))
+			return false;
 		
-		return false; 
+		return true; 
 	}
 	
 	/** Return true if qty has a valid number according to the specified Unit. If the Unit
@@ -134,30 +162,17 @@ public class ProductManager {
 	 */
 	public boolean isQuantityValid(Quantity qty){
 		
-	    /*
+	    
 		// If enum is COUNT, then check to see if the value is 1
-		if(qty.unit().equals(Unit.count) && qty.number() != 1){
+		if(qty.getUnit().equals(Unit.count) && qty.getNumber() != 1){
 			return false;
 		}
-		If enum is anything but COUNT, check that value is greater than zero
-		else if (qty.number() <= 0 ){
+		//If enum is anything but COUNT, check that value is greater than zero
+		else if (qty.getNumber() <= 0 ){
 			return false;
 		}
-		*/
+		
 		return true; 
-	}
-	
-	/** Determines if a Product has no associated Items and can therefore be removed.
-	 * 
-	 * @param 		product is the product being deleted from the system
-	 * @param 		container is the Container from which product is being removed
-	 * @return		return true if product can be deleted, false otherwise
-	 */
-	public boolean canDeleteProduct(Product product, Container container){ 
-		
-		/* This may have to be taken care of at the ProductAndItemEditor Spot */
-		
-		return false; 
 	}
 	
 	/** Returns a Collection of all Products in a particular container.
@@ -193,5 +208,9 @@ public class ProductManager {
 		return productByUPC.get(barcode); 
 	}
 	
+	public boolean isUniqueBarcode(String s){
+
+		return false;
+	}
 
 }

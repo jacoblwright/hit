@@ -40,8 +40,12 @@ public class Product extends Entity {
 
 	
 	/** Simple constructor for Product. Date will be initially set to today's date. */
-	public Product(){
-		creationDate = new Date();
+	public Product(String code){
+		if(code.isEmpty())
+			throw new IllegalArgumentException();
+		
+		this.creationDate = new Date();
+		setUPC(code);
 	}
 	
 	/**
@@ -51,7 +55,7 @@ public class Product extends Entity {
 	 */
 	public void addContainer(Container container){
 		/* This check is performed by canAddProduct in ProductManager */
-		containers.add(container);
+		this.containers.add(container);
 	}
 	
 	/**
@@ -64,7 +68,7 @@ public class Product extends Entity {
 		if(!containers.contains(container))
 			throw new IllegalArgumentException();
 		
-		containers.remove(container);
+		this.containers.remove(container);
 	}
 	
 	/**
@@ -77,7 +81,7 @@ public class Product extends Entity {
 		if(date.after(today))
 			throw new IllegalArgumentException();
 		
-		creationDate = date;
+		this.creationDate = date;
 	}
 	
 	/**
@@ -89,7 +93,7 @@ public class Product extends Entity {
 		if(code.isEmpty())
 			throw new IllegalArgumentException();
 		
-		upc = new Barcode(code);
+		this.upc = new Barcode(code);
 	}
 	
 	/**
@@ -101,7 +105,7 @@ public class Product extends Entity {
 		if(desc.isEmpty())
 			throw new IllegalArgumentException();
 		
-		description = desc;
+		this.description = desc;
 	}
 	
 	/**
@@ -127,7 +131,7 @@ public class Product extends Entity {
 		if(life <= 0)
 			throw new IllegalArgumentException();
 		
-		shelfLife = life;
+		this.shelfLife = life;
 	}
 	
 	/**
@@ -139,7 +143,7 @@ public class Product extends Entity {
 		if(amt <= 0)
 			throw new IllegalArgumentException();
 		
-		threeMonthSupply = amt;
+		this.threeMonthSupply = amt;
 	}
 	
 	/**
