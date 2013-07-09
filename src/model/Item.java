@@ -158,6 +158,15 @@ public class Item extends Entity {
 	public void setContainer(Container container) {
 		this.container = container;
 	}
+	
+	/** override equals operation
+	 * 
+	 * @param other
+	 * @return true if items are equal
+	 */
+	public boolean equals(Item other){
+		return this.getTag() == other.getTag();
+	}
 
 	
 	

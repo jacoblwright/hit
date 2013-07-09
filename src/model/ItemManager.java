@@ -8,6 +8,8 @@ package model;
 */
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.List;
@@ -20,11 +22,6 @@ public class ItemManager {
 	 * Index for quick item lookup by container.
 	 */
 	private Map<Container, Set<Item>> itemsByContainer;
-
-	/**
-	* Index for quick item lookup from the UPC.
-	*/
-	private Map<Barcode, Set<Item>> itemsByUPC;
 	
 	/**
 	* Index for quick item lookup from the tag.
@@ -40,7 +37,9 @@ public class ItemManager {
 	* Constructs the ItemManager
 	*/
 	ItemManager() {
-	
+		itemsByContainer = new HashMap();
+		itemByTag = new HashMap();
+		removedItems = new HashMap();
 	}
 	
 	/** gets items by container and product
@@ -51,7 +50,16 @@ public class ItemManager {
 	 * @pre container exists, product exists
 	 * @return collection of all items inside container that are of the type product
 	 */
-	public Collection getItems(Container container, Product product) { return null; }
+	public Collection getItems(Container container, Product product) {
+		Collection ret = new HashSet();
+		for(Iterator<Item> i = getItems(container).iterator(); i.hasNext(); ){
+			Item item = i.next();
+			if (item.getProduct() == product) {
+				ret.add(item);
+			}
+		}
+		return ret;
+	}
 	
 	/** gets items by container
 	 * 
@@ -60,30 +68,52 @@ public class ItemManager {
 	 * @pre container exists
 	 * @return collection of all items inside that container
 	 */
-	public Collection getItems(Container container) { return null; }
+	public Collection getItems(Container container) {
+		return itemsByContainer.get(container);
+	}
 	
-	/** get all items
+	/** gets all items in the system
 	 * 
-	 * @return all items in any storage unit
+	 * @return Collection of all items in any storage unit
 	 */
-	public Collection getItems() { return null; }
+	public Collection getItems() { 
+		Collection ret = new HashSet();
+		
+		// iterate over all keys of itemsByContainer and appends them to return set
+		Iterator it = itemsByContainer.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        System.out.println(pairs.getKey() + " = " + pairs.getValue());
+	        ret.add(pairs.getValue());
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+		return ret;
+	}
 	
 	/** updates item manager indexes
 	* 
 	* @pre canAddItem() == true
-	* @post itemToAdd.container = container, itemToAdd.prodcut = product, itemToAdd.expirationDate = expirationDate
+	* @post updates itemByTag
+	* @post updates itemByContainer
 	* 
 	* @throws IllegalArgumentException if !canAddItem()
 	*/
-	public void addItem(Item itemToAdd, Date expirationDate) throws IllegalArgumentException {
-	
+	public void addItem(Item itemToAdd) throws IllegalArgumentException {
+		if (!canAddItem(itemToAdd, itemToAdd.getContainer())) {
+			throw new IllegalArgumentException("Item cannot be added.");
+		}
+		
+		itemsByContainer.get(itemToAdd.getContainer()).add(itemToAdd);
+		itemByTag.put(itemToAdd.getTag(), itemToAdd);
 	}
 
 	/**
 	 * can add item
+	 * 
+	 * @return false if item not found in Storage Unit, false otherwise
 	 */
 	public boolean canAddItem(Item item, Container storageUnit){
-		return false;
+		return getItems(storageUnit).contains(item);
 	}
 	
 	/**
@@ -155,5 +185,6 @@ public class ItemManager {
 	public Iterator<Item> getRemovedItems(Date exitTime){
 		return null;
 	}
+	
 	
 }

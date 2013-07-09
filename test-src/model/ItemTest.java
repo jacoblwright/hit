@@ -17,14 +17,16 @@ public class ItemTest {
 
 	@Test
 	public void test() throws java.text.ParseException {
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-		DateFormat timeFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		DateFormat timeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		
 		Container c1 = new ProductGroup();
 		Product p1 = new Product();
-		Date ed1 = dateFormat.parse("12/9/2013");
+		Date ed1 = dateFormat.parse("2013/12/9");
 		Item i1 = new Item(c1, p1, ed1);
+		
+		assertTrue( i1 == i1);
 		
 		// test entry date capture
 		System.out.printf("%s == %s", i1.getEntryDate(), dateFormat.format(cal.getTime()));
@@ -51,15 +53,15 @@ public class ItemTest {
 		i1.setTag(bc1);
 		assertEquals(i1.getTag(), bc1);
 		
-		Date et2 = dateFormat.parse("8/6/2011");
+		Date et2 = dateFormat.parse("2011/8/6");
 		i1.setEntryDate(et2);
 		assertEquals(i1.getEntryDate(), et2);
 		
-		Date ex1 = timeFormat.parse("11/6/2011 01:01:01");
+		Date ex1 = timeFormat.parse("2011/11/6 01:01:01");
 		i1.setExitTime(ex1);
 		assertEquals(i1.getExitTime(), ex1);
 		
-		Date exp1 = dateFormat.parse("9/12/2011");
+		Date exp1 = dateFormat.parse("2011/9/12");
 		i1.setExpirationDate(exp1);
 		assertEquals(i1.getExpirationDate(), exp1);
 		
