@@ -2,7 +2,7 @@
 .metadata
 .DS_Store
 
-coverage-test/*
+coverage-test/
 
 # Package Files #
 *.war
