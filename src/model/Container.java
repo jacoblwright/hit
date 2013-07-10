@@ -19,7 +19,6 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	/** productGroups- unique ProductGroup list based on ProductGroup.name	*/
 	protected Set<ProductGroup> productGroups;
 	
-	
 	/**	container- Must be non-empty for ProductGroups */
 	protected Container container;
 
