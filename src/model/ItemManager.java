@@ -223,8 +223,6 @@ public class ItemManager {
 			removedItemsByDate.put(exitDate_str, newSet);
 		}
 		
-		Set<String> keys = removedItemsByDate.keySet();
-		int keysSize = keys.size();
 		removedItems.add(itemToRemove);
 	}
 	
@@ -257,11 +255,11 @@ public class ItemManager {
 			return false;
 		}
 		
-		else if ( ! before.getProduct().equals(after.getProduct())) {
+		else if ( ! before.getProduct().equals(after.getProduct()) ) {
 			return false;
 		}
 		
-		else if ( ! before.getTag().equals(after.getTag())) {
+		else if ( ! before.getTag().equals(after.getTag()) ) {
 			return false;
 		}
 		else {

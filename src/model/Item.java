@@ -212,6 +212,14 @@ public class Item extends Entity {
 //	public boolean equals(Entity other){
 //		return this.getTag().getBarcode() == other.getTag().getBarcode();
 //	}
+
+	@Override
+	public String toString() {
+		return "Item [product=" + product + ", tag=" + tag + ", entryDate="
+				+ entryDate + ", exitDate=" + exitDate + ", exitTime="
+				+ exitTime + ", expirationDate=" + expirationDate
+				+ ", container=" + container + "]";
+	}
 	
 
 	

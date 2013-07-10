@@ -32,7 +32,7 @@ public class ProductAndItemEditor {
      */
     public void addProduct(Product product) {
         
-        productManager.addProduct(product);
+//        productManager.addProduct(product);
         
     }
     
@@ -62,7 +62,7 @@ public class ProductAndItemEditor {
     public void moveProduct(Product product,
             Container before, Container after) {
         
-        productManager.moveProduct(product, before, after);
+//        productManager.moveProduct(product, before, after);
         
         Collection<Item> items = itemManager.getItems(after, product);
         for (Item item : items) {
@@ -80,7 +80,7 @@ public class ProductAndItemEditor {
      */
     public void deleteProduct(Product product) {
         
-        productManager.deleteProduct(product);
+//        productManager.deleteProduct(product);
         
     }
 

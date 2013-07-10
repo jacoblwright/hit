@@ -19,12 +19,8 @@ public class ItemManagerTest {
 		ItemManager man = new ItemManager();
 		
 		Container pc1 = new StorageUnit();
-<<<<<<< HEAD
-		pc1.setName("basement");
-		Product p1 = new Product();
-=======
 		Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
->>>>>>> b53def3d767f2db90b4ab934c004608e80e56c86
+
 		Date expDate1 = dateFormat.parse("1999/1/11");
 		Barcode bc1 = new Barcode("1");
 		Item i1 = new Item(pc1, p1, expDate1, bc1);
@@ -131,7 +127,8 @@ public class ItemManagerTest {
 		
 		// add second item
 		Container pc2 = new StorageUnit();
-		Product p2 = new Product();
+		
+		Product p2 = new Product("123456789", "Anchovies", Unit.count, 1, 1, 1);
 		Date expDate2 = dateFormat.parse("1999/3/11");
 		Barcode bc2 = new Barcode("2");
 		Item i2 = new Item(pc2, p2, expDate2, bc2);
@@ -178,13 +175,7 @@ public class ItemManagerTest {
 		ItemManager man = new ItemManager();
 		
 		Container pc1 = new StorageUnit();
-<<<<<<< HEAD
-		pc1.setName("goofball");
-		Product p1 = new Product();
-		p1.setDescription("Shamwow");
-=======
 		Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
->>>>>>> b53def3d767f2db90b4ab934c004608e80e56c86
 		Date expDate1 = dateFormat.parse("1999/3/11");
 		Barcode bc1 = new Barcode("1");
 		Item i1 = new Item(pc1, p1, expDate1, bc1);
@@ -197,6 +188,7 @@ public class ItemManagerTest {
 		assertTrue(man.canEditItem(i1, i2));
 		
 		Container pc2 = new ProductGroup();
+		pc2.setName("houdini");
 		Item i3 = new Item(pc2, p1, expDate1, bc1);
 		
 		assertFalse(man.canEditItem(i1, i3));
@@ -208,15 +200,10 @@ public class ItemManagerTest {
 			
 		}
 		
-<<<<<<< HEAD
-		Product p2 = new Product();
-		p2.setDescription("Shampoo");
-=======
-		Product p2 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
->>>>>>> b53def3d767f2db90b4ab934c004608e80e56c86
+		Product p2 = new Product("21", "Candied meatballs", Unit.count, 1, 1, 1);
 		Item i4 = new Item(pc1, p2, expDate1, bc1);
 		
-//		assertFalse(man.canEditItem(i1, i4));
+		assertFalse(man.canEditItem(i1, i4));
 		
 		Barcode bc2 = new Barcode("2");
 		Item i5 = new Item(pc1, p2, expDate1, bc2);
