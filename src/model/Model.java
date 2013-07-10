@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public class Model {
     
-    private final String C_MANAGER_DATA_PATH = "data/cm.hit";
-    private final String P_MANAGER_DATA_PATH = "data/pm.hit";
-    private final String I_MANAGER_DATA_PATH = "data/im.hit";
+    private final String C_MANAGER_DATA_PATH = "/cm.hit";
+    private final String P_MANAGER_DATA_PATH = "/pm.hit";
+    private final String I_MANAGER_DATA_PATH = "/im.hit";
     
     private String pathBase;
     
@@ -85,12 +85,14 @@ public class Model {
      */
     public void save() throws IOException {
         
-       Serializer.save(
-               containerManager, new File(pathBase + C_MANAGER_DATA_PATH));
-       Serializer.save(
-               productManager, new File(pathBase + P_MANAGER_DATA_PATH));
-       Serializer.save(
-               itemManager, new File(pathBase + I_MANAGER_DATA_PATH));
+        System.out.println(pathBase);
+        
+        Serializer.save(
+                containerManager, new File(pathBase + C_MANAGER_DATA_PATH));
+        Serializer.save(
+                productManager, new File(pathBase + P_MANAGER_DATA_PATH));
+        Serializer.save(
+                itemManager, new File(pathBase + I_MANAGER_DATA_PATH));
         
     }
     

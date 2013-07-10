@@ -4,6 +4,16 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class ModelTest {
+    
+    // Check to see that the files are written properly to disk.
+    @Test
+    public void saveTest() throws Exception {
+        
+        Model m = new Model();
+        
+        m.save();
+        
+    }
 
     @Test
     public void gettersAndSettersTest() {
