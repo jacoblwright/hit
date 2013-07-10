@@ -1,5 +1,5 @@
 Testsuite: model.EntityTest
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.047 sec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.021 sec
 
-Testcase: entityTest took 0.017 sec
+Testcase: entityTest took 0.01 sec
 Testcase: toStringTest took 0 sec
