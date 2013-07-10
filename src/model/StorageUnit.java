@@ -11,12 +11,21 @@ public class StorageUnit extends Container {
 
 	private static final long serialVersionUID = 8934631064019112473L;
 	
+	/**Constructor initializes name
+	 * @pre none
+	 * @post setName
+	 */
+	public StorageUnit() {
+		assert true;
+		setName("Untitled");
+	}
+	
 	/**Getter for container
 	 * @pre							none
 	 * @return						null
 	 */
 	public Container getContainer() {
-		assertTrue( true );
+		assert true;
 		return this.container;		
 	}
 
@@ -25,7 +34,7 @@ public class StorageUnit extends Container {
 	 * @param container				sets parent container to null
 	 */
 	public void setContainer(Container container) {
-		assertTrue( true );
+		assert true ;
 		this.container = null;
 	}
 
@@ -35,8 +44,8 @@ public class StorageUnit extends Container {
 	 */
 	@Override
 	public boolean isContainerValid() {
-		assertTrue( true );
-		return ( getName() != null ) && nonEmptyName();
+		assert true;
+		return nonEmptyName();
 	}
 
 	/**Removes whitespace to see if the name is nonEmpty
@@ -44,7 +53,6 @@ public class StorageUnit extends Container {
 	 * @return boolean				true if name is nonEmpty, otherwise false.
 	 */
 	private boolean nonEmptyName() {
-		assertNotNull( getName() );
 		return getName().trim().length() > 0;
 	}	
 
