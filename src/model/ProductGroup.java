@@ -67,7 +67,8 @@ public class ProductGroup extends Container {
 		this.threeMonthSupply = threeMonthSupply;
 	}
 
-	/**Checks to see if threeMonthSupply meets all of the specified qualifications defined by class that extend Container
+	/**Checks to see if threeMonthSupply meets all of the specified 
+	 * qualifications defined by class that extend Container
 	 * Rule- if Unit == count then number must be an integer value
 	 * otherwise number can be a float.
 	 * @pre							none
@@ -88,7 +89,8 @@ public class ProductGroup extends Container {
 
 	/**Checks to see if current container has different name than sibling containers
 	 * @pre							none
-	 * @post						if uniqueName & nonEmptyName & threeMonthSupply.isValid { container.isValid = true }
+	 * @post						if uniqueName & nonEmptyName & 
+	 * 								threeMonthSupply.isValid { container.isValid = true }
 	 * @param container				current container to be validated
 	 */
 	@Override

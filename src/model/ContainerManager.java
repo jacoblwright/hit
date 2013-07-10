@@ -169,7 +169,8 @@ public class ContainerManager {
 	 * @pre 					container.exists() == true
 	 * @post					delete(container), recursively
 	 * @param container			Current container to be deleted
-	 * @throws IllegalArgumentException 			if container.container == null && container instanceof ProductGroup
+	 * @throws IllegalArgumentException 			if container.container == null && 
+	 * 												container instanceof ProductGroup
 	 */
 	public void deleteContainer( Container container ) throws IllegalArgumentException {
 		
@@ -211,7 +212,8 @@ public class ContainerManager {
 		return isValidContainer( container );
 	}
 	
-	/**Abstract Method, Checks to see if given productsName is unique among the list of ProductGroups
+	/**Abstract Method, 
+	 * Checks to see if given productsName is unique among the list of ProductGroups
 	 * @pre							container != null
 	 * @param groupName				String name in question 			
 	 * @return						True if all of the qualifications are met and false otherwise.
