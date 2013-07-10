@@ -1,6 +1,6 @@
 Testsuite: model.ItemTest
 Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.052 sec
 ------------- Standard Output ---------------
-Tue Jul 09 10:42:33 MDT 2013 == 2013/07/09------------- ---------------- ---------------
+Tue Jul 09 18:08:07 MDT 2013 == 2013/07/09------------- ---------------- ---------------
 
-Testcase: test took 0.036 sec
+Testcase: test took 0.037 sec

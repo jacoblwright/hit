@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,10 +33,15 @@ public class ProductManager {
 		addProductToContainer(product, container, storageUnit);
 		
 		/* Add product to Barcode map */
+		if(!isProductUnique(product)){
+			throw new IllegalArgumentException();
+		}
+		
 		productByUPC.put(product.getUPC(), product);
 	}
 	
 	public void addProductToContainer(Product product, Container container,StorageUnit storageUnit) throws IllegalArgumentException{
+		
 		if(!canAddProductToContainer(product, storageUnit)){
 			throw new IllegalArgumentException();
 		}
@@ -75,29 +81,14 @@ public class ProductManager {
 	 * @param 		before	the container before the product was moved
 	 * @param 		after	the new container that the product is being move to
 	 */
-	public void moveProduct(Product product, Container before, Container after) throws IllegalStateException{
-		
-		/* Get after's storage unit. WARNING!!! THIS FEELS LIKE CODE DUPLICATION. */
-		Container tempAfter = after;
-		while(tempAfter.getContainer() != null){
-			tempAfter = tempAfter.getContainer();
-		}
-		/* Get before storage unit. WARNING!!! THIS FEELS LIKE CODE DUPLICATION. */
-		Container tempBefore = before;
-		while(tempBefore.getContainer() != null){
-			tempBefore = tempBefore.getContainer();
-		}
-		
-		if(tempAfter == tempBefore){
+	public void moveProduct(Product product, Container before, Container after, StorageUnit beforeStor, StorageUnit afterStor) throws IllegalStateException{
+		if(beforeStor == afterStor){
 			product.removeContainer(before);
 			product.addContainer(after);
 		}
-		/* Remove from the old container and add to the new container */
-		else if(canAddProductToContainer(product, (StorageUnit)tempAfter)){
-			product.removeContainer(before);
+		else{
 			product.addContainer(after);
 		}
-		else throw new IllegalArgumentException();
 	}
 	
 	/** Returns true if a Product can be added to a particular storage unit. This will return 
@@ -108,7 +99,9 @@ public class ProductManager {
 	 * @return		true if the product can be added to the storage, false otherwise
 	 */
 	public boolean canAddProductToContainer(Product product, StorageUnit storage){
-		
+		if(product.getContainers().contains(storage)){
+			return false;
+		}
 		return true;
 	}
 	
@@ -121,11 +114,35 @@ public class ProductManager {
 	 */
 	public boolean isProductValid(Product product){
 		
-		/* Has this Product already been mapped to a barcode already? If so, throw an exception */		
-		if(productByUPC.containsValue(product))
+		/* Is the date before today */
+		Date date = new Date();
+		if(product.getCreationDate().after(date))
+			return false;
+		
+		/* Is the product's barcode non-empty */
+		if(product.getUPC().getBarcode().isEmpty())
+			return false;
+		
+		/* Is the product's quantity valid */
+		if(!isQuantityValid(product.getSize()))
+			return false;
+		
+		/* Is the product's shelf life above zero */
+		if(product.getShelfLife() < 0)
+			return false;
+		
+		if(product.getThreeMonthSupply() < 0)
 			return false;
 		
 		return true; 
+	}
+	
+	public boolean isProductUnique(Product product){
+		/* Is the UPC Unique */
+		if(productByUPC.containsValue(product))
+			return false;
+		
+		return true;
 	}
 	
 	/** Return true if qty has a valid number according to the specified Unit. If the Unit
@@ -183,9 +200,14 @@ public class ProductManager {
 		return productByUPC.get(barcode); 
 	}
 	
-	public boolean isUniqueBarcode(String s){
-
-		return false;
+	public boolean isUPCUnique(String s){
+		Iterator it = productByUPC.entrySet().iterator();
+		while(it.hasNext()){
+			Barcode code = (Barcode) it.next();
+			if(s.equals(code.getBarcode()))
+				return false;
+		}
+		return true;
 	}
 
 }

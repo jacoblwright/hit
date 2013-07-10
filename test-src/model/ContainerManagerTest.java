@@ -241,4 +241,16 @@ public class ContainerManagerTest {
 		assertTrue( containerManager.canAddContainer(newProductGroup) );
 	}
 	
+	@Test
+	public void getDescendentTest() {
+		Set<ProductGroup> pgList = containerManager.getDescendents( su1 );
+		assertNotNull( pgList );
+		
+		containerManager.getDescendents( new StorageUnit() );
+	}
+	
+	@Test( expected = IllegalArgumentException.class )
+	public void getDescendentThrowsTest() {
+		Set<ProductGroup> pgList = containerManager.getDescendents( null );
+	}
 }

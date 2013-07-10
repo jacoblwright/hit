@@ -1,0 +1,6 @@
+Testsuite: model.StorageUnitTest
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.037 sec
+
+Testcase: storageUnitTest took 0.017 sec
+Testcase: toStringTest took 0 sec
+Testcase: isContainerValidTest took 0 sec

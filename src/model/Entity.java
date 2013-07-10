@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import static org.junit.Assert.*;
 
 /**Entity is the base model class that has an id and implements Serializable.
  * 

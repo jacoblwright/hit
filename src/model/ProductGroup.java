@@ -1,6 +1,5 @@
 package model;
 
-import static org.junit.Assert.*;
 
 /**ProductGroup is used to group similar Products together.  
  * ex.  If you have 4 different kinds of toothpaste 

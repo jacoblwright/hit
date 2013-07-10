@@ -1,6 +1,6 @@
 package model;
 
-import static org.junit.Assert.*;
+
 import java.util.Set;
 import java.util.TreeSet;
 

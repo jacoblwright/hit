@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import static org.junit.Assert.*;
 
 /** Quantity holds a Unit and a number value associated with that Unit
  * ex. unit = 'count' & number = 1, or unit = 'pounds' & number = 2.4.
