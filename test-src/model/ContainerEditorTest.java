@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,6 +23,7 @@ public class ContainerEditorTest {
     private ProductGroup productGroup1_1;
     private ProductGroup childProductGroup2_2;
     private ProductGroup grandChildProductGroup1_3;
+    private ProductGroup childProductGroup1_1;
     
     private StorageUnit su1;
     private StorageUnit su2;
@@ -88,7 +90,7 @@ public class ContainerEditorTest {
         ProductGroup productGroup1_2 = initializeProductGroup(
                 "pg1_2", uniqueId++, su1 );
         
-        ProductGroup childProductGroup1_1 = initializeProductGroup(
+        childProductGroup1_1 = initializeProductGroup(
                 "cpg1_1", uniqueId++, productGroup1_1 );
         ProductGroup childProductGroup1_2 = initializeProductGroup(
                 "cpg1_2", uniqueId++, productGroup1_1 );
@@ -162,6 +164,21 @@ public class ContainerEditorTest {
         containerEditor.editContainer( 
                 childProductGroup2_2, newProductGroup );
     
+    }
+    
+    @Test
+    public void canDeleteContainerTest() {                
+        
+        Product p1 = new Product("12345", "d", Unit.grams, 3, 8, 8);
+        Item i1 = new Item(childProductGroup1_1, p1, new Date(), new Barcode());   
+        
+        //assertFalse(containerEditor.canDeleteContainer(su1));
+        //assertFalse(containerEditor.canDeleteContainer(productGroup1_1));
+        //assertFalse(containerEditor.canDeleteContainer(childProductGroup1_1));
+        
+        assertTrue(containerEditor.canDeleteContainer(su2));
+        assertTrue(containerEditor.canDeleteContainer(childProductGroup2_2));
+        
     }
     
     @Test
