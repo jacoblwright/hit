@@ -135,7 +135,8 @@ public class Item extends Entity {
 	 * 
 	 * @param exitTime
 	 * 
-	 * @pre must also be sure that the item has been added to removed items, and the container is null
+	 * @pre must also be sure that the item has been added to removed items
+	 * @pre the container is null
 	 * @post sets item.exitTime
 	 */
 	public void setExitTime(Date exitTime) {
@@ -179,7 +180,9 @@ public class Item extends Entity {
 	 * 
 	 * @param container
 	 * 
-	 * @pre if param container is null, item also needs to be added to removedItems, and needs the exit date set
+	 * @pre if param container is null
+	 * @pre item also needs to be added to removedItems
+	 * @pre needs the exit date set
 	 * @post sets this.container
 	 */
 	public void setContainer(Container container) {

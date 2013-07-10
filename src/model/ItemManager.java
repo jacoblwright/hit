@@ -281,6 +281,13 @@ public class ItemManager {
 		return itemByTag.get(tag);
 	}
 	
+	/** checks all the items barcode's for a match
+	 * 
+	 */
+	public boolean isTagUnique(String barcode) {
+		
+	}
+	
 	/**
 	 * @return all items removed on a specific date
 	 */
