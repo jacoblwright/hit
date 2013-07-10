@@ -38,7 +38,8 @@ public class Serializer {
 //         Object object = new Object();
          is.close();
          
-         return object;
+
+return null;
          
      }
      
