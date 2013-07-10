@@ -134,6 +134,7 @@
 		<javac srcdir="${src}" destdir="${build}" debug="true" includeantruntime="true">
 			<classpath refid="itext-classpath" />
 			<classpath refid="sqlite-classpath" />
+			<classpath refid="commons-io-classpath" />
 		</javac>
 	</target>
 	

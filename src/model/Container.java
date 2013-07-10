@@ -88,7 +88,8 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		this.productGroups.add( productGroup );
 	}
 	
-	/**Abstract Method, Checks to see if given productsName is unique among the list of ProductGroups
+	/**Abstract Method, 
+	 * Checks to see if given productsName is unique among the list of ProductGroups
 	 * @pre							none			
 	 * @return						True if all of the qualifications are met and false otherwise.
 	 */
@@ -154,10 +155,10 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return this.getId() == ((Container)obj).getId() &&
 				this.getName() == ((Container)obj).getName() &&
 				this.getProductGroupsSize() == ((Container)obj).getProductGroupsSize() &&
-				( this.container != null ? this.container.name.equals( ((Container)obj).container.name )
-						:((Container)obj).container == null ) &&
-				( this.productGroups != null ? this.productGroups.equals( ((Container)obj).productGroups )
-						:((Container)obj).productGroups == null );
+				( this.container != null ? this.container.name.equals( 
+				((Container)obj).container.name ):((Container)obj).container == null ) &&
+				( this.productGroups != null ? this.productGroups.equals( 
+				((Container)obj).productGroups ):((Container)obj).productGroups == null );
 	}
 
 	/**Creates the string version of this object

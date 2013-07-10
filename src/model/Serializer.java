@@ -39,7 +39,8 @@ public class Serializer {
          Object object = deserialize(IOUtils.toByteArray(is));
          is.close();
          
-         return object;
+
+return null;
          
          
          //return null;

@@ -1,6 +1,0 @@
-Testsuite: model.QuantityTest
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.048 sec
-
-Testcase: quantityTest took 0.017 sec
-Testcase: setQuantityThrowTest took 0 sec
-Testcase: toStringTest took 0.001 sec

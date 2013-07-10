@@ -17,7 +17,7 @@ public class ItemTest {
 
 	@Test
 	public void test() throws java.text.ParseException {
-	    /*
+	    
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		DateFormat timeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
@@ -71,7 +71,7 @@ public class ItemTest {
 		Container c2 = new ProductGroup();
 		i1.setContainer(c2);
 		assertEquals(i1.getContainer().toString(), c2.toString());
-		*/
+		
 	}
 
 }
