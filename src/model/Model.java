@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public class Model {
     
-    private final String C_MANAGER_DATA_PATH = "/cm.hit";
-    private final String P_MANAGER_DATA_PATH = "/pm.hit";
-    private final String I_MANAGER_DATA_PATH = "/im.hit";
+    private final String C_MANAGER_DATA_PATH = "cm.hit";
+    private final String P_MANAGER_DATA_PATH = "pm.hit";
+    private final String I_MANAGER_DATA_PATH = "im.hit";
     
     private String pathBase;
     

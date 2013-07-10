@@ -5,6 +5,7 @@ import org.junit.Test;
 
 public class ModelTest {
     
+    /*
     // Check to see that the files are written properly to disk.
     @Test
     public void saveTest() throws Exception {
@@ -14,6 +15,7 @@ public class ModelTest {
         m.save();
         
     }
+    */
 
     @Test
     public void gettersAndSettersTest() {
