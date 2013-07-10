@@ -63,23 +63,22 @@ public class SerializerTest {
         orig1a.setId(50);
         Serializer.save(orig1a, f);
         Container loaded1a = (StorageUnit)Serializer.load(f);
-        assertEquals(orig1a, loaded1a);
+        assertEquals(orig1a.toString(), loaded1a.toString());
         // --------------------------------
-        
+
         // --------------------------------
         Container orig1b = new ProductGroup();
-        orig1b.setId(50);
         Serializer.save(orig1b, f);
         Container loaded1b = (ProductGroup)Serializer.load(f);
-        assertEquals(orig1b, loaded1b);
+        assertEquals(orig1b.toString(), loaded1b.toString());
         // --------------------------------
         
         // --------------------------------
-        //Product orig2 = new Product();
-        //orig2.setId(52);
-        //Serializer.save(orig2, f);
-        //Product loaded2 = (Product)Serializer.load(f);
-        //assertEquals(orig2, loaded2);
+        Product orig2 = new Product(
+                "12345", "Description", Unit.count, 4.5f, 8, 8);
+        Serializer.save(orig2, f);
+        Product loaded2 = (Product)Serializer.load(f);
+        assertEquals(orig2.toString(), loaded2.toString());
         // --------------------------------
           
         /*
@@ -92,23 +91,6 @@ public class SerializerTest {
         assertEquals(orig3, loaded3);
         // --------------------------------
         */
-        
-        
-        // --------------------------------
-        List<Container> orig4 = new LinkedList<Container>();
-        Container c;
-        for (int i = 0; i < 1; i++) {
-            c = new StorageUnit();
-            c.setId(i);
-            c.setName("Container " + i);
-            orig4.add(c);
-        }
-        Serializer.save(orig4, f);
-        List<Container> loaded4 =
-                (List<Container>)Serializer.load(f);
-        assertEquals(orig4, loaded4);
-        // --------------------------------
-        
         
     }
 
