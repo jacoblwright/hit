@@ -64,8 +64,8 @@ public class ContainerEditor {
 	public void deleteContainer(Container container)
 	        throws IllegalStateException {
 	
-	    if (!itemManager.getItems(container).isEmpty()) {
-	        throw new IllegalArgumentException(
+	    if (!canDeleteContainer(container)) {
+	        throw new IllegalStateException(
 	                "Attempted to delete a nonempty container.");
 	    }
 	    
@@ -78,7 +78,7 @@ public class ContainerEditor {
 	 * @return true if the specified container is non-null and contains no
 	 * items, including nested subcontainers; false otherwise
 	 */
-	private boolean canDeleteContainer(Container container) {
+	public boolean canDeleteContainer(Container container) {
 	    
 	    boolean result = true;
 	    
