@@ -119,7 +119,8 @@ public class ProductManager {
 	 * @param 		before	the container before the product was moved
 	 * @param 		after	the new container that the product is being move to
 	 */
-	public void moveProduct(Product product, Container before, Container after) 
+	public void moveProduct(Product product, Container before, Container after, 
+			StorageUnit su1, StorageUnit su2) 
 			throws IllegalStateException{
 		assert true;
 		if(!product.getContainers().contains(before))

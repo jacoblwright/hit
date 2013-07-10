@@ -100,7 +100,8 @@ public class ProductManagerTest {
 		prod1.addContainer(productGroup);
 		prod1.addContainer(storageUnit);
 
-		pmanager.moveProduct(prod1, productGroup, productGroup2);
+		pmanager.moveProduct(prod1, productGroup, productGroup2, (StorageUnit)
+				storageUnit, (StorageUnit)storageUnit2);
 		
 		Set<Container> tempSet = prod1.getContainers();
 		assertTrue(prod1.getContainers().contains(productGroup2));
