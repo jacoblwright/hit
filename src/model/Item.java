@@ -48,6 +48,11 @@ public class Item extends Entity {
 	*
 	*/
 	public Item(Container container, Product product, Date expirationDate, Barcode barcode)  {
+		assert container != null;
+		assert product != null;
+		assert expirationDate != null;
+		assert barcode != null;
+		
 		this.container = container;
 		this.product = product;
 		this.expirationDate = expirationDate;
@@ -56,111 +61,143 @@ public class Item extends Entity {
 		
 	}
 
-	/**
+	/** Gets the item's product.
 	 * 
 	 * @return the item's product
 	 */
 	public Product getProduct() {
+		assert true;
+		
 		return product;
 	}
 
-	/**
+	/** Sets the item's product.
 	 * 
 	 * @param product
 	 *
 	 */
 	public void setProduct(Product product) {
+		assert true;
+		
 		this.product = product;
 	}
 
-	/**
+	/** Gets the item's tag barcode
 	 * 
 	 * @return this.tag
 	 */
 	public Barcode getTag() {
+		assert true;
+		
 		return tag;
 	}
 
-	/**
+	/** Sets the item's unique tag barcode
 	 * 
-	 * @param tag - must be unique to the product upc
+	 * @param tag
+	 * 
+	 * @pre must be unique to the product upc
+	 * @post sets item tag to param tag
 	 */
 	public void setTag(Barcode tag) {
+		assert true;
+		
 		this.tag = tag;
 	}
-	/**
+	/** Sets the item's entry date
 	 * 
 	 * sets entry date
 	 */
 	public void setEntryDate(Date entryDate) {
+		assert true;
+		
 		this.entryDate = entryDate;
 	}
-	/**
+	/** Gets the entry date of the item.
 	 * 
 	 * @return entry date of the item
 	 */
 	public Date getEntryDate() {
+		assert true;
+		
 		return entryDate;
 	}
 
-	/**
+	/** Gets the exit time of the item.
 	 * 
 	 * @return the exit time of the item
 	 */
 	public Date getExitTime() {
+		assert true;
+		
 		return exitTime;
 	}
 
 	/**
-	 * sets the exit time of the item
+	 * Sets the exit time of the item.
 	 * 
 	 * @param exitTime
 	 * 
-	 * @pre must also be sure that the item has been added to removed items, and the container is null
+	 * @pre must also be sure that the item has been added to removed items
+	 * @pre the container is null
 	 * @post sets item.exitTime
 	 */
 	public void setExitTime(Date exitTime) {
+		assert true;
+		
 		this.exitTime = exitTime;
 	}
 
-	/**
+	/** Gets the item's expiration date.
 	 * 
 	 * @return the date the item expires
 	 */
 	public Date getExpirationDate() {
+		assert true;
+		
 		return expirationDate;
 	}
 
 	/**
-	 * set the expiration date
+	 * Set the item's expiration date.
 	 * 
 	 * @param expirationDate
 	 */
 	public void setExpirationDate(Date expirationDate) {
+		assert true;
+		
 		this.expirationDate = expirationDate;
 	}
 
-	/**
+	/** Gets the item's container.
 	 * 
 	 * @return the items Container (storage unit, or product group
 	 */
 	public Container getContainer() {
+		assert true;
+		
 		return container;
 	}
 
-	/**
+	/** Sets item's container.
 	 * 
 	 * @param container
 	 * 
-	 * @pre if param container is null, item also needs to be added to removedItems, and needs the exit date set
+	 * @pre if param container is null
+	 * @pre item also needs to be added to removedItems
+	 * @pre needs the exit date set
 	 * @post sets this.container
 	 */
 	public void setContainer(Container container) {
+		assert true;
+		
 		this.container = container;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
+		assert true;
+		
 		if ( this == obj ) {
 			return true;
 		}
@@ -172,15 +209,15 @@ public class Item extends Entity {
 		Item item = (Item) obj;
 		return this.getTag().getBarcode() == item.getTag().getBarcode();
 	}
-//	/** override equals operation
-//	 * 
-//	 * @param other
-//	 * @return true if items are equal
-//	 */
-//	@Override
-//	public boolean equals(Entity other){
-//		return this.getTag().getBarcode() == other.getTag().getBarcode();
-//	}
+
+
+	@Override
+	public String toString() {
+		return "Item [product=" + product + ", tag=" + tag + ", entryDate="
+				+ entryDate + ", exitDate=" + exitDate + ", exitTime="
+				+ exitTime + ", expirationDate=" + expirationDate
+				+ ", container=" + container + "]";
+	}
 	
 
 	

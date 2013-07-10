@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Date;
 import java.util.Set;
@@ -50,7 +49,7 @@ public class ItemManager {
 		dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	}
 	
-	/** gets items by container and product
+	/** Gets all items in the given container and is associated with the given product.
 	 * 
 	 * @param container
 	 * @param product
@@ -59,9 +58,16 @@ public class ItemManager {
 	 * @return collection of all items inside container that are of the type product
 	 */
 	public Collection<Item> getItems(Container container, Product product) {
+		if ( container == null ){
+			throw new IllegalArgumentException("param: container is null");
+		}
+		if ( product == null) {
+			throw new IllegalArgumentException("param: product is null");
+		}
+		
+		
 		Collection<Item> ret = new HashSet<Item>();
-		for(Iterator<Item> i = getItems(container).iterator(); i.hasNext(); ){
-			Item item = i.next();
+		for(Item item : getItems(container)){
 			if (item.getProduct() == product) {
 				ret.add(item);
 			}
@@ -69,7 +75,7 @@ public class ItemManager {
 		return ret;
 	}
 	
-	/** gets items by container
+	/** Gets items in the given container.
 	 * 
 	 * @param container
 	 * 
@@ -85,7 +91,7 @@ public class ItemManager {
 		}
 	}
 	
-	/** gets all items in the system
+	/** Gets all the items in the system.
 	 * 
 	 * @return Collection of all items in any storage unit
 	 */
@@ -100,7 +106,7 @@ public class ItemManager {
 		return ret;
 	}
 	
-	/** updates item manager indexes
+	/** Updates the item manager indexes.
 	* 
 	* @pre canAddItem() == true
 	* @post updates itemByTag
@@ -109,7 +115,7 @@ public class ItemManager {
 	* @throws IllegalArgumentException if !canAddItem()
 	*/
 	public void addItem(Item itemToAdd) throws IllegalArgumentException {
-		// TODO: should I index item to current container and storage unit?
+
 		if (itemToAdd == null){
 			throw new IllegalArgumentException("param itemToAdd is null");
 		}
@@ -130,7 +136,7 @@ public class ItemManager {
 	}
 
 	/**
-	 * can add item
+	 * Checks whether or not the item can be added.
 	 * 
 	 * @return false if item not found in Storage Unit or removedItems, false otherwise
 	 */
@@ -146,7 +152,7 @@ public class ItemManager {
 		
 		if (itemsByContainer.containsKey(storageUnit)) {
 			Collection<Item> tmp = getItems(storageUnit);
-			boolean result = !tmp.contains(item); // TODO: the storage unit
+			boolean result = !tmp.contains(item);
 			result = result && !removedItems.contains(item);
 			return result;
 		}
@@ -157,22 +163,21 @@ public class ItemManager {
 	}
 	
 	/**
-	* Updates indexes for the move.
+	* Updates indexes from the move.
 	* 
 	* @pre itemToMove.product exists (only) in the target container
 	* @post itemToMove.container = target
-	* @post itemToMove.storageUnit = target's storage unit
+	* @post updates indexes
 	* 
 	* @throws IllegalStateException if pre-conditions are not met
 	* @throws IllegalArgumentExcpetion if itemToMove is bad
 	*/
-	public void moveItem(Item itemToMove, Container target) 
-					throws IllegalStateException, IllegalArgumentException {
-
+	public void moveItem(Item itemToMove, Container target) {
+		
 		// remove item from itemsByContainer index
 		itemsByContainer.get(itemToMove.getContainer()).remove(itemToMove);
 		
-		// change container pointer
+		// change container pointer since addItem can't
 		itemToMove.setContainer(target);
 		
 		// add it back to the appropriate container
@@ -194,7 +199,7 @@ public class ItemManager {
 	 * @throws IllegalArgumentException if itemToRemove is bad
 	 * 
 	 */
-	public void removeItem(Item itemToRemove) throws IllegalStateException, IllegalArgumentException {
+	public void removeItem(Item itemToRemove) throws IllegalArgumentException {
 		
 		if (itemToRemove == null) {
 			throw new IllegalArgumentException("param: itemToRemove was null");
@@ -207,19 +212,19 @@ public class ItemManager {
 		itemToRemove.setExitTime(exitDate);
 		itemToRemove.setContainer(null);
 		
-		if (!removedItemsByDate.containsKey(exitDate)){
-			Set<Item> newSet = new HashSet<Item>();
-			newSet.add(itemToRemove);
-			removedItemsByDate.put(exitDate_str, newSet);	
+		if (removedItemsByDate.containsKey(exitDate_str)){
+			removedItemsByDate.get(exitDate_str).add(itemToRemove);
 		}
 		else {
-			removedItemsByDate.get(exitDate_str).add(itemToRemove);
+			Set<Item> newSet = new HashSet<Item>();
+			newSet.add(itemToRemove);
+			removedItemsByDate.put(exitDate_str, newSet);
 		}
 		
 		removedItems.add(itemToRemove);
 	}
 	
-	/**
+	/** Change only to the item's entry date.
 	 * 
 	 * @param oldItem - item before edit
 	 * @param newItem - item after edit
@@ -230,37 +235,42 @@ public class ItemManager {
 		if (canEditItem(before, after)){
 			before.setEntryDate(after.getEntryDate());; // TODO: will this work?
 		}
+		else{
+			throw new IllegalArgumentException("cannot complete item edit: after is invalid");
+		}
 	}
 	
 	
-	/** Validates that the after item is valid, so that the edit will happen successfully.
+	/** Checks that only the entry date is being changed.
 	 * 
 	 * @param before
 	 * @param after
 	 * @return true if after's only modification is the date
 	 */
 	public boolean canEditItem(Item before, Item after){
-		boolean result = true;
 		
 		if ( ! before.getContainer().equals(after.getContainer()) ) {
-			result = false;
+			return false;
 		}
 		
-		if ( ! before.getProduct().equals(after.getProduct())) {
-			result = false;
+		else if ( ! before.getProduct().equals(after.getProduct()) ) {
+			return false;
 		}
 		
-		if ( ! before.getTag().equals(after.getTag())) {
-			result = false;
+		else if ( ! before.getTag().equals(after.getTag()) ) {
+			return false;
+		}
+		else {
+			return true;
 		}
 		
-		return result;
+		
 	}
 	
 	
-	/** 
+	/**  Returns the item associated with the given tag.
 	*
-	* @pre barcode exists and is unique
+	* @pre barcode is unique
 	* @return Item associated with tag
 	* 
 	* @throws IllegalArgumentException if lookup does not contain tag
@@ -269,7 +279,23 @@ public class ItemManager {
 		return itemByTag.get(tag);
 	}
 	
-	/**
+	/** Checks all the items barcode's for a match.
+	 * 
+	 * @param barcode - string representing a valid barcode
+	 * @return boolean whether or not it is unique
+	 */
+	public boolean isTagUnique(String barcode) {
+		
+		for (Item item : getItems()){
+			if (item.getTag().getBarcode() == barcode){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** Gets all items removed on the day of the time given. 
+	 * 
 	 * @return all items removed on a specific date
 	 */
 	public Collection<Item> getRemovedItems(Date exitTime){
@@ -277,7 +303,8 @@ public class ItemManager {
 		return removedItemsByDate.get(exitTime_str);
 	}
 	
-	/**
+	/** Gets all the removed item's ever.
+	 * 
 	 * @return all items removed
 	 */
 	public Collection<Item> getRemovedItems(){

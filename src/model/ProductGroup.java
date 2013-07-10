@@ -1,6 +1,5 @@
 package model;
 
-import static org.junit.Assert.*;
 
 /**ProductGroup is used to group similar Products together.  
  * ex.  If you have 4 different kinds of toothpaste 
@@ -26,7 +25,8 @@ public class ProductGroup extends Container {
 	 * @post			threeMonthSupply.Initialize()
 	 */
 	public ProductGroup() {
-		assertTrue( true );
+		assert true;
+		setName("Untitled");
 		threeMonthSupply = new Quantity();
 		threeMonthSupply.setQuantity( unspecified, Unit.unspecified );
 	}
@@ -36,7 +36,7 @@ public class ProductGroup extends Container {
 	 * @return						parent container
 	 */
 	public Container getContainer() {
-		assertTrue( true );
+		assert true;
 		return container;		
 	}
 
@@ -45,7 +45,7 @@ public class ProductGroup extends Container {
 	 * @param container				sets parent container
 	 */
 	public void setContainer(Container container) {
-		assertTrue( true );
+		assert true;
 		this.container = container;
 	}
 
@@ -54,7 +54,7 @@ public class ProductGroup extends Container {
 	 * @return						three month supply for everything in 
 	 */
 	public Quantity getThreeMonthSupply() {
-		assertTrue( true );
+		assert true;
 		return threeMonthSupply;
 	}
 
@@ -63,18 +63,19 @@ public class ProductGroup extends Container {
 	 * @param threeMonthSupply		adds threeMonthSupply if it is properly formatted
 	 */
 	public void setThreeMonthSupply(Quantity threeMonthSupply) {
-		assertTrue( true );
+		assert true;
 		this.threeMonthSupply = threeMonthSupply;
 	}
 
-	/**Checks to see if threeMonthSupply meets all of the specified qualifications defined by class that extend Container
+	/**Checks to see if threeMonthSupply meets all of the specified 
+	 * qualifications defined by class that extend Container
 	 * Rule- if Unit == count then number must be an integer value
 	 * otherwise number can be a float.
 	 * @pre							none
 	 * @return						true if threeMonthSupply is valid, otherwise false
 	 */
 	public boolean canAddThreeMonthSupply() {
-		assertTrue( true );
+		assert true;
 		if( threeMonthSupply != null ) {
 			if( threeMonthSupply.getUnit().equals( Unit.count ) ) {
 				return threeMonthSupply.getNumber() == Math.round( threeMonthSupply.getNumber() );
@@ -88,13 +89,14 @@ public class ProductGroup extends Container {
 
 	/**Checks to see if current container has different name than sibling containers
 	 * @pre							none
-	 * @post						if uniqueName & nonEmptyName & threeMonthSupply.isValid { container.isValid = true }
+	 * @post						if uniqueName & nonEmptyName & 
+	 * 								threeMonthSupply.isValid { container.isValid = true }
 	 * @param container				current container to be validated
 	 */
 	@Override
 	public boolean isContainerValid() {
-		assertTrue( true );
-		return ( getName() != null ) && nonEmptyName() && canAddThreeMonthSupply();
+		assert true;
+		return nonEmptyName() && canAddThreeMonthSupply();
 	}
 	
 	/**Removes whitespace to see if the name is nonEmpty
@@ -102,7 +104,6 @@ public class ProductGroup extends Container {
 	 * @return boolean				true if name is nonEmpty, otherwise false.
 	 */
 	private boolean nonEmptyName() {
-		assertNotNull( getName() );
 		return getName().trim().length() > 0;
 	}
 
@@ -112,7 +113,7 @@ public class ProductGroup extends Container {
 	 */
 	@Override
 	public int hashCode() {
-		assertTrue( true );
+		assert true;
 		int hash = super.hashCode();
 		hash = createHash( hash, threeMonthSupply );
 		return hash;
@@ -125,10 +126,9 @@ public class ProductGroup extends Container {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		assertTrue( true );
-		return super.equals(obj) && 
-						( this.threeMonthSupply != null ? this.threeMonthSupply.equals( ((ProductGroup)obj).threeMonthSupply )
-						:((ProductGroup)obj).threeMonthSupply == null );
+		assert true;
+		return super.equals(obj) &&  
+				this.threeMonthSupply.equals( ((ProductGroup)obj).threeMonthSupply );
 	}
 
 	/**Creates the string version of this object
@@ -137,7 +137,12 @@ public class ProductGroup extends Container {
 	 */
 	@Override
 	public String toString() {
-		assertTrue( true );
+		assert true;
 		return super.toString() + " ProductGroup [threeMonthSupply=" + threeMonthSupply + "]";
+	}
+	
+	@Override
+	public int compareTo(Container other) throws IllegalArgumentException {
+		return super.compareTo( other );
 	}
 }

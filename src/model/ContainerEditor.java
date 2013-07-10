@@ -1,5 +1,7 @@
 package model;
 
+import java.util.*;
+
 public class ContainerEditor {
     
     private ContainerManager containerManager;
@@ -62,12 +64,38 @@ public class ContainerEditor {
 	public void deleteContainer(Container container)
 	        throws IllegalStateException {
 	
-	    if (!itemManager.getItems(container).isEmpty()) {
-	        throw new IllegalArgumentException(
+	    if (!canDeleteContainer(container)) {
+	        throw new IllegalStateException(
 	                "Attempted to delete a nonempty container.");
 	    }
 	    
 	    containerManager.deleteContainer(container);
+	    
+	}
+	
+	/**
+	 * @param container
+	 * @return true if the specified container is non-null and contains no
+	 * items, including nested subcontainers; false otherwise
+	 */
+	public boolean canDeleteContainer(Container container) {
+	    
+	    boolean result = true;
+	    
+	    Set<Container> containerAndItsDescendents =
+	            containerManager.getDescendents(container);
+	    containerAndItsDescendents.add(container);
+	    
+	    Collection<Item> items = itemManager.getItems();
+	    for (Item item : items) {
+	        
+	        if (containerAndItsDescendents.contains(item.getContainer())) {
+	            result = false;
+	        }
+	        
+	    }
+	    
+	    return result;
 	    
 	}
 	

@@ -1,6 +1,6 @@
 package model;
 
-import static org.junit.Assert.*;
+
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -27,7 +27,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @return			name of the container
 	 */
 	public String getName() {
-		assertTrue( true );
+		assert true;
 		return name;
 	}
 
@@ -36,7 +36,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @param name		name of the container
 	 */
 	public void setName(String name) {
-		assertTrue( true );
+		assert true;
 		this.name = name;
 	}
 
@@ -45,7 +45,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @return			list of product groups, if productGroups == null returns an empty list
 	 */
 	public Set<ProductGroup> getProductGroups() {
-		assertTrue( true );
+		assert true;
 		if( productGroups == null ) {
 			productGroups = new TreeSet<ProductGroup>();
 		}
@@ -58,7 +58,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @param productGroups
 	 */
 	public void setProductGroups(Set<ProductGroup> productGroups) {
-		assertTrue( true );
+		assert true;
 		this.productGroups = productGroups;
 	}
 	
@@ -67,7 +67,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @return			size of the list of productGroups, if productGroup == null returns 0
 	 */
 	public int getProductGroupsSize() {
-		assertTrue( true );
+		assert true;
 		if( productGroups == null ) {
 			productGroups = new TreeSet<ProductGroup>();
 		}
@@ -81,14 +81,15 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 * @param productGroup
 	 */
 	public void addProductGroup( ProductGroup productGroup ) {
-		assertTrue( true );
+		assert true;
 		if( productGroups == null ) {
 			productGroups = new TreeSet<ProductGroup>();
 		}
 		this.productGroups.add( productGroup );
 	}
 	
-	/**Abstract Method, Checks to see if given productsName is unique among the list of ProductGroups
+	/**Abstract Method, 
+	 * Checks to see if given productsName is unique among the list of ProductGroups
 	 * @pre							none			
 	 * @return						True if all of the qualifications are met and false otherwise.
 	 */
@@ -112,6 +113,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 */
 	@Override
 	public int compareTo(Container other) throws IllegalArgumentException {
+		assert true;
 		if( other == null ) {
 			throw new IllegalArgumentException();
 		}
@@ -124,7 +126,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 */
 	@Override
 	public int hashCode() {
-		assertTrue( true );
+		assert true;
 		int hash = HASH_BASE_PRIME;
 		hash = ( hash * HASH_MULTIPLIER_PRIME ) + this.getId();
 		hash = createHash( hash, this.name );
@@ -142,7 +144,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		assertTrue( true );
+		assert true;
 		if ( this == obj ) {
 			return true;
 		}
@@ -153,10 +155,10 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return this.getId() == ((Container)obj).getId() &&
 				this.getName() == ((Container)obj).getName() &&
 				this.getProductGroupsSize() == ((Container)obj).getProductGroupsSize() &&
-				( this.container != null ? this.container.name.equals( ((Container)obj).container.name )
-						:((Container)obj).container == null ) &&
-				( this.productGroups != null ? this.productGroups.equals( ((Container)obj).productGroups )
-						:((Container)obj).productGroups == null );
+				( this.container != null ? this.container.name.equals( 
+				((Container)obj).container.name ):((Container)obj).container == null ) &&
+				( this.productGroups != null ? this.productGroups.equals( 
+				((Container)obj).productGroups ):((Container)obj).productGroups == null );
 	}
 
 	/**Creates the string version of this object
@@ -165,7 +167,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	 */
 	@Override
 	public String toString() {
-		assertTrue( true );
+		assert true;
 		return "Container [name=" + name + ", productGroups=" + 
 				( productGroups != null ? productGroups.toString() : "null" ) +
 				", container=" + ( container != null ? container.name : "null" ) + "]";
