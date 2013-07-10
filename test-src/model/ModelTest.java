@@ -23,17 +23,17 @@ public class ModelTest {
         m.setContainerEditor(containerEditor);
         assertTrue(containerEditor == m.getContainerEditor());
         
-        m.setContainerEditor(containerEditor);
-        assertTrue(containerEditor == m.getContainerEditor());
+        m.setContainerManager(containerManager);
+        assertTrue(containerManager == m.getContainerManager());
         
-        m.setContainerEditor(containerEditor);
-        assertTrue(containerEditor == m.getContainerEditor());
+        m.setProductAndItemEditor(productAndItemEditor);
+        assertTrue(productAndItemEditor == m.getProductAndItemEditor());
         
-        m.setContainerEditor(containerEditor);
-        assertTrue(containerEditor == m.getContainerEditor());
+        m.setProductManager(productManager);
+        assertTrue(productManager == m.getProductManager());
         
-        m.setContainerEditor(containerEditor);
-        assertTrue(containerEditor == m.getContainerEditor());
+        m.setItemManager(itemManager);
+        assertTrue(itemManager == m.getItemManager());
         
     }
 

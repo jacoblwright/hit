@@ -1,7 +1,7 @@
 package model;
 
 import java.io.*;
-//import org.apache.commons.io.*;
+import org.apache.commons.io.*;
 
 /**
  * Serializes and deserializes objects.
@@ -16,11 +16,11 @@ public class Serializer {
       */
      public static void save(Object object, File file) throws IOException {
          
-         /*
+         
          OutputStream os = new FileOutputStream(file);
     	 IOUtils.write(serialize(object), os);
     	 os.close();
-         */
+         
          
      }
 
@@ -34,15 +34,15 @@ public class Serializer {
      public static Object load(File file)
              throws IOException, ClassNotFoundException {
     	 
-         /*
+         
          InputStream is = new FileInputStream(file);
          Object object = deserialize(IOUtils.toByteArray(is));
          is.close();
          
          return object;
-         */
          
-         return null;
+         
+         //return null;
          
      }
      
