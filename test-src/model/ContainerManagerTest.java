@@ -243,7 +243,7 @@ public class ContainerManagerTest {
 	
 	@Test
 	public void getDescendentTest() {
-		Set<ProductGroup> pgList = containerManager.getDescendents( su1 );
+		Set<Container> pgList = containerManager.getDescendents( su1 );
 		assertNotNull( pgList );
 		
 		containerManager.getDescendents( new StorageUnit() );
@@ -251,6 +251,6 @@ public class ContainerManagerTest {
 	
 	@Test( expected = IllegalArgumentException.class )
 	public void getDescendentThrowsTest() {
-		Set<ProductGroup> pgList = containerManager.getDescendents( null );
+		Set<Container> pgList = containerManager.getDescendents( null );
 	}
 }

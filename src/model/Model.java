@@ -9,6 +9,8 @@ public class Model {
     private final String P_MANAGER_DATA_PATH = "data/pm.hit";
     private final String I_MANAGER_DATA_PATH = "data/im.hit";
     
+    private String pathBase;
+    
     private ContainerEditor containerEditor;
     private ContainerManager containerManager;
     
@@ -29,11 +31,10 @@ public class Model {
         
         try {
             
-            File f;
-            String pathBase = getClass().getProtectionDomain().getCodeSource()
+            pathBase = getClass().getProtectionDomain().getCodeSource()
                     .getLocation().getFile();
             
-            f = new File(pathBase + C_MANAGER_DATA_PATH);
+            File f = new File(pathBase + C_MANAGER_DATA_PATH);
             if (f.exists() && f.canRead()) {
                 this.containerManager = (ContainerManager)Serializer.load(f);
             }
@@ -68,16 +69,53 @@ public class Model {
         this.containerEditor =
                 new ContainerEditor(containerManager, itemManager);
         this.productAndItemEditor =
-                new ProductAndItemEditor(productManager, itemManager);
+                new ProductAndItemEditor(containerManager, 
+                        productManager, itemManager);
         
+    }
+    
+    /**
+     * Saves the state of the managers to disk in the same location as this
+     * class file.
+     * @pre none
+     * @post The state of the managers are saved to disc in the same location
+     * as this class file.
+     * @throws IOException if there was a problem with saving the state of
+     * the managers. 
+     */
+    public void save() throws IOException {
+        
+       Serializer.save(
+               containerManager, new File(pathBase + C_MANAGER_DATA_PATH));
+       Serializer.save(
+               productManager, new File(pathBase + P_MANAGER_DATA_PATH));
+       Serializer.save(
+               itemManager, new File(pathBase + I_MANAGER_DATA_PATH));
+        
+    }
+    
+    public ContainerEditor getContainerEditor() {
+        return containerEditor;
+    }
+
+    public void setContainerEditor(ContainerEditor containerEditor) {
+        this.containerEditor = containerEditor;
     }
 
     public ContainerManager getContainerManager() {
         return containerManager;
     }
-
+    
     public void setContainerManager(ContainerManager containerManager) {
         this.containerManager = containerManager;
+    }
+
+    public ProductAndItemEditor getProductAndItemEditor() {
+        return productAndItemEditor;
+    }
+
+    public void setProductAndItemEditor(ProductAndItemEditor productAndItemEditor) {
+        this.productAndItemEditor = productAndItemEditor;
     }
 
     public ProductManager getProductManager() {

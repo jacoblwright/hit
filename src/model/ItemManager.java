@@ -59,6 +59,14 @@ public class ItemManager {
 	 * @return collection of all items inside container that are of the type product
 	 */
 	public Collection<Item> getItems(Container container, Product product) {
+		if ( container == null ){
+			throw new IllegalArgumentException("param: container is null");
+		}
+		if ( product == null) {
+			throw new IllegalArgumentException("param: product is null");
+		}
+		
+		
 		Collection<Item> ret = new HashSet<Item>();
 		for(Iterator<Item> i = getItems(container).iterator(); i.hasNext(); ){
 			Item item = i.next();
@@ -109,7 +117,7 @@ public class ItemManager {
 	* @throws IllegalArgumentException if !canAddItem()
 	*/
 	public void addItem(Item itemToAdd) throws IllegalArgumentException {
-		// TODO: should I index item to current container and storage unit?
+
 		if (itemToAdd == null){
 			throw new IllegalArgumentException("param itemToAdd is null");
 		}
@@ -161,18 +169,17 @@ public class ItemManager {
 	* 
 	* @pre itemToMove.product exists (only) in the target container
 	* @post itemToMove.container = target
-	* @post itemToMove.storageUnit = target's storage unit
+	* @post updates indexes
 	* 
 	* @throws IllegalStateException if pre-conditions are not met
 	* @throws IllegalArgumentExcpetion if itemToMove is bad
 	*/
-	public void moveItem(Item itemToMove, Container target) 
-					throws IllegalStateException, IllegalArgumentException {
-
+	public void moveItem(Item itemToMove, Container target) {
+		
 		// remove item from itemsByContainer index
 		itemsByContainer.get(itemToMove.getContainer()).remove(itemToMove);
 		
-		// change container pointer
+		// change container pointer since addItem can't
 		itemToMove.setContainer(target);
 		
 		// add it back to the appropriate container
@@ -194,7 +201,7 @@ public class ItemManager {
 	 * @throws IllegalArgumentException if itemToRemove is bad
 	 * 
 	 */
-	public void removeItem(Item itemToRemove) throws IllegalStateException, IllegalArgumentException {
+	public void removeItem(Item itemToRemove) throws IllegalArgumentException {
 		
 		if (itemToRemove == null) {
 			throw new IllegalArgumentException("param: itemToRemove was null");
@@ -207,13 +214,13 @@ public class ItemManager {
 		itemToRemove.setExitTime(exitDate);
 		itemToRemove.setContainer(null);
 		
-		if (!removedItemsByDate.containsKey(exitDate)){
-			Set<Item> newSet = new HashSet<Item>();
-			newSet.add(itemToRemove);
-			removedItemsByDate.put(exitDate_str, newSet);	
+		if (removedItemsByDate.containsKey(exitDate_str)){
+			removedItemsByDate.get(exitDate_str).add(itemToRemove);
 		}
 		else {
-			removedItemsByDate.get(exitDate_str).add(itemToRemove);
+			Set<Item> newSet = new HashSet<Item>();
+			newSet.add(itemToRemove);
+			removedItemsByDate.put(exitDate_str, newSet);
 		}
 		
 		removedItems.add(itemToRemove);
@@ -230,6 +237,9 @@ public class ItemManager {
 		if (canEditItem(before, after)){
 			before.setEntryDate(after.getEntryDate());; // TODO: will this work?
 		}
+		else{
+			throw new IllegalArgumentException("cannot complete item edit: after is invalid");
+		}
 	}
 	
 	
@@ -240,21 +250,23 @@ public class ItemManager {
 	 * @return true if after's only modification is the date
 	 */
 	public boolean canEditItem(Item before, Item after){
-		boolean result = true;
 		
 		if ( ! before.getContainer().equals(after.getContainer()) ) {
-			result = false;
+			return false;
 		}
 		
-		if ( ! before.getProduct().equals(after.getProduct())) {
-			result = false;
+		else if ( ! before.getProduct().equals(after.getProduct()) ) {
+			return false;
 		}
 		
-		if ( ! before.getTag().equals(after.getTag())) {
-			result = false;
+		else if ( ! before.getTag().equals(after.getTag()) ) {
+			return false;
+		}
+		else {
+			return true;
 		}
 		
-		return result;
+		
 	}
 	
 	

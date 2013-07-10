@@ -30,30 +30,19 @@ public class ProductAndItemEditor {
     }
     
     /**
-     * Adds a new product to the system.
-     * @pre same as those for ProductManager.addNewProduct()
-     * @post same as those for ProductManager.addNewProduct()
+     * Adds a product to the system.
+     * @pre same as those for ProductManager.addProduct()
+     * @post same as those for ProductManager.addProduct()
      */
-    public void addNewProduct(Product product, Container container) {
+    public void addNewProduct(Product product) {
         
-        StorageUnit storageUnit =
-                containerManager.getAncestorStorageUnit(container);
         
-        productManager.addNewProduct(product, container, storageUnit);
         
-    }
-    
-    /**
-     * Adds the specified Product to the specified Container.
-     * @pre same as those for ProductManager.addProductToContainer()
-     * @post same as those for ProductManager.addProductToContainer()
-     */
-    public void addProductToContainer(Product product, Container container) {
         
-        StorageUnit storageUnit =
-                containerManager.getAncestorStorageUnit(container);
-        
-        productManager.addProductToContainer(product, container, storageUnit);
+<<<<<<< HEAD
+=======
+//        productManager.addProduct(product);
+>>>>>>> 4becb35a32f657aa6d1cb3cb0810ea7cdf1bad93
         
     }
     
@@ -64,7 +53,7 @@ public class ProductAndItemEditor {
      */
     public void editProduct(Product oldProduct, Product newProduct) {
         
-        productManager.editProduct(oldProduct, newProduct);
+        //productManager.editProduct(oldProduct, newProduct);
         
     }
     
@@ -76,23 +65,19 @@ public class ProductAndItemEditor {
      * container, and all of the Item of that Product in the source container
      * are moved to the target container.
      * @param product the Product to be moved
-     * @param source the source Container
-     * @param target the target Container
+     * @param before the source Container
+     * @param after the target Container
      * @throws IllegalArgumentException
      */
     public void moveProduct(Product product,
-            Container source, Container target) {
+            Container before, Container after) {
         
-        StorageUnit sourceSU = containerManager.getAncestorStorageUnit(source);
-        StorageUnit targetSU = containerManager.getAncestorStorageUnit(target);
+//        productManager.moveProduct(product, before, after);
         
-        productManager.moveProduct(
-                product, source, target, sourceSU, targetSU);
-        
-        Collection<Item> items = itemManager.getItems(source, product);
+        Collection<Item> items = itemManager.getItems(after, product);
         for (Item item : items) {
             
-            itemManager.moveItem(item, target);
+            itemManager.moveItem(item, after);
             
         }
         
@@ -103,9 +88,13 @@ public class ProductAndItemEditor {
      * @post same as those for ProductManager.deleteProduct()
      * @throws IllegalArgumentException()
      */
-    public void deleteProduct(Product product, Container container) {
+    public void deleteProduct(Product product) {
         
-        productManager.deleteProduct(product, container);
+<<<<<<< HEAD
+        //productManager.deleteProduct(product);
+=======
+//        productManager.deleteProduct(product);
+>>>>>>> 4becb35a32f657aa6d1cb3cb0810ea7cdf1bad93
         
     }
 
