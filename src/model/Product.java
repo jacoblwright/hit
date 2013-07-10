@@ -57,6 +57,7 @@ public class Product extends Entity {
 	
 	@Override
 	public boolean equals(Object obj) {
+		assert true;
 		if ( this == obj ) {
 			return true;
 		}
@@ -76,6 +77,7 @@ public class Product extends Entity {
 	 * @param 		container is a Container being added to containers set
 	 */
 	public void addContainer(Container container){
+		assert true;
 		/* This check is performed by canAddProduct in ProductManager */
 		containers.add(container);
 	}
@@ -89,7 +91,6 @@ public class Product extends Entity {
 	public void removeContainer(Container container) {
 		if(!containers.contains(container))
 			throw new IllegalArgumentException();
-		
 		this.containers.remove(container);
 	}
 	
@@ -99,9 +100,10 @@ public class Product extends Entity {
 	 * @param 		date is a Date object being set as earliest entry date for Product
 	 */
 	public void setCreationDate(Date date){
+		assert true;
 		Date today = new Date();
-		if(date.after(today))
-			throw new IllegalArgumentException();
+		/*if(date.after(today))
+			throw new IllegalArgumentException();*/
 		
 		this.creationDate = date;
 	}
@@ -112,8 +114,9 @@ public class Product extends Entity {
 	 * @param 		code is a non-empty string being assigned as Product's upc
 	 */
 	public void setUPC(String code){
-		if(code.isEmpty())
-			throw new IllegalArgumentException();
+		assert true;
+		/*if(code.isEmpty())
+			throw new IllegalArgumentException();*/
 		
 		this.upc = new Barcode(code);
 	}
@@ -124,8 +127,9 @@ public class Product extends Entity {
 	 * @param 		desc is a non-empty string being assigned as Product's description
 	 */
 	public void setDescription(String desc){
-		if(desc.isEmpty())
-			throw new IllegalArgumentException();
+		assert true;
+		/*if(desc.isEmpty())
+			throw new IllegalArgumentException();*/
 		
 		this.description = desc;
 	}
@@ -139,13 +143,14 @@ public class Product extends Entity {
 	 * @param 		number is a non-zero float assigned to Quantity size
 	 */
 	public void setSize(Unit unit, float number){
+		assert true;
 		/* number should never be less than zero */
-		if(number < 0)
-			throw new IllegalArgumentException();
+		/*if(number < 0)
+			throw new IllegalArgumentException();*/
 		
 		/* if Unit == count, number has to equal */
-		if(unit == Unit.count && number != 1)
-			throw new IllegalArgumentException();
+		/*if(unit == Unit.count && number != 1)
+			throw new IllegalArgumentException();*/
 		
 		size = new Quantity();
 		size.setQuantity(number, unit);
@@ -157,8 +162,9 @@ public class Product extends Entity {
 	 * @param 		life is a non-negative int associated with shelfLife
 	 */
 	public void setShelfLife(int life){
-		if(life <= 0)
-			throw new IllegalArgumentException();
+		assert true;
+		/*if(life <= 0)
+			throw new IllegalArgumentException();*/
 		
 		this.shelfLife = life;
 	}
@@ -169,8 +175,9 @@ public class Product extends Entity {
 	 * @param 		amt is an int associated with the three month supply
 	 */
 	public void setThreeMonthSupply(int amt){
-		if(amt <= 0)
-			throw new IllegalArgumentException();
+		assert true;
+		/*if(amt <= 0)
+			throw new IllegalArgumentException();*/
 		
 		this.threeMonthSupply = amt;
 	}

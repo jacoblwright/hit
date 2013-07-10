@@ -2,6 +2,9 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 
 public class ProductManagerTest {
@@ -65,8 +68,68 @@ public class ProductManagerTest {
 		Container storageUnit = new StorageUnit();
 		pmanager.addNewProduct(prod1, productGroup, (StorageUnit)storageUnit);
 		pmanager.deleteProduct(prod1, productGroup);
-		assertEquals(0, pmanager.getProductsByContainer().size());
+		Set tempSet = (HashSet)pmanager.getProductsByContainer().get(productGroup);
+		assertEquals(0, tempSet.size());
+	}
+	
+	@Test
+	public void addProductContainerTest(){
+		ProductManager pmanager = new ProductManager();
+		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,1);
+		Product prod2 = new Product("UPC2", "Description1", Unit.count, 1,1,1);
+		Container productGroup = new ProductGroup();
+		Container storageUnit = new StorageUnit();
+		
+		pmanager.addProductToContainer(prod1, productGroup, (StorageUnit) storageUnit);
+		pmanager.addProductToContainer(prod2, productGroup, (StorageUnit) storageUnit);
+		Set tempSet = (HashSet)pmanager.getProductsByContainer().get(productGroup);
+		assertEquals(tempSet.size(), 2);
+	}
+	
+	@Test
+	public void moveProductTest(){
+		ProductManager pmanager = new ProductManager();
+		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,1);
+		Container productGroup = new ProductGroup();
+		Container productGroup2 = new ProductGroup();
+		Container storageUnit = new StorageUnit();
+		Container storageUnit2 = new StorageUnit();
+		
+		productGroup.setName("one");
+		
+		prod1.addContainer(productGroup);
+		prod1.addContainer(storageUnit);
+
+		pmanager.moveProduct(prod1, productGroup, productGroup2);
+		
+		Set<Container> tempSet = prod1.getContainers();
+		assertTrue(prod1.getContainers().contains(productGroup2));
+		assertFalse(prod1.getContainers().contains(productGroup));
 		
 	}
+	
+	@Test
+	public void canAddProductToContainerTest(){
+		ProductManager pmanager = new ProductManager();
+		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,1);
+		Product prod2 = new Product("UPC2", "Description1", Unit.count, 1,1,1);
+		Container storageUnit = new StorageUnit();
+		Container storageUnit2 = new StorageUnit();
+		Container productGroup = new ProductGroup();
+		
+		pmanager.addNewProduct(prod1, productGroup, (StorageUnit)storageUnit);
+		assertFalse(pmanager.canAddProductToContainer(prod1, productGroup));
+		assertTrue(pmanager.canAddProductToContainer(prod2, productGroup));
+	}
+	
+	@Test(expected = IllegalArgumentException.class )
+	public void isProductValidTest(){
+		ProductManager pmanager = new ProductManager();
+		Product p = new Product("UPC1", "Description1", Unit.count, 1,1,1);
+		assertTrue(pmanager.isProductValid(p));
+		Product p2 = new Product("", "Description1", Unit.count, 1,1,1);
+		assertFalse(pmanager.isProductValid(p2));
+	}
+	
 
 }
