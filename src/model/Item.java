@@ -61,7 +61,7 @@ public class Item extends Entity {
 		
 	}
 
-	/**
+	/** Gets the item's product.
 	 * 
 	 * @return the item's product
 	 */
@@ -71,7 +71,7 @@ public class Item extends Entity {
 		return product;
 	}
 
-	/**
+	/** Sets the item's product.
 	 * 
 	 * @param product
 	 *
@@ -82,7 +82,7 @@ public class Item extends Entity {
 		this.product = product;
 	}
 
-	/**
+	/** Gets the item's tag barcode
 	 * 
 	 * @return this.tag
 	 */
@@ -92,16 +92,19 @@ public class Item extends Entity {
 		return tag;
 	}
 
-	/**
+	/** Sets the item's unique tag barcode
 	 * 
-	 * @param tag - must be unique to the product upc
+	 * @param tag
+	 * 
+	 * @pre must be unique to the product upc
+	 * @post sets item tag to param tag
 	 */
 	public void setTag(Barcode tag) {
 		assert true;
 		
 		this.tag = tag;
 	}
-	/**
+	/** Sets the item's entry date
 	 * 
 	 * sets entry date
 	 */
@@ -110,7 +113,7 @@ public class Item extends Entity {
 		
 		this.entryDate = entryDate;
 	}
-	/**
+	/** Gets the entry date of the item.
 	 * 
 	 * @return entry date of the item
 	 */
@@ -120,7 +123,7 @@ public class Item extends Entity {
 		return entryDate;
 	}
 
-	/**
+	/** Gets the exit time of the item.
 	 * 
 	 * @return the exit time of the item
 	 */
@@ -131,7 +134,7 @@ public class Item extends Entity {
 	}
 
 	/**
-	 * sets the exit time of the item
+	 * Sets the exit time of the item.
 	 * 
 	 * @param exitTime
 	 * 
@@ -145,7 +148,7 @@ public class Item extends Entity {
 		this.exitTime = exitTime;
 	}
 
-	/**
+	/** Gets the item's expiration date.
 	 * 
 	 * @return the date the item expires
 	 */
@@ -156,7 +159,7 @@ public class Item extends Entity {
 	}
 
 	/**
-	 * set the expiration date
+	 * Set the item's expiration date.
 	 * 
 	 * @param expirationDate
 	 */
@@ -166,7 +169,7 @@ public class Item extends Entity {
 		this.expirationDate = expirationDate;
 	}
 
-	/**
+	/** Gets the item's container.
 	 * 
 	 * @return the items Container (storage unit, or product group
 	 */
@@ -176,7 +179,7 @@ public class Item extends Entity {
 		return container;
 	}
 
-	/**
+	/** Sets item's container.
 	 * 
 	 * @param container
 	 * 
@@ -206,15 +209,7 @@ public class Item extends Entity {
 		Item item = (Item) obj;
 		return this.getTag().getBarcode() == item.getTag().getBarcode();
 	}
-//	/** override equals operation
-//	 * 
-//	 * @param other
-//	 * @return true if items are equal
-//	 */
-//	@Override
-//	public boolean equals(Entity other){
-//		return this.getTag().getBarcode() == other.getTag().getBarcode();
-//	}
+
 
 	@Override
 	public String toString() {

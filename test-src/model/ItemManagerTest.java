@@ -26,6 +26,8 @@ public class ItemManagerTest {
 		Barcode bc1 = new Barcode("1");
 		Item i1 = new Item(pc1, p1, expDate1, bc1);
 		
+		assertFalse(i1.toString() == "");
+		
 		assertTrue(i1.getContainer() != null);
 		assertTrue(man.canAddItem(i1, pc1));
 		assertTrue(man.getItems(pc1).size() == 0);
@@ -96,7 +98,7 @@ public class ItemManagerTest {
 	@Test
 	public void testAddingAndRemoving() throws ParseException{
 		
-	    /*
+	    
 		ItemManager man = new ItemManager();
 		
 		// add first item
@@ -169,14 +171,14 @@ public class ItemManagerTest {
 		assertEquals(i1.getContainer(), pc2);
 		assertFalse(man.getItems(pc1).contains(i1));
 		assertTrue(man.getItems(pc2).contains(i1));
-		*/
+		
 		
 	}
 	
 	@Test
 	public void testEditingItems() throws ParseException {
 	    
-	    /*
+	    
 		ItemManager man = new ItemManager();
 		
 		Container pc1 = new StorageUnit();
@@ -211,13 +213,32 @@ public class ItemManagerTest {
 		assertFalse(man.canEditItem(i1, i4));
 		
 		Barcode bc2 = new Barcode("2");
-		Item i5 = new Item(pc1, p2, expDate1, bc2);
+		Item i5 = new Item(pc1, p1, expDate1, bc2);
 		
 		assertFalse(man.canEditItem(i1, i5));
 		
 		man.editItem(i1, i2);
 		assertTrue(i1.getEntryDate().equals(i2entDate));
-		*/
+		
+		
+	}
+	
+	@Test public void testBarcodeUniquness() throws ParseException {
+		
+		
+		ItemManager man = new ItemManager();
+		
+		Container pc1 = new StorageUnit();
+		Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
+		Date expDate1 = dateFormat.parse("1999/3/11");
+		Barcode bc1 = new Barcode("1");
+		Item i1 = new Item(pc1, p1, expDate1, bc1);
+		i1.setEntryDate(dateFormat.parse("1999/1/11"));
+		
+		man.addItem(i1);
+		assertTrue(man.isTagUnique("2"));
+		assertEquals(1, man.getItems().size());
+		assertFalse(man.isTagUnique("1"));
 		
 	}
 
