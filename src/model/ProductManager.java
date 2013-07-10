@@ -2,12 +2,15 @@ package model;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Manages alterations to all the Products in the system and handles passing the products structure to higher level classes. 
+/** Manages alterations to all the Products in the system and handles passing the products 
+ * 	structure to higher level classes. 
  * 
  * @author Andrew Wilde
  * @version 1.0
@@ -21,26 +24,32 @@ public class ProductManager {
 	private Map <Barcode, Product> productByUPC;
 	
 	/** Constructs the ProductManager. */ 
-	public ProductManager(){}
+	public ProductManager(){
+		productsByContainer = new HashMap<Container, Set<Product>>();
+		productByUPC = new HashMap<Barcode, Product>();
+	}
 	
 	/** Adds a product to the system
 	 * @pre 	product must not already exist in the map
 	 * @post	product is added to the set
 	 */
-	public void addNewProduct(Product product, Container container, StorageUnit storageUnit) throws IllegalArgumentException{
-		
-		/* Add first to container */
-		addProductToContainer(product, container, storageUnit);
+	public void addNewProduct(Product product, Container container, StorageUnit storageUnit) 
+			throws IllegalArgumentException{
 		
 		/* Add product to Barcode map */
 		if(!isProductUnique(product)){
 			throw new IllegalArgumentException();
 		}
 		
+		/* Add first to container */
+		addProductToContainer(product, container, storageUnit);
+		
+		
 		productByUPC.put(product.getUPC(), product);
 	}
 	
-	public void addProductToContainer(Product product, Container container,StorageUnit storageUnit) throws IllegalArgumentException{
+	public void addProductToContainer(Product product, Container container,StorageUnit storageUnit) 
+			throws IllegalArgumentException{
 		
 		if(!canAddProductToContainer(product, storageUnit)){
 			throw new IllegalArgumentException();
@@ -49,7 +58,14 @@ public class ProductManager {
 		/* Adds Container to the Product */
 		product.addContainer(container);
 		/* Add Product to Container Map */
-		productsByContainer.get(container).add(product);
+		if(productsByContainer.containsKey(container)){
+			productsByContainer.get(container).add(product);
+		}
+		else {
+			Set<Product> productSet = new HashSet<Product>();
+			productSet.add(product);
+			productsByContainer.put(container, productSet);
+		}
 	}
 	
 	public void editProduct(Product before, Product after) throws IllegalArgumentException{
@@ -65,23 +81,29 @@ public class ProductManager {
 	 * @post	removes the Product from the set
 	 */
 	public void deleteProduct(Product product, Container container) throws IllegalArgumentException{
-		/* It will be previously verified if the product can indeed be deleted with the canDeleteProduct method */
-		if(!productsByContainer.containsValue(product))
+		/* It will be previously verified if the product can indeed be deleted with the 
+		 * canDeleteProduct method */
+		if(!productsByContainer.containsKey(container))
+			throw new IllegalArgumentException();
+		Set tempSet = (HashSet)productsByContainer.get(container);
+		if(!tempSet.contains(product))
 			throw new IllegalArgumentException();
 		
 		/* Remove container from product */
 		product.removeContainer(container);
 		/* Remove product from container */
-		productsByContainer.get(container).remove(product);
+		tempSet.remove(product);
 	}
 	
-	/** Moves a product to a new container as long as that product is not already located in that storage unit.
+	/** Moves a product to a new container as long as that product is not already located in that 
+	 * 	storage unit.
 	 * @pre 		product is not already in the container it is being moved into
 	 * @param 		product	the product being moved
 	 * @param 		before	the container before the product was moved
 	 * @param 		after	the new container that the product is being move to
 	 */
-	public void moveProduct(Product product, Container before, Container after, StorageUnit beforeStor, StorageUnit afterStor) throws IllegalStateException{
+	public void moveProduct(Product product, Container before, Container after, 
+			StorageUnit beforeStor, StorageUnit afterStor) throws IllegalStateException{
 		if(beforeStor == afterStor){
 			product.removeContainer(before);
 			product.addContainer(after);
@@ -94,8 +116,10 @@ public class ProductManager {
 	/** Returns true if a Product can be added to a particular storage unit. This will return 
 	 * true if product is not already contained within that particular storage unit.
 	 * 
-	 * @param 		product is the Product being examined if it is currently already in a particular storage unit
-	 * @param 		storage Product checks whether storage is already contained in productsByContainer			
+	 * @param 		product is the Product being examined if it is currently already in a particular
+	 * 				 storage unit
+	 * @param 		storage Product checks whether storage is already contained in 
+	 * 				productsByContainer			
 	 * @return		true if the product can be added to the storage, false otherwise
 	 */
 	public boolean canAddProductToContainer(Product product, StorageUnit storage){
@@ -208,6 +232,14 @@ public class ProductManager {
 				return false;
 		}
 		return true;
+	}
+	
+	public Map getAllProductsByUPC(){
+		return productByUPC;
+	}
+	
+	public Map getProductsByContainer(){
+		return productsByContainer;
 	}
 
 }
