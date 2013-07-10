@@ -1,5 +1,7 @@
 package model;
 
+import java.util.*;
+
 public class ContainerEditor {
     
     private ContainerManager containerManager;
@@ -68,6 +70,32 @@ public class ContainerEditor {
 	    }
 	    
 	    containerManager.deleteContainer(container);
+	    
+	}
+	
+	/**
+	 * @param container
+	 * @return true if the specified container is non-null and contains no
+	 * items, including nested subcontainers; false otherwise
+	 */
+	private boolean canDeleteContainer(Container container) {
+	    
+	    boolean result = true;
+	    
+	    Set<Container> containerAndItsDescendents =
+	            containerManager.getDescendents(container);
+	    containerAndItsDescendents.add(container);
+	    
+	    Collection<Item> items = itemManager.getItems();
+	    for (Item item : items) {
+	        
+	        if (containerAndItsDescendents.contains(item.getContainer())) {
+	            result = false;
+	        }
+	        
+	    }
+	    
+	    return result;
 	    
 	}
 	

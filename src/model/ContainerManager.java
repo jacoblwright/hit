@@ -26,12 +26,14 @@ public class ContainerManager {
 	 * @return 
 	 * @throws IllegalArgumentException			if container == null
 	 */
-	public Set<ProductGroup> getDescendents( Container container ) throws IllegalArgumentException {
+	public Set<Container> getDescendents( Container container )
+	        throws IllegalArgumentException {
+	    
 		assert true;
 		if( container == null ) {
 			throw new IllegalArgumentException();
 		}
-		TreeSet<ProductGroup> result = new TreeSet<ProductGroup>();
+		TreeSet<Container> result = new TreeSet<Container>();
 		recursivelyGetDescendents( container, result );
 		return result;
 	}
@@ -41,7 +43,9 @@ public class ContainerManager {
 	 * @param container
 	 * @param pgList
 	 */
-	private void recursivelyGetDescendents( Container container, Set<ProductGroup> pgList ) {
+	private void recursivelyGetDescendents(
+	        Container container, Set<Container> pgList ) {
+	    
 		assert true;
 		Set<ProductGroup> productGroupList = container.getProductGroups();
 		pgList.addAll( productGroupList );

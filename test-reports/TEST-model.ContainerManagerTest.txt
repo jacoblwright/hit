@@ -1,13 +1,15 @@
 Testsuite: model.ContainerManagerTest
-Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.095 sec
+Tests run: 12, Failures: 0, Errors: 0, Time elapsed: 0.385 sec
 
-Testcase: getRootTest took 0.023 sec
-Testcase: getAncestorStorageUnitTest took 0.004 sec
-Testcase: addContainerTest took 0.005 sec
-Testcase: addContainerThrowsTest took 0.007 sec
-Testcase: editContainerTest took 0.004 sec
-Testcase: editContainerThrowsTest took 0.004 sec
+Testcase: getRootTest took 0.092 sec
+Testcase: getAncestorStorageUnitTest took 0.002 sec
+Testcase: addContainerTest took 0.004 sec
+Testcase: addContainerThrowsTest took 0.002 sec
+Testcase: editContainerTest took 0.002 sec
+Testcase: editContainerThrowsTest took 0.003 sec
 Testcase: deleteContainerTest took 0.003 sec
-Testcase: deleteContainerThrowsTest took 0.002 sec
+Testcase: deleteContainerThrowsTest took 0.003 sec
 Testcase: canAddAndEditContainerFailTest took 0.004 sec
 Testcase: canAddAndEditContainerTest took 0.002 sec
+Testcase: getDescendentTest took 0.003 sec
+Testcase: getDescendentThrowsTest took 0.002 sec

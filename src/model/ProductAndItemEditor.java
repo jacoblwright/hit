@@ -30,15 +30,30 @@ public class ProductAndItemEditor {
     }
     
     /**
-     * Adds a product to the system.
-     * @pre same as those for ProductManager.addProduct()
-     * @post same as those for ProductManager.addProduct()
+     * Adds a new product to the system.
+     * @pre same as those for ProductManager.addNewProduct()
+     * @post same as those for ProductManager.addNewProduct()
      */
-    public void addNewProduct(Product product) {
+    public void addNewProduct(Product product, Container container) {
         
+        StorageUnit storageUnit =
+                containerManager.getAncestorStorageUnit(container);
         
+        productManager.addNewProduct(product, container, storageUnit);
         
+    }
+    
+    /**
+     * Adds the specified Product to the specified Container.
+     * @pre same as those for ProductManager.addProductToContainer()
+     * @post same as those for ProductManager.addProductToContainer()
+     */
+    public void addProductToContainer(Product product, Container container) {
         
+        StorageUnit storageUnit =
+                containerManager.getAncestorStorageUnit(container);
+        
+        productManager.addProductToContainer(product, container, storageUnit);
         
     }
     
@@ -49,7 +64,7 @@ public class ProductAndItemEditor {
      */
     public void editProduct(Product oldProduct, Product newProduct) {
         
-        //productManager.editProduct(oldProduct, newProduct);
+        productManager.editProduct(oldProduct, newProduct);
         
     }
     
@@ -61,19 +76,23 @@ public class ProductAndItemEditor {
      * container, and all of the Item of that Product in the source container
      * are moved to the target container.
      * @param product the Product to be moved
-     * @param before the source Container
-     * @param after the target Container
+     * @param source the source Container
+     * @param target the target Container
      * @throws IllegalArgumentException
      */
     public void moveProduct(Product product,
-            Container before, Container after) {
+            Container source, Container target) {
         
-        productManager.moveProduct(product, before, after);
+        StorageUnit sourceSU = containerManager.getAncestorStorageUnit(source);
+        StorageUnit targetSU = containerManager.getAncestorStorageUnit(target);
         
-        Collection<Item> items = itemManager.getItems(after, product);
+        productManager.moveProduct(
+                product, source, target, sourceSU, targetSU);
+        
+        Collection<Item> items = itemManager.getItems(source, product);
         for (Item item : items) {
             
-            itemManager.moveItem(item, after);
+            itemManager.moveItem(item, target);
             
         }
         
@@ -84,9 +103,9 @@ public class ProductAndItemEditor {
      * @post same as those for ProductManager.deleteProduct()
      * @throws IllegalArgumentException()
      */
-    public void deleteProduct(Product product) {
+    public void deleteProduct(Product product, Container container) {
         
-        //productManager.deleteProduct(product);
+        productManager.deleteProduct(product, container);
         
     }
 

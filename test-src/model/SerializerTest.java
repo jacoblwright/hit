@@ -75,22 +75,20 @@ public class SerializerTest {
         
         // --------------------------------
         Product orig2 = new Product(
-                "12345", "Description", Unit.count, 4.5f, 8, 8);
+                "12345", "Description", Unit.count, 1, 8, 8);
         Serializer.save(orig2, f);
         Product loaded2 = (Product)Serializer.load(f);
         assertEquals(orig2.toString(), loaded2.toString());
         // --------------------------------
           
-        /*
         // --------------------------------
         Item orig3 = new Item(new StorageUnit(), loaded2,
                 new Date(), new Barcode());
         orig3.setId(54);
         Serializer.save(orig3, f);
         Item loaded3 = (Item)Serializer.load(f);
-        assertEquals(orig3, loaded3);
+        assertEquals(orig3.toString(), loaded3.toString());
         // --------------------------------
-        */
         
     }
 

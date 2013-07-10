@@ -84,6 +84,12 @@
 		</fileset>
 	</path>
 
+	<path id="commonsio-classpath">
+		<fileset dir="${commonsio-home}">
+			<include name="commons-io-2.4.jar" />
+		</fileset>
+	</path>
+
 	<!-- ***************** -->
 	<!-- task definintions -->
 	<!-- ***************** -->
