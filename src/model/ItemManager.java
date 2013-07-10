@@ -279,7 +279,7 @@ public class ItemManager {
 		return itemByTag.get(tag);
 	}
 	
-	/** checks all the items barcode's for a match
+	/** Checks all the items barcode's for a match.
 	 * 
 	 * @param barcode - string representing a valid barcode
 	 * @return boolean whether or not it is unique
@@ -294,7 +294,8 @@ public class ItemManager {
 		return true;
 	}
 	
-	/**
+	/** Gets all items removed on the day of the time given. 
+	 * 
 	 * @return all items removed on a specific date
 	 */
 	public Collection<Item> getRemovedItems(Date exitTime){
@@ -302,7 +303,8 @@ public class ItemManager {
 		return removedItemsByDate.get(exitTime_str);
 	}
 	
-	/**
+	/** Gets all the removed item's ever.
+	 * 
 	 * @return all items removed
 	 */
 	public Collection<Item> getRemovedItems(){
