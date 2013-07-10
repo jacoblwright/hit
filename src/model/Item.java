@@ -1,16 +1,12 @@
 package model;
 
-/**
-*
-* Item Description:
-*	The physical instance of a Product.
+import java.util.Date;
+
+/**	The physical instance of a Product.
 *	It describes the product it is associated with, as well as the product container
 *	that holds the item.
 *
 */
-
-import java.util.Date;
-
 
 public class Item extends Entity {
 	
@@ -36,27 +32,28 @@ public class Item extends Entity {
 	private Container container;
 	
 	
-	/**
-	*
-	* @param _container - associated product container
-	* @param _expires - date the product expires
-	*
-	* @pre _container != null, _prod != null
-	* 
-	* Builds Item instance and initializes members to default values
+	/** Builds Item instance and initializes members to default values
 	*	entry date is captured, sets expires, sets container, barcode generated automatically
 	*
+	*
+	* @param container - associated product container
+	* @param product - associated product
+	* @param expirationDate - date the item expires
+	* @param tag - associated tag barcode
+	*
+	* @pre _container != null, _prod != null
+	*
 	*/
-	public Item(Container container, Product product, Date expirationDate, Barcode barcode)  {
+	public Item(Container container, Product product, Date expirationDate, Barcode tag)  {
 		assert container != null;
 		assert product != null;
 		assert expirationDate != null;
-		assert barcode != null;
+		assert tag != null;
 		
 		this.container = container;
 		this.product = product;
 		this.expirationDate = expirationDate;
-		this.tag = barcode; // generates unique barcode on initliazation
+		this.tag = tag; // generates unique barcode on initliazation
 		this.entryDate = new Date();
 		
 	}
