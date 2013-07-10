@@ -10,8 +10,11 @@ import org.junit.Test;
 
 public class ContainerEditorTest {
 
+    private ContainerEditor containerEditor;
     
     private ContainerManager containerManager;
+    private ItemManager itemManager;
+    
     private int uniqueId;
     private Set<StorageUnit> storageUnits;
     
@@ -27,6 +30,10 @@ public class ContainerEditorTest {
     public void setUp() {
         
         containerManager = new ContainerManager();
+        itemManager = new ItemManager();
+        
+        containerEditor = new ContainerEditor(containerManager, itemManager);
+        
         storageUnits = new TreeSet<StorageUnit>();
         uniqueId = 1;
         
@@ -130,12 +137,40 @@ public class ContainerEditorTest {
         //Add storage Unit normally
         StorageUnit newStorageUnit = initializeStorageUnit(
                 "newStorageUnit", uniqueId++ );
-        containerManager.addContainer( null, newStorageUnit );
+        containerEditor.addContainer( null, newStorageUnit );
         
         //Add product group normally
-        containerManager.addContainer( newStorageUnit, initializeProductGroup(
+        containerEditor.addContainer( newStorageUnit, initializeProductGroup(
                 "newProductGroup", uniqueId++, newStorageUnit ) );       
     
+    }
+    
+    @Test
+    public void editContainerTest() {
+        
+        //Edit StorageUnit
+        Container newStorageUnit = initializeStorageUnit(
+                "Editsu1", uniqueId++ );
+        containerEditor.editContainer(su2, newStorageUnit );
+        
+        //Edit ProductGroup
+        ProductGroup newProductGroup = initializeProductGroup(
+                "Editedcpg2_2", uniqueId++, su2 );
+        Quantity q = new Quantity();
+        q.setQuantity( 2.5f, Unit.fluidOunces );
+        newProductGroup.setThreeMonthSupply( q );
+        containerEditor.editContainer( 
+                childProductGroup2_2, newProductGroup );
+    
+    }
+    
+    @Test
+    public void deleteContainerTest() {
+        //Delete a storageUnit
+        containerEditor.deleteContainer( su1 );
+        
+        //Delete a productGroup
+        containerEditor.deleteContainer( productGroup1_1 );
     }
 
 }
