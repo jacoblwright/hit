@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -16,7 +17,8 @@ import java.util.Set;
 
 public class Product extends Entity {
 
-	/** the date this Product was added to the system and is always equal to the earliest entry date for any item of this product */
+	/** the date this Product was added to the system and is always equal to the earliest entry 
+	 * 	date for any item of this product */
 	private Date creationDate;
 	
 	/** the associated manufacturer's barcode for this Product */
@@ -25,7 +27,8 @@ public class Product extends Entity {
 	/** the associated textual description for this Product */
 	private String description;
 	
-	/** the associated size of this Product in which Quantity has both a Unit enum and float to describe the size */
+	/** the associated size of this Product in which Quantity has both a Unit enum and float 
+	 * 	to describe the size */
 	private Quantity size;
 	
 	/** the associated shelf life of this Product in months */
@@ -48,6 +51,8 @@ public class Product extends Entity {
 		setSize(u, num);
 		setShelfLife(life);
 		setThreeMonthSupply(supply);
+		
+		containers = new HashSet<Container>();
 	}
 	
 	@Override
@@ -65,13 +70,14 @@ public class Product extends Entity {
 	}
 	
 	/**
-	 * @pre			container may not share the same storageUnit with any other current Container in containers
+	 * @pre			container may not share the same storageUnit with any other current Container 
+	 * 				in containers
 	 * @post		adds container to set of containers
 	 * @param 		container is a Container being added to containers set
 	 */
 	public void addContainer(Container container){
 		/* This check is performed by canAddProduct in ProductManager */
-		this.containers.add(container);
+		containers.add(container);
 	}
 	
 	/**
@@ -126,7 +132,8 @@ public class Product extends Entity {
 	
 	/**
 	 * @pre			number must be greater than zero
-	 * @pre			unit must be either COUNT, POUND, OUNCE, GRAM, KILOGRAM, GALLON, QUART, PINT, FLUID_OUNCE, or LITER
+	 * @pre			unit must be either COUNT, POUND, OUNCE, GRAM, 
+	 * 				KILOGRAM, GALLON, QUART, PINT, FLUID_OUNCE, or LITER
 	 * @post		sets the size of the Product
 	 * @param 		unit is the enum being assigned to Quantity size
 	 * @param 		number is a non-zero float assigned to Quantity size
