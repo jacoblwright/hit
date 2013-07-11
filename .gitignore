@@ -3,6 +3,7 @@
 .DS_Store
 *.txt
 *.html
+*.hit
 coverage-test/
 
 # Package Files #
