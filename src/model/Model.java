@@ -9,7 +9,7 @@ public class Model {
     private final String P_MANAGER_DATA_PATH = "pm.hit";
     private final String I_MANAGER_DATA_PATH = "im.hit";
     
-    private String pathBase;
+    private String saveLocation;
     
     private ContainerEditor containerEditor;
     private ContainerManager containerManager;
@@ -31,32 +31,25 @@ public class Model {
         
         try {
             
-            pathBase = getClass().getProtectionDomain().getCodeSource()
+            saveLocation = System.getProperty("user.home") + File.separator;
+            
+            /*
+            saveLocation = getClass().getProtectionDomain().getCodeSource()
                     .getLocation().getFile();
+            */
             
-            File f = new File(pathBase + C_MANAGER_DATA_PATH);
+            File f = new File(saveLocation + C_MANAGER_DATA_PATH);
+            ContainerManager cm = null;
             if (f.exists() && f.canRead()) {
-                this.containerManager = (ContainerManager)Serializer.load(f);
+                cm = (ContainerManager)Serializer.load(f);
+            }
+            if (cm != null) {
+                containerManager = cm;
             }
             else {
-                this.containerManager = new ContainerManager();
+                containerManager = new ContainerManager();
             }
             
-            f = new File(pathBase + P_MANAGER_DATA_PATH);
-            if (f.exists() && f.canRead()) {
-                this.productManager = (ProductManager)Serializer.load(f);
-            }
-            else {
-                this.productManager = new ProductManager();
-            }
-            
-            f = new File(pathBase + I_MANAGER_DATA_PATH);
-            if (f.exists() && f.canRead()) {
-                this.itemManager = (ItemManager)Serializer.load(f);
-            }
-            else {
-                this.itemManager = new ItemManager();
-            }
         
         }
         catch (IOException e) {
@@ -66,11 +59,15 @@ public class Model {
             e.printStackTrace();
         }
     
+        System.out.println(containerManager);
+        
+        /*
         this.containerEditor =
                 new ContainerEditor(containerManager, itemManager);
         this.productAndItemEditor =
                 new ProductAndItemEditor(containerManager, 
                         productManager, itemManager);
+        */
         
     }
     
@@ -85,14 +82,16 @@ public class Model {
      */
     public void save() throws IOException {
         
-        System.out.println(pathBase);
+        System.out.println(saveLocation);
         
         Serializer.save(
-                containerManager, new File(pathBase + C_MANAGER_DATA_PATH));
+                containerManager, new File(saveLocation + C_MANAGER_DATA_PATH));
+        /*
         Serializer.save(
-                productManager, new File(pathBase + P_MANAGER_DATA_PATH));
+                productManager, new File(saveLocation + P_MANAGER_DATA_PATH));
         Serializer.save(
-                itemManager, new File(pathBase + I_MANAGER_DATA_PATH));
+                itemManager, new File(saveLocation + I_MANAGER_DATA_PATH));
+        */
         
     }
     

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.io.*;
 
 /** Manages alterations to all the Products in the system and handles passing the products 
  * 	structure to higher level classes. 
@@ -16,7 +17,7 @@ import java.util.Set;
  * @version 1.0
  */
 
-public class ProductManager {
+public class ProductManager implements Serializable {
 	/** Maps containers to sets of products. */
 	private Map <Container, Set<Product>> productsByContainer;
 	

@@ -15,12 +15,14 @@ public class Serializer {
       * @throws IOException
       */
      public static void save(Object object, File file) throws IOException {
-         
+                  
+         if (!file.exists()) {
+             file.createNewFile();
+         }
          
          OutputStream os = new FileOutputStream(file);
     	 IOUtils.write(serialize(object), os);
     	 os.close();
-         
          
      }
 
@@ -33,8 +35,7 @@ public class Serializer {
       */
      public static Object load(File file)
              throws IOException, ClassNotFoundException {
-    	 
-         
+    	   
          InputStream is = new FileInputStream(file);
          Object object = deserialize(IOUtils.toByteArray(is));
          is.close();

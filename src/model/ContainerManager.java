@@ -2,9 +2,9 @@ package model;
 
 import java.util.Set;
 import java.util.TreeSet;
+import java.io.*;
 
-
-public class ContainerManager {
+public class ContainerManager implements Serializable {
 	
 	/** Map where the key is the storage unit and the value is a list of Containers	*/
 	private Set<StorageUnit> storageUnits;

@@ -13,10 +13,9 @@ public class SerializerTest {
     @Before
     public void before() {
         
-        String pathBase = getClass().getProtectionDomain().getCodeSource()
-                .getLocation().getFile();
+        String saveLocation = System.getProperty("user.home") + File.separator;
         //System.out.println("location of object file:" + pathBase);
-        f = new File(pathBase + "test_object_data.hit");
+        f = new File(saveLocation + "test_object_data.hit");
         
     }
     
@@ -31,9 +30,9 @@ public class SerializerTest {
         // --------------------------------
         String orig1 = "String object to be saved";
         Serializer.save(orig1, f);
-        //String loaded1 = (String)Serializer.load(f);
-        //System.out.println("expected:" + string + "\nactual:" + stringResult);
-        //assertEquals(orig1, loaded1);
+        String loaded1 = (String)Serializer.load(f);
+        System.out.println("expected:" + orig1 + "\nactual:" + loaded1);
+        assertEquals(orig1, loaded1);
         // --------------------------------
         
         // --------------------------------
