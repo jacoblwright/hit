@@ -16,7 +16,7 @@ public abstract class Entity implements Serializable {
 	/**Id */
 	private int id;
 	
-	/**Gets Id
+	/**Gets the id.
 	 * @pre none
 	 * @post getId()
 	 * @return id
@@ -26,7 +26,7 @@ public abstract class Entity implements Serializable {
 		return id;
 	}
 
-	/**Sets id
+	/**Sets the id.
 	 * @pre none
 	 * @post this.id = id
 	 * @param id
@@ -36,7 +36,7 @@ public abstract class Entity implements Serializable {
 		this.id = id;
 	}
 	
-	/**Creates the string version of this object
+	/**Creates the string version of this object.
 	 * @pre 				none	
 	 * @return String		this.toString()
 	 */
@@ -46,7 +46,7 @@ public abstract class Entity implements Serializable {
 		return "Entity [id=" + id + "]";
 	}
 
-	/**Creates a unique hashcode for this object
+	/**Creates a unique hashcode for this object.
 	 * @pre					none
 	 * @return int			unique Integer
 	 */
@@ -59,7 +59,7 @@ public abstract class Entity implements Serializable {
 		return result;
 	}
 
-	/**checks equality between two objects
+	/**checks equality between two objects.
 	 * @pre						none
 	 * @param obj				obj in question fo equality		
 	 * @return boolean 			if this == obj return true, otherwise false.
@@ -79,7 +79,7 @@ public abstract class Entity implements Serializable {
 		return true;
 	}
 	
-	/** Creates a hashCode based on a previous hash and an object
+	/** Creates a hashCode based on a previous hash and an object.
 	 * @pre 				none
 	 * @param hash			currentHash
 	 * @param obj			object that needs to be hashed

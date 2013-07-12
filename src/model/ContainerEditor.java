@@ -58,7 +58,7 @@ public class ContainerEditor {
 	 * Deletes the container and all of the children containers.
 	 * @pre	Container.items().size() 0, recursively
 	 * @post delete(container), recursively
-	 * @param Container to be deleted
+	 * @param container 
 	 * @throws IllegalArgumentException
 	 */
 	public void deleteContainer(Container container)
