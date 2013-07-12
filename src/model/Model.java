@@ -5,6 +5,8 @@ import java.io.IOException;
 
 public class Model {
     
+    private static Model instance = null;
+    
     private final String C_MANAGER_DATA_PATH = "cm.hit";
     private final String P_MANAGER_DATA_PATH = "pm.hit";
     private final String I_MANAGER_DATA_PATH = "im.hit";
@@ -18,6 +20,8 @@ public class Model {
     private ProductManager productManager;
     private ItemManager itemManager;
     
+    
+    
     /**
      * Loads the saved object data of the managers and constructs the editors
      * using those managers.
@@ -25,7 +29,7 @@ public class Model {
      * @post Editors and managers have been constructed using saved object data
      * files, or new managers have been constructed if the files don't exist.
      */
-    public Model() {
+    private Model() {
         
         assert true;
         
@@ -106,6 +110,22 @@ public class Model {
         this.productAndItemEditor =
                 new ProductAndItemEditor(containerManager, 
                         productManager, itemManager);
+        
+    }
+    
+    /**
+     * Returns an instance of the singleton Model class.
+     * @pre None.
+     * @return an instance of the Model class; the returned reference always
+     * points to the same instance.
+     */
+    public static Model getInstance() {
+        
+        if (instance == null) {            
+            instance = new Model();            
+        }
+        
+        return instance;
         
     }
     

@@ -43,11 +43,11 @@ public class ProductAndItemEditor {
         
     }
     
-    /**
+    /*
      * Adds the specified Product to the specified Container.
      * @pre same as those for ProductManager.addProductToContainer()
      * @post same as those for ProductManager.addProductToContainer()
-     */
+     
     public void addProductToContainer(Product product, Container container) {
         
         StorageUnit storageUnit =
@@ -56,6 +56,7 @@ public class ProductAndItemEditor {
         productManager.addProductToContainer(product, container, storageUnit);
         
     }
+    */
     
     /**
      * Edits a Product by replacing an older Product with a newer Product.
@@ -95,6 +96,15 @@ public class ProductAndItemEditor {
             itemManager.moveItem(item, target);
             
         }
+        
+    }
+    
+    public boolean canDeleteProduct(Product product) {
+        
+        // Check to see if any items in this container have this product
+        // as an attribute
+        
+        return false;
         
     }
     

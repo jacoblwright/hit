@@ -10,17 +10,16 @@ public class ModelTest {
     @Test
     public void saveTest() throws Exception {
         
-        Model m = new Model();
+        Model m = Model.getInstance();
         
         m.save();
         
     }
     
-    /*
     @Test
     public void gettersAndSettersTest() {
         
-        Model m = new Model();
+        Model m = Model.getInstance();
         
         ContainerManager containerManager = new ContainerManager();
         ProductManager productManager = new ProductManager();
@@ -48,6 +47,5 @@ public class ModelTest {
         assertTrue(itemManager == m.getItemManager());
         
     }
-    */
 
 }
