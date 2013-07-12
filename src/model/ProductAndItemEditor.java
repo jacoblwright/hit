@@ -43,11 +43,11 @@ public class ProductAndItemEditor {
         
     }
     
-    /**
+    /*
      * Adds the specified Product to the specified Container.
      * @pre same as those for ProductManager.addProductToContainer()
      * @post same as those for ProductManager.addProductToContainer()
-     */
+     
     public void addProductToContainer(Product product, Container container) {
         
         StorageUnit storageUnit =
@@ -56,6 +56,7 @@ public class ProductAndItemEditor {
         productManager.addProductToContainer(product, container, storageUnit);
         
     }
+    */
     
     /**
      * Edits a Product by replacing an older Product with a newer Product.
@@ -98,6 +99,15 @@ public class ProductAndItemEditor {
         
     }
     
+    public boolean canDeleteProduct(Product product) {
+        
+        // Check to see if any items in this container have this product
+        // as an attribute
+        
+        return false;
+        
+    }
+    
     /** Deletes a Product from the set all of products.
      * @pre same as those for ProductManager.deleteProduct()
      * @post same as those for ProductManager.deleteProduct()
@@ -115,7 +125,7 @@ public class ProductAndItemEditor {
      * @post same as those for ItemManager.addItem()
      * @throws IllegalArgumentException()
      */
-     public void addItem(Item itemToAdd) {
+     public void addItem(Item itemToAdd) throws IllegalArgumentException {
      
          itemManager.addItem(itemToAdd);
          
@@ -127,7 +137,8 @@ public class ProductAndItemEditor {
       * @post same as those for ItemManager.editItem()
       * @throws IllegalArgumentException() 
       */
-     public void editItem(Item oldItem, Item newItem) {
+     public void editItem(Item oldItem, Item newItem)
+             throws IllegalArgumentException {
     
          itemManager.editItem(oldItem, newItem);
          
@@ -139,7 +150,8 @@ public class ProductAndItemEditor {
       * @post same as those for ItemManager.moveItem()
       * @throws IllegalArgumentException()
       */
-     public void moveItem(Item itemToMove, Container target) {
+     public void moveItem(Item itemToMove, Container target)
+             throws IllegalArgumentException {
      
          itemManager.moveItem(itemToMove, target);
          
@@ -152,7 +164,7 @@ public class ProductAndItemEditor {
       * @post same as those for ItemManager.removeItem()
       * @throws IllegalArgumentException()
       */
-     public void removeItem(Item itemToRemove) {
+     public void removeItem(Item itemToRemove) throws IllegalArgumentException {
      
          itemManager.removeItem(itemToRemove);
          
