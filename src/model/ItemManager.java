@@ -1,11 +1,5 @@
 package model;
 
-/**
-*
-* Item Manager Description:
-*	Creates and manages Items. This involves adding, moving, and removing items.
-*
-*/
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,8 +12,12 @@ import java.util.Date;
 import java.util.Set;
 import java.io.*;
 
-public class ItemManager implements Serializable {
 
+
+/** Creates and manages Items. This involves adding, moving, and removing items.
+*
+*/
+public class ItemManager implements Serializable {
 	/**
 	 * Index for quick item lookup by container.
 	 */
@@ -227,14 +225,14 @@ public class ItemManager implements Serializable {
 	
 	/** Change only to the item's entry date.
 	 * 
-	 * @param oldItem - item before edit
-	 * @param newItem - item after edit
+	 * @param before - item before edit
+	 * @param after - item after edit
 	 * 
 	 * @throws IllegalArgumentException
 	 */
 	public void editItem(Item before, Item after) throws IllegalArgumentException {
 		if (canEditItem(before, after)){
-			before.setEntryDate(after.getEntryDate());; // TODO: will this work?
+			before.setEntryDate(after.getEntryDate());
 		}
 		else{
 			throw new IllegalArgumentException("cannot complete item edit: after is invalid");

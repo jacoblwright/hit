@@ -26,6 +26,7 @@ public class ProductManager implements Serializable {
 	
 	/** Constructs the ProductManager. */ 
 	public ProductManager(){
+		assert true;
 		productsByContainer = new HashMap<Container, Set<Product>>();
 		productByUPC = new HashMap<Barcode, Product>();
 	}
@@ -37,8 +38,7 @@ public class ProductManager implements Serializable {
 	public void addNewProduct(Product product, Container container, StorageUnit storageUnit) 
 			throws IllegalArgumentException{
 		
-		/* Add product to Barcode map */
-		if(!isProductUnique(product)){
+		if(!isUPCUnique(product.getUPC().getBarcode())){
 			throw new IllegalArgumentException();
 		}
 		
@@ -49,10 +49,18 @@ public class ProductManager implements Serializable {
 		productByUPC.put(product.getUPC(), product);
 	}
 	
+	/** Adds product to specific container. It checks the storageUnit to make sure the products is
+	 * not already contained within that product.
+	 * 
+	 * @param product	Product being moved
+	 * @param container	The container to which the product is being moved to
+	 * @param storageUnit	The storageUnit the Product is being moved to
+	 * @throws IllegalArgumentException
+	 */
 	public void addProductToContainer(Product product, Container container,StorageUnit storageUnit) 
 			throws IllegalArgumentException{
 		
-		if(!canAddProductToContainer(product, storageUnit)){
+		if(!canAddProductToContainer(product, container)){
 			throw new IllegalArgumentException();
 		}
 		
@@ -69,7 +77,15 @@ public class ProductManager implements Serializable {
 		}
 	}
 	
+	/** An item is edited by taking a new product and replacing the old product's attributes with
+	 * the new product's attributes.
+	 * 
+	 * @param before	The product to be changed
+	 * @param after		The product that contains the new values
+	 * @throws IllegalArgumentException
+	 */
 	public void editProduct(Product before, Product after) throws IllegalArgumentException{
+		assert true;
 		before.setDescription(after.getDescription());
 		before.setShelfLife(after.getShelfLife());
 		before.setSize(after.getSize().getUnit(), after.getSize().getNumber());
@@ -94,6 +110,7 @@ public class ProductManager implements Serializable {
 		product.removeContainer(container);
 		/* Remove product from container */
 		tempSet.remove(product);
+
 	}
 	
 	/** Moves a product to a new container as long as that product is not already located in that 
@@ -104,14 +121,14 @@ public class ProductManager implements Serializable {
 	 * @param 		after	the new container that the product is being move to
 	 */
 	public void moveProduct(Product product, Container before, Container after, 
-			StorageUnit beforeStor, StorageUnit afterStor) throws IllegalStateException{
-		if(beforeStor == afterStor){
-			product.removeContainer(before);
-			product.addContainer(after);
-		}
-		else{
-			product.addContainer(after);
-		}
+			StorageUnit su1, StorageUnit su2) 
+			throws IllegalStateException{
+		assert true;
+		if(!product.getContainers().contains(before))
+			throw new IllegalStateException();
+		
+		product.removeContainer(before);
+		product.addContainer(after);
 	}
 	
 	/** Returns true if a Product can be added to a particular storage unit. This will return 
@@ -123,8 +140,9 @@ public class ProductManager implements Serializable {
 	 * 				productsByContainer			
 	 * @return		true if the product can be added to the storage, false otherwise
 	 */
-	public boolean canAddProductToContainer(Product product, StorageUnit storage){
-		if(product.getContainers().contains(storage)){
+	public boolean canAddProductToContainer(Product product, Container container){
+		assert true;
+		if(product.getContainers().contains(container)){
 			return false;
 		}
 		return true;
@@ -138,7 +156,7 @@ public class ProductManager implements Serializable {
 	 * @return		return true if after is a valid Product, false otherwise
 	 */
 	public boolean isProductValid(Product product){
-		
+		assert true;
 		/* Is the date before today */
 		Date date = new Date();
 		if(product.getCreationDate().after(date))
@@ -162,14 +180,6 @@ public class ProductManager implements Serializable {
 		return true; 
 	}
 	
-	public boolean isProductUnique(Product product){
-		/* Is the UPC Unique */
-		if(productByUPC.containsValue(product))
-			return false;
-		
-		return true;
-	}
-	
 	/** Return true if qty has a valid number according to the specified Unit. If the Unit
 	 * is COUNT, then the Quantity number must be 1. If the Quantity Unit is any
 	 * other enum besides COUNT, number can be any positive float. 
@@ -178,7 +188,7 @@ public class ProductManager implements Serializable {
 	 * @return		returns true if Quantity is valid
 	 */
 	public boolean isQuantityValid(Quantity qty){
-		
+		assert true;
 	    
 		// If enum is COUNT, then check to see if the value is 1
 		if(qty.getUnit().equals(Unit.count) && qty.getNumber() != 1){
@@ -210,6 +220,7 @@ public class ProductManager implements Serializable {
 	 * @return returns all Products in system
 	 */
 	public Collection getProducts(){ 
+		assert true;
 		return productByUPC.values();
 	}
 	
@@ -226,7 +237,8 @@ public class ProductManager implements Serializable {
 	}
 	
 	public boolean isUPCUnique(String s){
-		Iterator it = productByUPC.entrySet().iterator();
+		assert true;
+		Iterator it = productByUPC.keySet().iterator();
 		while(it.hasNext()){
 			Barcode code = (Barcode) it.next();
 			if(s.equals(code.getBarcode()))
@@ -235,11 +247,21 @@ public class ProductManager implements Serializable {
 		return true;
 	}
 	
+	/** Getter for the products mapped with a UPC
+	 * 
+	 * @return	HashMap of Products mapped by a Barcode
+	 */
 	public Map getAllProductsByUPC(){
+		assert true;
 		return productByUPC;
 	}
 	
+	/** Getter for the set of products mapped by a container
+	 * 
+	 * @return	HashMap of Products mapped by a Container
+	 */
 	public Map getProductsByContainer(){
+		assert true;
 		return productsByContainer;
 	}
 

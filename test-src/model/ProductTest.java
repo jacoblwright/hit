@@ -11,7 +11,6 @@ import org.junit.Test;
 
 public class ProductTest {
 
-	@Test(expected = IllegalArgumentException.class )
 	public void setterGetterTest() throws ParseException {
 		
 		Container container = new ProductGroup();
@@ -49,9 +48,6 @@ public class ProductTest {
 		assertFalse(prod1.equals(i1));
 		assertTrue(prod1.equals(prod1));
 		
-		/* Adding Future Date should throw an exception */
-		prod1.setCreationDate(ed1);
-		assertEquals(ed1, prod1.getCreationDate());
 	}
 
 	@Test
@@ -105,30 +101,10 @@ public class ProductTest {
 		
 	}
 	
-	@Test(expected = IllegalArgumentException.class )
+	@Test
 	public void constructorTest(){
 		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,1);
 		Product prod2 = new Product("UPC2", "Description1", Unit.fluidOunces, 12, 1, 1);
-		Product prod3 = new Product("UPC3", "Description1", Unit.count, 2,1,1);
 	}
 	
-	@Test(expected = IllegalArgumentException.class )
-	public void negativeValueInShelfLifeTest(){
-		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,-1,1);
-	}
-	
-	@Test(expected = IllegalArgumentException.class )
-	public void negativeValueInSupplyTest(){
-		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,-1);
-	}
-	
-	@Test(expected = IllegalArgumentException.class )
-	public void emptyUPCTest(){
-		Product prod1 = new Product("", "Description1", Unit.count, 1,1,-1);
-	}
-	
-	@Test(expected = IllegalArgumentException.class )
-	public void emptyDescriptionTest(){
-		Product prod1 = new Product("UPC", "", Unit.count, 1,1,-1);
-	}
 }
