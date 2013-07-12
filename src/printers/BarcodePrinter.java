@@ -11,6 +11,15 @@ import model.*;
 public class BarcodePrinter {
     
     /**
+     * Creates an instance of BarcodePrinter.
+     */
+    public BarcodePrinter() {
+        
+        assert true;
+        
+    }
+    
+    /**
      * Creates a PDF file with images of barcodes for the the specified List
      * of Item objects.
      * @param items the List of Item objects for which a PDF file of barcodes
