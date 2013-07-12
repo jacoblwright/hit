@@ -136,7 +136,7 @@ public class ProductManager implements Serializable {
 	 * 
 	 * @param 		product is the Product being examined if it is currently already in a particular
 	 * 				 storage unit
-	 * @param 		storage Product checks whether storage is already contained in 
+	 * @param 		container storage Product checks whether storage is already contained in 
 	 * 				productsByContainer			
 	 * @return		true if the product can be added to the storage, false otherwise
 	 */
@@ -151,8 +151,7 @@ public class ProductManager implements Serializable {
 	/** Return true if after is a valid Product, false otherwise. A valid Product contains a Barcode
 	 * that contains a non-empty upc, a non-empty description, a Quantity that has a
 	 * 
-	 * @param 		before the value of Product before the edits
-	 * @param 		after the value of Product after the edits
+	 * @param 		product
 	 * @return		return true if after is a valid Product, false otherwise
 	 */
 	public boolean isProductValid(Product product){

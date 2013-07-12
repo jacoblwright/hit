@@ -8,7 +8,7 @@ import java.util.Date;
 *
 */
 
-public class Item extends Entity {
+public class Item extends Entity implements Comparable<Item> {
 	
 	/** Points to the product that describes the item. */
 	private Product product;
@@ -206,7 +206,13 @@ public class Item extends Entity {
 		Item item = (Item) obj;
 		return this.getTag().getBarcode() == item.getTag().getBarcode();
 	}
-
+	
+	@Override
+	public int compareTo(Item other) {
+	    
+	    return entryDate.compareTo(other.entryDate);
+	    
+	}
 
 	@Override
 	public String toString() {

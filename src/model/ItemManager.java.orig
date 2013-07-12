@@ -14,13 +14,15 @@ import java.io.*;
 
 <<<<<<< HEAD
 public class ItemManager implements Serializable {
+
 =======
+
+
 /** Creates and manages Items. This involves adding, moving, and removing items.
 *
 */
-public class ItemManager {
->>>>>>> 9894eb3d4f9c0627e8172c8b494457f058790029
-
+public class ItemManager implements Serializable {
+>>>>>>> 79f44e25ff1616f82b958c2466beff8b9c75139b
 	/**
 	 * Index for quick item lookup by container.
 	 */

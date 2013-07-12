@@ -1,16 +1,14 @@
 package model;
 
-import java.io.Serializable;
 
-/** Quantity holds a Unit and a number value associated with that Unit
+/** Quantity holds a Unit and a number value associated with that Unit.
  * ex. unit = 'count' & number = 1, or unit = 'pounds' & number = 2.4.
  * 
  * @author jake
  * @invariant	Quantity.alwaysExists(number, unit)
  */
-public class Quantity implements Serializable {
+public class Quantity {
 	
-	private static final long serialVersionUID = 3907772370880513015L;
 
 	/**	number associated with unit */
 	private float number;
@@ -34,7 +32,7 @@ public class Quantity implements Serializable {
 		this.unit = unit;
 	}
 	
-	/**Getter for number
+	/**Getter for number.
 	 * @pre 			none
 	 * @return 			Returns the float value of number.
 	 */
@@ -43,7 +41,7 @@ public class Quantity implements Serializable {
 		return number;
 	}
 	
-	/**Getter for Unit
+	/**Getter for Unit.
 	 * @pre 			none
 	 * @return			Returns the unit.
 	 */
@@ -52,7 +50,7 @@ public class Quantity implements Serializable {
 		return unit;
 	}
 
-	/**Creates the string version of this object
+	/**Creates the string version of this object.
 	 * @pre 				none	
 	 * @return String		this.toString()
 	 */
@@ -62,7 +60,7 @@ public class Quantity implements Serializable {
 		return "Quantity [number=" + number + ", unit=" + unit + "]";
 	}
 
-	/**Creates a unique hashcode for this object
+	/**Creates a unique hashcode for this object.
 	 * @pre					none
 	 * @return int			unique Integer
 	 */
@@ -76,7 +74,7 @@ public class Quantity implements Serializable {
 		return result;
 	}
 	
-	/**checks equality between two objects
+	/**checks equality between two objects.
 	 * @pre						none
 	 * @param obj				obj in question fo equality		
 	 * @return boolean 			if this == obj return true, otherwise false.
