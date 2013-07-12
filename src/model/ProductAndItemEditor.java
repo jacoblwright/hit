@@ -53,7 +53,7 @@ public class ProductAndItemEditor {
         StorageUnit storageUnit =
                 containerManager.getAncestorStorageUnit(container);
         
-        productManager.addProductToContainer(product, container, storageUnit);
+        productManager.addProductToContainer(product, container);
         
     }
     */
