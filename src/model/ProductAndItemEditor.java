@@ -39,7 +39,7 @@ public class ProductAndItemEditor {
         StorageUnit storageUnit =
                 containerManager.getAncestorStorageUnit(container);
         
-        productManager.addNewProduct(product, container, storageUnit);
+        productManager.addNewProduct(product, container);
         
     }
     
@@ -53,7 +53,7 @@ public class ProductAndItemEditor {
         StorageUnit storageUnit =
                 containerManager.getAncestorStorageUnit(container);
         
-        productManager.addProductToContainer(product, container, storageUnit);
+        productManager.addProductToContainer(product, container);
         
     }
     
@@ -87,7 +87,7 @@ public class ProductAndItemEditor {
         StorageUnit targetSU = containerManager.getAncestorStorageUnit(target);
         
         productManager.moveProduct(
-                product, source, target, sourceSU, targetSU);
+                product, source, target);
         
         Collection<Item> items = itemManager.getItems(source, product);
         for (Item item : items) {
@@ -105,7 +105,7 @@ public class ProductAndItemEditor {
      */
     public void deleteProduct(Product product, Container container) {
         
-        productManager.deleteProduct(product, container);
+        productManager.removeProductFromContainer(product, container);
         
     }
 

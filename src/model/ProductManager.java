@@ -39,7 +39,8 @@ public class ProductManager extends Observable{
 	 * @param container	the container being added to the product
 	 * @throws IllegalArgumentException if the product's upc already exists
 	 */
-	public void addNewProduct(Product product, Container container) throws IllegalArgumentException{
+	public void addNewProduct(Product product, Container container) 
+			throws IllegalArgumentException{
 		
 		if(UPCExists(product.getUPC().getBarcode())){
 			throw new IllegalArgumentException();
@@ -77,9 +78,11 @@ public class ProductManager extends Observable{
 	 * @param 		product	the product being moved
 	 * @param 		before	the container the product is being moved from
 	 * @param 		after	the new container that the product is being move to
-	 * @throws IllegalStateException when product does not have before in its collection of containers
+	 * @throws IllegalStateException when product does not have before in its collection 
+	 * of containers
 	 */
-	public void moveProduct(Product product, Container before, Container after) throws IllegalStateException{
+	public void moveProduct(Product product, Container before, Container after) 
+			throws IllegalStateException{
 		
 		if(!product.getContainers().contains(before))
 			throw new IllegalStateException();
@@ -107,13 +110,14 @@ public class ProductManager extends Observable{
 		}
 	}
 	
-	/** Deletes Product from container's mapping in productsByContainer and removes container from product's
-	 * set of containers
+	/** Deletes Product from container's mapping in productsByContainer and removes 
+	 * container from product's set of containers
 	 * @pre 	product must exist in the container's mapping
 	 * @post	removes the Product from the set
 	 * @throws IllegalArgumentException if container does not exist in productsByContainer
 	 */
-	public void removeProductFromContainer(Product product, Container container) throws IllegalArgumentException{
+	public void removeProductFromContainer(Product product, Container container) 
+			throws IllegalArgumentException{
 		
 		if(!productsByContainer.containsKey(container))
 			throw new IllegalArgumentException();
