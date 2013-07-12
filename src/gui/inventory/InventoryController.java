@@ -10,7 +10,7 @@ import java.util.*;
  * Controller class for inventory view.
  */
 public class InventoryController extends Controller 
-									implements IInventoryController {
+									implements IInventoryController, Observer {
 
 	/**
 	 * Constructor.
@@ -383,6 +383,12 @@ public class InventoryController extends Controller
 	@Override
 	public void moveItemToContainer(ItemData itemData,
 									ProductContainerData containerData) {
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

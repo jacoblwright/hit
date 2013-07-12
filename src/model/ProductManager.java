@@ -7,23 +7,25 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Set;
 
-/** Manages alterations to all the Products in the system and handles passing the products 
+/** Manages alterations to all the Products in the system and handles passing the Product's 
  * 	structure to higher level classes. 
  * 
  * @author Andrew Wilde
  * @version 1.0
  */
 
-public class ProductManager {
+public class ProductManager extends Observable{
 	/** Maps containers to sets of products. */
 	private Map <Container, Set<Product>> productsByContainer;
 	
 	/** Maps a barcode to a product. */
 	private Map <Barcode, Product> productByUPC;
 	
-	/** Constructs the ProductManager. */ 
+	/** Constructs the ProductManager by initializing a HashMap<Container, Set<Product> 
+	 * and HashMap<Barcode, Product */ 
 	public ProductManager(){
 		assert true;
 		productsByContainer = new HashMap<Container, Set<Product>>();
@@ -33,38 +35,67 @@ public class ProductManager {
 	/** Adds a product to the system
 	 * @pre 	product must not already exist in the map
 	 * @post	product is added to the set
+	 * @param product	the current product the container will be added to 
+	 * @param container	the container being added to the product
+	 * @throws IllegalArgumentException if the product's upc already exists
 	 */
-	public void addNewProduct(Product product, Container container, StorageUnit storageUnit) 
-			throws IllegalArgumentException{
+	public void addNewProduct(Product product, Container container) throws IllegalArgumentException{
 		
-		if(!isUPCUnique(product.getUPC().getBarcode())){
+		if(UPCExists(product.getUPC().getBarcode())){
 			throw new IllegalArgumentException();
 		}
-		
-		/* Add first to container */
-		addProductToContainer(product, container, storageUnit);
-		
-		
+
+		addProductToContainer(product, container);
 		productByUPC.put(product.getUPC(), product);
 	}
 	
-	/** Adds product to specific container. It checks the storageUnit to make sure the products is
-	 * not already contained within that product.
+	/** Edits a Product's description, shelf life, quantity, and three month supply
 	 * 
-	 * @param product	Product being moved
-	 * @param container	The container to which the product is being moved to
-	 * @param storageUnit	The storageUnit the Product is being moved to
-	 * @throws IllegalArgumentException
+	 * @param before	The product to be changed
+	 * @param after		The product that contains the new values
+	 * @pre after Product must be a valid Product
+	 * @post before is changed to reflect after's attributes
+	 * @throws IllegalArgumentException if the product is not valid
 	 */
-	public void addProductToContainer(Product product, Container container,StorageUnit storageUnit) 
-			throws IllegalArgumentException{
-		
-		if(!canAddProductToContainer(product, container)){
+	public void editProduct(Product before, Product after) throws IllegalArgumentException{
+		assert true;
+		if(!isProductValid(after)){
 			throw new IllegalArgumentException();
 		}
 		
-		/* Adds Container to the Product */
+		before.setDescription(after.getDescription());
+		before.setShelfLife(after.getShelfLife());
+		before.setSize(after.getSize().getUnit(), after.getSize().getNumber());
+		before.setThreeMonthSupply(after.getThreeMonthSupply());
+	}
+	
+	/** Moves a product from one container to another (or simply replaces itself)
+	 * @pre Product's set of containers must contain the Container before
+	 * @post product will be removed from the before's mapped set and before will be removed from
+	 * product's set of containers. product will be added to after's mapping and after will be 
+	 * added to product's set of containers.
+	 * @param 		product	the product being moved
+	 * @param 		before	the container the product is being moved from
+	 * @param 		after	the new container that the product is being move to
+	 * @throws IllegalStateException when product does not have before in its collection of containers
+	 */
+	public void moveProduct(Product product, Container before, Container after) throws IllegalStateException{
+		
+		if(!product.getContainers().contains(before))
+			throw new IllegalStateException();
+		
+		removeProductFromContainer(product, before);
+		addProductToContainer(product, after);
+	}
+	/** Adds product to specific container
+	 * 
+	 * @param product	Product being moved
+	 * @param container	The container to which the product is being moved to
+	 */
+	public void addProductToContainer(Product product, Container container){
+		
 		product.addContainer(container);
+		
 		/* Add Product to Container Map */
 		if(productsByContainer.containsKey(container)){
 			productsByContainer.get(container).add(product);
@@ -76,100 +107,48 @@ public class ProductManager {
 		}
 	}
 	
-	/** An item is edited by taking a new product and replacing the old product's attributes with
-	 * the new product's attributes.
-	 * 
-	 * @param before	The product to be changed
-	 * @param after		The product that contains the new values
-	 * @throws IllegalArgumentException
-	 */
-	public void editProduct(Product before, Product after) throws IllegalArgumentException{
-		assert true;
-		before.setDescription(after.getDescription());
-		before.setShelfLife(after.getShelfLife());
-		before.setSize(after.getSize().getUnit(), after.getSize().getNumber());
-		before.setThreeMonthSupply(after.getThreeMonthSupply());
-	}
-	
-	/** Deletes a Product from the set all of products.
-	 * @pre 	product must exist in the set
-	 * @pre		product must not have any Items attached to it
+	/** Deletes Product from container's mapping in productsByContainer and removes container from product's
+	 * set of containers
+	 * @pre 	product must exist in the container's mapping
 	 * @post	removes the Product from the set
+	 * @throws IllegalArgumentException if container does not exist in productsByContainer
 	 */
-	public void deleteProduct(Product product, Container container) throws IllegalArgumentException{
-		/* It will be previously verified if the product can indeed be deleted with the 
-		 * canDeleteProduct method */
+	public void removeProductFromContainer(Product product, Container container) throws IllegalArgumentException{
+		
 		if(!productsByContainer.containsKey(container))
 			throw new IllegalArgumentException();
+		
+		product.removeContainer(container);
+		
 		Set tempSet = (HashSet)productsByContainer.get(container);
 		if(!tempSet.contains(product))
 			throw new IllegalArgumentException();
-		
-		/* Remove container from product */
-		product.removeContainer(container);
-		/* Remove product from container */
-		tempSet.remove(product);
 
-	}
-	
-	/** Moves a product to a new container as long as that product is not already located in that 
-	 * 	storage unit.
-	 * @pre 		product is not already in the container it is being moved into
-	 * @param 		product	the product being moved
-	 * @param 		before	the container before the product was moved
-	 * @param 		after	the new container that the product is being move to
-	 */
-	public void moveProduct(Product product, Container before, Container after, 
-			StorageUnit su1, StorageUnit su2) 
-			throws IllegalStateException{
-		assert true;
-		if(!product.getContainers().contains(before))
-			throw new IllegalStateException();
-		
-		product.removeContainer(before);
-		product.addContainer(after);
-	}
-	
-	/** Returns true if a Product can be added to a particular storage unit. This will return 
-	 * true if product is not already contained within that particular storage unit.
-	 * 
-	 * @param 		product is the Product being examined if it is currently already in a particular
-	 * 				 storage unit
-	 * @param 		storage Product checks whether storage is already contained in 
-	 * 				productsByContainer			
-	 * @return		true if the product can be added to the storage, false otherwise
-	 */
-	public boolean canAddProductToContainer(Product product, Container container){
-		assert true;
-		if(product.getContainers().contains(container)){
-			return false;
-		}
-		return true;
+		tempSet.remove(product);
 	}
 	
 	/** Return true if after is a valid Product, false otherwise. A valid Product contains a Barcode
 	 * that contains a non-empty upc, a non-empty description, a Quantity that has a
 	 * 
-	 * @param 		before the value of Product before the edits
-	 * @param 		after the value of Product after the edits
-	 * @return		return true if after is a valid Product, false otherwise
+	 * @param product	the product behing checked for validity
+	 * @return		return true if product is a valid Product, false otherwise
 	 */
 	public boolean isProductValid(Product product){
 		assert true;
-		/* Is the date before today */
+
 		Date date = new Date();
 		if(product.getCreationDate().after(date))
 			return false;
 		
-		/* Is the product's barcode non-empty */
 		if(product.getUPC().getBarcode().isEmpty())
 			return false;
 		
-		/* Is the product's quantity valid */
+		if(product.getDescription().isEmpty())
+			return false;
+		
 		if(!isQuantityValid(product.getSize()))
 			return false;
 		
-		/* Is the product's shelf life above zero */
 		if(product.getShelfLife() < 0)
 			return false;
 		
@@ -190,21 +169,37 @@ public class ProductManager {
 		assert true;
 	    
 		// If enum is COUNT, then check to see if the value is 1
-		if(qty.getUnit().equals(Unit.count) && qty.getNumber() != 1){
+		if(qty.getUnit().equals(Unit.count) && qty.getNumber() != 1.0){
 			return false;
 		}
 		//If enum is anything but COUNT, check that value is greater than zero
 		else if (qty.getNumber() <= 0 ){
 			return false;
 		}
-		
 		return true; 
+	}
+	
+	/** Checks whether the upc is currently assigned to a Product.
+	 * 
+	 * @param upc	the String representation of a upc
+	 * @return		true if the upc exists, false otherwise
+	 */
+	public boolean UPCExists(String upc){
+		assert true;
+		Iterator it = productByUPC.keySet().iterator();
+		while(it.hasNext()){
+			Barcode code = (Barcode) it.next();
+			if(upc.equals(code.getBarcode()))
+				return true;
+		}
+		return false;
 	}
 	
 	/** Returns a Collection of all Products in a particular container.
 	 * 
-	 * @param 		container all Products contained within container should be returned
-	 * @return		returns all the Products associated with this particular container
+	 * @param 		the container being searched for Products
+	 * @return		returns a collection of Products associated with this particular container
+	 * @throws IllegalArgumentException if the container is not contained within the map
 	 */
 	public Collection getProducts(Container container) throws IllegalArgumentException{
 		if(!productsByContainer.containsKey(container))
@@ -214,9 +209,9 @@ public class ProductManager {
 		
 	}
 	
-	/** Returns a Collection of all Products.
+	/** Returns all Products in the system
 	 * 
-	 * @return returns all Products in system
+	 * @return returns a collection of all Products
 	 */
 	public Collection getProducts(){ 
 		assert true;
@@ -225,32 +220,31 @@ public class ProductManager {
 	
 	/** Returns a Product that pertains to a particular Barcode.
 	 * 
-	 * @param barcode
-	 * @return returns the Product associate to barcode
+	 * @param barcode	the barcode being searched for
+	 * @return returns the Product associated to barcode
+	 * @throws IllegalArgumentException if the barcode is not contained in the productByUPC map
 	 */
-	public Product getProductByBarcode(Barcode barcode) throws IllegalArgumentException{ 
-		if(!productByUPC.containsKey(barcode))
+	public Product getProductByUPC(Barcode barcode) throws IllegalArgumentException{ 
+		
+		Collection barcodes = productByUPC.keySet();
+		Iterator it = barcodes.iterator();
+		while(it.hasNext()){
+			Barcode code = (Barcode)it.next();
+			if(code.equals(barcode)){
+				return productByUPC.get(code);
+			}
+		}
+		if(!it.hasNext())
 			throw new IllegalArgumentException();
 		
-		return productByUPC.get(barcode); 
-	}
-	
-	public boolean isUPCUnique(String s){
-		assert true;
-		Iterator it = productByUPC.keySet().iterator();
-		while(it.hasNext()){
-			Barcode code = (Barcode) it.next();
-			if(s.equals(code.getBarcode()))
-				return false;
-		}
-		return true;
+		return null;
 	}
 	
 	/** Getter for the products mapped with a UPC
 	 * 
 	 * @return	HashMap of Products mapped by a Barcode
 	 */
-	public Map getAllProductsByUPC(){
+	public Map getProductsByUPC(){
 		assert true;
 		return productByUPC;
 	}
@@ -262,6 +256,16 @@ public class ProductManager {
 	public Map getProductsByContainer(){
 		assert true;
 		return productsByContainer;
+	}
+	
+	/** Notifies all observers that a Product has been changed
+	 * 
+	 * pre none
+	 * post notifies observers of Product changes
+	 */
+	
+	public void notifyObservers(){
+		
 	}
 
 }
