@@ -1,5 +1,6 @@
 package model;
 
+import java.io.*;
 
 /** Quantity holds a Unit and a number value associated with that Unit.
  * ex. unit = 'count' & number = 1, or unit = 'pounds' & number = 2.4.
@@ -7,7 +8,7 @@ package model;
  * @author jake
  * @invariant	Quantity.alwaysExists(number, unit)
  */
-public class Quantity {
+public class Quantity implements Serializable {
 	
 
 	/**	number associated with unit */

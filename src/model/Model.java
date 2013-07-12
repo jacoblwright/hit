@@ -2,6 +2,7 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InvalidClassException;
 
 public class Model {
     
@@ -90,18 +91,14 @@ public class Model {
             
             e.printStackTrace();
             
-            containerManager = new ContainerManager();
-            productManager = new ProductManager();
-            itemManager = new ItemManager();
+            createNewManagers();
             
         }
         catch (ClassNotFoundException e) {
             
             e.printStackTrace();
             
-            containerManager = new ContainerManager();
-            productManager = new ProductManager();
-            itemManager = new ItemManager();
+            createNewManagers();
             
         }
         
@@ -150,6 +147,16 @@ public class Model {
                 productManager, new File(saveLocation + P_MANAGER_DATA_PATH));
         Serializer.save(
                 itemManager, new File(saveLocation + I_MANAGER_DATA_PATH));
+        
+    }
+    
+    private void createNewManagers() {
+        
+        assert true;
+        
+        containerManager = new ContainerManager();
+        productManager = new ProductManager();
+        itemManager = new ItemManager();
         
     }
     
