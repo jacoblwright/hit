@@ -14,13 +14,14 @@ package model;
 public class ProductGroup extends Container {
 	
 	private static final long serialVersionUID = -4392414123711461754L;
+	
 	/**	threeMonthSupply- zero means unspecified, default 0 and Unspecified used for ProductGroups*/
 	private Quantity threeMonthSupply;
 	
 	/**	For Quantity threeMonthSupply variable a 0 means unspecified	*/
 	private float unspecified = 0;
 	
-	/**Initializes threeMonthSupply to unspecified
+	/**Initializes threeMonthSupply to unspecified.
 	 * @pre				none
 	 * @post			threeMonthSupply.Initialize()
 	 */
@@ -31,7 +32,7 @@ public class ProductGroup extends Container {
 		threeMonthSupply.setQuantity( unspecified, Unit.unspecified );
 	}
 	
-	/**Getter for container
+	/**Getter for container.
 	 * @pre							none
 	 * @return						parent container
 	 */
@@ -40,7 +41,7 @@ public class ProductGroup extends Container {
 		return container;		
 	}
 
-	/**Setter for container
+	/**Setter for container.
 	 * @pre							none
 	 * @param container				sets parent container
 	 */
@@ -49,7 +50,7 @@ public class ProductGroup extends Container {
 		this.container = container;
 	}
 
-	/**Getter for threeMonthSupply
+	/**Getter for threeMonthSupply.
 	 * @pre							none
 	 * @return						three month supply for everything in 
 	 */
@@ -58,7 +59,7 @@ public class ProductGroup extends Container {
 		return threeMonthSupply;
 	}
 
-	/**Setter for threeMonthSupply
+	/**Setter for threeMonthSupply.
 	 * @pre							none
 	 * @param threeMonthSupply		adds threeMonthSupply if it is properly formatted
 	 */
@@ -68,7 +69,7 @@ public class ProductGroup extends Container {
 	}
 
 	/**Checks to see if threeMonthSupply meets all of the specified 
-	 * qualifications defined by class that extend Container
+	 * qualifications defined by class that extend Container.
 	 * Rule- if Unit == count then number must be an integer value
 	 * otherwise number can be a float.
 	 * @pre							none
@@ -87,11 +88,10 @@ public class ProductGroup extends Container {
 		return true;
 	}
 
-	/**Checks to see if current container has different name than sibling containers
+	/**Checks to see if current container has different name than sibling containers.
 	 * @pre							none
 	 * @post						if uniqueName & nonEmptyName & 
 	 * 								threeMonthSupply.isValid { container.isValid = true }
-	 * @param container				current container to be validated
 	 */
 	@Override
 	public boolean isContainerValid() {
@@ -99,7 +99,7 @@ public class ProductGroup extends Container {
 		return nonEmptyName() && canAddThreeMonthSupply();
 	}
 	
-	/**Removes whitespace to see if the name is nonEmpty
+	/**Removes whitespace to see if the name is nonEmpty.
 	 * @pre							name != null
 	 * @return boolean				true if name is nonEmpty, otherwise false.
 	 */
@@ -107,7 +107,7 @@ public class ProductGroup extends Container {
 		return getName().trim().length() > 0;
 	}
 
-	/**Creates a unique hashcode for this object
+	/**Creates a unique hashcode for this object.
 	 * @pre					none
 	 * @return int			unique Integer
 	 */
@@ -119,7 +119,7 @@ public class ProductGroup extends Container {
 		return hash;
 	}
 
-	/**checks equality between two objects
+	/**checks equality between two objects.
 	 * @pre						none
 	 * @param obj				obj in question fo equality		
 	 * @return boolean 			if this == obj return true, otherwise false.
@@ -131,7 +131,7 @@ public class ProductGroup extends Container {
 				this.threeMonthSupply.equals( ((ProductGroup)obj).threeMonthSupply );
 	}
 
-	/**Creates the string version of this object
+	/**Creates the string version of this object.
 	 * @pre 				none	
 	 * @return String		this.toString()
 	 */

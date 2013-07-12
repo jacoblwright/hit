@@ -9,41 +9,40 @@ import org.apache.commons.io.*;
 public class Serializer {
 	
 	/**
-	 * Writes the state of the specified object to the specified file.
-      * @pre file is valid
-      * @post saveState(file)
+	 * Writes the state of the specified Object to the specified File.
+      * @pre File system permissions allow this program to write to the
+      * specified File.
+      * @post If the specified File doesn't exist it is created, and the data
+      * of the specified Object is written to the specified file.
       * @throws IOException
       */
      public static void save(Object object, File file) throws IOException {
-         
+                  
+         if (!file.exists()) {
+             file.createNewFile();
+         }
          
          OutputStream os = new FileOutputStream(file);
     	 IOUtils.write(serialize(object), os);
     	 os.close();
          
-         
      }
 
      /**
       * Loads the object data in the specified File.
-      * @pre file is valid
-      * @post loadState(file)
-      * @return an object whose data was stored in the specified File.
+      * @pre The specified File exists and file system permissions allow the
+      * program to read from the specified File.
+      * @return an Object whose data was stored in the specified File.
       * @throws ClassNotFoundException 
       */
      public static Object load(File file)
              throws IOException, ClassNotFoundException {
-    	 
-         
+    	   
          InputStream is = new FileInputStream(file);
          Object object = deserialize(IOUtils.toByteArray(is));
          is.close();
          
-
-return null;
-         
-         
-         //return null;
+         return object;
          
      }
      

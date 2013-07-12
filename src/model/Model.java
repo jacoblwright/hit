@@ -9,7 +9,7 @@ public class Model {
     private final String P_MANAGER_DATA_PATH = "pm.hit";
     private final String I_MANAGER_DATA_PATH = "im.hit";
     
-    private String pathBase;
+    private String saveLocation;
     
     private ContainerEditor containerEditor;
     private ContainerManager containerManager;
@@ -31,41 +31,76 @@ public class Model {
         
         try {
             
-            pathBase = getClass().getProtectionDomain().getCodeSource()
-                    .getLocation().getFile();
+            /*
+            saveLocation = getClass().getProtectionDomain().getCodeSource()
+                    .getLocation().getFile() + File.separator +
+                    "hit_data" + File.separator;
+            */
             
-            File f = new File(pathBase + C_MANAGER_DATA_PATH);
-            if (f.exists() && f.canRead()) {
-                this.containerManager = (ContainerManager)Serializer.load(f);
-            }
-            else {
-                this.containerManager = new ContainerManager();
-            }
-            
-            f = new File(pathBase + P_MANAGER_DATA_PATH);
-            if (f.exists() && f.canRead()) {
-                this.productManager = (ProductManager)Serializer.load(f);
-            }
-            else {
-                this.productManager = new ProductManager();
+            saveLocation = System.getProperty("user.home") + File.separator +
+                    "hit_data" + File.separator;
+            File dir = new File(saveLocation);
+            if (!dir.exists()) {
+                dir.mkdirs();
             }
             
-            f = new File(pathBase + I_MANAGER_DATA_PATH);
-            if (f.exists() && f.canRead()) {
-                this.itemManager = (ItemManager)Serializer.load(f);
+            File file = new File(saveLocation + C_MANAGER_DATA_PATH);
+            ContainerManager cm = null;
+            if (file.exists() && file.canRead()) {
+                cm = (ContainerManager)Serializer.load(file);
+            }
+            if (cm != null) {
+                containerManager = cm;
             }
             else {
-                this.itemManager = new ItemManager();
+                containerManager = new ContainerManager();
             }
+            
+            file = new File(saveLocation + P_MANAGER_DATA_PATH);
+            ProductManager pm = null;
+            if (file.exists() && file.canRead()) {
+                pm = (ProductManager)Serializer.load(file);
+            }
+            if (pm != null) {
+                productManager = pm;
+            }
+            else {
+                productManager = new ProductManager();
+            }
+            
+            file = new File(saveLocation + I_MANAGER_DATA_PATH);
+            ItemManager im = null;
+            if (file.exists() && file.canRead()) {
+                im = (ItemManager)Serializer.load(file);
+            }
+            if (im != null) {
+                itemManager = im;
+            }
+            else {
+                itemManager = new ItemManager();
+            }
+            
         
         }
         catch (IOException e) {
+            
             e.printStackTrace();
+            
+            containerManager = new ContainerManager();
+            productManager = new ProductManager();
+            itemManager = new ItemManager();
+            
         }
         catch (ClassNotFoundException e) {
+            
             e.printStackTrace();
+            
+            containerManager = new ContainerManager();
+            productManager = new ProductManager();
+            itemManager = new ItemManager();
+            
         }
-    
+        
         this.containerEditor =
                 new ContainerEditor(containerManager, itemManager);
         this.productAndItemEditor =
@@ -77,7 +112,7 @@ public class Model {
     /**
      * Saves the state of the managers to disk in the same location as this
      * class file.
-     * @pre none
+     * @pre None.
      * @post The state of the managers are saved to disc in the same location
      * as this class file.
      * @throws IOException if there was a problem with saving the state of
@@ -85,14 +120,16 @@ public class Model {
      */
     public void save() throws IOException {
         
-        System.out.println(pathBase);
+        assert true;
+        
+        //System.out.println(saveLocation);
         
         Serializer.save(
-                containerManager, new File(pathBase + C_MANAGER_DATA_PATH));
+                containerManager, new File(saveLocation + C_MANAGER_DATA_PATH));
         Serializer.save(
-                productManager, new File(pathBase + P_MANAGER_DATA_PATH));
+                productManager, new File(saveLocation + P_MANAGER_DATA_PATH));
         Serializer.save(
-                itemManager, new File(pathBase + I_MANAGER_DATA_PATH));
+                itemManager, new File(saveLocation + I_MANAGER_DATA_PATH));
         
     }
     

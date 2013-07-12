@@ -22,7 +22,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	/**	container- Must be non-empty for ProductGroups */
 	protected Container container;
 
-	/**Getter for name
+	/**Getter for name.
 	 * @pre 			none
 	 * @return			name of the container
 	 */
@@ -31,7 +31,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return name;
 	}
 
-	/**Setter for name
+	/**Setter for name.
 	 * @pre				none
 	 * @param name		name of the container
 	 */
@@ -40,7 +40,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		this.name = name;
 	}
 
-	/**Getter for list of ProductGroups
+	/**Getter for list of ProductGroups.
 	 * @pre				none
 	 * @return			list of product groups, if productGroups == null returns an empty list
 	 */
@@ -52,7 +52,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return productGroups;
 	}
 
-	/**Setter for productGroups
+	/**Setter for productGroups.
 	 * @pre				none
 	 * @post			sets a list of product groups to productGroups
 	 * @param productGroups
@@ -62,7 +62,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		this.productGroups = productGroups;
 	}
 	
-	/**Retrieves the size of the list of productGroups
+	/**Retrieves the size of the list of productGroups.
 	 * @pre 			none
 	 * @return			size of the list of productGroups, if productGroup == null returns 0
 	 */
@@ -74,7 +74,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return productGroups.size();
 	}
 	
-	/**Adds a single productGroup to the list of productGroups
+	/**Adds a single productGroup to the list of productGroups.
 	 * @pre						none
 	 * @post					if(productGroup == null) create new ArrayList<ProductGroup>()
 	 * @post					productGroups.add(productGroup)
@@ -89,7 +89,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	}
 	
 	/**Abstract Method, 
-	 * Checks to see if given productsName is unique among the list of ProductGroups
+	 * Checks to see if given productsName is unique among the list of ProductGroups.
 	 * @pre							none			
 	 * @return						True if all of the qualifications are met and false otherwise.
 	 */
@@ -120,7 +120,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return name.compareTo(other.name);
 	}
 	
-	/**Creates a unique hashcode for this object
+	/**Creates a unique hashcode for this object.
 	 * @pre					none
 	 * @return int			unique Integer
 	 */
@@ -137,7 +137,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return hash;
 	}
 
-	/**checks equality between two objects
+	/**checks equality between two objects.
 	 * @pre						none
 	 * @param obj				obj in question fo equality		
 	 * @return boolean 			if this == obj return true, otherwise false.
@@ -161,7 +161,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 				((Container)obj).productGroups ):((Container)obj).productGroups == null );
 	}
 
-	/**Creates the string version of this object
+	/**Creates the string version of this object.
 	 * @pre 				none	
 	 * @return String		this.toString()
 	 */

@@ -1,7 +1,8 @@
 *.class
 .metadata
 .DS_Store
-
+*.txt
+*.html
 coverage-test/
 
 # Package Files #

@@ -60,7 +60,7 @@ public class Barcode implements Serializable {
 	 * 
 	 * @param barcode must be a valid barcode
 	 * 
-	 * @return barcode object with valid barcode
+	 * @post barcode object with valid barcode
 	 * 
 	 * @throws IllegalArgumentException
 	 */

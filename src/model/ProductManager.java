@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.io.*;
 
 /** Manages alterations to all the Products in the system and handles passing the products 
  * 	structure to higher level classes. 
@@ -16,7 +17,7 @@ import java.util.Set;
  * @version 1.0
  */
 
-public class ProductManager {
+public class ProductManager implements Serializable {
 	/** Maps containers to sets of products. */
 	private Map <Container, Set<Product>> productsByContainer;
 	
@@ -135,7 +136,7 @@ public class ProductManager {
 	 * 
 	 * @param 		product is the Product being examined if it is currently already in a particular
 	 * 				 storage unit
-	 * @param 		storage Product checks whether storage is already contained in 
+	 * @param 		container storage Product checks whether storage is already contained in 
 	 * 				productsByContainer			
 	 * @return		true if the product can be added to the storage, false otherwise
 	 */
@@ -150,8 +151,7 @@ public class ProductManager {
 	/** Return true if after is a valid Product, false otherwise. A valid Product contains a Barcode
 	 * that contains a non-empty upc, a non-empty description, a Quantity that has a
 	 * 
-	 * @param 		before the value of Product before the edits
-	 * @param 		after the value of Product after the edits
+	 * @param 		product
 	 * @return		return true if after is a valid Product, false otherwise
 	 */
 	public boolean isProductValid(Product product){

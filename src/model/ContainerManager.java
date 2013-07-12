@@ -1,10 +1,12 @@
 package model;
 
+import java.util.Observable;
 import java.util.Set;
 import java.util.TreeSet;
+import java.io.*;
 
-
-public class ContainerManager {
+@SuppressWarnings("serial")
+public class ContainerManager extends Observable implements Serializable {
 	
 	/** Map where the key is the storage unit and the value is a list of Containers	*/
 	private Set<StorageUnit> storageUnits;
@@ -20,10 +22,10 @@ public class ContainerManager {
 		uniqueId = 0;
 	}
 	
-	/** Returns all of the productGroup lists of the current container recursively
-	 * @pre none
-	 * @param container
-	 * @return 
+	/** Returns all of the productGroup lists of the current container recursively.
+	 * @pre 									none
+	 * @param container	
+	 * @return Set<container>  					list of the descendent containers
 	 * @throws IllegalArgumentException			if container == null
 	 */
 	public Set<Container> getDescendents( Container container )
@@ -38,7 +40,7 @@ public class ContainerManager {
 		return result;
 	}
 	
-	/**Recursively gets all of the productGroups from the given container
+	/**Recursively gets all of the productGroups from the given container.
 	 * @pre none
 	 * @param container
 	 * @param pgList
@@ -58,10 +60,9 @@ public class ContainerManager {
 	}
 
 
-	/**
+	/** Used for testing and reinitializing the tree, easy way to set up tree.
 	 * @pre none
 	 * @post sets storageUnits
-	 * Used for testing and reinitializing the tree, easy way to set up tree
 	 * @param storageUnits Set<StorageUnit>
 	 */
 	public void setStorageUnits( Set<StorageUnit> storageUnits ) {
@@ -69,7 +70,7 @@ public class ContainerManager {
 		this.storageUnits = storageUnits;
 	}
 	
-	/** Returns a list of all the storage units
+	/** Returns a list of all the storage units.
 	 * @pre						none
 	 * @return iterator			
 	 */
@@ -81,7 +82,7 @@ public class ContainerManager {
 		return storageUnits;	
 	}
 	
-	/**Given a container the StorageUnit of that container
+	/**Given a container the StorageUnit of that container.
 	 * @pre non
 	 * @param container
 	 * @return returns StorageUnit 
@@ -100,7 +101,6 @@ public class ContainerManager {
 	 * @post					if( checkCanAdd(container) ) { add(container); }
 	 * @param parent			parent container to the current container
 	 * @param container			Current container to be deleted
-	 * @return					True upon successfully adding, otherwise false
 	 * @throws IllegalArgumentException 		if parent == null and child != storageUnit or
 	 * 											container.canAdd == false
 	 */
@@ -119,7 +119,7 @@ public class ContainerManager {
 	
 	/** Initializes container and adds it to the parent.
 	 * Also adds container to list of ProductGroup if instance of ProductGroup,
-	 * otherwise parent is null
+	 * otherwise parent is null.
 	 * @pre 							container != null
 	 * @param parent
 	 * @param container
@@ -140,7 +140,8 @@ public class ContainerManager {
 	 * @pre						parameters != null
 	 * @pre						canEditContainer( newContainer ) == true
 	 * @post					if( checkCanEdit(container) ) { edit(container); }
-	 * @param container			New values for container, changes container with same id
+	 * @param oldContainer		The original container
+	 * @param newContainer		The new container values
 	 * @throws IllegalArgumentException		if oldContainer == null or newContainer == null or
 	 * 										newContainer.canEdit == false
 	 */
@@ -201,7 +202,7 @@ public class ContainerManager {
 	}
 	
 	/**Checks to see if all of the qualifications are met to edit the current container.
-	 * Qualifications are the same as adding to a container
+	 * Qualifications are the same as adding to a container.
 	 * @pre						none
 	 * @post					checks to see if all qualifications are met in order to edit
 	 * @param container 		Current container that will be checked to see if it can be added
@@ -213,7 +214,7 @@ public class ContainerManager {
 	}
 	
 	/**Abstract Method, 
-	 * Checks to see if given productsName is unique among the list of ProductGroups
+	 * Checks to see if given productsName is unique among the list of ProductGroups.
 	 * @pre							container != null
 	 * @param groupName				String name in question 			
 	 * @return						True if all of the qualifications are met and false otherwise.
@@ -231,7 +232,7 @@ public class ContainerManager {
 		return true;
 	}
 	
-	/**Compares storage name with Set<StorageUnit>  for uniqueness
+	/**Compares storage name with Set<StorageUnit>  for uniqueness.
 	 * @pre							container != null
 	 * @param container
 	 * @return boolean				true if container.name == Unique, otherwise false.
@@ -246,7 +247,7 @@ public class ContainerManager {
 		return true;
 	}
 	
-	/**Checks for uniqueness and if container is valid
+	/**Checks for uniqueness and if container is valid.
 	 * 
 	 * @param container
 	 * @return						true if valid, otherwise false
@@ -262,5 +263,14 @@ public class ContainerManager {
 		else {
 			return isUniqueStorageUnitName( container ) && container.isContainerValid();
 		}
+	}
+	
+	/**Notifies all of its observers of any changes.
+	 * @pre none
+	 * @post notifies all of the observers of various changes.
+	 */
+	@Override
+	public void notifyObservers() {
+		
 	}
 }

@@ -10,12 +10,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Date;
 import java.util.Set;
+import java.io.*;
+
+
 
 /** Creates and manages Items. This involves adding, moving, and removing items.
 *
 */
-public class ItemManager {
-
+public class ItemManager implements Serializable {
 	/**
 	 * Index for quick item lookup by container.
 	 */
