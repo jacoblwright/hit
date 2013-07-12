@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Set;
  * @version 1.0
  */
 
-public class ProductManager extends Observable{
+public class ProductManager extends Observable implements Serializable{
 	/** Maps containers to sets of products. */
 	private Map <Container, Set<Product>> productsByContainer;
 	
@@ -42,7 +43,7 @@ public class ProductManager extends Observable{
 	public void addNewProduct(Product product, Container container) 
 			throws IllegalArgumentException{
 		
-		if(UPCExists(product.getUPC().getBarcode())){
+		if(upcExists(product.getUPC().getBarcode())){
 			throw new IllegalArgumentException();
 		}
 
@@ -188,7 +189,7 @@ public class ProductManager extends Observable{
 	 * @param upc	the String representation of a upc
 	 * @return		true if the upc exists, false otherwise
 	 */
-	public boolean UPCExists(String upc){
+	public boolean upcExists(String upc){
 		assert true;
 		Iterator it = productByUPC.keySet().iterator();
 		while(it.hasNext()){
