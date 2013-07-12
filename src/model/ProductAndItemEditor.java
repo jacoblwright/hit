@@ -125,7 +125,7 @@ public class ProductAndItemEditor {
      * @post same as those for ItemManager.addItem()
      * @throws IllegalArgumentException()
      */
-     public void addItem(Item itemToAdd) {
+     public void addItem(Item itemToAdd) throws IllegalArgumentException {
      
          itemManager.addItem(itemToAdd);
          
@@ -137,7 +137,8 @@ public class ProductAndItemEditor {
       * @post same as those for ItemManager.editItem()
       * @throws IllegalArgumentException() 
       */
-     public void editItem(Item oldItem, Item newItem) {
+     public void editItem(Item oldItem, Item newItem)
+             throws IllegalArgumentException {
     
          itemManager.editItem(oldItem, newItem);
          
@@ -149,7 +150,8 @@ public class ProductAndItemEditor {
       * @post same as those for ItemManager.moveItem()
       * @throws IllegalArgumentException()
       */
-     public void moveItem(Item itemToMove, Container target) {
+     public void moveItem(Item itemToMove, Container target)
+             throws IllegalArgumentException {
      
          itemManager.moveItem(itemToMove, target);
          
@@ -162,7 +164,7 @@ public class ProductAndItemEditor {
       * @post same as those for ItemManager.removeItem()
       * @throws IllegalArgumentException()
       */
-     public void removeItem(Item itemToRemove) {
+     public void removeItem(Item itemToRemove) throws IllegalArgumentException {
      
          itemManager.removeItem(itemToRemove);
          
