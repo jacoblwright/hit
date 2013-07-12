@@ -18,7 +18,11 @@ import java.io.*;
  * @version 1.0
  */
 
-public class ProductManager extends Observable implements Serializable {
+<<<<<<< HEAD
+public class ProductManager implements Serializable {
+=======
+public class ProductManager extends Observable{
+>>>>>>> 04e5da10a82dfb6c0834cf20a1d1773a6ae46c8e
 	/** Maps containers to sets of products. */
 	private Map <Container, Set<Product>> productsByContainer;
 	
@@ -125,14 +129,57 @@ public class ProductManager extends Observable implements Serializable {
 		if(!tempSet.contains(product))
 			throw new IllegalArgumentException();
 
+<<<<<<< HEAD
+	}
+	
+	/** Moves a product to a new container as long as that product is not already located in that 
+	 * 	storage unit.
+	 * @pre 		product is not already in the container it is being moved into
+	 * @param 		product	the product being moved
+	 * @param 		before	the container before the product was moved
+	 * @param 		after	the new container that the product is being move to
+	 */
+	public void moveProduct(Product product, Container before, Container after, 
+			StorageUnit su1, StorageUnit su2) 
+			throws IllegalStateException{
+		assert true;
+		if(!product.getContainers().contains(before))
+			throw new IllegalStateException();
+		
+		product.removeContainer(before);
+		product.addContainer(after);
+	}
+	
+	/** Returns true if a Product can be added to a particular storage unit. This will return 
+	 * true if product is not already contained within that particular storage unit.
+	 * 
+	 * @param 		product is the Product being examined if it is currently already in a particular
+	 * 				 storage unit
+	 * @param 		container storage Product checks whether storage is already contained in 
+	 * 				productsByContainer			
+	 * @return		true if the product can be added to the storage, false otherwise
+	 */
+	public boolean canAddProductToContainer(Product product, Container container){
+		assert true;
+		if(product.getContainers().contains(container)){
+			return false;
+		}
+		return true;
+=======
 		tempSet.remove(product);
+>>>>>>> 04e5da10a82dfb6c0834cf20a1d1773a6ae46c8e
 	}
 	
 	/** Return true if after is a valid Product, false otherwise. A valid Product contains a Barcode
 	 * that contains a non-empty upc, a non-empty description, a Quantity that has a
 	 * 
+<<<<<<< HEAD
+	 * @param 		product
+	 * @return		return true if after is a valid Product, false otherwise
+=======
 	 * @param product	the product behing checked for validity
 	 * @return		return true if product is a valid Product, false otherwise
+>>>>>>> 04e5da10a82dfb6c0834cf20a1d1773a6ae46c8e
 	 */
 	public boolean isProductValid(Product product){
 		assert true;

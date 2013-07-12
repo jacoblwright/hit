@@ -42,7 +42,21 @@ public class Product extends Entity {
 	
 
 	
-	/** Simple constructor for Product. Date will be initially set to today's date. */
+	/**	A constructor for instantiating a Product
+	 * 
+	 * @param code	the string that will help initialize the Product's Barcode object
+	 * @param desc	a non-empty string that describes the product
+	 * @param u		a valid enum that identifies the type of Quantity
+	 * @param num	the value associated to the Quantity that must be positive
+	 * @param life	a non-negative integer associated with shelf life
+	 * @param supply	a non-negative integer associated with the 3 month supply
+	 * @pre	code is non-empty
+	 * @pre desc is non-empty
+	 * @pre	unit is valid enumeration according to Unit
+	 * @pre num is one if unit == count, otherwise it must be positive non-zero
+	 * @pre life is non-negative integer
+	 * @pre supply is non-negative integer
+	 */
 	public Product(String code, String desc, Unit u, float num, int life, int supply){
 		assert true;
 		this.creationDate = new Date();
@@ -51,7 +65,6 @@ public class Product extends Entity {
 		setSize(u, num);
 		setShelfLife(life);
 		setThreeMonthSupply(supply);
-		
 		containers = new HashSet<Container>();
 	}
 	
@@ -70,21 +83,16 @@ public class Product extends Entity {
 		return this.getUPC().getBarcode() == product.getUPC().getBarcode();
 	}
 	
-	/**
-	 * @pre			container may not share the same storageUnit with any other current Container 
-	 * 				in containers
-	 * @post		adds container to set of containers
+	/** Adds container to Set<Container> containers.
 	 * @param 		container is a Container being added to containers set
 	 */
 	public void addContainer(Container container){
 		assert true;
-		/* This check is performed by canAddProduct in ProductManager */
 		containers.add(container);
 	}
 	
-	/**
+	/** Removes a container from Set<Container> containers.
 	 * @pre 		container must exist in set of containers
-	 * @pre			no items may currently exist in Product
 	 * @post		removes container from set of containers
 	 * @param 		container is a Container being remove from containers set
 	 */
@@ -94,91 +102,54 @@ public class Product extends Entity {
 		this.containers.remove(container);
 	}
 	
-	/**
-	 * @pre			date must be before today's date
-	 * @post		sets the Product's date
+	/** Sets the Products date of creation
 	 * @param 		date is a Date object being set as earliest entry date for Product
 	 */
 	public void setCreationDate(Date date){
 		assert true;
 		Date today = new Date();
-		/*if(date.after(today))
-			throw new IllegalArgumentException();*/
-		
 		this.creationDate = date;
 	}
 	
-	/**
-	 * @pre			code must be a non-empty String
-	 * @post		sets Product's Barcode's upc
-	 * @param 		code is a non-empty string being assigned as Product's upc
+	/** Creates the Product's Barcode object
+	 * @param 		code is a string being assigned as Product's upc
 	 */
 	public void setUPC(String code){
 		assert true;
-		/*if(code.isEmpty())
-			throw new IllegalArgumentException();*/
-		
 		this.upc = new Barcode(code);
 	}
 	
-	/**
-	 * @pre			desc must be a non-empty String
-	 * @post		sets the description of the product
-	 * @param 		desc is a non-empty string being assigned as Product's description
+	/** Sets the Product's description
+	 * @param 		desc is a string being assigned as Product's description
 	 */
 	public void setDescription(String desc){
 		assert true;
-		/*if(desc.isEmpty())
-			throw new IllegalArgumentException();*/
-		
 		this.description = desc;
 	}
 	
-	/**
-	 * @pre			number must be greater than zero
-	 * @pre			unit must be either COUNT, POUND, OUNCE, GRAM, 
-	 * 				KILOGRAM, GALLON, QUART, PINT, FLUID_OUNCE, or LITER
-	 * @post		sets the size of the Product
+	/** Initializes the Quantity object that pertains to the Product
 	 * @param 		unit is the enum being assigned to Quantity size
-	 * @param 		number is a non-zero float assigned to Quantity size
+	 * @param 		number is a float assigned to Quantity size
 	 */
 	public void setSize(Unit unit, float number){
 		assert true;
-		/* number should never be less than zero */
-		/*if(number < 0)
-			throw new IllegalArgumentException();*/
-		
-		/* if Unit == count, number has to equal */
-		/*if(unit == Unit.count && number != 1)
-			throw new IllegalArgumentException();*/
-		
 		size = new Quantity();
 		size.setQuantity(number, unit);
 	}
 	
-	/**
-	 * @pre			life must be a non-negative integer
-	 * @post		sets the shelfLife of the Product
+	/** Sets the shelf life of the Product
 	 * @param 		life is a non-negative int associated with shelfLife
 	 */
 	public void setShelfLife(int life){
 		assert true;
-		/*if(life <= 0)
-			throw new IllegalArgumentException();*/
-		
 		this.shelfLife = life;
 	}
 	
-	/**
-	 * @pre			amt must be a non-negative integer
-	 * @post		sets the number of Product needed for threeMonthSupply
+	/** Sets the three month supply with an integer
 	 * @param 		amt is an int associated with the three month supply
 	 */
 	public void setThreeMonthSupply(int amt){
 		assert true;
-		/*if(amt <= 0)
-			throw new IllegalArgumentException();*/
-		
 		this.threeMonthSupply = amt;
 	}
 	
