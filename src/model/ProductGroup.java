@@ -91,7 +91,6 @@ public class ProductGroup extends Container {
 	 * @pre							none
 	 * @post						if uniqueName & nonEmptyName & 
 	 * 								threeMonthSupply.isValid { container.isValid = true }
-	 * @param container				current container to be validated
 	 */
 	@Override
 	public boolean isContainerValid() {
