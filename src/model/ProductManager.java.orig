@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,10 +20,10 @@ import java.io.*;
  */
 
 <<<<<<< HEAD
-public class ProductManager implements Serializable {
+public class ProductManager extends Observable implements Serializable {
 =======
-public class ProductManager extends Observable{
->>>>>>> 04e5da10a82dfb6c0834cf20a1d1773a6ae46c8e
+public class ProductManager extends Observable implements Serializable{
+>>>>>>> 996914bce511905925220b3124adb84fcc6360dd
 	/** Maps containers to sets of products. */
 	private Map <Container, Set<Product>> productsByContainer;
 	
@@ -44,9 +45,10 @@ public class ProductManager extends Observable{
 	 * @param container	the container being added to the product
 	 * @throws IllegalArgumentException if the product's upc already exists
 	 */
-	public void addNewProduct(Product product, Container container) throws IllegalArgumentException{
+	public void addNewProduct(Product product, Container container) 
+			throws IllegalArgumentException{
 		
-		if(UPCExists(product.getUPC().getBarcode())){
+		if(upcExists(product.getUPC().getBarcode())){
 			throw new IllegalArgumentException();
 		}
 
@@ -82,9 +84,11 @@ public class ProductManager extends Observable{
 	 * @param 		product	the product being moved
 	 * @param 		before	the container the product is being moved from
 	 * @param 		after	the new container that the product is being move to
-	 * @throws IllegalStateException when product does not have before in its collection of containers
+	 * @throws IllegalStateException when product does not have before in its collection 
+	 * of containers
 	 */
-	public void moveProduct(Product product, Container before, Container after) throws IllegalStateException{
+	public void moveProduct(Product product, Container before, Container after) 
+			throws IllegalStateException{
 		
 		if(!product.getContainers().contains(before))
 			throw new IllegalStateException();
@@ -112,13 +116,14 @@ public class ProductManager extends Observable{
 		}
 	}
 	
-	/** Deletes Product from container's mapping in productsByContainer and removes container from product's
-	 * set of containers
+	/** Deletes Product from container's mapping in productsByContainer and removes 
+	 * container from product's set of containers
 	 * @pre 	product must exist in the container's mapping
 	 * @post	removes the Product from the set
 	 * @throws IllegalArgumentException if container does not exist in productsByContainer
 	 */
-	public void removeProductFromContainer(Product product, Container container) throws IllegalArgumentException{
+	public void removeProductFromContainer(Product product, Container container) 
+			throws IllegalArgumentException{
 		
 		if(!productsByContainer.containsKey(container))
 			throw new IllegalArgumentException();
@@ -129,57 +134,14 @@ public class ProductManager extends Observable{
 		if(!tempSet.contains(product))
 			throw new IllegalArgumentException();
 
-<<<<<<< HEAD
-	}
-	
-	/** Moves a product to a new container as long as that product is not already located in that 
-	 * 	storage unit.
-	 * @pre 		product is not already in the container it is being moved into
-	 * @param 		product	the product being moved
-	 * @param 		before	the container before the product was moved
-	 * @param 		after	the new container that the product is being move to
-	 */
-	public void moveProduct(Product product, Container before, Container after, 
-			StorageUnit su1, StorageUnit su2) 
-			throws IllegalStateException{
-		assert true;
-		if(!product.getContainers().contains(before))
-			throw new IllegalStateException();
-		
-		product.removeContainer(before);
-		product.addContainer(after);
-	}
-	
-	/** Returns true if a Product can be added to a particular storage unit. This will return 
-	 * true if product is not already contained within that particular storage unit.
-	 * 
-	 * @param 		product is the Product being examined if it is currently already in a particular
-	 * 				 storage unit
-	 * @param 		container storage Product checks whether storage is already contained in 
-	 * 				productsByContainer			
-	 * @return		true if the product can be added to the storage, false otherwise
-	 */
-	public boolean canAddProductToContainer(Product product, Container container){
-		assert true;
-		if(product.getContainers().contains(container)){
-			return false;
-		}
-		return true;
-=======
 		tempSet.remove(product);
->>>>>>> 04e5da10a82dfb6c0834cf20a1d1773a6ae46c8e
 	}
 	
 	/** Return true if after is a valid Product, false otherwise. A valid Product contains a Barcode
 	 * that contains a non-empty upc, a non-empty description, a Quantity that has a
 	 * 
-<<<<<<< HEAD
-	 * @param 		product
-	 * @return		return true if after is a valid Product, false otherwise
-=======
 	 * @param product	the product behing checked for validity
 	 * @return		return true if product is a valid Product, false otherwise
->>>>>>> 04e5da10a82dfb6c0834cf20a1d1773a6ae46c8e
 	 */
 	public boolean isProductValid(Product product){
 		assert true;
@@ -232,7 +194,7 @@ public class ProductManager extends Observable{
 	 * @param upc	the String representation of a upc
 	 * @return		true if the upc exists, false otherwise
 	 */
-	public boolean UPCExists(String upc){
+	public boolean upcExists(String upc){
 		assert true;
 		Iterator it = productByUPC.keySet().iterator();
 		while(it.hasNext()){

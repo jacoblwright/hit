@@ -35,10 +35,10 @@ public class ProductManagerTest {
 		pmanager.addNewProduct(product2, container);
 		pmanager.addNewProduct(product, container);
 		
-		assertTrue(pmanager.UPCExists("upc"));
-		assertTrue(pmanager.UPCExists("upc2"));
-		assertFalse(pmanager.UPCExists("badUPC"));
-		assertFalse(pmanager.UPCExists("upc3"));
+		assertTrue(pmanager.upcExists("upc"));
+		assertTrue(pmanager.upcExists("upc2"));
+		assertFalse(pmanager.upcExists("badUPC"));
+		assertFalse(pmanager.upcExists("upc3"));
 		
 		pmanager.addNewProduct(product3, container);
 	}
