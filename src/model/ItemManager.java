@@ -112,7 +112,7 @@ public class ItemManager {
 	* @throws IllegalArgumentException if !canAddItem()
 	*/
 	public void addItem(Item itemToAdd) throws IllegalArgumentException {
-
+	
 		if (itemToAdd == null){
 			throw new IllegalArgumentException("param itemToAdd is null");
 		}
@@ -159,27 +159,25 @@ public class ItemManager {
 	
 	}
 	
-	/**
-	* Updates indexes from the move.
-	* 
-	* @pre itemToMove.product exists (only) in the target container
-	* @post itemToMove.container = target
-	* @post updates indexes
-	* 
-	* @throws IllegalStateException if pre-conditions are not met
-	* @throws IllegalArgumentExcpetion if itemToMove is bad
-	*/
-	public void moveItem(Item itemToMove, Container target) {
-		
-		// remove item from itemsByContainer index
-		itemsByContainer.get(itemToMove.getContainer()).remove(itemToMove);
-		
-		// change container pointer since addItem can't
-		itemToMove.setContainer(target);
-		
-		// add it back to the appropriate container
-		addItem(itemToMove);
-	}
+/**
+* Updates indexes from the move.
+* 
+* @pre itemToMove.product exists (only) in the target container
+* @post itemToMove.container = target
+* @post updates indexes
+* 
+*/
+public void moveItem(Item itemToMove, Container target) {
+	
+	// remove item from itemsByContainer index
+	itemsByContainer.get(itemToMove.getContainer()).remove(itemToMove);
+	
+	// change container pointer since addItem can't
+	itemToMove.setContainer(target);
+	
+	// add it back to the appropriate container
+	addItem(itemToMove);
+}
 	
 	
 	/** Removes the item from any container but keeps track of it in the item history.
@@ -192,7 +190,6 @@ public class ItemManager {
 	 * @post sets itemToRemove.container to null
 	 * @post updates to removedItemsByDate
 	 * 
-	 * @throws IllegalStateException if preconditions are not met
 	 * @throws IllegalArgumentException if itemToRemove is bad
 	 * 
 	 */
