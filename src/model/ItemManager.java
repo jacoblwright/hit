@@ -12,6 +12,12 @@ import java.util.Date;
 import java.util.Set;
 import java.io.*;
 
+/**
+ * Manages all of the item manipulations, and indexing.
+ * 
+ * @author Nick
+ *
+ */
 public class ItemManager implements Serializable {
 
 	/**
