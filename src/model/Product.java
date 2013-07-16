@@ -1,5 +1,7 @@
 package model;
 
+import gui.common.SizeUnits;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,7 +59,7 @@ public class Product extends Entity {
 	 * @pre life is non-negative integer
 	 * @pre supply is non-negative integer
 	 */
-	public Product(String code, String desc, Unit u, float num, int life, int supply){
+	public Product(String code, String desc, Enum<SizeUnits> u, float num, int life, int supply){
 		assert true;
 		this.creationDate = new Date();
 		setUPC(code);
@@ -131,7 +133,7 @@ public class Product extends Entity {
 	 * @param 		unit is the enum being assigned to Quantity size
 	 * @param 		number is a float assigned to Quantity size
 	 */
-	public void setSize(Unit unit, float number){
+	public void setSize(Enum<SizeUnits> unit, float number){
 		assert true;
 		size = new Quantity();
 		size.setQuantity(number, unit);

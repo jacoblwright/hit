@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.util.*;
 import java.io.File;
 import java.text.DateFormat;
@@ -18,9 +20,9 @@ public class BarcodePrinterTest {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Container c1 = new ProductGroup();
         Product p1 = new Product(
-                "1", "TopValu Mentsuyu 1000 mL",
-                Unit.count, 1, 1, 1);
-        Date ed1 = dateFormat.parse("2007/10/28");
+                "1", "TopValu Mentsuyu 1000 mL asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf ",
+                SizeUnits.Count, 1, 1, 1);
+        Date ed1 = dateFormat.parse("2017/10/28");
         Barcode bc1;
 
         List<Item> items = new LinkedList<Item>();
@@ -38,9 +40,7 @@ public class BarcodePrinterTest {
         
         BarcodePrinter bc = new BarcodePrinter();
         
-        bc.printBarcodes(items, file);
-        
-        java.awt.Desktop.getDesktop().open(file);
+        bc.printBarcodes(items, file, true);
         
     }
 

@@ -1,5 +1,10 @@
 package gui.productgroup;
 
+import model.Container;
+import model.ProductGroup;
+import model.Quantity;
+import model.StorageUnit;
+import model.Unit;
 import gui.common.*;
 import gui.inventory.*;
 
@@ -49,6 +54,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+	
 	}
 
 	/**
@@ -60,6 +66,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		
 	}
 
 	//
@@ -72,6 +79,24 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		String name = getView().getProductGroupName();
+		String value = getView().getSupplyValue();
+		Enum<SizeUnits> unit = getView().getSupplyUnit();
+		float number;
+		try
+		{
+			number = Float.parseFloat( value );
+		}
+		catch(NumberFormatException e)
+		{
+		  number = 0;
+		}
+		Quantity q = new Quantity( number, unit );
+		
+		Container container = new ProductGroup( name, q );
+		boolean isEnabled = getModel().getContainerManager().canAddContainer( container );
+		
+		getView().enableOK( isEnabled );
 	}
 	
 	/**
@@ -80,6 +105,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	public void addProductGroup() {
+		
 	}
 
 }

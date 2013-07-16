@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,14 +21,14 @@ public class ProductTest {
 		Date ed1 = dateFormat.parse("2013/12/9");
 		Date ed2 = dateFormat.parse("2013/1/1");
 		Barcode bc1 = new Barcode("Tag");
-		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,1);
-		Product prod2 = new Product("UPC2", "Description2", Unit.count, 1,1,1);
+		Product prod1 = new Product("UPC1", "Description1", SizeUnits.Count, 1,1,1);
+		Product prod2 = new Product("UPC2", "Description2", SizeUnits.Count, 1,1,1);
 		Item i1 = new Item(container, prod1, ed1, bc1);
 		
 		/* Testing Setters and Getters */
 		prod1.setDescription("Changed");
 		prod1.setUPC("ChangedUPC");
-		prod1.setSize(Unit.fluidOunces, 12);
+		prod1.setSize(SizeUnits.FluidOunces, 12);
 		prod1.setShelfLife(10);
 		prod1.setThreeMonthSupply(15);
 		prod1.setCreationDate(ed2);
@@ -34,7 +36,7 @@ public class ProductTest {
 		assertEquals("ChangedUPC", prod1.getUPC().getBarcode());
 		assertEquals(10, prod1.getShelfLife());
 		assertEquals(15, prod1.getThreeMonthSupply());
-		assertEquals(Unit.fluidOunces, prod1.getSize().getUnit());
+		assertEquals(SizeUnits.FluidOunces, prod1.getSize().getUnit());
 		assertEquals(12, (int)prod1.getSize().getNumber());
 		
 		
@@ -61,7 +63,7 @@ public class ProductTest {
 		container3.setName("su1");
 		Container container4 = new StorageUnit();
 		container4.setName("su2");
-		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,1);
+		Product prod1 = new Product("UPC1", "Description1", SizeUnits.Count, 1,1,1);
 		
 		prod1.addContainer(container);
 		assertEquals(1, prod1.getContainers().size());
@@ -83,7 +85,7 @@ public class ProductTest {
 		container3.setName("su1");
 		Container container4 = new StorageUnit();
 		container4.setName("su2");
-		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,1);
+		Product prod1 = new Product("UPC1", "Description1", SizeUnits.Count, 1,1,1);
 		
 		prod1.addContainer(container);
 		prod1.addContainer(container3);
@@ -103,8 +105,8 @@ public class ProductTest {
 	
 	@Test
 	public void constructorTest(){
-		Product prod1 = new Product("UPC1", "Description1", Unit.count, 1,1,1);
-		Product prod2 = new Product("UPC2", "Description1", Unit.fluidOunces, 12, 1, 1);
+		Product prod1 = new Product("UPC1", "Description1", SizeUnits.Count, 1,1,1);
+		Product prod2 = new Product("UPC2", "Description1", SizeUnits.FluidOunces, 12, 1, 1);
 	}
 	
 }

@@ -20,6 +20,7 @@ public class ContainerManager extends Observable implements Serializable {
 	public ContainerManager() {
 		assert true;
 		uniqueId = 0;
+		storageUnits = new TreeSet<StorageUnit>();
 	}
 	
 	/** Returns all of the productGroup lists of the current container recursively.

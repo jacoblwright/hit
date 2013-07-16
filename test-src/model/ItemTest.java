@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,7 +25,7 @@ public class ItemTest {
 		Calendar cal = Calendar.getInstance();
 		
 		Container c1 = new ProductGroup();
-		Product p1 = new Product("1", "Descripshun", Unit.count, 1, 1, 1);
+		Product p1 = new Product("1", "Descripshun", SizeUnits.Count, 1, 1, 1);
 		Date ed1 = dateFormat.parse("2013/12/9");
 		Barcode bc1 = new Barcode("blahblah");
 		Item i1 = new Item(c1, p1, ed1, bc1);
@@ -49,7 +51,7 @@ public class ItemTest {
 		assertFalse(i1.getTag() == new Barcode());
 		
 		// Testing Setters:
-		Product p2 = new Product("2", "Cookies", Unit.count, 1, 1, 1);
+		Product p2 = new Product("2", "Cookies", SizeUnits.Count, 1, 1, 1);
 		i1.setProduct(p2);
 		assertEquals(i1.getProduct(), p2);
 		
