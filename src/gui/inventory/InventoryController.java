@@ -40,9 +40,10 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
+		
 		ProductContainerData root = new ProductContainerData();
 		
-		ProductContainerData basementCloset = new ProductContainerData("Basement Closet");
+		ProductContainerData basementCloset = new ProductContainerData("The CS Dungeon");
 		
 		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
 		toothpaste.addChild(new ProductContainerData("Kids"));
