@@ -2,17 +2,12 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InvalidClassException;
+
+import config.IOConfig;
 
 public class Model {
     
     private static Model instance = null;
-    
-    private final String C_MANAGER_DATA_PATH = "cm.hit";
-    private final String P_MANAGER_DATA_PATH = "pm.hit";
-    private final String I_MANAGER_DATA_PATH = "im.hit";
-    
-    private String saveLocation;
     
     private ContainerEditor containerEditor;
     private ContainerManager containerManager;
@@ -36,20 +31,12 @@ public class Model {
         
         try {
             
-            /*
-            saveLocation = getClass().getProtectionDomain().getCodeSource()
-                    .getLocation().getFile() + File.separator +
-                    "hit_data" + File.separator;
-            */
-            
-            saveLocation = System.getProperty("user.home") + File.separator +
-                    "hit_data" + File.separator;
-            File dir = new File(saveLocation);
+            File dir = IOConfig.getContainerManagerFile().getParentFile();
             if (!dir.exists()) {
                 dir.mkdirs();
             }
             
-            File file = new File(saveLocation + C_MANAGER_DATA_PATH);
+            File file = IOConfig.getContainerManagerFile();
             ContainerManager cm = null;
             if (file.exists() && file.canRead()) {
                 cm = (ContainerManager)Serializer.load(file);
@@ -61,7 +48,7 @@ public class Model {
                 containerManager = new ContainerManager();
             }
             
-            file = new File(saveLocation + P_MANAGER_DATA_PATH);
+            file = IOConfig.getProductManagerFile();
             ProductManager pm = null;
             if (file.exists() && file.canRead()) {
                 pm = (ProductManager)Serializer.load(file);
@@ -73,7 +60,7 @@ public class Model {
                 productManager = new ProductManager();
             }
             
-            file = new File(saveLocation + I_MANAGER_DATA_PATH);
+            file = IOConfig.getItemManagerFile();
             ItemManager im = null;
             if (file.exists() && file.canRead()) {
                 im = (ItemManager)Serializer.load(file);
@@ -139,14 +126,12 @@ public class Model {
         
         assert true;
         
-        //System.out.println(saveLocation);
-        
         Serializer.save(
-                containerManager, new File(saveLocation + C_MANAGER_DATA_PATH));
+                containerManager, IOConfig.getContainerManagerFile());
         Serializer.save(
-                productManager, new File(saveLocation + P_MANAGER_DATA_PATH));
+                productManager, IOConfig.getProductManagerFile());
         Serializer.save(
-                itemManager, new File(saveLocation + I_MANAGER_DATA_PATH));
+                itemManager, IOConfig.getItemManagerFile());
         
     }
     
