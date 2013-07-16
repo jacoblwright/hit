@@ -1,10 +1,12 @@
 package gui.inventory;
 
 import gui.common.*;
+
 import gui.item.*;
 import gui.product.*;
 
 import java.util.*;
+import model.*;
 
 /**
  * Controller class for inventory view.
