@@ -15,24 +15,15 @@ import com.itextpdf.text.pdf.Barcode;
  */
 public class BarcodePrinter {
     
-    private final int MARGINS_PT = 36;
+    private static final int MARGINS_PT = 36;
     
-    private final int ROW_HEIGHT = 108;
+    private static final int ROW_HEIGHT = 108;
     
-    private final int NUM_OF_COLUMNS = 4;
+    private static final int NUM_OF_COLUMNS = 4;
     
-    private final int MAX_DESCRIPTION_LENGTH = 50;
+    private static final int MAX_DESCRIPTION_LENGTH = 50;
     
-    private final int BARCODE_Y_OFFSET = -37;
-    
-    /**
-     * Creates an instance of BarcodePrinter.
-     */
-    public BarcodePrinter() {
-        
-        assert true;
-        
-    }
+    private static final int BARCODE_Y_OFFSET = -37;
     
     /**
      * Creates a PDF file with images of barcodes for the the specified List
@@ -49,7 +40,7 @@ public class BarcodePrinter {
      * @throws IOException if file is a directory, not writable, or if there
      * is a problem writing to the file.
      */
-    public void printBarcodes(Collection<Item> items, File file,
+    public static void printBarcodes(Collection<Item> items, File file,
             boolean displayFile)
                     throws IllegalArgumentException, IOException {
         
@@ -124,7 +115,7 @@ public class BarcodePrinter {
         
     }
     
-    private void checkItems(Collection<Item> items) {
+    private static void checkItems(Collection<Item> items) {
         
         if (items == null) {            
             throw new IllegalArgumentException(
@@ -140,7 +131,7 @@ public class BarcodePrinter {
 
     }
     
-    private void checkFile(File file) throws IOException {
+    private static void checkFile(File file) throws IOException {
         
         //System.out.println(file);
         
@@ -151,6 +142,7 @@ public class BarcodePrinter {
         if (file.exists() && (!file.isFile() || !file.canWrite())) {
             throw new IOException("Specified file is not valid.");
         }
+        
         if (!file.exists()) {
             
             if (!file.getParentFile().exists()) {
@@ -163,7 +155,7 @@ public class BarcodePrinter {
         
     }
     
-    private String truncateDescription(String s) {
+    private static String truncateDescription(String s) {
         
         if (s.length() > 75) {
             return s.substring(0, MAX_DESCRIPTION_LENGTH - 1) + "...";

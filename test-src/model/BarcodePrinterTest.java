@@ -34,9 +34,8 @@ public class BarcodePrinterTest {
             
         }
         
-        BarcodePrinter bc = new BarcodePrinter();
-        
-        bc.printBarcodes(items, IOConfig.getBarcodeTagsFile(), true);
+        BarcodePrinter.printBarcodes(
+                items, IOConfig.getBarcodeTagsFile(), true);
         
     }
 
