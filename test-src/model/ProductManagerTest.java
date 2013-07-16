@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,9 +29,9 @@ public class ProductManagerTest {
 	@Test ( expected = IllegalArgumentException.class )
 	public void UPCExistsTest(){
 		ProductManager pmanager = new ProductManager();	
-		Product product = new Product("upc", "test", Unit.count, 1, 1, 1);
-		Product product2 = new Product("upc2", "test", Unit.count, 1, 1, 1);
-		Product product3 = new Product("upc2", "test", Unit.count, 1, 1, 1);
+		Product product = new Product("upc", "test", SizeUnits.Count, 1, 1, 1);
+		Product product2 = new Product("upc2", "test", SizeUnits.Count, 1, 1, 1);
+		Product product3 = new Product("upc2", "test", SizeUnits.Count, 1, 1, 1);
 		Container container = new ProductGroup();
 		
 		pmanager.addNewProduct(product2, container);
@@ -47,50 +49,50 @@ public class ProductManagerTest {
 	public void isQuantityValidTest(){
 		ProductManager pmanager = new ProductManager();
 		Quantity qty = new Quantity();
-		qty.setQuantity(1, Unit.count);
+		qty.setQuantity(1, SizeUnits.Count);
 		assertTrue(pmanager.isQuantityValid(qty));
 		
-		qty.setQuantity(2, Unit.count);
+		qty.setQuantity(2, SizeUnits.Count);
 		assertFalse(pmanager.isQuantityValid(qty));
 		
-		qty.setQuantity((float)0.1, Unit.count);
+		qty.setQuantity((float)0.1, SizeUnits.Count);
 		assertFalse(pmanager.isQuantityValid(qty));
 		
-		qty.setQuantity(-1, Unit.count);
+		qty.setQuantity(-1, SizeUnits.Count);
 		assertFalse(pmanager.isQuantityValid(qty));
 		
-		qty.setQuantity(0, Unit.count);
+		qty.setQuantity(0, SizeUnits.Count);
 		assertFalse(pmanager.isQuantityValid(qty));
 		
-		qty.setQuantity(0, Unit.liters);
+		qty.setQuantity(0, SizeUnits.Liters);
 		assertFalse(pmanager.isQuantityValid(qty));
 		
-		qty.setQuantity((float)1.1, Unit.liters);
+		qty.setQuantity((float)1.1, SizeUnits.Liters);
 		assertTrue(pmanager.isQuantityValid(qty));
 		
-		qty.setQuantity((float)-1, Unit.liters);
+		qty.setQuantity((float)-1, SizeUnits.Liters);
 		assertFalse(pmanager.isQuantityValid(qty));
 	}
 	
 	@Test
 	public void isProductValidTest() throws java.text.ParseException{
 		ProductManager pmanager = new ProductManager();
-		Product goodProduct = new Product("upc", "test", Unit.count, 1, 1, 1);
-		Product goodProduct2 = new Product("upc2", "test", Unit.gallons, 2, 1, 1);
-		Product goodProduct3 = new Product("upc2", "test", Unit.liters, (float)0.001, 0, 0);
-		Product goodProduct4 = new Product("12345", "anything", Unit.pints, 100000, 10000, 10000);
+		Product goodProduct = new Product("upc", "test", SizeUnits.Count, 1, 1, 1);
+		Product goodProduct2 = new Product("upc2", "test", SizeUnits.Gallons, 2, 1, 1);
+		Product goodProduct3 = new Product("upc2", "test", SizeUnits.Liters, (float)0.001, 0, 0);
+		Product goodProduct4 = new Product("12345", "anything", SizeUnits.Pints, 100000, 10000, 10000);
 		
 		assertTrue(pmanager.isProductValid(goodProduct));
 		assertTrue(pmanager.isProductValid(goodProduct2));
 		assertTrue(pmanager.isProductValid(goodProduct3));
 		assertTrue(pmanager.isProductValid(goodProduct4));
 		
-		Product badProduct2 = new Product("upc2", "", Unit.gallons, 2, 1, 1);
-		Product badProduct3 = new Product("upc2", "test", Unit.count, 2, 0, 0);
-		Product badProduct4 = new Product("12345", "anything", Unit.pints, 0, 10000, 10000);
-		Product badProduct5 = new Product("12345", "anything", Unit.pints, 0, -1, 10000);
-		Product badProduct6 = new Product("12345", "anything", Unit.pints, 0, 0, -1);
-		Product badProduct7 = new Product("12345", "anything", Unit.count, 0, 0, -1);
+		Product badProduct2 = new Product("upc2", "", SizeUnits.Gallons, 2, 1, 1);
+		Product badProduct3 = new Product("upc2", "test", SizeUnits.Count, 2, 0, 0);
+		Product badProduct4 = new Product("12345", "anything", SizeUnits.Pints, 0, 10000, 10000);
+		Product badProduct5 = new Product("12345", "anything", SizeUnits.Pints, 0, -1, 10000);
+		Product badProduct6 = new Product("12345", "anything", SizeUnits.Pints, 0, 0, -1);
+		Product badProduct7 = new Product("12345", "anything", SizeUnits.Count, 0, 0, -1);
 		
 		assertFalse(pmanager.isProductValid(badProduct2));
 		assertFalse(pmanager.isProductValid(badProduct3));
@@ -114,11 +116,11 @@ public class ProductManagerTest {
 	public void addNewProductTest(){
 		ProductManager pmanager = new ProductManager();	
 		
-		Product product = new Product("upc", "test", Unit.count, 1, 1, 1);
-		Product product2 = new Product("upc2", "test", Unit.count, 1, 1, 1);
-		Product product3 = new Product("upc3", "test", Unit.count, 1, 1, 1);
-		Product product4 = new Product("upc4", "test", Unit.count, 1, 1, 1);
-		Product product5 = new Product("upc5", "test", Unit.count, 1, 1, 1);
+		Product product = new Product("upc", "test", SizeUnits.Count, 1, 1, 1);
+		Product product2 = new Product("upc2", "test", SizeUnits.Count, 1, 1, 1);
+		Product product3 = new Product("upc3", "test", SizeUnits.Count, 1, 1, 1);
+		Product product4 = new Product("upc4", "test", SizeUnits.Count, 1, 1, 1);
+		Product product5 = new Product("upc5", "test", SizeUnits.Count, 1, 1, 1);
 		
 		Container container = new ProductGroup();
 		container.setName("Container1");
@@ -150,9 +152,9 @@ public class ProductManagerTest {
 	public void editProductTest(){
 		ProductManager pmanager = new ProductManager();	
 		
-		Product oldProduct = new Product("upc", "test", Unit.count, 1, 1, 1);
+		Product oldProduct = new Product("upc", "test", SizeUnits.Count, 1, 1, 1);
 		Date date = oldProduct.getCreationDate();
-		Product newProduct = new Product("upc2", "test2", Unit.liters, 2, 3, 4);
+		Product newProduct = new Product("upc2", "test2", SizeUnits.Liters, 2, 3, 4);
 		
 		pmanager.editProduct(oldProduct, newProduct);
 		assertEquals(oldProduct.getUPC().getBarcode(), "upc");
@@ -172,7 +174,7 @@ public class ProductManagerTest {
 		Container newContainer = new ProductGroup();
 		newContainer.setName("two");
 		
-		Product product = new Product("upc", "test", Unit.count, 1, 1, 1);
+		Product product = new Product("upc", "test", SizeUnits.Count, 1, 1, 1);
 		pmanager.addNewProduct(product, oldContainer);
 		assertTrue(product.getContainers().contains(oldContainer));
 		Set tempSet = (HashSet)pmanager.getProductsByContainer().get(oldContainer);
@@ -195,8 +197,8 @@ public class ProductManagerTest {
 	@Test ( expected = IllegalArgumentException.class )
 	public void addAndRemoveProductToContainerTest(){
 		ProductManager pmanager = new ProductManager();
-		Product product = new Product("upc", "test", Unit.count, 1, 1, 1);
-		Product product2 = new Product("upc2", "test2", Unit.count, 1, 1, 1);
+		Product product = new Product("upc", "test", SizeUnits.Count, 1, 1, 1);
+		Product product2 = new Product("upc2", "test2", SizeUnits.Count, 1, 1, 1);
 		Container container = new ProductGroup();
 		container.setId(1);
 		Container container2 = new ProductGroup();
@@ -240,9 +242,9 @@ public class ProductManagerTest {
 	public void GettersTest(){
 		ProductManager pmanager = new ProductManager();
 		Container container = new ProductGroup();
-		Product product = new Product("upc", "test", Unit.count, 1, 1, 1);
-		Product product2 = new Product("upc2", "test2", Unit.count, 1, 1, 1);
-		Product product3 = new Product("upc3", "test3", Unit.count, 1, 1, 1);
+		Product product = new Product("upc", "test", SizeUnits.Count, 1, 1, 1);
+		Product product2 = new Product("upc2", "test2", SizeUnits.Count, 1, 1, 1);
+		Product product3 = new Product("upc3", "test3", SizeUnits.Count, 1, 1, 1);
 		
 		pmanager.addNewProduct(product2, container);
 		pmanager.addNewProduct(product, container);	

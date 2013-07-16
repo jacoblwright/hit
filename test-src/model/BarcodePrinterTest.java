@@ -1,9 +1,7 @@
 package model;
 
-import static org.junit.Assert.*;
-
+import gui.common.SizeUnits;
 import java.util.*;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import printers.BarcodePrinter;
@@ -20,7 +18,7 @@ public class BarcodePrinterTest {
         Container c1 = new ProductGroup();
         Product p1 = new Product(
                 "1", "TopValu Mentsuyu 1000 mL",
-                Unit.count, 1, 1, 1);
+                SizeUnits.Count, 1, 1, 1);
         Date ed1 = dateFormat.parse("2017/10/28");
         Barcode bc1;
 

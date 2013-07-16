@@ -36,27 +36,9 @@ public class ProductAndItemEditor {
      */
     public void addNewProduct(Product product, Container container) {
         
-        StorageUnit storageUnit =
-                containerManager.getAncestorStorageUnit(container);
-        
         productManager.addNewProduct(product, container);
         
     }
-    
-    /*
-     * Adds the specified Product to the specified Container.
-     * @pre same as those for ProductManager.addProductToContainer()
-     * @post same as those for ProductManager.addProductToContainer()
-     
-    public void addProductToContainer(Product product, Container container) {
-        
-        StorageUnit storageUnit =
-                containerManager.getAncestorStorageUnit(container);
-        
-        productManager.addProductToContainer(product, container, storageUnit);
-        
-    }
-    */
     
     /**
      * Edits a Product by replacing an older Product with a newer Product.
@@ -70,36 +52,53 @@ public class ProductAndItemEditor {
     }
     
     /**
-     * Moves a product to a new container as long as that product is not
-     * already located in that storage unit.
-     * @pre product is not already in the container it is being moved into.
-     * @post product is moved from the source container to the target
-     * container, and all of the Item of that Product in the source container
-     * are moved to the target container.
+     * Moves a Product to a different Container.
      * @param product the Product to be moved
-     * @param source the source Container
-     * @param target the target Container
+     * @param sourceContainer the source Container
+     * @param targetContainer the target Container
+     * @pre See pages 23-24 of the specification.
+     * @post See pages 23-24 of the specification.
      * @throws IllegalArgumentException
      */
     public void moveProduct(Product product,
-            Container source, Container target) {
+            Container sourceContainer, Container targetContainer) {
         
-        StorageUnit sourceSU = containerManager.getAncestorStorageUnit(source);
-        StorageUnit targetSU = containerManager.getAncestorStorageUnit(target);
-        
-        productManager.moveProduct(
-                product, source, target);
-        
-        Collection<Item> items = itemManager.getItems(source, product);
-        for (Item item : items) {
+        if (areInSameStorageUnit(sourceContainer, targetContainer)) {
             
-            itemManager.moveItem(item, target);
+            productManager.moveProduct(
+                    product, sourceContainer, targetContainer);
+            
+            moveItems(product, sourceContainer, targetContainer);
+            
+        }
+        else {
+            
+            StorageUnit targetSU =
+                    containerManager.getAncestorStorageUnit(targetContainer);         
+            Container containerOfProductInTargetSU =
+                    getContainer(product, targetSU);    
+            
+            if (containerOfProductInTargetSU == null) {
+                
+                productManager.addProductToContainer(product, targetContainer);
+                
+            }
+            else {
+                
+                productManager.moveProduct(product,
+                        containerOfProductInTargetSU, targetContainer);
+                
+                moveItems(product,
+                        containerOfProductInTargetSU, targetContainer);
+                
+            }
             
         }
         
     }
     
-    public boolean canDeleteProduct(Product product) {
+    public boolean canRemoveProductFromContainer(
+            Product product, Container container) {
         
         // Check to see if any items in this container have this product
         // as an attribute
@@ -113,9 +112,33 @@ public class ProductAndItemEditor {
      * @post same as those for ProductManager.deleteProduct()
      * @throws IllegalArgumentException()
      */
-    public void deleteProduct(Product product, Container container) {
+    public void removeProductFromContainer(
+            Product product, Container container) {
         
         productManager.removeProductFromContainer(product, container);
+        
+    }
+
+    public boolean canDeleteProductFromSystem(Product product) {
+        
+        boolean result = true;
+        
+        Collection<Item> items = itemManager.getItems();
+        for (Item item : items) {
+            
+            if (item.getProduct().equals(product)) {
+                result = false;
+            }
+            
+        }
+        
+        return result;
+        
+    }
+    
+    public void deleteProductFromSystem(Product product) {
+        
+        
         
     }
 
@@ -145,15 +168,29 @@ public class ProductAndItemEditor {
      }
 
      /**
-      * Moves and Item.
-      * @pre same as those for ItemManager.moveItem()
-      * @post same as those for ItemManager.moveItem()
+      * Moves an Item to a different Container.
+      * @param itemToMove the item to move
+      * @param targetContainer the Container to which the Item is to be moved
+      * @pre See pages 23-24 of the specification.
+      * @post See pages 23-24 of the specification.
       * @throws IllegalArgumentException()
       */
-     public void moveItem(Item itemToMove, Container target)
+     public void moveItem(Item itemToMove, Container targetContainer)
              throws IllegalArgumentException {
      
-         itemManager.moveItem(itemToMove, target);
+         assert itemToMove != null;
+         assert targetContainer != null;
+         
+         Product product = itemToMove.getProduct();
+         Container sourceContainer = itemToMove.getContainer();
+         
+         // moveProduct takes care of moving itemToMove if sourceContainer and
+         // targetContianer are in the same StorageUnit.
+         moveProduct(product, sourceContainer, targetContainer);
+         
+         if (!areInSameStorageUnit(sourceContainer, targetContainer)) {             
+             itemManager.moveItem(itemToMove, targetContainer);             
+         }
          
      }
      
@@ -167,6 +204,61 @@ public class ProductAndItemEditor {
      public void removeItem(Item itemToRemove) throws IllegalArgumentException {
      
          itemManager.removeItem(itemToRemove);
+         
+     }
+     
+     private boolean areInSameStorageUnit(Container c1, Container c2) {
+         
+         assert c1 != null;
+         assert c2 != null;
+         
+         return containerManager.getAncestorStorageUnit(c1).equals(
+                 containerManager.getAncestorStorageUnit(c2));
+         
+     }
+     
+     /*
+      * Returns the Container that contains the specified Product in the
+      * specified StorageUnit; returns null if the specified product is not
+      * within the specified StorageUnit.
+      */
+     private Container getContainer(Product product, StorageUnit storageUnit) {
+         
+         assert product != null;
+         assert storageUnit != null;
+         
+         Set<Container> containersInStorageUnit =
+                 containerManager.getDescendents(storageUnit);
+         containersInStorageUnit.add(storageUnit);
+         
+         Set<Container> containersOfProduct = product.getContainers();
+         
+         Container result = null;
+         for (Container containerInStorageUnit : containersInStorageUnit) {      
+             if (containersOfProduct.contains(containerInStorageUnit)) {
+                 result = containerInStorageUnit;
+             }             
+         }
+         
+         return result;
+         
+     }
+     
+     private void moveItems(Product product,
+             Container sourceContainer, Container targetContainer) {
+         
+         assert product != null;
+         assert sourceContainer != null;
+         assert targetContainer != null;
+         
+         Collection<Item> items =
+                 itemManager.getItems(sourceContainer, product);
+         
+         for (Item item : items) {
+             
+             itemManager.moveItem(item, targetContainer);
+             
+         }
          
      }
 

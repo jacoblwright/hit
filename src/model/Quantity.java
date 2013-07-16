@@ -1,5 +1,7 @@
 package model;
 
+import gui.common.SizeUnits;
+
 import java.io.*;
 
 /** Quantity holds a Unit and a number value associated with that Unit.
@@ -15,7 +17,14 @@ public class Quantity implements Serializable {
 	private float number;
 	
 	/** unit that H.I.T. measures such as count, pounds, ounces, grams, etc... */
-	private Unit unit;
+	private Enum<SizeUnits> unit;
+
+	public Quantity(){}
+	
+	public Quantity(Float number, Enum<SizeUnits> unit) {
+		this.number = number;
+		this.unit = unit;
+	}
 
 	/**Sets the number and unit variables.
 	 * 
@@ -25,7 +34,7 @@ public class Quantity implements Serializable {
 	 * @param unit		various types of measurement such as count, pounds, ounces, etc...
 	 * @throws IllegalArgumentException
 	 */
-	public void setQuantity( float number, Unit unit ) throws IllegalArgumentException {
+	public void setQuantity( float number, Enum<SizeUnits> unit ) throws IllegalArgumentException {
 		if( unit == null ) {
 			throw new IllegalArgumentException();
 		}
@@ -46,7 +55,7 @@ public class Quantity implements Serializable {
 	 * @pre 			none
 	 * @return			Returns the unit.
 	 */
-	public Unit getUnit() {
+	public Enum<SizeUnits> getUnit() {
 		assert true;
 		return unit;
 	}

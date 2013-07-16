@@ -6,6 +6,10 @@ import gui.product.*;
 
 import java.util.*;
 
+import model.Container;
+import model.ProductGroup;
+import model.StorageUnit;
+
 /**
  * Controller class for inventory view.
  */
@@ -40,7 +44,18 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
+		Set<StorageUnit> storageUnits = new TreeSet<StorageUnit>();
+		StorageUnit su1 = new StorageUnit( "The CS Dungeon" );
+		ProductGroup pg1 = new ProductGroup( "Toothpaste" );
+		su1.addProductGroup( pg1 );
+		ProductGroup cpg1 = new ProductGroup( "Kids" );
+		ProductGroup cpg2 = new ProductGroup( "Parents" );
+		pg1.addProductGroup(cpg1);
+		pg1.addProductGroup(cpg2);
+		su1.addProductGroup(pg1);
+		storageUnits.add(su1);
 		
+		getModel().getContainerManager().setStorageUnits( storageUnits );
 		ProductContainerData root = new ProductContainerData();
 		
 		ProductContainerData basementCloset = new ProductContainerData("The CS Dungeon");

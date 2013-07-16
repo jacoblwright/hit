@@ -1,5 +1,7 @@
 package gui.storageunit;
 
+import model.Container;
+import model.StorageUnit;
 import gui.common.*;
 import gui.inventory.*;
 
@@ -72,6 +74,11 @@ public class EditStorageUnitController extends Controller
 	 */
 	@Override
 	public void valuesChanged() {
+		String name = getView().getStorageUnitName();
+		Container container = new StorageUnit( name );
+		boolean isEnabled = getModel().getContainerManager().canAddContainer( container );
+		
+		getView().enableOK( isEnabled );
 	}
 
 	/**
