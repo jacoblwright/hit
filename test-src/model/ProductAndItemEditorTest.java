@@ -68,14 +68,14 @@ public class ProductAndItemEditorTest {
     @Test
     public void removeItemTest() throws Exception {
         
-        Container pc1 = new StorageUnit();
+        StorageUnit pc1 = new StorageUnit();
         Product p1 = new Product("123456789", "Descripshun",
                 SizeUnits.Count, 1, 1, 1);
         Date expDate1 = dateFormat.parse("1999/1/11");
         Barcode bc1 = new Barcode("1");
         Item i1 = new Item(pc1, p1, expDate1, bc1);
         
-        paie.addItem(i1);
+        paie.addItemToStorageUnit(i1, pc1);
         
         paie.removeItem(i1);
         assertEquals(1, iman.getRemovedItems().size());

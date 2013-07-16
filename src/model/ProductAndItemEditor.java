@@ -97,20 +97,25 @@ public class ProductAndItemEditor {
         
     }
     
+    /**
+     * @return true if the specified Product has no associated Items in the
+     * specified Container; false otherwise.
+     */
     public boolean canRemoveProductFromContainer(
             Product product, Container container) {
         
-        // Check to see if any items in this container have this product
-        // as an attribute
-        
-        return false;
+        return itemManager.getItems(container, product).isEmpty();
         
     }
     
-    /** Deletes a Product from the set all of products.
-     * @pre same as those for ProductManager.deleteProduct()
-     * @post same as those for ProductManager.deleteProduct()
-     * @throws IllegalArgumentException()
+    /**
+     * Removes the specified Product from the specified Container.
+     * @param product the Product to be removed
+     * @param container the Container from which product is to be removed
+     * @pre The specified Product has no associated Items in the specified
+     * Container.
+     * @post The specified Product is removed from the specified Container.
+     * @throws IllegalArgumentException
      */
     public void removeProductFromContainer(
             Product product, Container container) {
@@ -119,6 +124,10 @@ public class ProductAndItemEditor {
         
     }
 
+    /**
+     * @return true if the specified Product has no associated Items in the
+     * system; false otherwise.
+     */
     public boolean canDeleteProductFromSystem(Product product) {
         
         boolean result = true;
@@ -136,21 +145,44 @@ public class ProductAndItemEditor {
         
     }
     
+    /**
+     * Deletes the specified Product from the system completely.   
+     * @param product the Product to be deleted
+     * @pre The specified Product has no associated Items in the system.
+     * @post The specified Product is deleted from the system.
+     */
     public void deleteProductFromSystem(Product product) {
         
-        
+        // Waiting for this method to be added to ProductManager.
+        //productManager.deleteProductFromSystem(product);
         
     }
 
     /**
-     * Adds an Item to the system.
-     * @pre same as those for ItemManager.addItem()
-     * @post same as those for ItemManager.addItem()
-     * @throws IllegalArgumentException()
+     * Adds the specified Item to the specified StorageUnit.
+     * @pre item and storageUnit are not null.
+     * @post If item's product already exists within storageUnit, item is added
+     * to the Container in which item's product exists. If item's product does
+     * not exist within storageUnit, item is added to the top level in
+     * storageUnit.
+     * @throws IllegalArgumentException
      */
-     public void addItem(Item itemToAdd) throws IllegalArgumentException {
+     public void addItemToStorageUnit(Item item, StorageUnit storageUnit)
+             throws IllegalArgumentException {
      
-         itemManager.addItem(itemToAdd);
+         if (item == null || storageUnit == null) {
+             throw new IllegalArgumentException();
+         }
+         
+         Container containerOfProductInSU =
+                 getContainer(item.getProduct(), storageUnit);
+         
+         if (containerOfProductInSU == null) {             
+             item.setContainer(storageUnit);             
+         }
+         else {
+             item.setContainer(containerOfProductInSU);
+         }
          
      }
     
