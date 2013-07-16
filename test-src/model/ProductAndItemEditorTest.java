@@ -1,6 +1,8 @@
 package model;
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,7 +36,7 @@ public class ProductAndItemEditorTest {
         
         Container pc1 = new StorageUnit();
         Product p1 = new Product(
-                "123456789", "Descripshun", Unit.count, 1, 1, 1);
+                "123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
 
         Date expDate1 = dateFormat.parse("1999/1/11");
         Barcode bc1 = new Barcode("1");
@@ -58,7 +60,7 @@ public class ProductAndItemEditorTest {
         
         Container pc1 = new StorageUnit();
         Product p1 = new Product("123456789", "Descripshun",
-                Unit.count, 1, 1, 1);
+                SizeUnits.Count, 1, 1, 1);
         Date expDate1 = dateFormat.parse("1999/3/11");
         Barcode bc1 = new Barcode("1");
         Item i1 = new Item(pc1, p1, expDate1, bc1);
@@ -77,7 +79,7 @@ public class ProductAndItemEditorTest {
     public void moveItemTest() throws Exception {
         
         Container pc1 = new StorageUnit();
-        Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
+        Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
         Date expDate1 = dateFormat.parse("1999/1/11");
         Barcode bc1 = new Barcode("1");
         Item i1 = new Item(pc1, p1, expDate1, bc1);
@@ -99,7 +101,7 @@ public class ProductAndItemEditorTest {
         
         Container pc1 = new StorageUnit();
         Product p1 = new Product("123456789", "Descripshun",
-                Unit.count, 1, 1, 1);
+                SizeUnits.Count, 1, 1, 1);
         Date expDate1 = dateFormat.parse("1999/1/11");
         Barcode bc1 = new Barcode("1");
         Item i1 = new Item(pc1, p1, expDate1, bc1);

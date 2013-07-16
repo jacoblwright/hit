@@ -1,6 +1,7 @@
 package model;
 
 import static org.junit.Assert.*;
+import gui.common.SizeUnits;
 
 import org.junit.Test;
 
@@ -8,7 +9,7 @@ public class QuantityTest {
 
 	private float FLOAT = 3.3f;
 	private float INT_NUMBER = 3.0f;
-	private Unit UNIT = Unit.fluidOunces;
+	private Enum<SizeUnits> UNIT = SizeUnits.FluidOunces;
 	
 	@Test
 	public void quantityTest() {
@@ -37,15 +38,6 @@ public class QuantityTest {
 	public void setQuantityThrowTest() {
 		Quantity quantity1 = new Quantity();
 		quantity1.setQuantity( FLOAT, null );
-	}
-	
-	@Test
-	public void toStringTest() {
-		
-		Quantity quantity1 = new Quantity();
-		quantity1.setQuantity( FLOAT, UNIT );
-		String expectedResult = "Quantity [number=3.3, unit=fluidOunces]";
-		assertTrue( expectedResult.equals( quantity1.toString() ) );
 	}
 
 }

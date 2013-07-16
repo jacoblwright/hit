@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -165,7 +167,7 @@ public class ContainerManagerTest {
 		//Edit ProductGroup
 		ProductGroup newProductGroup = initializeProductGroup( "Editedcpg2_2", uniqueId++, su2 );
 		Quantity q = new Quantity();
-		q.setQuantity( 2.5f, Unit.fluidOunces );
+		q.setQuantity( 2.5f, SizeUnits.FluidOunces );
 		newProductGroup.setThreeMonthSupply( q );
 		containerManager.editContainer( childProductGroup2_2, newProductGroup );
 	
@@ -219,7 +221,7 @@ public class ContainerManagerTest {
 		//Add & Edit fails because count value isn't an integer
 		newProductGroup = initializeProductGroup( "Editedcpg2_2", uniqueId++, su2 );
 		Quantity q = new Quantity();
-		q.setQuantity( 2.5f, Unit.count );
+		q.setQuantity( 2.5f, SizeUnits.Count );
 		newProductGroup.setThreeMonthSupply( q );
 		assertFalse( containerManager.canEditContainer( newProductGroup ) );
 		assertFalse( containerManager.canAddContainer(newProductGroup) );
@@ -235,7 +237,7 @@ public class ContainerManagerTest {
 		//Add & Edit normally
 		newProductGroup = initializeProductGroup( "Editedcpg2_2", uniqueId++, su2 );
 		Quantity q = new Quantity();
-		q.setQuantity( 2.0f, Unit.count );
+		q.setQuantity( 2.0f, SizeUnits.Count );
 		newProductGroup.setThreeMonthSupply( q );
 		assertTrue( containerManager.canEditContainer( newProductGroup ) );
 		assertTrue( containerManager.canAddContainer(newProductGroup) );

@@ -19,6 +19,11 @@ public class StorageUnit extends Container {
 		setName("Untitled");
 	}
 	
+	public StorageUnit( String name ) {
+		assert true;
+		setName( name );
+	}
+	
 	/**Getter for container.
 	 * @pre							none
 	 * @return						null
