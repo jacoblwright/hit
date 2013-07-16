@@ -1,8 +1,7 @@
 package printers;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 import java.io.*;
 
 import model.*;
@@ -12,7 +11,7 @@ import com.itextpdf.text.pdf.Barcode;
 
 /**
  * Provides a method to create a PDF file with images of barcodes for a
- * specified List of Item objects.
+ * specified Collection of Item objects.
  */
 public class BarcodePrinter {
     
@@ -38,19 +37,19 @@ public class BarcodePrinter {
     /**
      * Creates a PDF file with images of barcodes for the the specified List
      * of Item objects.
-     * @param items the List of Item objects for which a PDF file of barcodes
-     * is to be created
+     * @param items the Collection of Item objects for which a PDF file of
+     * barcodes is to be created
      * @param file the file to which the PDF is to be written; if the file
      * does not exist it will be created
      * @param displayFile whether to display the PDF file after creation
-     * @pre items is not null, and all of the Item objects are not null;
+     * @pre items is not null and all of the Item objects are not null;
      * file is not null and it is writable.
      * @throws IllegalArgumentException if items or any of its contained
      * Item objects are null, or if file is null.
      * @throws IOException if file is a directory, not writable, or if there
      * is a problem writing to the file.
      */
-    public void printBarcodes(List<Item> items, File file,
+    public void printBarcodes(Collection<Item> items, File file,
             boolean displayFile)
                     throws IllegalArgumentException, IOException {
         
@@ -74,9 +73,7 @@ public class BarcodePrinter {
             PdfPTable table = new PdfPTable(NUM_OF_COLUMNS);
             table.setWidthPercentage(100);
             
-            for (int i = 0; i < items.size(); i++) {
-                
-                Item item = items.get(i);
+            for (Item item : items) {
                 
                 Phrase phr = new Phrase();
                 phr.add(truncateDescription(
@@ -127,16 +124,17 @@ public class BarcodePrinter {
         
     }
     
-    private void checkItems(List<Item> items) {
+    private void checkItems(Collection<Item> items) {
         
         if (items == null) {            
-            throw new IllegalArgumentException("Specified Item List is null.");           
+            throw new IllegalArgumentException(
+                    "Specified Item Collection is null.");           
         }
         
-        for (Item i : items) {
-            if (i == null) {
+        for (Item item : items) {
+            if (item == null) {
                 throw new IllegalArgumentException(
-                        "Specified Item List containes null element(s).");
+                        "Specified Item Collection containes null element(s).");
             }
         }
 
