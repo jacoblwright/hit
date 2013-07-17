@@ -1,11 +1,13 @@
 package gui.inventory;
 
 import gui.common.*;
+
 import gui.item.*;
 import gui.product.*;
 
 import model.Model;
 import java.util.*;
+import model.*;
 
 import model.ChangeObject;
 import model.ChangeType;
@@ -190,23 +192,35 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
+		Set products = null;
 		List<ProductData> productDataList = new ArrayList<ProductData>();		
 		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
+		/* Grab products from specific container */
 		if (selectedContainer != null) {
-			int productCount = rand.nextInt(20) + 1;
-			for (int i = 1; i <= productCount; ++i) {
+			Map productMap = getModel().getProductManager().getProductsByContainer();
+			products = (HashSet)productMap.get((Container)selectedContainer.getTag());
+		}
+
+		if(products != null){
+			System.out.println(products);
+			System.exit(0);
+			Iterator it = products.iterator();
+			while (it.hasNext()){
+				Product product = (Product)it.next();
+				
 				ProductData productData = new ProductData();			
-				productData.setBarcode(getRandomBarcode());
-				int itemCount = rand.nextInt(25) + 1;
-				productData.setCount(Integer.toString(itemCount));
-				productData.setDescription("Item " + i);
-				productData.setShelfLife("3 months");
-				productData.setSize("1 pounds");
-				productData.setSupply("10 count");
+				productData.setBarcode(product.getUPC().getBarcode());
+				
+				productData.setCount(Integer.toString(getModel().getItemManager().getItems((Container)selectedContainer.getTag(), product).size()));
+				productData.setDescription(product.getDescription());
+				productData.setShelfLife(Integer.toString(product.getShelfLife()) + " months");
+				productData.setSize(product.getSize().getNumber() + " " + product.getSize().getUnit());
+				productData.setSupply(Integer.toString(product.getThreeMonthSupply()) + " count");
 				
 				productDataList.add(productData);
-			}
+				}
 		}
+		
 		getView().setProducts(productDataList.toArray(new ProductData[0]));
 		
 		getView().setItems(new ItemData[0]);
@@ -217,22 +231,23 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void productSelectionChanged() {
-		List<ItemData> itemDataList = new ArrayList<ItemData>();		
-		ProductData selectedProduct = getView().getSelectedProduct();
-		if (selectedProduct != null) {
-			Date now = new Date();
-			GregorianCalendar cal = new GregorianCalendar();
-			int itemCount = Integer.parseInt(selectedProduct.getCount());
-			for (int i = 1; i <= itemCount; ++i) {
-				cal.setTime(now);
+		
+		Product product = (Product)getView().getSelectedProduct().getTag();
+		Container container = (Container)getView().getSelectedProductContainer().getTag();
+		
+		Collection collection = getModel().getItemManager().getItems(container, product);
+		List<ItemData> itemDataList = new ArrayList<ItemData>();
+		Iterator it = collection.iterator();
+		if (product != null) {
+			while(it.hasNext()) {
+				Item item = (Item)it.next();
 				ItemData itemData = new ItemData();
-				itemData.setBarcode(getRandomBarcode());
-				cal.add(Calendar.MONTH, -rand.nextInt(12));
-				itemData.setEntryDate(cal.getTime());
-				cal.add(Calendar.MONTH, 3);
-				itemData.setExpirationDate(cal.getTime());
-				itemData.setProductGroup("Some Group");
-				itemData.setStorageUnit("Some Unit");
+				itemData.setBarcode(item.getTag().getBarcode());
+				itemData.setEntryDate(item.getEntryDate());
+				itemData.setExpirationDate(item.getExpirationDate());
+				/* Still need to instantiate these */
+				//itemData.setProductGroup();
+				//itemData.setStorageUnit("Some Unit");
 				
 				itemDataList.add(itemData);
 			}
@@ -253,7 +268,13 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteProduct() {
-		return true;
+		if(getView().getSelectedProduct() != null){
+			ProductData productData = getView().getSelectedProduct();
+			Product product = (Product)productData.getTag();
+			if(getModel().getProductAndItemEditor().canDeleteProduct(product))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -261,6 +282,21 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteProduct() {
+		if(canDeleteProduct()){
+			ProductData productData = getView().getSelectedProduct();
+			Product product = (Product)productData.getTag();
+			ProductContainerData productContainerData = getView().getSelectedProductContainer();
+			Container container = (Container)productContainerData.getTag();
+			try{
+				getModel().getProductManager().removeProductFromContainer(product, container);
+			}
+			catch (IllegalArgumentException e){
+				getView().displayErrorMessage("Can't Delete Product");
+			}
+		}
+		else{
+			getView().displayErrorMessage("Can't Delete Product");
+		}
 	}
 
 	/**
@@ -299,7 +335,10 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canEditProduct() {
-		return true;
+		if(getView().getSelectedProduct() != null){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -375,8 +414,11 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void addProductToContainer(ProductData productData, 
-										ProductContainerData containerData) {	
+										ProductContainerData containerData) {
+		Product product = (Product)productData.getTag();
+		Container container = (Container)containerData.getTag();
 		
+		getModel().getProductManager().addProductToContainer(product, container);
 	}
 
 	/**

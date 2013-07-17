@@ -1,12 +1,16 @@
 package gui.product;
 
+import model.*;
 import gui.common.*;
+import gui.inventory.ProductContainerData;
 
 /**
  * Controller class for the add item view.
  */
 public class AddProductController extends Controller implements
 		IAddProductController {
+	
+	String upc;
 	
 	/**
 	 * Constructor.
@@ -17,6 +21,9 @@ public class AddProductController extends Controller implements
 	public AddProductController(IView view, String barcode) {
 		super(view);
 		
+		upc = barcode;
+		loadValues();
+		enableComponents();
 		construct();
 	}
 
@@ -48,6 +55,32 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableBarcode(false);
+		getView().enableDescription(true);
+		getView().enableShelfLife(true);
+		getView().enableSupply(true);
+		
+		if(getView().getSizeUnit() == SizeUnits.Count){
+			getView().setSizeValue("1");
+			getView().enableSizeValue(false);
+		}
+		else getView().enableSizeValue(true);
+		
+		if(getView().getBarcode() == null || getView().getBarcode().equals(""))
+			getView().displayErrorMessage("Barcode should not be empty");
+		
+		try{
+			Integer.parseInt(getView().getShelfLife());
+			Integer.parseInt(getView().getSupply());
+			Float.parseFloat(getView().getSizeValue());
+			if(!getView().getDescription().isEmpty())
+				getView().enableOK(true);
+			else getView().enableOK(false);
+		}
+		catch(NumberFormatException e){
+			getView().enableOK(false);
+		}
+		
 	}
 
 	/**
@@ -59,6 +92,7 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setBarcode(upc);
 	}
 
 	//
@@ -71,6 +105,7 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 	
 	/**
@@ -79,6 +114,18 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	public void addProduct() {
+		
+		/* I need to figure out how to get the selected container */
+		
+		Product product = new Product(getView().getBarcode(), getView().getDescription(), 
+				getView().getSizeUnit(), Float.parseFloat(getView().getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
+				Integer.parseInt(getView().getSupply()) );
+		
+		if(!getModel().getProductManager().isProductValid(product)){
+			getView().displayErrorMessage("Can't add invalid product.");
+		}
+		else getModel().getProductManager().addNewProduct(product, null);
+		
 	}
 
 }

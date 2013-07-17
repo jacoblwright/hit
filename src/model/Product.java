@@ -82,7 +82,7 @@ public class Product extends Entity {
 		}
 		
 		Product product = (Product) obj;
-		return this.getUPC().getBarcode() == product.getUPC().getBarcode();
+		return this.getUPC().getBarcode().equals(product.getUPC().getBarcode());
 	}
 	
 	/** Adds container to Set<Container> containers.
