@@ -1,5 +1,7 @@
 package gui.main;
 
+import java.io.IOException;
+
 import gui.common.*;
 
 /**
@@ -44,6 +46,14 @@ public class MainController extends Controller implements IMainController {
 	 */
 	@Override
 	public void exit() {
+		
+		try {
+			
+			getModel().save();
+			
+		} catch (IOException e) {
+			getView().displayErrorMessage("Error saving information");			// this isn't the final code for this section!!!!
+		}
 	}
 
 	/**

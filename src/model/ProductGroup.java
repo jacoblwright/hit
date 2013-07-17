@@ -1,5 +1,7 @@
 package model;
 
+import gui.common.SizeUnits;
+
 
 /**ProductGroup is used to group similar Products together.  
  * ex.  If you have 4 different kinds of toothpaste 
@@ -29,9 +31,22 @@ public class ProductGroup extends Container {
 		assert true;
 		setName("Untitled");
 		threeMonthSupply = new Quantity();
-		threeMonthSupply.setQuantity( unspecified, Unit.unspecified );
+		threeMonthSupply.setQuantity( unspecified, SizeUnits.Count );
 	}
 	
+	public ProductGroup( String name ) {
+		assert true;
+		setName( name );
+		threeMonthSupply = new Quantity();
+		threeMonthSupply.setQuantity( unspecified, SizeUnits.Count );
+	}
+	
+	public ProductGroup(String name, Quantity quantity) {
+		assert true;
+		setName( name );
+		threeMonthSupply = quantity;
+	}
+
 	/**Getter for container.
 	 * @pre							none
 	 * @return						parent container
@@ -78,8 +93,9 @@ public class ProductGroup extends Container {
 	public boolean canAddThreeMonthSupply() {
 		assert true;
 		if( threeMonthSupply != null ) {
-			if( threeMonthSupply.getUnit().equals( Unit.count ) ) {
-				return threeMonthSupply.getNumber() == Math.round( threeMonthSupply.getNumber() );
+			if( threeMonthSupply.getUnit().equals( SizeUnits.Count ) ) {
+				return threeMonthSupply.getNumber() == Math.round( threeMonthSupply.getNumber() )
+						&& threeMonthSupply.getNumber() >= 0;
 			}
 		}
 		if( threeMonthSupply.getNumber() < 0 ) {
@@ -139,10 +155,5 @@ public class ProductGroup extends Container {
 	public String toString() {
 		assert true;
 		return super.toString() + " ProductGroup [threeMonthSupply=" + threeMonthSupply + "]";
-	}
-	
-	@Override
-	public int compareTo(Container other) throws IllegalArgumentException {
-		return super.compareTo( other );
 	}
 }

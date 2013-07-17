@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -174,7 +176,7 @@ public class ContainerEditorTest {
         ProductGroup newProductGroup = initializeProductGroup(
                 "Editedcpg2_2", uniqueId++, su2 );
         Quantity q = new Quantity();
-        q.setQuantity( 2.5f, Unit.fluidOunces );
+        q.setQuantity( 2.5f, SizeUnits.FluidOunces );
         newProductGroup.setThreeMonthSupply( q );
         containerEditor.editContainer( 
                 childProductGroup2_2, newProductGroup );
@@ -184,7 +186,7 @@ public class ContainerEditorTest {
     @Test
     public void canDeleteContainerTest() {                
         
-        Product p1 = new Product("12345", "d", Unit.grams, 3, 8, 8);
+        Product p1 = new Product("12345", "d", SizeUnits.Grams, 3, 8, 8);
         Item i1 = new Item(
                 grandChildProductGroup1_1, p1, new Date(), new Barcode());
         itemManager.addItem(i1);
@@ -203,7 +205,7 @@ public class ContainerEditorTest {
         assertTrue(containerEditor.canDeleteContainer(su2));
         assertTrue(containerEditor.canDeleteContainer(productGroup2_1));
         
-        Product p2 = new Product("12345", "d", Unit.grams, 3, 8, 8);
+        Product p2 = new Product("12345", "d", SizeUnits.Grams, 3, 8, 8);
         Item i2 = new Item(
                 grandChildProductGroup1_2, p1, new Date(), new Barcode());
         itemManager.addItem(i2);
@@ -211,7 +213,7 @@ public class ContainerEditorTest {
         assertFalse(containerEditor.canDeleteContainer(
                 grandChildProductGroup1_2));
         
-        Product p3 = new Product("12345", "d", Unit.grams, 3, 8, 8);
+        Product p3 = new Product("12345", "d", SizeUnits.Grams, 3, 8, 8);
         Item i3 = new Item(
                 su2, p1, new Date(), new Barcode());
         itemManager.addItem(i3);

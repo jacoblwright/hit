@@ -1,5 +1,7 @@
 package model;
 
+import gui.common.SizeUnits;
+
 import java.io.*;
 import java.util.*;
 
@@ -78,7 +80,7 @@ public class SerializerTest {
         
         // --------------------------------
         Product orig2 = new Product(
-                "12345", "Description", Unit.count, 1, 8, 8);
+                "12345", "Description", SizeUnits.Count, 1, 8, 8);
         Serializer.save(orig2, file);
         Product loaded2 = (Product)Serializer.load(file);
         assertEquals(orig2.toString(), loaded2.toString());

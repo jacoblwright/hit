@@ -140,6 +140,7 @@
 	
 	<property name="itext.jar" value="lib/itext-5.1.0/itextpdf-5.1.0.jar"/>
 	<property name="sqlite.jar" value="lib/sqlitejdbc-v056/sqlitejdbc-v056.jar"/>
+	<property name ="commons-io-2.4.jar" value="lib/commons-io-2.4/commons-io-2.4.jar"/>
 	
 	<target name="package" depends="compile"
         description="package the jar file" >
@@ -158,7 +159,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="gui.main.GUI"/>
 				<attribute name="Class-Path" 
-					value="${sqlite.jar} ${itext.jar}" />
+					value="${sqlite.jar} ${itext.jar} ${commons-io-2.4.jar}" />
 			</manifest>
 		</jar>
 	</target>

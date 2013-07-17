@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,7 +53,7 @@ public class ItemTest {
 		assertFalse(i1.getTag() == new Barcode());
 		
 		// Testing Setters:
-		Product p2 = new Product("2", "Cookies", Unit.count, 1, 1, 1);
+		Product p2 = new Product("2", "Cookies", SizeUnits.Count, 1, 1, 1);
 		i1.setProduct(p2);
 		assertEquals(i1.getProduct(), p2);
 		

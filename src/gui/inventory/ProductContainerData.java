@@ -1,6 +1,9 @@
 package gui.inventory;
 
 import java.util.*;
+
+import model.Container;
+import model.ProductGroup;
 import gui.common.*;
 
 /**
@@ -108,6 +111,42 @@ public class ProductContainerData extends Tagable {
 		_children.add(child);
 	}
 	
+	public void setProductContainer( Container container ) {
+		this.setName( container.getName() );
+		this.setTag( container );
+		setContainerRecursively( this, container );
+	}
+	
+	private void setContainerRecursively(ProductContainerData aChild, Container container) {
+		Set<ProductGroup> children = container.getProductGroups();
+		if( children.isEmpty() ) {
+			return;
+		}
+		
+		for( ProductGroup child : children ) {
+			ProductContainerData tempChild = new ProductContainerData();
+			tempChild.setName( child.getName() );
+			tempChild.setTag( child );
+			setContainerRecursively( tempChild, child );
+			aChild.addChild( tempChild );
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash += this.getName().hashCode();
+		hash += this.getChildCount();
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		assert true;
+		return this.getName() == ((ProductContainerData)obj).getName() &&
+				this.getChildCount() == ((ProductContainerData)obj).getChildCount();
+	}
+
 	@Override
 	public String toString() {
 		return _name;
