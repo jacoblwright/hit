@@ -1,7 +1,18 @@
 package gui.batches;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+
+import model.Barcode;
+import model.Container;
+import model.Item;
+import model.Product;
 import gui.common.*;
 import gui.inventory.*;
+import gui.item.ItemData;
 import gui.product.*;
 
 /**
@@ -10,6 +21,7 @@ import gui.product.*;
 public class AddItemBatchController extends Controller implements
 		IAddItemBatchController {
 
+	Container container;
 	/**
 	 * Constructor.
 	 * 
@@ -19,6 +31,7 @@ public class AddItemBatchController extends Controller implements
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
 		
+		container = (Container)target.getTag();
 		construct();
 	}
 
@@ -39,6 +52,25 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setCount("1");
+		Date date = new Date();
+		getView().setEntryDate(date);
+		
+		if(container !=  null){
+			Collection col = getModel().getProductManager().getProducts(container);
+			if (col == null) return;
+			ProductData[] productArray = DataConverter.toProductDataArray(col);
+			for(int i = 0; i < productArray.length; i++){
+				try{
+					Collection itemCol = getModel().getItemManager().getItems(container, (Product)productArray[i].getTag());
+					productArray[i].setCount(Integer.toString(itemCol.size()));
+				}
+				catch(NullPointerException e){
+					
+				}
+			}
+			getView().setProducts(productArray);
+		}
 	}
 
 	/**
@@ -53,6 +85,26 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			String result = sdf.format(getView().getEntryDate());
+			Date today = new Date();
+			
+			if(!getView().getBarcode().isEmpty() && getView().getUseScanner() == false && 
+					Integer.parseInt(getView().getCount()) > 0 && 
+					!getView().getEntryDate().after(today)){
+				getView().enableItemAction(true);
+			}
+			else getView().enableItemAction(false);
+		}
+		catch(IllegalArgumentException e){
+			getView().enableItemAction(false);
+		}
+
+		
+		getView().enableRedo(false);
+		getView().enableUndo(false);
 	}
 
 	/**
@@ -61,6 +113,10 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void entryDateChanged() {
+		if(getView().getEntryDate() != null)
+			enableComponents();
+		else 
+			getView().enableItemAction(false);
 	}
 
 	/**
@@ -69,6 +125,7 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void countChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -77,6 +134,10 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void barcodeChanged() {
+		if(getView().getUseScanner() == true){
+			addItem();
+		}
+		enableComponents();
 	}
 
 	/**
@@ -85,6 +146,8 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void useScannerChanged() {
+		getView().setBarcode("");
+		enableComponents();
 	}
 
 	/**
@@ -93,6 +156,12 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void selectedProductChanged() {
+		ProductData productData = getView().getSelectedProduct();
+		if(productData != null){
+			Collection col = getModel().getItemManager().getItems(container, (Product)productData.getTag());
+			ItemData[] itemArray = DataConverter.toItemDataArray(col);
+			getView().setItems(itemArray);
+		}
 	}
 
 	/**
@@ -101,7 +170,26 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void addItem() {
-		getView().displayAddProductView();
+		Product product;
+		if(getModel().getProductManager().upcExists(getView().getBarcode())){
+			product = (Product) getView().getSelectedProduct().getTag();
+		}
+		else{
+			getView().displayAddProductView();
+			Barcode barcode = new Barcode();
+			barcode.setBarcode(getView().getBarcode());
+			product = getModel().getProductManager().getProductByUPC(barcode);
+		}
+		
+		for(int i = 0; i < Integer.parseInt(getView().getCount()); i++){
+			Barcode barcode = new Barcode();
+			Container storageUnit = getModel().getContainerManager().getAncestorStorageUnit(container);
+			Item item = new Item(storageUnit, product, getView().getEntryDate(), barcode);
+			System.out.println(barcode.getBarcode());
+			getModel().getItemManager().addItem(item);
+		}
+		
+		loadValues();
 	}
 	
 	/**

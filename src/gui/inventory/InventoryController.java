@@ -12,6 +12,8 @@ import model.Container;
 import model.ProductGroup;
 import model.Quantity;
 import model.StorageUnit;
+import model.Product;
+import model.Item;
 
 /**
  * Controller class for inventory view.
@@ -215,35 +217,23 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
-		Set products = null;
-		List<ProductData> productDataList = new ArrayList<ProductData>();		
-		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
-		/* Grab products from specific container */
-		if (selectedContainer != null) {
-			Map productMap = getModel().getProductManager().getProductsByContainer();
-			products = (HashSet)productMap.get((Container)selectedContainer.getTag());
-		}
-
-		if(products != null){
-			Iterator it = products.iterator();
-			while (it.hasNext()){
-				Product product = (Product)it.next();
-				ProductData productData = new ProductData();			
-				productData.setBarcode(product.getUPC().getBarcode());
-				
-				//productData.setCount(Integer.toString(getModel().getItemManager().getItems((Container)selectedContainer.getTag(), product).size()));
-				productData.setDescription(product.getDescription());
-				productData.setShelfLife(Integer.toString(product.getShelfLife()) + " months");
-				productData.setSize(product.getSize().getNumber() + " " + product.getSize().getUnit());
-				productData.setSupply(Integer.toString(product.getThreeMonthSupply()) + " count");
-				
-				productDataList.add(productData);
+		ProductContainerData productContainerData = getView().getSelectedProductContainer();
+		if(productContainerData !=  null){
+			Collection col = getModel().getProductManager().getProducts((Container)productContainerData.getTag());
+			if (col == null) return;
+			ProductData[] productArray = DataConverter.toProductDataArray(col);
+			for(int i = 0; i < productArray.length; i++){
+				try{
+					Collection itemCol = getModel().getItemManager().getItems((Container)productContainerData.getTag(), (Product)productArray[i].getTag());
+					productArray[i].setCount(Integer.toString(itemCol.size()));
 				}
+				catch(NullPointerException e){
+					
+				}
+			}
+			getView().setProducts(productArray);
 		}
-		
-		getView().setProducts(productDataList.toArray(new ProductData[0]));
-		
-		getView().setItems(new ItemData[0]);
+		else getView().setProducts(null);
 	}
 
 	/**
@@ -252,27 +242,12 @@ public class InventoryController extends Controller
 	@Override
 	public void productSelectionChanged() {
 		
-		Product product = (Product)getView().getSelectedProduct().getTag();
-		Container container = (Container)getView().getSelectedProductContainer().getTag();
-
-		Collection collection = getModel().getItemManager().getItems(container, product);
-		List<ItemData> itemDataList = new ArrayList<ItemData>();
-		Iterator it = collection.iterator();
-		if (product != null) {
-			while(it.hasNext()) {
-				Item item = (Item)it.next();
-				ItemData itemData = new ItemData();
-				itemData.setBarcode(item.getTag().getBarcode());
-				itemData.setEntryDate(item.getEntryDate());
-				itemData.setExpirationDate(item.getExpirationDate());
-				/* Still need to instantiate these */
-				//itemData.setProductGroup();
-				//itemData.setStorageUnit("Some Unit");
-				
-				itemDataList.add(itemData);
-			}
+		ProductData productData = getView().getSelectedProduct();
+		if(productData != null){
+			Collection col = getModel().getItemManager().getItems((Container)getView().getSelectedProductContainer().getTag(), (Product)productData.getTag());
+			ItemData[] itemArray = DataConverter.toItemDataArray(col);
+			getView().setItems(itemArray);
 		}
-		getView().setItems(itemDataList.toArray(new ItemData[0]));
 	}
 
 	/**
@@ -318,6 +293,7 @@ public class InventoryController extends Controller
 		else{
 			getView().displayErrorMessage("Can't Delete Product");
 		}
+		
 	}
 
 	/**
@@ -341,7 +317,10 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canRemoveItem() {
-		return true;
+		if(getView().getSelectedItem() != null){
+			return true;
+		}
+		else return false;
 	}
 
 	/**
@@ -349,6 +328,8 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void removeItem() {
+		Item item = (Item) getView().getSelectedItem().getTag();
+		getModel().getItemManager().removeItem(item);
 	}
 
 	/**
