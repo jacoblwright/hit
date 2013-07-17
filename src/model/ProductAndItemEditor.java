@@ -41,17 +41,6 @@ public class ProductAndItemEditor {
     }
     
     /**
-     * Edits a Product by replacing an older Product with a newer Product.
-     * @pre same as those for ProductManager.editProduct()
-     * @post same as those for ProductManager.editProduct()
-     */
-    public void editProduct(Product oldProduct, Product newProduct) {
-        
-        productManager.editProduct(oldProduct, newProduct);
-        
-    }
-    
-    /**
      * Moves a Product to a different Container.
      * @param product the Product to be moved
      * @param sourceContainer the source Container
@@ -94,6 +83,17 @@ public class ProductAndItemEditor {
             }
             
         }
+        
+    }
+
+    /**
+     * Edits a Product by replacing an older Product with a newer Product.
+     * @pre same as those for ProductManager.editProduct()
+     * @post same as those for ProductManager.editProduct()
+     */
+    public void editProduct(Product oldProduct, Product newProduct) {
+        
+        productManager.editProduct(oldProduct, newProduct);
         
     }
     
@@ -177,28 +177,55 @@ public class ProductAndItemEditor {
          Container containerOfProductInSU =
                  getContainer(item.getProduct(), storageUnit);
          
-         if (containerOfProductInSU == null) {             
-             item.setContainer(storageUnit);             
+         if (containerOfProductInSU == null) {   
+             
+             productManager.addProductToContainer(
+                     item.getProduct(), storageUnit);
+             
+             item.setContainer(storageUnit);           
+         
          }
          else {
              item.setContainer(containerOfProductInSU);
          }
          
-     }
-    
-     /**
-      * Edits an Item.
-      * @pre same as those for ItemManager.editItem()
-      * @post same as those for ItemManager.editItem()
-      * @throws IllegalArgumentException() 
-      */
-     public void editItem(Item oldItem, Item newItem)
-             throws IllegalArgumentException {
-    
-         itemManager.editItem(oldItem, newItem);
+         itemManager.addItem(item);
          
      }
-
+     
+     /**
+      * Transfers the specified Item to the specified StorageUnit.
+      * @pre item and storageUnit are not null.
+      * @post If item's product already exists within storageUnit, item is added
+      * to the Container in which item's product exists. If item's product does
+      * not exist within storageUnit, item is added to the top level in
+      * storageUnit. item is removed from its previous container.
+      * @throws IllegalArgumentException
+      */
+     public void transferItemToStorageUnit(Item item, StorageUnit storageUnit)
+             throws IllegalArgumentException {
+     
+         if (item == null || storageUnit == null) {
+             throw new IllegalArgumentException();
+         }
+         
+         Container containerOfProductInSU =
+                 getContainer(item.getProduct(), storageUnit);
+         
+         if (containerOfProductInSU == null) {   
+             
+             productManager.addProductToContainer(
+                     item.getProduct(), storageUnit);
+             
+             itemManager.moveItem(item, storageUnit);   
+             
+         }
+         else {
+             itemManager.moveItem(item, containerOfProductInSU);
+         }
+         
+     }
+    
      /**
       * Moves an Item to a different Container.
       * @param itemToMove the item to move
@@ -209,7 +236,7 @@ public class ProductAndItemEditor {
       */
      public void moveItem(Item itemToMove, Container targetContainer)
              throws IllegalArgumentException {
-     
+    
          assert itemToMove != null;
          assert targetContainer != null;
          
@@ -225,7 +252,20 @@ public class ProductAndItemEditor {
          }
          
      }
-     
+
+    /**
+      * Edits an Item.
+      * @pre same as those for ItemManager.editItem()
+      * @post same as those for ItemManager.editItem()
+      * @throws IllegalArgumentException() 
+      */
+     public void editItem(Item oldItem, Item newItem)
+             throws IllegalArgumentException {
+    
+         itemManager.editItem(oldItem, newItem);
+         
+     }
+
      /**
       * Removes the item from all containers but keeps track of it in the item
       * history.
