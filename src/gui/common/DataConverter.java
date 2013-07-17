@@ -44,6 +44,7 @@ public class DataConverter {
 		Iterator<Product> iter = col.iterator();
 		while (iter.hasNext()) {
 			ret[i] = new ProductData(iter.next());
+			i++;
 		}
 		return ret;
 	}
