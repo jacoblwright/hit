@@ -5,12 +5,12 @@ import gui.common.*;
 import gui.item.*;
 import gui.product.*;
 
-import model.Model;
 import java.util.*;
 import model.*;
 
 import model.Container;
 import model.ProductGroup;
+import model.Quantity;
 import model.StorageUnit;
 
 /**
@@ -18,6 +18,10 @@ import model.StorageUnit;
  */
 public class InventoryController extends Controller 
 									implements IInventoryController, Observer {
+	private final String EMPTY = "";
+	private ProductContainerData selectedContainerData;
+	private ProductData selectedProductData;
+	private ItemData selectedItemData;
 
 	/**
 	 * Constructor.
@@ -81,6 +85,32 @@ public class InventoryController extends Controller
 		root.addChild(foodStorage);
 		
 		getView().setProductContainers(root);
+		
+		if( selectedContainerData != null ) {	
+			getView().selectProductContainer( selectedContainerData );
+		}
+		loadContextPanel( selectedContainerData );
+		
+	}
+
+	private void loadContextPanel( ProductContainerData selectedContainer ) {
+		if( selectedContainer != null ) {
+			if( selectedContainer.getTag() == null ) {
+				allStorageUnitsSelected();
+			}
+			else if( selectedContainer.getTag() instanceof StorageUnit ) {
+				storageUnitSelected();
+			}
+			else if( selectedContainer.getTag() instanceof ProductGroup ) {
+				productGroupSelected();
+			}
+			else {
+				setContextPanel( EMPTY, EMPTY, EMPTY );
+			}
+		}
+		else {
+			setContextPanel( EMPTY, EMPTY, EMPTY );
+		}
 	}
 
 	/**
@@ -443,12 +473,63 @@ public class InventoryController extends Controller
 	public void moveItemToContainer(ItemData itemData,
 									ProductContainerData containerData) {
 	}
+	
+	@Override
+	public void allStorageUnitsSelected() {
+		setContextPanel( "All", EMPTY, EMPTY );
+	}
+
+	@Override
+	public void storageUnitSelected() {
+		Container container = (Container) getView().getSelectedProductContainer().getTag();	
+		setContextPanel( container.getName(),EMPTY,EMPTY );
+		}
+
+	@Override
+	public void productGroupSelected() {
+		Container container = (Container) getView().getSelectedProductContainer().getTag();
+		Container unit = getModel().getContainerManager().getAncestorStorageUnit(container);
+		Quantity quantity = ( (ProductGroup) container).getThreeMonthSupply(); 
+		if( quantity.getNumber() == 0 ) {
+			setContextPanel( unit.getName(), container.getName(), EMPTY );
+		}
+		else {
+			String supply;
+			if( Math.round( quantity.getNumber() ) == quantity.getNumber() ) {
+				supply = String.valueOf( Math.round( quantity.getNumber() ) );
+			}
+			else {
+				supply = String.valueOf( quantity.getNumber() );
+			}
+			supply += " " + quantity.getUnit().name();
+			setContextPanel( unit.getName(), container.getName(), supply );
+		}
+	}
+	
+	private void setContextPanel(String unit, String group, String supply) {
+		getView().setContextUnit( unit );
+		getView().setContextGroup( group );
+		getView().setContextSupply( supply );
+	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
+		ChangeType changeType = ((ChangeObject) arg1).getChangeType();
+		if( changeType.equals(ChangeType.CONTAINER) ) {
+			selectedContainerData = (ProductContainerData) ((ChangeObject)arg1).getSelectedData();
+			loadValues();
+		}
+		else if( changeType.equals(ChangeType.ITEM) ) {
+			selectedItemData = (ItemData) ((ChangeObject)arg1).getSelectedData();
+			productSelectionChanged();
+		}
+		else if( changeType.equals(ChangeType.PRODUCT) ) {
+			selectedProductData = (ProductData) ((ChangeObject)arg1).getSelectedData();
+			productContainerSelectionChanged();
+		}
 	}
+
+
 
 }
 

@@ -129,13 +129,13 @@ public class ContainerManager extends Observable implements Serializable {
 		assert container != null;
 		container.setContainer( parent );
 		container.setId( uniqueId++ );
-		ChangeObject hint = getHintObject( container );
 		if( container instanceof ProductGroup ) {
 			parent.addProductGroup( ( ProductGroup ) container );
 		}
 		else {
 			storageUnits.add( (StorageUnit) container );
 		}
+		ChangeObject hint = getHintObject( container );
 		setChanged();
 		notifyObservers( hint );
 		//notifyObservers( ChangeType.CONTAINER );
@@ -158,7 +158,6 @@ public class ContainerManager extends Observable implements Serializable {
 				!canEditContainer( newContainer ) ) {
 			throw new IllegalArgumentException();
 		}
-		ChangeObject hint = getHintObject( oldContainer );
 		if( oldContainer instanceof ProductGroup ) {
 			newContainer.setContainer( oldContainer.getContainer() );
 			newContainer.setProductGroups( oldContainer.getProductGroups() );
@@ -170,6 +169,7 @@ public class ContainerManager extends Observable implements Serializable {
 			storageUnits.remove( oldContainer );
 			storageUnits.add( (StorageUnit) newContainer );
 		}
+		ChangeObject hint = getHintObject( newContainer );
 		setChanged();
 		notifyObservers( hint );
 	}
@@ -186,9 +186,9 @@ public class ContainerManager extends Observable implements Serializable {
 	 */
 	public void deleteContainer( Container container ) throws IllegalArgumentException {
 		
-		//removeContainerRecursively( container );
+		Container parent = container.getContainer();
 		if( container instanceof ProductGroup ) {
-			if( container.getContainer() == null ) {
+			if( parent == null ) {
 				throw new IllegalArgumentException();
 			}
 			Set<ProductGroup> productGroupList = container.getContainer().getProductGroups();
@@ -197,7 +197,7 @@ public class ContainerManager extends Observable implements Serializable {
 		else {
 			storageUnits.remove( container );
 		}
-		ChangeObject hint = getHintObject( container.getContainer() );
+		ChangeObject hint = getHintObject( parent );
 		setChanged();
 		notifyObservers( hint );
 	}
@@ -280,11 +280,12 @@ public class ContainerManager extends Observable implements Serializable {
 	}
 	
 	private ChangeObject getHintObject( Container container ) {
-		if( container == null ) {
-			return null;
-		}
 		ChangeObject result = new ChangeObject();
 		result.setChangeType( ChangeType.CONTAINER );
+		if( container == null ) {
+			return result;
+		}
+		
 		ProductContainerData productContainerData = new ProductContainerData();
 		productContainerData.setProductContainer( container );
 		result.setSelectedData( productContainerData );
