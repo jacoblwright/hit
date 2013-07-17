@@ -13,7 +13,7 @@ public class BarcodeTest {
 		    
 		    Barcode b = new Barcode();
 		    
-		    System.out.println(b);
+		    //System.out.println(b);
 		    
 		}
 		

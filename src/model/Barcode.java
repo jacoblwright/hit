@@ -40,9 +40,8 @@ public class Barcode implements Serializable {
 	        digits[i] = rand.nextInt(10);
 	    }
 	    
-        /* Adds the 1st, 3rd, 5th, 7th, 9th, and 11th digits (the nth digit in
-        the traditional (1-based index) sense,
-        i.e., nth digit = array[n - 1]. */
+        // Adds the 1st, 3rd, 5th, 7th, 9th, and 11th digits (the nth digit in
+        // the traditional (1-based index) sense).
 	    int checkDigit = digits[0] + digits[2] + digits[4] + digits[6] +
 	            digits[8] + digits[10];
 	    
