@@ -16,6 +16,7 @@ import model.Barcode;
 import model.Container;
 import model.Item;
 import model.Product;
+import model.StorageUnit;
 import gui.common.*;
 import gui.inventory.*;
 import gui.item.ItemData;
@@ -192,10 +193,10 @@ public class AddItemBatchController extends Controller implements
 		
 		for(int i = 0; i < Integer.parseInt(getView().getCount()); i++){
 			Barcode barcode = new Barcode();
-			Container storageUnit = getModel().getContainerManager().getAncestorStorageUnit(container);
-			Item item = new Item(storageUnit, product, getView().getEntryDate(), barcode);
-			System.out.println(item);
-			getModel().getItemManager().addItem(item);
+			Container storageUnit = getModel().getContainerManager().
+					getAncestorStorageUnit(container);
+			Item item = new Item(null, product, getView().getEntryDate(), barcode);
+			getModel().getProductAndItemEditor().addItemToStorageUnit(item, (StorageUnit)storageUnit);
 			items.add(item);
 		}
 		
