@@ -13,6 +13,8 @@ import gui.common.*;
 import gui.inventory.*;
 import gui.main.GUI;
 import gui.product.*;
+import model.*;
+import model.Container;
 
 @SuppressWarnings("serial")
 public class AddItemBatchView extends ItemBatchView implements
@@ -24,11 +26,12 @@ public class AddItemBatchView extends ItemBatchView implements
 	private JSpinner entryDateSpinner;
 	private JLabel countLabel;
 	private JTextField countField;
+	private Container productContainer;
 
 	public AddItemBatchView(GUI parent, DialogBox dialog,
 			ProductContainerData target) {
 		super(parent, dialog);
-
+		productContainer = (Container)target.getTag();
 		construct();
 
 		_controller = new AddItemBatchController(this, target);
@@ -246,7 +249,7 @@ public class AddItemBatchView extends ItemBatchView implements
 	public void displayAddProductView() {
 		DialogBox dialogBox = new DialogBox(_parent, "Add Product");
 		AddProductView dialogView = new AddProductView(_parent, dialogBox,
-				getBarcode());
+				getBarcode(), productContainer);
 		dialogBox.display(dialogView, false);
 	}
 
