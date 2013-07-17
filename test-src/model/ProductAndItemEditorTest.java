@@ -34,24 +34,7 @@ public class ProductAndItemEditorTest {
     @Test
     public void addItemTest() throws Exception {     
         
-        Container pc1 = new StorageUnit();
-        Product p1 = new Product(
-                "123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
-
-        Date expDate1 = dateFormat.parse("1999/1/11");
-        Barcode bc1 = new Barcode("1");
-        Item i1 = new Item(pc1, p1, expDate1, bc1);
-        
-        paie.addItem(i1);
-        
-        assertEquals(iman.getItemByTag(bc1), i1);
-        assertTrue(iman.getItems().contains(i1));
-        assertTrue(iman.getItems().size() == 1);
-        assertTrue(iman.getItems(pc1).size() == 1);
-        assertTrue(iman.getItems(pc1).contains(i1));
-        assertEquals(iman.getItems(pc1, p1).size(), 1);
-        assertTrue(iman.getItems(pc1, p1).contains(i1));      
-        assertFalse(iman.canAddItem(i1, pc1));
+       
         
     }
     
@@ -78,35 +61,21 @@ public class ProductAndItemEditorTest {
     @Test
     public void moveItemTest() throws Exception {
         
-        Container pc1 = new StorageUnit();
-        Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
-        Date expDate1 = dateFormat.parse("1999/1/11");
-        Barcode bc1 = new Barcode("1");
-        Item i1 = new Item(pc1, p1, expDate1, bc1);
         
-        paie.addItem(i1);
-        
-        Container pc2 = new ProductGroup();
-        
-        assertEquals(i1.getContainer(), pc1);
-        paie.moveItem(i1, pc2);
-        assertEquals(i1.getContainer(), pc2);
-        assertFalse(iman.getItems(pc1).contains(i1));
-        assertTrue(iman.getItems(pc2).contains(i1));
         
     }
     
     @Test
     public void removeItemTest() throws Exception {
         
-        Container pc1 = new StorageUnit();
+        StorageUnit pc1 = new StorageUnit();
         Product p1 = new Product("123456789", "Descripshun",
                 SizeUnits.Count, 1, 1, 1);
         Date expDate1 = dateFormat.parse("1999/1/11");
         Barcode bc1 = new Barcode("1");
         Item i1 = new Item(pc1, p1, expDate1, bc1);
         
-        paie.addItem(i1);
+        paie.addItemToStorageUnit(i1, pc1);
         
         paie.removeItem(i1);
         assertEquals(1, iman.getRemovedItems().size());
