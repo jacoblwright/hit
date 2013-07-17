@@ -62,10 +62,10 @@ public class ContainerEditor {
 	 * @throws IllegalArgumentException
 	 */
 	public void deleteContainer(Container container)
-	        throws IllegalStateException {
+	        throws IllegalArgumentException {
 	
 	    if (!canDeleteContainer(container)) {
-	        throw new IllegalStateException(
+	        throw new IllegalArgumentException(
 	                "Attempted to delete a nonempty container.");
 	    }
 	    
