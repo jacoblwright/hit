@@ -94,7 +94,7 @@ public class RemoveItemBatchController extends Controller implements
 			products.add(product);
 		}
 		
-		getView().setItems(toItemDataArray(items));
+		getView().setItems(DataConverter.toItemDataArray(items));
 		
 	}
 	
@@ -149,15 +149,7 @@ public class RemoveItemBatchController extends Controller implements
 		getView().close();
 	}
 	
-	protected ItemData[] toItemDataArray(Collection<Item> col) {
-		ItemData[] ret = new ItemData[col.size()];
-		int i = 0;
-		Iterator<Item> iter = col.iterator();
-		while (iter.hasNext()) {
-			ret[i] = new ItemData(iter.next());
-		}
-		return ret;
-	}
+	
 	
 	
 	
