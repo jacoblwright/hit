@@ -54,6 +54,7 @@ public class EditProductGroupController extends Controller
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().setSupplyValue( "0" );
 		getView().enableOK( false );
 	}
 
@@ -111,7 +112,7 @@ public class EditProductGroupController extends Controller
 		try
 		{	
 			if( emptyString( value ) ) {
-				number = 0;//add something for 0 values to be ok
+				number = -1;//add something for 0 values to be ok
 			}
 			else {
 				number = Float.parseFloat( value );
