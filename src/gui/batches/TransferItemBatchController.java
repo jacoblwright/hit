@@ -8,7 +8,7 @@ import gui.product.*;
 /**
  * Controller class for the transfer item batch view.
  */
-public class TransferItemBatchController extends Controller implements
+public class TransferItemBatchController extends ItemBatchController implements
 		ITransferItemBatchController {
 	
 	
@@ -57,14 +57,6 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
-	}
-
-	/**
-	 * This method is called when the "Item Barcode" field in the
-	 * transfer item batch view is changed by the user.
-	 */
-	@Override
-	public void barcodeChanged() {
 	}
 	
 	/**

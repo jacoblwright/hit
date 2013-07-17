@@ -1,33 +1,38 @@
 package gui.inventory;
 
 import gui.common.*;
-
 import gui.item.*;
 import gui.product.*;
 
-import java.util.*;
-import model.*;
+// Just for debug testing
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
+import java.util.*;
+
+<<<<<<< HEAD
+import model.*;
+=======
+import model.ChangeObject;
+import model.ChangeType;
 import model.Container;
 import model.ProductGroup;
-<<<<<<< HEAD
 import model.Quantity;
-=======
->>>>>>> bbd240c292f5618df471f9425bb748e93c774de8
 import model.StorageUnit;
+import model.Product;
+import model.Item;
+>>>>>>> 470a3a91583b7c5203e1b8fd1f542ccee4b3acbe
 
 /**
  * Controller class for inventory view.
  */
 public class InventoryController extends Controller 
 									implements IInventoryController, Observer {
-<<<<<<< HEAD
 	private final String EMPTY = "";
 	private ProductContainerData selectedContainerData;
 	private ProductData selectedProductData;
 	private ItemData selectedItemData;
-=======
->>>>>>> bbd240c292f5618df471f9425bb748e93c774de8
 
 	/**
 	 * Constructor.
@@ -36,7 +41,15 @@ public class InventoryController extends Controller
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
+<<<<<<< HEAD
+		getModel().getContainerManager().addObserver( this );
+		debugInit();
 
+=======
+		
+		getModel().getContainerManager().addObserver( this );
+		
+>>>>>>> 470a3a91583b7c5203e1b8fd1f542ccee4b3acbe
 		construct();
 	}
 
@@ -57,23 +70,38 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
-		Set<StorageUnit> storageUnits = new TreeSet<StorageUnit>();
-		StorageUnit su1 = new StorageUnit( "The CS Dungeon" );
-		ProductGroup pg1 = new ProductGroup( "Toothpaste" );
-		su1.addProductGroup( pg1 );
-		ProductGroup cpg1 = new ProductGroup( "Kids" );
-		ProductGroup cpg2 = new ProductGroup( "Parents" );
-		pg1.addProductGroup(cpg1);
-		pg1.addProductGroup(cpg2);
-		su1.addProductGroup(pg1);
-		storageUnits.add(su1);
-		
-		getModel().getContainerManager().setStorageUnits( storageUnits );
+		Set<StorageUnit> storageUnits = getModel().getContainerManager().getRoot();
 		ProductContainerData root = new ProductContainerData();
+<<<<<<< HEAD
 		
 		ProductContainerData basementCloset = new ProductContainerData("The CS Dungeon");
 		
-<<<<<<< HEAD
+		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
+		toothpaste.addChild(new ProductContainerData("Kids"));
+		toothpaste.addChild(new ProductContainerData("Parents"));
+		basementCloset.addChild(toothpaste);
+		
+		root.addChild(basementCloset);
+		
+		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
+		
+		ProductContainerData soup = new ProductContainerData("Soup");
+		soup.addChild(new ProductContainerData("Chicken Noodle"));
+		soup.addChild(new ProductContainerData("Split Pea"));
+		soup.addChild(new ProductContainerData("Tomato"));
+		foodStorage.addChild(soup);
+		
+		root.addChild(foodStorage);
+=======
+		for( StorageUnit container : storageUnits ) {
+			ProductContainerData child = new ProductContainerData();
+			child.setProductContainer( container );
+			root.addChild( child );
+		}
+>>>>>>> 470a3a91583b7c5203e1b8fd1f542ccee4b3acbe
+		
+		getView().setProductContainers(root);
+		
 		if( selectedContainerData != null ) {	
 			getView().selectProductContainer( selectedContainerData );
 		}
@@ -99,26 +127,6 @@ public class InventoryController extends Controller
 		else {
 			setContextPanel( EMPTY, EMPTY, EMPTY );
 		}
-=======
-		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
-		toothpaste.addChild(new ProductContainerData("Kids"));
-		toothpaste.addChild(new ProductContainerData("Parents"));
-		basementCloset.addChild(toothpaste);
-		
-		root.addChild(basementCloset);
-		
-		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
-		
-		ProductContainerData soup = new ProductContainerData("Soup");
-		soup.addChild(new ProductContainerData("Chicken Noodle"));
-		soup.addChild(new ProductContainerData("Split Pea"));
-		soup.addChild(new ProductContainerData("Tomato"));
-		foodStorage.addChild(soup);
-		
-		root.addChild(foodStorage);
-		
-		getView().setProductContainers(root);
->>>>>>> bbd240c292f5618df471f9425bb748e93c774de8
 	}
 
 	/**
@@ -177,7 +185,8 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteStorageUnit() {
-		return true;
+		ProductContainerData pcd = getView().getSelectedProductContainer();
+		return getModel().getContainerEditor().canDeleteContainer( (Container) pcd.getTag() );
 	}
 	
 	/**
@@ -185,6 +194,8 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteStorageUnit() {
+		ProductContainerData pcd = getView().getSelectedProductContainer();
+		getModel().getContainerEditor().deleteContainer( (Container) pcd.getTag() );
 	}
 
 	/**
@@ -208,7 +219,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteProductGroup() {
-		return true;
+		return canDeleteStorageUnit();
 	}
 
 	/**
@@ -224,6 +235,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteProductGroup() {
+		deleteStorageUnit();
 	}
 
 	private Random rand = new Random();
@@ -242,35 +254,23 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
-		Set products = null;
-		List<ProductData> productDataList = new ArrayList<ProductData>();		
-		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
-		/* Grab products from specific container */
-		if (selectedContainer != null) {
-			Map productMap = getModel().getProductManager().getProductsByContainer();
-			products = (HashSet)productMap.get((Container)selectedContainer.getTag());
-		}
-
-		if(products != null){
-			Iterator it = products.iterator();
-			while (it.hasNext()){
-				Product product = (Product)it.next();
-				ProductData productData = new ProductData();			
-				productData.setBarcode(product.getUPC().getBarcode());
-				
-				//productData.setCount(Integer.toString(getModel().getItemManager().getItems((Container)selectedContainer.getTag(), product).size()));
-				productData.setDescription(product.getDescription());
-				productData.setShelfLife(Integer.toString(product.getShelfLife()) + " months");
-				productData.setSize(product.getSize().getNumber() + " " + product.getSize().getUnit());
-				productData.setSupply(Integer.toString(product.getThreeMonthSupply()) + " count");
-				
-				productDataList.add(productData);
+		ProductContainerData productContainerData = getView().getSelectedProductContainer();
+		if(productContainerData !=  null){
+			Collection col = getModel().getProductManager().getProducts((Container)productContainerData.getTag());
+			if (col == null) return;
+			ProductData[] productArray = DataConverter.toProductDataArray(col);
+			for(int i = 0; i < productArray.length; i++){
+				try{
+					Collection itemCol = getModel().getItemManager().getItems((Container)productContainerData.getTag(), (Product)productArray[i].getTag());
+					productArray[i].setCount(Integer.toString(itemCol.size()));
 				}
+				catch(NullPointerException e){
+					
+				}
+			}
+			getView().setProducts(productArray);
 		}
-		
-		getView().setProducts(productDataList.toArray(new ProductData[0]));
-		
-		getView().setItems(new ItemData[0]);
+		else getView().setProducts(null);
 	}
 
 	/**
@@ -279,27 +279,12 @@ public class InventoryController extends Controller
 	@Override
 	public void productSelectionChanged() {
 		
-		Product product = (Product)getView().getSelectedProduct().getTag();
-		Container container = (Container)getView().getSelectedProductContainer().getTag();
-
-		Collection collection = getModel().getItemManager().getItems(container, product);
-		List<ItemData> itemDataList = new ArrayList<ItemData>();
-		Iterator it = collection.iterator();
-		if (product != null) {
-			while(it.hasNext()) {
-				Item item = (Item)it.next();
-				ItemData itemData = new ItemData();
-				itemData.setBarcode(item.getTag().getBarcode());
-				itemData.setEntryDate(item.getEntryDate());
-				itemData.setExpirationDate(item.getExpirationDate());
-				/* Still need to instantiate these */
-				//itemData.setProductGroup();
-				//itemData.setStorageUnit("Some Unit");
-				
-				itemDataList.add(itemData);
-			}
+		ProductData productData = getView().getSelectedProduct();
+		if(productData != null){
+			Collection col = getModel().getItemManager().getItems((Container)getView().getSelectedProductContainer().getTag(), (Product)productData.getTag());
+			ItemData[] itemArray = DataConverter.toItemDataArray(col);
+			getView().setItems(itemArray);
 		}
-		getView().setItems(itemDataList.toArray(new ItemData[0]));
 	}
 
 	/**
@@ -318,8 +303,8 @@ public class InventoryController extends Controller
 		if(getView().getSelectedProduct() != null){
 			ProductData productData = getView().getSelectedProduct();
 			Product product = (Product)productData.getTag();
-			if(getModel().getProductAndItemEditor().canRemoveProductFromContainer(product, 
-					(Container)getView().getSelectedProductContainer().getTag()))
+
+			if(getModel().getProductAndItemEditor().canDeleteProductFromSystem(product))
 				return true;
 		}
 		return false;
@@ -345,6 +330,7 @@ public class InventoryController extends Controller
 		else{
 			getView().displayErrorMessage("Can't Delete Product");
 		}
+		
 	}
 
 	/**
@@ -368,7 +354,10 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canRemoveItem() {
-		return true;
+		if(getView().getSelectedItem() != null){
+			return true;
+		}
+		else return false;
 	}
 
 	/**
@@ -376,6 +365,8 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void removeItem() {
+		Item item = (Item) getView().getSelectedItem().getTag();
+		getModel().getItemManager().removeItem(item);
 	}
 
 	/**
@@ -462,17 +453,12 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void addProductToContainer(ProductData productData, 
-<<<<<<< HEAD
-										ProductContainerData containerData) {	
-		
-=======
 										ProductContainerData containerData) {
 		
 		Product product = (Product)productData.getTag();
 		Container container = (Container)containerData.getTag();
 		
 		getModel().getProductManager().addProductToContainer(product, container);
->>>>>>> bbd240c292f5618df471f9425bb748e93c774de8
 	}
 
 	/**
@@ -527,7 +513,6 @@ public class InventoryController extends Controller
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-<<<<<<< HEAD
 		ChangeType changeType = ((ChangeObject) arg1).getChangeType();
 		if( changeType.equals(ChangeType.CONTAINER) ) {
 			selectedContainerData = (ProductContainerData) ((ChangeObject)arg1).getSelectedData();
@@ -541,13 +526,42 @@ public class InventoryController extends Controller
 			selectedProductData = (ProductData) ((ChangeObject)arg1).getSelectedData();
 			productContainerSelectionChanged();
 		}
-=======
-		// TODO Auto-generated method stub
-		
->>>>>>> bbd240c292f5618df471f9425bb748e93c774de8
 	}
 
-
-
+	public void debugInit(){
+		Container c1 = new StorageUnit();
+		c1.setName("Storage Unit 1");
+		
+		Container c2 = new ProductGroup();
+		c2.setName("Product Group 1");
+		c2.setContainer(c1);
+		
+		Product p1 = new Product("1", "Descripshun", SizeUnits.Count, 1, 1, 1);
+		if (!getModel().getProductManager().getProducts().contains(p1)){
+			getModel().getProductManager().addNewProduct(p1, c2);
+		}
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date ed1;
+		try {
+			ed1 = dateFormat.parse("2013/11/9");
+		}
+		catch (ParseException e){
+			ed1 = null;
+		}
+		Collection<Item> toAdd = new TreeSet<Item>();
+		Barcode bc1 = new Barcode("1");
+		Item i1 = new Item(c2, p1, ed1, bc1);
+		toAdd.add(i1);
+		
+		Barcode bc2 = new Barcode("2");
+		Item i2 = new Item(c2, p1, ed1, bc2);
+		toAdd.add(i2);
+		
+		for (Item i : toAdd) {
+			if (!getModel().getItemManager().getItems(i.getContainer()).contains(i)){
+				getModel().getItemManager().addItem(i);
+			}
+		}
+	}
 }
 

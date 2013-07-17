@@ -197,7 +197,13 @@ public class ContainerManager extends Observable implements Serializable {
 		else {
 			storageUnits.remove( container );
 		}
-		ChangeObject hint = getHintObject( parent );
+		ChangeObject hint;
+		if( parent.getProductGroups().isEmpty() ) {
+			hint = getHintObject( parent );
+		}
+		else {
+			hint = getHintObject( parent.getProductGroups().iterator().next() );
+		}
 		setChanged();
 		notifyObservers( hint );
 	}

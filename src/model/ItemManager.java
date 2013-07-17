@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.io.*;
 
@@ -44,7 +45,7 @@ public class ItemManager implements Serializable {
 	*/
 	ItemManager() {
 		itemsByContainer = new HashMap<Container, Set<Item>>();
-		itemByTag = new HashMap<Barcode, Item>();
+		itemByTag = new TreeMap<Barcode, Item>();
 		removedItems = new TreeSet<Item>();
 		removedItemsByDate = new HashMap<String, Set<Item>>();
 		dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -153,9 +154,9 @@ public class ItemManager implements Serializable {
 		
 		if (itemsByContainer.containsKey(storageUnit)) {
 			Collection<Item> tmp = getItems(storageUnit);
-			boolean result = !tmp.contains(item);
-			result = result && !removedItems.contains(item);
-			return result;
+			return 	!tmp.contains(item) &&
+					!removedItems.contains(item) &&
+					getItemByTag(item.getTag()) == null;
 		}
 		else {
 			return true;
@@ -282,7 +283,7 @@ public void moveItem(Item itemToMove, Container target) {
 	 * @param barcode - string representing a valid barcode
 	 * @return boolean whether or not it is unique
 	 */
-	public boolean isTagUnique(String barcode) {
+	public boolean doesTagExist(String barcode) {
 		
 		for (Item item : getItems()){
 			if (item.getTag().getBarcode() == barcode){
@@ -308,5 +309,12 @@ public void moveItem(Item itemToMove, Container target) {
 	public Collection<Item> getRemovedItems(){
 		return removedItems;
 	}
+	
+//	public void clearAll(){
+//		itemsByContainer.clear();
+//		itemByTag.clear();
+//		removedItemsByDate.clear();
+//		removedItems.clear();
+//	}
 	
 }

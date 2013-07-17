@@ -21,12 +21,15 @@ import gui.common.*;
 import gui.inventory.*;
 import gui.item.ItemData;
 import gui.product.*;
+import java.awt.event.*;
 
 /**
  * Controller class for the add item batch view.
  */
 public class AddItemBatchController extends Controller implements
-		IAddItemBatchController {
+		IAddItemBatchController, ActionListener {
+    
+    private TextFieldTimer timer;
 
 	Container container;
 	Collection<Item> items;
@@ -41,6 +44,9 @@ public class AddItemBatchController extends Controller implements
 		items = new HashSet();
 		container = (Container)target.getTag();
 		construct();
+		
+		timer = new TextFieldTimer(this);
+		
 	}
 
 	/**
@@ -237,6 +243,13 @@ public class AddItemBatchController extends Controller implements
 			}
 		}
 	}
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        addItem();
+        
+    }
 	
 }
 

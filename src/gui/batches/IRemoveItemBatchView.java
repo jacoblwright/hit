@@ -7,7 +7,7 @@ import gui.product.ProductData;
 /**
  * View interface for remove item batch view.
  */
-public interface IRemoveItemBatchView extends IView {
+public interface IRemoveItemBatchView extends IItemBatchView {
 	
 	/**
 	 * Closes the remove item batch view.

@@ -56,6 +56,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().setSupplyValue( "0" );
 		getView().enableOK( false );
 	}
 
@@ -114,7 +115,7 @@ public class AddProductGroupController extends Controller implements
 		try
 		{	
 			if( emptyString( value ) ) {
-				number = 0;//add something for 0 values to be ok
+				number = -1;//add something for 0 values to be ok
 			}
 			else {
 				number = Float.parseFloat( value );

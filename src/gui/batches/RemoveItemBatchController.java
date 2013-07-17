@@ -1,5 +1,6 @@
 package gui.batches;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Collection;
 import java.util.Set;
@@ -8,19 +9,22 @@ import java.util.TreeSet;
 import gui.common.*;
 import gui.item.ItemData;
 import gui.product.*;
+import model.Container;
+import model.ItemManager;
 import model.Model;
 import model.Item;
 import model.Barcode;
 import model.Product;
+import model.ProductGroup;
 
 /**
  * Controller class for the remove item batch view.
  */
-public class RemoveItemBatchController extends Controller implements
+public class RemoveItemBatchController extends ItemBatchController implements
 		IRemoveItemBatchController {
 
-	Set<Item> items;
-	Set<Product> products;
+	Collection<Item> items;
+	Collection<Product> products;
 	
 	/**
 	 * Constructor.
@@ -32,20 +36,27 @@ public class RemoveItemBatchController extends Controller implements
 
 		items = new TreeSet<Item>();
 		products = new TreeSet<Product>();
-		
 		construct();
 		
 
 	}
 	
-	/**
-	 * Returns a reference to the view for this controller.
-	 */
-	@Override
-	protected IRemoveItemBatchView getView() {
-		return (IRemoveItemBatchView)super.getView();
-	}
-
+//	/**
+//	 * Returns a reference to the view for this controller.
+//	 */
+//	@Override
+//	protected IRemoveItemBatchView getView() {
+//		return (IRemoveItemBatchView)super.getView();
+//	}
+		
+		/**
+		 * Returns a reference to the view for this controller.
+		 */
+		@Override
+		protected IRemoveItemBatchView getView() {
+			return (IRemoveItemBatchView)super.getView();
+		}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -80,24 +91,9 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	public void barcodeChanged() {
-		// Get associated item
-		Barcode tag = new Barcode(getView().getBarcode());
-		Item found = Model.getInstance().getItemManager().getItemByTag(tag);
-		
-		if (found != null) { //TODO: check java api for returning items that do not exist
-		
-			// Get associated product
-			Product product = found.getProduct();
-		
-			// add them to the stored sets
-			items.add(found);
-			products.add(product);
-		}
-		
-		getView().setItems(DataConverter.toItemDataArray(items));
-		
+		super.barcodeChanged();
 	}
-	
+
 	/**
 	 * This method is called when the "Use Barcode Scanner" setting is changed
 	 * in the remove item batch view by the user.
@@ -108,20 +104,29 @@ public class RemoveItemBatchController extends Controller implements
 	}
 	
 	/**
-	 * This method is called when the selected product changes
-	 * in the remove item batch view.
-	 */
-	@Override
-	public void selectedProductChanged() {
-	}
-	
-	/**
 	 * This method is called when the user clicks the "Remove Item" button
 	 * in the remove item batch view.
 	 */
 	@Override
 	public void removeItem() {
-//		editor.removeItem();
+		ItemData selected = getView().getSelectedItem();
+		if (selected != null){
+			Item itemToRemove = (Item) selected.getTag();
+			if (itemToRemove != null){
+				Container previousContainer = itemToRemove.getContainer();
+				getModel().getProductAndItemEditor().removeItem(itemToRemove);
+				getView().setItems(DataConverter.toItemDataArray(
+								getModel().getItemManager().getItems(
+										previousContainer, 
+										itemToRemove.getProduct())));
+			}
+			else {
+				getView().displayErrorMessage("Could not remove item!");
+			}
+		}
+		else {
+			getView().displayErrorMessage("Could not find selected Item!");
+		}
 	}
 	
 	/**
@@ -140,17 +145,47 @@ public class RemoveItemBatchController extends Controller implements
 	public void undo() {
 	}
 
+	
+	private void updateRemoveItemButton(){
+		if (getView().getBarcode().equals("")) {
+			if (getView().getSelectedItem().hasTag()){
+				getView().enableItemAction(
+							((Item) getView().getSelectedItem().getTag())
+							.getContainer() != null );
+					
+			}
+			else {
+				getView().enableItemAction(false);
+			}
+		}
+		else {
+			// first checks if system has tag
+			if ( getModel().getItemManager().doesTagExist(getView().getBarcode())){
+				getView().enableItemAction(
+						getModel().getItemManager().getItems().contains(
+						(Item) getView().getSelectedItem().getTag()) );
+			}
+			else {
+				getView().enableItemAction(false);
+			}
+		}
+	}
+
+	@Override
+	public void selectedProductChanged() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	/**
 	 * This method is called when the user clicks the "Done" button
-	 * in the remove item batch view.
+	 * in the transfer item batch view.
 	 */
 	@Override
 	public void done() {
 		getView().close();
 	}
-	
-	
-	
 	
 	
 	

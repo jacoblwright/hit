@@ -19,14 +19,6 @@ public class BarcodePrinterTest {
         Product p1 = new Product(
                 "1", "TopValu Mentsuyu 1000 mL",
                 SizeUnits.Count, 1, 1, 1);
-=======
-                "1", "TopValu Mentsuyu 1000 mL",
-                Unit.count, 1, 1, 1);
->>>>>>> 478dd73402c3347bacba7fb15d98782ac6fd896e
-=======
-                "1", "TopValu Mentsuyu 1000 mL",
-                SizeUnits.Count, 1, 1, 1);
->>>>>>> bbf1f945c567cab1bada366b72f7e2276604dda1
         Date ed1 = dateFormat.parse("2017/10/28");
         Barcode bc1;
 

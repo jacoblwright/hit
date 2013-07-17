@@ -34,7 +34,7 @@ public class EditItemController extends Controller
 		else {
 			// Attach item as ItemData tag
 			Barcode tag = new Barcode(target.getBarcode());
-			target.setTag(Model.getInstance().getItemManager().getItemByTag(tag));
+			target.setTag(getModel().getItemManager().getItemByTag(tag));
 			this.target = target;
 		}
 		construct();
@@ -86,7 +86,7 @@ public class EditItemController extends Controller
 				getView().enableOK(false);
 			}
 			else {
-				getView().enableOK(Model.getInstance().
+				getView().enableOK(getModel().
 							getItemManager().canEditItem(tagalong, createItem(tagalong)));
 			}
 		}
@@ -130,7 +130,7 @@ public class EditItemController extends Controller
 		
 		Item before = (Item) target.getTag();
 		Item after = createItem(before);
-		getView().enableOK(Model.getInstance().getItemManager().canEditItem(before, after));
+		getView().enableOK(getModel().getItemManager().canEditItem(before, after));
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class EditItemController extends Controller
 		}
 		else {
 			Item newItem = createItem(tagalong);
-			Model.getInstance().getProductAndItemEditor().editItem(tagalong, newItem);
+			getModel().getProductAndItemEditor().editItem(tagalong, newItem);
 		}
 	}
 	
