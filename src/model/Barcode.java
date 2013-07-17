@@ -9,7 +9,7 @@ import java.util.Random;
  * @author Nick
  *
  */
-public class Barcode implements Serializable {
+public class Barcode implements Serializable, Comparable<Barcode> {
 
 	/**
 	 * string that holds a valid barcode
@@ -142,7 +142,14 @@ public class Barcode implements Serializable {
         return true;
     }
 
+    @Override
+    public int compareTo(Barcode obj){
+    	return this.getBarcode().compareTo(obj.getBarcode());
+    }
 
+//    public int hashcode(){
+//    	return ( this.getBarcode().hashCode() * 42 ) / 31;
+//    }
     @Override
     public String toString() {
     	assert true;

@@ -238,9 +238,9 @@ public class ItemManagerTest {
 		i1.setEntryDate(dateFormat.parse("1999/1/11"));
 		
 		man.addItem(i1);
-		assertTrue(man.isTagUnique("2"));
+		assertTrue(man.doesTagExist("2"));
 		assertEquals(1, man.getItems().size());
-		assertFalse(man.isTagUnique("1"));
+		assertFalse(man.doesTagExist("1"));
 		
 	}
 

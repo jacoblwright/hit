@@ -301,18 +301,20 @@ public class ProductAndItemEditor {
          
          Set<Container> containersInStorageUnit =
                  containerManager.getDescendents(storageUnit);
+         //System.out.println(containersInStorageUnit);
          containersInStorageUnit.add(storageUnit);
          
          Set<Container> containersOfProduct = product.getContainers();
          
          Container result = null;
-         for (Container containerInStorageUnit : containersInStorageUnit) {      
+         for (Container containerInStorageUnit : containersInStorageUnit) {
+           //System.out.println(containerInStorageUnit);
              if (containersOfProduct.contains(containerInStorageUnit)) {
                  result = containerInStorageUnit;
              }             
          }
          
-         System.out.println(result);
+         //System.out.println(result);
          
          return result;
          

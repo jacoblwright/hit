@@ -168,29 +168,62 @@ private void setupStorageUnit1() {
         
         paie.addItemToStorageUnit(i1, su1);
         
+        assertTrue(apple.getContainers().contains(su1));
         assertEquals(su1, i1.getContainer());
         
         // --------------------------------
         
         Item i2 = new Item(grandChildProductGroup1_1, beans, expDate1, bc2);
-        i1.setEntryDate(dateFormat.parse("1999/1/11"));
+        i2.setEntryDate(dateFormat.parse("1999/1/11"));
         
+        pman.addProductToContainer(beans, grandChildProductGroup1_1);
         iman.addItem(i2);
         
         Item i3 = new Item(null, beans, expDate1, bc3);
-        i1.setEntryDate(dateFormat.parse("1999/1/11"));
+        i3.setEntryDate(dateFormat.parse("1999/2/11"));
         
         paie.addItemToStorageUnit(i3, su1);
         
         assertEquals(grandChildProductGroup1_1, i3.getContainer());
         
+    }
+    
+    @Test
+    public void transferItemTest() throws Exception {     
+        
+        Product apple = new Product("100", "Apple",
+                SizeUnits.Count, 1, 1, 1);
+        Product beans = new Product("200", "Beans",
+                SizeUnits.Count, 1, 1, 1);                
+        Date expDate1 = dateFormat.parse("1999/3/11");        
+        Barcode bc1 = new Barcode("777");
+        Barcode bc2 = new Barcode("778");
+        Barcode bc3 = new Barcode("779");
+        
         // --------------------------------
         
-        /*
-        Item i2 = new Item(pc1, p1, expDate1, bc1);
-        Date i2entDate = dateFormat.parse("1999/1/13");
-        i2.setEntryDate(i2entDate);
-        */
+        Item i1 = new Item(null, apple, expDate1, bc1);
+        i1.setEntryDate(dateFormat.parse("1999/1/11"));
+        
+        paie.addItemToStorageUnit(i1, su1);
+        
+        assertTrue(apple.getContainers().contains(su1));
+        assertEquals(su1, i1.getContainer());
+        
+        // --------------------------------
+        
+        Item i2 = new Item(grandChildProductGroup1_1, beans, expDate1, bc2);
+        i2.setEntryDate(dateFormat.parse("1999/1/11"));
+        
+        pman.addProductToContainer(beans, grandChildProductGroup1_1);
+        iman.addItem(i2);
+        
+        Item i3 = new Item(null, beans, expDate1, bc3);
+        i3.setEntryDate(dateFormat.parse("1999/2/11"));
+        
+        paie.addItemToStorageUnit(i3, su1);
+        
+        assertEquals(grandChildProductGroup1_1, i3.getContainer());
         
     }
     

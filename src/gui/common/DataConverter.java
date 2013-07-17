@@ -3,6 +3,7 @@ package gui.common;
 import java.util.Collection;
 import java.util.Iterator;
 
+import model.Model;
 import model.Item;
 import model.Product;
 import gui.item.*;
@@ -22,8 +23,18 @@ public class DataConverter {
 		Iterator<Item> iter = col.iterator();
 		while (iter.hasNext()) {
 			ret[i] = new ItemData(iter.next());
+			i++;
 		}
 		return ret;
+	}
+	public static ItemData getItemData(Item item, ItemData[] list){
+		for (int i = 0; i < list.length; i++){
+			if ( list[i].getTag().equals(item) ){
+				return list[i];
+			}
+		}
+		return null;
+		
 	}
 	
 	public static ProductData[] toProductDataArray(Collection<Product> col) {
