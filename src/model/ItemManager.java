@@ -6,10 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Date;
 import java.util.Set;
+import java.util.TreeSet;
 import java.io.*;
 
 /**
@@ -45,7 +45,7 @@ public class ItemManager implements Serializable {
 	ItemManager() {
 		itemsByContainer = new HashMap<Container, Set<Item>>();
 		itemByTag = new HashMap<Barcode, Item>();
-		removedItems = new HashSet<Item>();
+		removedItems = new TreeSet<Item>();
 		removedItemsByDate = new HashMap<String, Set<Item>>();
 		dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	}
@@ -66,10 +66,10 @@ public class ItemManager implements Serializable {
 			throw new IllegalArgumentException("param: product is null");
 		}
 		
-		
-		Collection<Item> ret = new HashSet<Item>();
+	
+		Collection<Item> ret = new TreeSet<Item>();
 		for(Item item : getItems(container)){
-			if (item.getProduct() == product) {
+			if (item.getProduct().equals(product)) {
 				ret.add(item);
 			}
 		}
@@ -88,7 +88,7 @@ public class ItemManager implements Serializable {
 			return itemsByContainer.get(container);
 		}
 		else {
-			return new HashSet<Item>(); // returns empty collection if no key found.
+			return new TreeSet<Item>(); // returns empty collection if no key found.
 		}
 	}
 	
@@ -126,7 +126,7 @@ public class ItemManager implements Serializable {
 		
 		// starts new collection if index does not have container key
 		if (!itemsByContainer.containsKey(itemToAdd.getContainer())) {
-			itemsByContainer.put(itemToAdd.getContainer(), new HashSet<Item>());
+			itemsByContainer.put(itemToAdd.getContainer(), new TreeSet<Item>());
 		}
 		
 		itemsByContainer.get(itemToAdd.getContainer()).add(itemToAdd);
@@ -214,7 +214,7 @@ public void moveItem(Item itemToMove, Container target) {
 			removedItemsByDate.get(exitDate_str).add(itemToRemove);
 		}
 		else {
-			Set<Item> newSet = new HashSet<Item>();
+			Set<Item> newSet = new TreeSet<Item>();
 			newSet.add(itemToRemove);
 			removedItemsByDate.put(exitDate_str, newSet);
 		}
