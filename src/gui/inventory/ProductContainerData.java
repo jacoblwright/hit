@@ -131,6 +131,21 @@ public class ProductContainerData extends Tagable {
 			aChild.addChild( tempChild );
 		}
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash += this.getName().hashCode();
+		hash += this.getChildCount();
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		assert true;
+		return this.getName() == ((ProductContainerData)obj).getName() &&
+				this.getChildCount() == ((ProductContainerData)obj).getChildCount();
+	}
 
 	@Override
 	public String toString() {

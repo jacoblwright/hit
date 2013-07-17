@@ -1,13 +1,26 @@
 package gui.batches;
 
+import java.util.Iterator;
+import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
+
 import gui.common.*;
+import gui.item.ItemData;
 import gui.product.*;
+import model.Model;
+import model.Item;
+import model.Barcode;
+import model.Product;
 
 /**
  * Controller class for the remove item batch view.
  */
 public class RemoveItemBatchController extends Controller implements
 		IRemoveItemBatchController {
+
+	Set<Item> items;
+	Set<Product> products;
 	
 	/**
 	 * Constructor.
@@ -17,7 +30,12 @@ public class RemoveItemBatchController extends Controller implements
 	public RemoveItemBatchController(IView view) {
 		super(view);
 
+		items = new TreeSet<Item>();
+		products = new TreeSet<Product>();
+		
 		construct();
+		
+
 	}
 	
 	/**
@@ -51,6 +69,9 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableRedo(false);
+		getView().enableUndo(false);
+		getView().enableItemAction(false);
 	}
 
 	/**
@@ -59,6 +80,22 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	public void barcodeChanged() {
+		// Get associated item
+		Barcode tag = new Barcode(getView().getBarcode());
+		Item found = Model.getInstance().getItemManager().getItemByTag(tag);
+		
+		if (found != null) { //TODO: check java api for returning items that do not exist
+		
+			// Get associated product
+			Product product = found.getProduct();
+		
+			// add them to the stored sets
+			items.add(found);
+			products.add(product);
+		}
+		
+		getView().setItems(DataConverter.toItemDataArray(items));
+		
 	}
 	
 	/**
@@ -67,6 +104,7 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	public void useScannerChanged() {
+		
 	}
 	
 	/**
@@ -83,6 +121,7 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	public void removeItem() {
+//		editor.removeItem();
 	}
 	
 	/**
@@ -109,6 +148,11 @@ public class RemoveItemBatchController extends Controller implements
 	public void done() {
 		getView().close();
 	}
-
+	
+	
+	
+	
+	
+	
 }
 

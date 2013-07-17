@@ -5,6 +5,7 @@ import gui.common.*;
 import gui.item.*;
 import gui.product.*;
 
+import model.Model;
 import java.util.*;
 import model.*;
 
