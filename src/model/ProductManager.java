@@ -206,9 +206,9 @@ public class ProductManager extends Observable implements Serializable{
 	 * @return		returns a collection of Products associated with this particular container
 	 * @throws IllegalArgumentException if the container is not contained within the map
 	 */
-	public Collection getProducts(Container container) throws IllegalArgumentException{
+	public Collection getProducts(Container container){
 		if(!productsByContainer.containsKey(container))
-			throw new IllegalArgumentException();
+			return null;
 		
 		return productsByContainer.get(container); 
 		

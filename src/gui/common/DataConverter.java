@@ -7,7 +7,7 @@ import model.Model;
 import model.Item;
 import model.Product;
 import gui.item.*;
-import gui.product.ProductData;
+import gui.product.*;
 
 public class DataConverter {
 	/** Provides functionality to the various controllers to convert model objects to 
@@ -28,28 +28,14 @@ public class DataConverter {
 		return ret;
 	}
 	
-	public static ItemData getItemData(Item itemToFind, ItemData[] items){
-		for (int i = 0; i < items.length; i++){
-			if ( ((Item)items[i].getTag()).equals(itemToFind) ){
-				return items[i];
-			}
-		}
-		return null;
-	}
-	
-	// partial implementation for testing's sake
 	public static ProductData[] toProductDataArray(Collection<Product> col) {
+		
 		ProductData[] ret = new ProductData[col.size()];
 		int i = 0;
 		Iterator<Product> iter = col.iterator();
 		while (iter.hasNext()) {
-			Product cur = iter.next();
-			ret[i] = new ProductData();
-			ret[i].setDescription(cur.getDescription());
-			ret[i].setTag(cur);
-			
+			ret[i] = new ProductData(iter.next());
 		}
 		return ret;
 	}
-	
 }
