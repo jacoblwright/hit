@@ -49,6 +49,7 @@ public class AddStorageUnitController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableOK( false );
 	}
 
 	/**
@@ -60,6 +61,7 @@ public class AddStorageUnitController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		return;
 	}
 
 	//
@@ -86,6 +88,8 @@ public class AddStorageUnitController extends Controller implements
 	@Override
 	public void addStorageUnit() {
 		String name = getView().getStorageUnitName();
+		Container container = new StorageUnit( name );
+		getModel().getContainerEditor().addContainer( null, container );
 	}
 
 }

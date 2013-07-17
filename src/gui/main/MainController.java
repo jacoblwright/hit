@@ -53,7 +53,6 @@ public class MainController extends Controller implements IMainController {
 			
 		} catch (IOException e) {
 			getView().displayErrorMessage("Error saving information");			// this isn't the final code for this section!!!!
-			e.printStackTrace();
 		}
 	}
 

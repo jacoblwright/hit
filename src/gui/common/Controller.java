@@ -1,5 +1,6 @@
 package gui.common;
 
+import gui.inventory.ProductContainerData;
 import model.Model;
 
 /**

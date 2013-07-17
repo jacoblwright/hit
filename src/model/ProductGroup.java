@@ -94,7 +94,8 @@ public class ProductGroup extends Container {
 		assert true;
 		if( threeMonthSupply != null ) {
 			if( threeMonthSupply.getUnit().equals( SizeUnits.Count ) ) {
-				return threeMonthSupply.getNumber() == Math.round( threeMonthSupply.getNumber() );
+				return threeMonthSupply.getNumber() == Math.round( threeMonthSupply.getNumber() )
+						&& threeMonthSupply.getNumber() >= 0;
 			}
 		}
 		if( threeMonthSupply.getNumber() < 0 ) {
@@ -154,10 +155,5 @@ public class ProductGroup extends Container {
 	public String toString() {
 		assert true;
 		return super.toString() + " ProductGroup [threeMonthSupply=" + threeMonthSupply + "]";
-	}
-	
-	@Override
-	public int compareTo(Container other) throws IllegalArgumentException {
-		return super.compareTo( other );
 	}
 }

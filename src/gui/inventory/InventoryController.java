@@ -8,8 +8,9 @@ import gui.product.*;
 import java.util.*;
 import model.*;
 
+import model.ChangeObject;
+import model.ChangeType;
 import model.Container;
-import model.ProductGroup;
 import model.StorageUnit;
 
 /**
@@ -17,6 +18,8 @@ import model.StorageUnit;
  */
 public class InventoryController extends Controller 
 									implements IInventoryController, Observer {
+	
+	private ProductContainerData selectedContainerData;
 
 	/**
 	 * Constructor.
@@ -25,7 +28,9 @@ public class InventoryController extends Controller
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
-
+		
+		getModel().getContainerManager().addObserver( this );
+		
 		construct();
 	}
 
@@ -46,40 +51,19 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
-		Set<StorageUnit> storageUnits = new TreeSet<StorageUnit>();
-		StorageUnit su1 = new StorageUnit( "The CS Dungeon" );
-		ProductGroup pg1 = new ProductGroup( "Toothpaste" );
-		su1.addProductGroup( pg1 );
-		ProductGroup cpg1 = new ProductGroup( "Kids" );
-		ProductGroup cpg2 = new ProductGroup( "Parents" );
-		pg1.addProductGroup(cpg1);
-		pg1.addProductGroup(cpg2);
-		su1.addProductGroup(pg1);
-		storageUnits.add(su1);
-		
-		getModel().getContainerManager().setStorageUnits( storageUnits );
+		Set<StorageUnit> storageUnits = getModel().getContainerManager().getRoot();
 		ProductContainerData root = new ProductContainerData();
-		
-		ProductContainerData basementCloset = new ProductContainerData("The CS Dungeon");
-		
-		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
-		toothpaste.addChild(new ProductContainerData("Kids"));
-		toothpaste.addChild(new ProductContainerData("Parents"));
-		basementCloset.addChild(toothpaste);
-		
-		root.addChild(basementCloset);
-		
-		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
-		
-		ProductContainerData soup = new ProductContainerData("Soup");
-		soup.addChild(new ProductContainerData("Chicken Noodle"));
-		soup.addChild(new ProductContainerData("Split Pea"));
-		soup.addChild(new ProductContainerData("Tomato"));
-		foodStorage.addChild(soup);
-		
-		root.addChild(foodStorage);
+		for( StorageUnit container : storageUnits ) {
+			ProductContainerData child = new ProductContainerData();
+			child.setProductContainer( container );
+			root.addChild( child );
+		}
 		
 		getView().setProductContainers(root);
+		
+		if( selectedContainerData != null ) {	
+			getView().selectProductContainer( selectedContainerData );
+		}
 	}
 
 	/**
@@ -138,7 +122,8 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteStorageUnit() {
-		return true;
+		ProductContainerData pcd = getView().getSelectedProductContainer();
+		return getModel().getContainerEditor().canDeleteContainer( (Container) pcd.getTag() );
 	}
 	
 	/**
@@ -146,6 +131,8 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteStorageUnit() {
+		ProductContainerData pcd = getView().getSelectedProductContainer();
+		getModel().getContainerEditor().deleteContainer( (Container) pcd.getTag() );
 	}
 
 	/**
@@ -169,7 +156,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteProductGroup() {
-		return true;
+		return canDeleteStorageUnit();
 	}
 
 	/**
@@ -185,6 +172,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteProductGroup() {
+		deleteStorageUnit();
 	}
 
 	private Random rand = new Random();
@@ -445,7 +433,17 @@ public class InventoryController extends Controller
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
+		ChangeType changeType = ((ChangeObject) arg1).getChangeType();
+		if( changeType.equals(ChangeType.CONTAINER) ) {
+			selectedContainerData = (ProductContainerData) ((ChangeObject)arg1).getSelectedData();
+			loadValues();
+		}
+		else if( changeType.equals(ChangeType.ITEM) ) {
+			
+		}
+		else if( changeType.equals(ChangeType.PRODUCT) ) {
+			
+		}
 		
 	}
 
