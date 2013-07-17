@@ -1,5 +1,6 @@
 package gui.product;
 
+import model.Product;
 import gui.common.*;
 
 /**
@@ -7,6 +8,8 @@ import gui.common.*;
  */
 public class EditProductController extends Controller 
 										implements IEditProductController {
+	
+	ProductData product;
 	
 	/**
 	 * Constructor.
@@ -17,6 +20,7 @@ public class EditProductController extends Controller
 	public EditProductController(IView view, ProductData target) {
 		super(view);
 
+		product = target;
 		construct();
 	}
 
@@ -48,6 +52,31 @@ public class EditProductController extends Controller
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableBarcode(false);
+		getView().enableDescription(true);
+		getView().enableShelfLife(true);
+		getView().enableSupply(true);
+		
+		if(getView().getSizeUnit() == SizeUnits.Count){
+			getView().setSizeValue("1");
+			getView().enableSizeValue(false);
+		}
+		else getView().enableSizeValue(true);
+		
+		if(getView().getBarcode() == null || getView().getBarcode().equals(""))
+			getView().displayErrorMessage("Barcode should not be empty");
+		
+		try{
+			Integer.parseInt(getView().getShelfLife());
+			Integer.parseInt(getView().getSupply());
+			Float.parseFloat(getView().getSizeValue());
+			if(!getView().getDescription().isEmpty())
+				getView().enableOK(true);
+			else getView().enableOK(false);
+		}
+		catch(NumberFormatException e){
+			getView().enableOK(false);
+		}
 	}
 
 	/**
@@ -59,6 +88,16 @@ public class EditProductController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setBarcode(product.getBarcode());
+		getView().setDescription(product.getDescription());
+		/* These four need to be parsed */
+		getView().setSizeValue(product.getCount());
+		//SizeUnits su = SizeUnits.valueOf(product.getSize());
+		//getView().setSizeUnit(su);
+		//getView().setShelfLife(product.getShelfLife());
+		//getView().setSupply(product.getSupply());
+		
+		enableComponents();
 	}
 
 	//
@@ -71,6 +110,7 @@ public class EditProductController extends Controller
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 	
 	/**
@@ -79,6 +119,18 @@ public class EditProductController extends Controller
 	 */
 	@Override
 	public void editProduct() {
+		Product newProduct = new Product(getView().getBarcode(), getView().getDescription(), 
+				getView().getSizeUnit(), Float.parseFloat(getView().getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
+				Integer.parseInt(getView().getSupply()) );
+		
+		System.out.println(newProduct);
+		
+		if(!getModel().getProductManager().isProductValid(newProduct)){
+			getView().displayErrorMessage("Can't edit to invalid product.");
+		}
+		
+		else getModel().getProductManager().editProduct((Product)product.getTag(), newProduct);
+		
 	}
 
 }
