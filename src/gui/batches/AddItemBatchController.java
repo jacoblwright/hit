@@ -120,13 +120,8 @@ public class AddItemBatchController extends Controller implements
 	public void undo() {
 	}
 
-	/**
-	 * This method is called when the user clicks the "Done" button
-	 * in the add item batch view.
-	 */
 	@Override
 	public void done() {
-		getView().close();
 	}
 	
 }

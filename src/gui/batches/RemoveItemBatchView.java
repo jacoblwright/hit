@@ -29,10 +29,10 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 		return (IRemoveItemBatchController)super.getController();
 	}
 	
-	@Override
-	protected void done() {
-		getController().done();
-	}
+//	@Override
+//	protected void done() {
+//		getController().done();
+//	}
 
 	@Override
 	protected void itemAction() {
@@ -72,6 +72,12 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	@Override
 	protected void undo() {
 		getController().undo();
+	}
+
+	@Override
+	protected void done() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

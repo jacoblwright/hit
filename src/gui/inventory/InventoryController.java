@@ -1,18 +1,16 @@
 package gui.inventory;
 
 import gui.common.*;
-
 import gui.item.*;
 import gui.product.*;
-
 import model.Model;
-import java.util.*;
-import model.*;
 
-import model.ChangeObject;
-import model.ChangeType;
-import model.Container;
-import model.StorageUnit;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import model.*;
 
 /**
  * Controller class for inventory view.
@@ -31,6 +29,7 @@ public class InventoryController extends Controller
 		super(view);
 		
 		getModel().getContainerManager().addObserver( this );
+		debugInit();
 		
 		construct();
 	}
@@ -271,7 +270,7 @@ public class InventoryController extends Controller
 		if(getView().getSelectedProduct() != null){
 			ProductData productData = getView().getSelectedProduct();
 			Product product = (Product)productData.getTag();
-			if(getModel().getProductAndItemEditor().canDeleteProduct(product))
+			if(getModel().getProductAndItemEditor().canDeleteProductFromSystem(product))
 				return true;
 		}
 		return false;
@@ -449,5 +448,40 @@ public class InventoryController extends Controller
 		
 	}
 
+	public void debugInit(){
+		Container c1 = new StorageUnit();
+		c1.setName("Storage Unit 1");
+		
+		Container c2 = new ProductGroup();
+		c2.setName("Product Group 1");
+		c2.setContainer(c1);
+		
+		Product p1 = new Product("1", "Descripshun", SizeUnits.Count, 1, 1, 1);
+		if (!getModel().getProductManager().getProducts().contains(p1)){
+			getModel().getProductManager().addNewProduct(p1, c2);
+		}
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date ed1;
+		try {
+			ed1 = dateFormat.parse("2013/11/9");
+		}
+		catch (ParseException e){
+			ed1 = null;
+		}
+		Collection<Item> toAdd = new TreeSet<Item>();
+		Barcode bc1 = new Barcode("1");
+		Item i1 = new Item(c2, p1, ed1, bc1);
+		toAdd.add(i1);
+		
+		Barcode bc2 = new Barcode("2");
+		Item i2 = new Item(c2, p1, ed1, bc2);
+		toAdd.add(i2);
+		
+		for (Item i : toAdd) {
+			if (!getModel().getItemManager().getItems(i.getContainer()).contains(i)){
+				getModel().getItemManager().addItem(i);
+			}
+		}
+	}
 }
 

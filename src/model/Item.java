@@ -199,8 +199,13 @@ public class Item extends Entity implements Comparable<Item> {
 	
 	@Override
 	public int compareTo(Item other) {
-	    
-	    return entryDate.compareTo(other.entryDate);
+		int compared = entryDate.compareTo(other.entryDate);
+	    if (compared == 0){
+	    	return getTag().getBarcode().compareTo(other.getTag().getBarcode());
+	    }
+	    else {
+	    	return compared;
+	    }
 	    
 	}
 

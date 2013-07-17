@@ -2,7 +2,9 @@ package gui.item;
 
 import java.util.*;
 
+import model.Model;
 import model.Item;
+import model.Container;
 import gui.common.Tagable;
 
 /**
@@ -64,8 +66,19 @@ public class ItemData extends Tagable {
 		this.setBarcode(item.getTag().getBarcode());
 		this.setEntryDate(item.getEntryDate());
 		this.setExpirationDate(item.getExpirationDate());
-		this.setProductGroup(item.getContainer().getName());
-		this.setStorageUnit(item.getContainer().getName());
+		
+		Container itemContainer = item.getContainer();
+		Container rootSU = Model.getInstance().
+				getContainerManager().getAncestorStorageUnit(itemContainer);
+		this.setStorageUnit(rootSU.getName());
+		
+		if (itemContainer.equals(rootSU)) {
+			this.setProductGroup("");
+		}
+		else {
+			this.setProductGroup(item.getContainer().getName());
+		}
+		
 		this.setTag(item);
 		
 	}
@@ -181,6 +194,10 @@ public class ItemData extends Tagable {
 		else{
 			return this.getBarcode().equals(((ItemData)obj).getBarcode());
 		}
+	}
+	
+	public int compareTo(ItemData other){
+		return this.getBarcode().compareTo(other.getBarcode());
 	}
 
 }

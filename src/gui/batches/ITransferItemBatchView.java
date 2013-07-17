@@ -7,7 +7,7 @@ import gui.product.ProductData;
 /**
  * View interface for transfer item batch view.
  */
-public interface ITransferItemBatchView extends IView {
+public interface ITransferItemBatchView extends IItemBatchView {
 	
 	/**
 	 * Closes the transfer item batch view.
