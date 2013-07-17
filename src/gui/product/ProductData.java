@@ -1,5 +1,7 @@
 package gui.product;
 
+import model.Item;
+import model.Product;
 import gui.common.Tagable;
 
 /**
@@ -56,6 +58,22 @@ public class ProductData extends Tagable {
 		_shelfLife = "";
 		_supply = "";
 		_barcode = "";
+	}
+	
+	public ProductData(Product product) {
+		doProductConversion(product);
+		this.setTag(product);
+	}
+	
+	private void doProductConversion(Product product) {
+		
+		this.setBarcode(product.getUPC().getBarcode());
+		this.setDescription(product.getDescription());
+		this.setSize(product.getSize().getNumber() + " " + product.getSize().getUnit().toString());
+		this.setShelfLife(Integer.toString(product.getShelfLife()));
+		this.setSupply(Integer.toString(product.getThreeMonthSupply()));
+		this.setTag(product);
+		
 	}
 
 	/**

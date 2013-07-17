@@ -72,10 +72,10 @@ public class AddProductController extends Controller implements
 			getView().displayErrorMessage("Barcode should not be empty");
 		
 		try{
-			Integer.parseInt(getView().getShelfLife());
-			Integer.parseInt(getView().getSupply());
+			int shelf = Integer.parseInt(getView().getShelfLife());
+			int supply = Integer.parseInt(getView().getSupply());
 			Float.parseFloat(getView().getSizeValue());
-			if(!getView().getDescription().isEmpty())
+			if(!getView().getDescription().isEmpty() && supply >= 0 && shelf >= 0)
 				getView().enableOK(true);
 			else getView().enableOK(false);
 		}
@@ -124,8 +124,16 @@ public class AddProductController extends Controller implements
 		
 		if(!getModel().getProductManager().isProductValid(product)){
 			getView().displayErrorMessage("Can't add invalid product.");
+			return;
 		}
-		else getModel().getProductManager().addNewProduct(product, container);
+		
+		try{
+			getModel().getProductManager().addNewProduct(product, container);
+		}
+		catch (IllegalArgumentException e){
+			getView().displayErrorMessage("Can't add valid product");
+		}
+
 		
 	}
 

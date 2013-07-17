@@ -153,7 +153,10 @@ public class ItemManager implements Serializable {
 		
 		if (itemsByContainer.containsKey(storageUnit)) {
 			Collection<Item> tmp = getItems(storageUnit);
+			System.out.println(tmp);
+			System.out.println(item);
 			boolean result = !tmp.contains(item);
+			System.out.println(result);
 			result = result && !removedItems.contains(item);
 			return result;
 		}
