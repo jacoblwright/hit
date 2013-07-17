@@ -143,8 +143,9 @@ public class ProductContainerData extends Tagable {
 	@Override
 	public boolean equals(Object obj) {
 		assert true;
-		return this.getName() == ((ProductContainerData)obj).getName() &&
-				this.getChildCount() == ((ProductContainerData)obj).getChildCount();
+		return this.getName().equals( ((ProductContainerData)obj).getName() ) &&
+				this.getChildCount() == ((ProductContainerData)obj).getChildCount() &&
+				this.getTag().equals( ((ProductContainerData)obj).getTag() );
 	}
 
 	@Override

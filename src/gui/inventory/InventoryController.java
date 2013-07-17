@@ -3,22 +3,35 @@ package gui.inventory;
 import gui.common.*;
 import gui.item.*;
 import gui.product.*;
+<<<<<<< HEAD
 import model.Model;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+=======
+
+>>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 import java.util.*;
 
+<<<<<<< HEAD
 import model.*;
+=======
+import model.Container;
+import model.ProductGroup;
+import model.Quantity;
+import model.StorageUnit;
+>>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 
 /**
  * Controller class for inventory view.
  */
 public class InventoryController extends Controller 
 									implements IInventoryController, Observer {
-	
+	private final String EMPTY = "";
 	private ProductContainerData selectedContainerData;
+	private ProductData selectedProductData;
+	private ItemData selectedItemData;
 
 	/**
 	 * Constructor.
@@ -27,10 +40,14 @@ public class InventoryController extends Controller
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
+<<<<<<< HEAD
 		
 		getModel().getContainerManager().addObserver( this );
 		debugInit();
 		
+=======
+
+>>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 		construct();
 	}
 
@@ -51,18 +68,65 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
-		Set<StorageUnit> storageUnits = getModel().getContainerManager().getRoot();
+		Set<StorageUnit> storageUnits = new TreeSet<StorageUnit>();
+		StorageUnit su1 = new StorageUnit( "The CS Dungeon" );
+		ProductGroup pg1 = new ProductGroup( "Toothpaste" );
+		su1.addProductGroup( pg1 );
+		ProductGroup cpg1 = new ProductGroup( "Kids" );
+		ProductGroup cpg2 = new ProductGroup( "Parents" );
+		pg1.addProductGroup(cpg1);
+		pg1.addProductGroup(cpg2);
+		su1.addProductGroup(pg1);
+		storageUnits.add(su1);
+		
+		getModel().getContainerManager().setStorageUnits( storageUnits );
 		ProductContainerData root = new ProductContainerData();
-		for( StorageUnit container : storageUnits ) {
-			ProductContainerData child = new ProductContainerData();
-			child.setProductContainer( container );
-			root.addChild( child );
-		}
+		
+		ProductContainerData basementCloset = new ProductContainerData("The CS Dungeon");
+		
+		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
+		toothpaste.addChild(new ProductContainerData("Kids"));
+		toothpaste.addChild(new ProductContainerData("Parents"));
+		basementCloset.addChild(toothpaste);
+		
+		root.addChild(basementCloset);
+		
+		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
+		
+		ProductContainerData soup = new ProductContainerData("Soup");
+		soup.addChild(new ProductContainerData("Chicken Noodle"));
+		soup.addChild(new ProductContainerData("Split Pea"));
+		soup.addChild(new ProductContainerData("Tomato"));
+		foodStorage.addChild(soup);
+		
+		root.addChild(foodStorage);
 		
 		getView().setProductContainers(root);
 		
 		if( selectedContainerData != null ) {	
 			getView().selectProductContainer( selectedContainerData );
+		}
+		loadContextPanel( selectedContainerData );
+		
+	}
+
+	private void loadContextPanel( ProductContainerData selectedContainer ) {
+		if( selectedContainer != null ) {
+			if( selectedContainer.getTag() == null ) {
+				allStorageUnitsSelected();
+			}
+			else if( selectedContainer.getTag() instanceof StorageUnit ) {
+				storageUnitSelected();
+			}
+			else if( selectedContainer.getTag() instanceof ProductGroup ) {
+				productGroupSelected();
+			}
+			else {
+				setContextPanel( EMPTY, EMPTY, EMPTY );
+			}
+		}
+		else {
+			setContextPanel( EMPTY, EMPTY, EMPTY );
 		}
 	}
 
@@ -122,8 +186,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteStorageUnit() {
-		ProductContainerData pcd = getView().getSelectedProductContainer();
-		return getModel().getContainerEditor().canDeleteContainer( (Container) pcd.getTag() );
+		return true;
 	}
 	
 	/**
@@ -131,8 +194,6 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteStorageUnit() {
-		ProductContainerData pcd = getView().getSelectedProductContainer();
-		getModel().getContainerEditor().deleteContainer( (Container) pcd.getTag() );
 	}
 
 	/**
@@ -156,7 +217,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteProductGroup() {
-		return canDeleteStorageUnit();
+		return true;
 	}
 
 	/**
@@ -172,7 +233,6 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteProductGroup() {
-		deleteStorageUnit();
 	}
 
 	private Random rand = new Random();
@@ -201,16 +261,13 @@ public class InventoryController extends Controller
 		}
 
 		if(products != null){
-			System.out.println(products);
-			System.exit(0);
 			Iterator it = products.iterator();
 			while (it.hasNext()){
 				Product product = (Product)it.next();
-				
 				ProductData productData = new ProductData();			
 				productData.setBarcode(product.getUPC().getBarcode());
 				
-				productData.setCount(Integer.toString(getModel().getItemManager().getItems((Container)selectedContainer.getTag(), product).size()));
+				//productData.setCount(Integer.toString(getModel().getItemManager().getItems((Container)selectedContainer.getTag(), product).size()));
 				productData.setDescription(product.getDescription());
 				productData.setShelfLife(Integer.toString(product.getShelfLife()) + " months");
 				productData.setSize(product.getSize().getNumber() + " " + product.getSize().getUnit());
@@ -233,7 +290,7 @@ public class InventoryController extends Controller
 		
 		Product product = (Product)getView().getSelectedProduct().getTag();
 		Container container = (Container)getView().getSelectedProductContainer().getTag();
-		
+
 		Collection collection = getModel().getItemManager().getItems(container, product);
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
 		Iterator it = collection.iterator();
@@ -270,7 +327,12 @@ public class InventoryController extends Controller
 		if(getView().getSelectedProduct() != null){
 			ProductData productData = getView().getSelectedProduct();
 			Product product = (Product)productData.getTag();
+<<<<<<< HEAD
 			if(getModel().getProductAndItemEditor().canDeleteProductFromSystem(product))
+=======
+			if(getModel().getProductAndItemEditor().canRemoveProductFromContainer(product, 
+					(Container)getView().getSelectedProductContainer().getTag()))
+>>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 				return true;
 		}
 		return false;
@@ -414,6 +476,7 @@ public class InventoryController extends Controller
 	@Override
 	public void addProductToContainer(ProductData productData, 
 										ProductContainerData containerData) {
+		
 		Product product = (Product)productData.getTag();
 		Container container = (Container)containerData.getTag();
 		
@@ -431,6 +494,44 @@ public class InventoryController extends Controller
 	public void moveItemToContainer(ItemData itemData,
 									ProductContainerData containerData) {
 	}
+	
+	@Override
+	public void allStorageUnitsSelected() {
+		setContextPanel( "All", EMPTY, EMPTY );
+	}
+
+	@Override
+	public void storageUnitSelected() {
+		Container container = (Container) getView().getSelectedProductContainer().getTag();	
+		setContextPanel( container.getName(),EMPTY,EMPTY );
+		}
+
+	@Override
+	public void productGroupSelected() {
+		Container container = (Container) getView().getSelectedProductContainer().getTag();
+		Container unit = getModel().getContainerManager().getAncestorStorageUnit(container);
+		Quantity quantity = ( (ProductGroup) container).getThreeMonthSupply(); 
+		if( quantity.getNumber() == 0 ) {
+			setContextPanel( unit.getName(), container.getName(), EMPTY );
+		}
+		else {
+			String supply;
+			if( Math.round( quantity.getNumber() ) == quantity.getNumber() ) {
+				supply = String.valueOf( Math.round( quantity.getNumber() ) );
+			}
+			else {
+				supply = String.valueOf( quantity.getNumber() );
+			}
+			supply += " " + quantity.getUnit().name();
+			setContextPanel( unit.getName(), container.getName(), supply );
+		}
+	}
+	
+	private void setContextPanel(String unit, String group, String supply) {
+		getView().setContextUnit( unit );
+		getView().setContextGroup( group );
+		getView().setContextSupply( supply );
+	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -440,14 +541,16 @@ public class InventoryController extends Controller
 			loadValues();
 		}
 		else if( changeType.equals(ChangeType.ITEM) ) {
-			
+			selectedItemData = (ItemData) ((ChangeObject)arg1).getSelectedData();
+			productSelectionChanged();
 		}
 		else if( changeType.equals(ChangeType.PRODUCT) ) {
-			
+			selectedProductData = (ProductData) ((ChangeObject)arg1).getSelectedData();
+			productContainerSelectionChanged();
 		}
-		
 	}
 
+<<<<<<< HEAD
 	public void debugInit(){
 		Container c1 = new StorageUnit();
 		c1.setName("Storage Unit 1");
@@ -483,5 +586,9 @@ public class InventoryController extends Controller
 			}
 		}
 	}
+=======
+
+
+>>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 }
 

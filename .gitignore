@@ -4,6 +4,7 @@
 *.txt
 *.html
 *.hit
+*.orig
 coverage-test/
 
 # Package Files #

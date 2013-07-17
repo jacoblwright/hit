@@ -11,6 +11,7 @@ public class AddProductController extends Controller implements
 		IAddProductController {
 	
 	String upc;
+	Container container;
 	
 	/**
 	 * Constructor.
@@ -18,10 +19,11 @@ public class AddProductController extends Controller implements
 	 * @param view Reference to the add product view
 	 * @param barcode Barcode for the product being added
 	 */
-	public AddProductController(IView view, String barcode) {
+	public AddProductController(IView view, String barcode, Container cont) {
 		super(view);
 		
 		upc = barcode;
+		container = cont;
 		loadValues();
 		enableComponents();
 		construct();
@@ -115,7 +117,6 @@ public class AddProductController extends Controller implements
 	@Override
 	public void addProduct() {
 		
-		/* I need to figure out how to get the selected container */
 		
 		Product product = new Product(getView().getBarcode(), getView().getDescription(), 
 				getView().getSizeUnit(), Float.parseFloat(getView().getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
@@ -124,7 +125,7 @@ public class AddProductController extends Controller implements
 		if(!getModel().getProductManager().isProductValid(product)){
 			getView().displayErrorMessage("Can't add invalid product.");
 		}
-		else getModel().getProductManager().addNewProduct(product, null);
+		else getModel().getProductManager().addNewProduct(product, container);
 		
 	}
 

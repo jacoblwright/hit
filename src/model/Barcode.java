@@ -18,41 +18,55 @@ public class Barcode implements Serializable, Comparable<Barcode> {
 	
 	
 	/**
-	 * barcode object with automatically generated unique barcode
+	 * Creates a Barcode object with automatically generated barcode.
 	 */
 	public Barcode() {
+	    
 		assert true;
+		
 		barcode =  generateBarcode();
+		
 	}
 	
 	/**
-	 * 
-	 * @return ucp-a barcode
+	 * @return a String representing a valid UPC-A barcode
 	 */
 	private String generateBarcode() {
-		assert true;
-		String newBarcode = "";
-		Random rand = new Random();
-		for( int i = 0; i < 11; i++ ) {
-			newBarcode += ( rand.nextInt(10) );
-		}
-		 
-		int oddNumber = 0;
-		for( int i = 1; i < 10; i += 2 ) {
-			oddNumber += Integer.valueOf( newBarcode.charAt( i ) );
-		} 
-		oddNumber *= 3;
 		
-		int evenNumber = 0;
-		for( int i = 0; i < 11; i += 2 ) {
-			evenNumber += Integer.valueOf( newBarcode.charAt( i ) );
-		} 
-		
-		int num = oddNumber + evenNumber;
-		num %= 10;
-		int finalNumber = 10 - num;
-		newBarcode += String.valueOf( finalNumber );
-		return newBarcode;
+	    Random rand = new Random();
+	    
+	    int[] digits = new int[11];
+	    for (int i = 0; i < digits.length; i++) {
+	        digits[i] = rand.nextInt(10);
+	    }
+	    
+        // Adds the 1st, 3rd, 5th, 7th, 9th, and 11th digits (the nth digit in
+        // the traditional (1-based index) sense).
+	    int checkDigit = digits[0] + digits[2] + digits[4] + digits[6] +
+	            digits[8] + digits[10];
+	    
+	    checkDigit *= 3;
+	    
+	    // Adds to result the 2nd, 4th, 6th, 8th, and 10th digits.
+	    checkDigit += digits[1] + digits[3] + digits[5] + digits[7]
+	            + digits[9];
+	    
+	    checkDigit %= 10;
+	    
+	    checkDigit = 10 - checkDigit;
+	    if (checkDigit == 10) {
+	        checkDigit = 0;
+	    }
+	    
+	    String resultString = "";
+	    for (int i = 0; i < digits.length; i++) {
+	        resultString += digits[i];
+	    }
+	    
+	    resultString += checkDigit;
+	    
+	    return resultString;
+	    
 	}
 
 
