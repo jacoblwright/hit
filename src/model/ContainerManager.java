@@ -129,6 +129,7 @@ public class ContainerManager extends Observable implements Serializable {
 		assert container != null;
 		container.setContainer( parent );
 		container.setId( uniqueId++ );
+		ChangeObject hint = getHintObject( container );
 		if( container instanceof ProductGroup ) {
 			parent.addProductGroup( ( ProductGroup ) container );
 		}
@@ -136,7 +137,6 @@ public class ContainerManager extends Observable implements Serializable {
 			storageUnits.add( (StorageUnit) container );
 		}
 		setChanged();
-		ChangeObject hint = getHintObject( container );
 		notifyObservers( hint );
 		//notifyObservers( ChangeType.CONTAINER );
 		
@@ -158,7 +158,7 @@ public class ContainerManager extends Observable implements Serializable {
 				!canEditContainer( newContainer ) ) {
 			throw new IllegalArgumentException();
 		}
-		
+		ChangeObject hint = getHintObject( oldContainer );
 		if( oldContainer instanceof ProductGroup ) {
 			newContainer.setContainer( oldContainer.getContainer() );
 			newContainer.setProductGroups( oldContainer.getProductGroups() );
@@ -171,7 +171,6 @@ public class ContainerManager extends Observable implements Serializable {
 			storageUnits.add( (StorageUnit) newContainer );
 		}
 		setChanged();
-		ChangeObject hint = getHintObject( oldContainer );
 		notifyObservers( hint );
 	}
 	
@@ -188,6 +187,7 @@ public class ContainerManager extends Observable implements Serializable {
 	public void deleteContainer( Container container ) throws IllegalArgumentException {
 		
 		//removeContainerRecursively( container );
+		ChangeObject hint = getHintObject( container.getContainer() );
 		if( container instanceof ProductGroup ) {
 			if( container.getContainer() == null ) {
 				throw new IllegalArgumentException();
@@ -197,11 +197,10 @@ public class ContainerManager extends Observable implements Serializable {
 		}
 		else {
 			storageUnits.remove( container );
+			hint.setSelectedData( null );
 		}
 		setChanged();
-		ChangeObject hint = getHintObject( container.getContainer() );
 		notifyObservers( hint );
-		//notifyObservers( ChangeType.CONTAINER );
 	}
 
 	/**Checks to see if all of the qualifications are met to add the current container.
