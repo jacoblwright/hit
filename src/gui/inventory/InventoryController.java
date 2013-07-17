@@ -213,16 +213,13 @@ public class InventoryController extends Controller
 		}
 
 		if(products != null){
-			System.out.println(products);
-			System.exit(0);
 			Iterator it = products.iterator();
 			while (it.hasNext()){
 				Product product = (Product)it.next();
-				
 				ProductData productData = new ProductData();			
 				productData.setBarcode(product.getUPC().getBarcode());
 				
-				productData.setCount(Integer.toString(getModel().getItemManager().getItems((Container)selectedContainer.getTag(), product).size()));
+				//productData.setCount(Integer.toString(getModel().getItemManager().getItems((Container)selectedContainer.getTag(), product).size()));
 				productData.setDescription(product.getDescription());
 				productData.setShelfLife(Integer.toString(product.getShelfLife()) + " months");
 				productData.setSize(product.getSize().getNumber() + " " + product.getSize().getUnit());
@@ -245,7 +242,7 @@ public class InventoryController extends Controller
 		
 		Product product = (Product)getView().getSelectedProduct().getTag();
 		Container container = (Container)getView().getSelectedProductContainer().getTag();
-		
+
 		Collection collection = getModel().getItemManager().getItems(container, product);
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
 		Iterator it = collection.iterator();
@@ -282,7 +279,8 @@ public class InventoryController extends Controller
 		if(getView().getSelectedProduct() != null){
 			ProductData productData = getView().getSelectedProduct();
 			Product product = (Product)productData.getTag();
-			if(getModel().getProductAndItemEditor().canDeleteProduct(product))
+			if(getModel().getProductAndItemEditor().canRemoveProductFromContainer(product, 
+					(Container)getView().getSelectedProductContainer().getTag()))
 				return true;
 		}
 		return false;
@@ -426,6 +424,7 @@ public class InventoryController extends Controller
 	@Override
 	public void addProductToContainer(ProductData productData, 
 										ProductContainerData containerData) {
+		
 		Product product = (Product)productData.getTag();
 		Container container = (Container)containerData.getTag();
 		
