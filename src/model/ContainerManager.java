@@ -173,7 +173,6 @@ public class ContainerManager extends Observable implements Serializable {
 		setChanged();
 		ChangeObject hint = getHintObject( oldContainer );
 		notifyObservers( hint );
-		//notifyObservers( ChangeType.CONTAINER );
 	}
 	
 	/** Deletes the container and all of the children containers.
@@ -287,7 +286,7 @@ public class ContainerManager extends Observable implements Serializable {
 		result.setChangeType( ChangeType.CONTAINER );
 		ProductContainerData productContainerData = new ProductContainerData();
 		productContainerData.setProductContainer( container );
-		result.setProductContainerData( productContainerData );
+		result.setSelectedData( productContainerData );
 		return result;
 	}
 }

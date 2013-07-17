@@ -393,7 +393,7 @@ public class InventoryController extends Controller
 	public void update(Observable arg0, Object arg1) {
 		ChangeType changeType = ((ChangeObject) arg1).getChangeType();
 		if( changeType.equals(ChangeType.CONTAINER) ) {
-			selectedContainerData = ((ChangeObject)arg1).getProductContainerData();
+			selectedContainerData = (ProductContainerData) ((ChangeObject)arg1).getSelectedData();
 			loadValues();
 		}
 		else if( changeType.equals(ChangeType.ITEM) ) {
