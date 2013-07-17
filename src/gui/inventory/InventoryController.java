@@ -3,25 +3,15 @@ package gui.inventory;
 import gui.common.*;
 import gui.item.*;
 import gui.product.*;
-<<<<<<< HEAD
-import model.Model;
 
+// Just for debug testing
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-=======
+import java.text.ParseException;
 
->>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 import java.util.*;
 
-<<<<<<< HEAD
 import model.*;
-=======
-import model.Container;
-import model.ProductGroup;
-import model.Quantity;
-import model.StorageUnit;
->>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 
 /**
  * Controller class for inventory view.
@@ -40,14 +30,9 @@ public class InventoryController extends Controller
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
-<<<<<<< HEAD
-		
 		getModel().getContainerManager().addObserver( this );
 		debugInit();
-		
-=======
 
->>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 		construct();
 	}
 
@@ -327,12 +312,8 @@ public class InventoryController extends Controller
 		if(getView().getSelectedProduct() != null){
 			ProductData productData = getView().getSelectedProduct();
 			Product product = (Product)productData.getTag();
-<<<<<<< HEAD
+
 			if(getModel().getProductAndItemEditor().canDeleteProductFromSystem(product))
-=======
-			if(getModel().getProductAndItemEditor().canRemoveProductFromContainer(product, 
-					(Container)getView().getSelectedProductContainer().getTag()))
->>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 				return true;
 		}
 		return false;
@@ -550,7 +531,6 @@ public class InventoryController extends Controller
 		}
 	}
 
-<<<<<<< HEAD
 	public void debugInit(){
 		Container c1 = new StorageUnit();
 		c1.setName("Storage Unit 1");
@@ -586,9 +566,5 @@ public class InventoryController extends Controller
 			}
 		}
 	}
-=======
-
-
->>>>>>> acadadce884ec2c12413454904a45aa30e0c0a52
 }
 
