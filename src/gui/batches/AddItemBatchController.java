@@ -3,18 +3,15 @@ package gui.batches;
 import gui.common.*;
 import gui.inventory.*;
 import gui.product.*;
-import javax.swing.Timer;
 import java.awt.event.*;
 
 /**
  * Controller class for the add item batch view.
  */
 public class AddItemBatchController extends Controller implements
-		IAddItemBatchController {
+		IAddItemBatchController, ActionListener {
     
-    private final int TIMER_DELAY = 300;
-    
-    private Timer timer;
+    private TextFieldTimer timer;
 
 	/**
 	 * Constructor.
@@ -27,8 +24,7 @@ public class AddItemBatchController extends Controller implements
 		
 		construct();
 		
-		timer = new Timer(TIMER_DELAY, new TimerListener());
-		timer.setRepeats(false);
+		timer = new TextFieldTimer(this);
 		
 	}
 
@@ -88,8 +84,6 @@ public class AddItemBatchController extends Controller implements
 	@Override
 	public void barcodeChanged() {
 	    
-	    System.out.println("barcodeChanged()");
-	    
 	    if (getView().getUseScanner()) {
 	        timer.start();
 	    }
@@ -145,19 +139,13 @@ public class AddItemBatchController extends Controller implements
 	public void done() {
 		getView().close();
 	}
-	
-	private class TimerListener implements ActionListener {
 
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            
-            timer.stop();
-            
-            addItem();
-            
-        }
-	    
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        addItem();
+        
+    }
 	
 }
 
