@@ -25,9 +25,14 @@ public class ItemTest {
 		Calendar cal = Calendar.getInstance();
 		
 		Container c1 = new ProductGroup();
+<<<<<<< HEAD
 		Product p1 = new Product("1", "Descripshun", SizeUnits.Count, 1, 1, 1);
+		Date ed1 = dateFormat.parse("2013/12/9");
+=======
+		Product p1 = new Product("1", "Descripshun", Unit.count, 1, 1, 1);
 		
 		Date ed1 = dateFormat.parse("2013/11/9");
+>>>>>>> cb85cf5c41ef5a4e31005ba7ef3c3fb3939110fa
 		Barcode bc1 = new Barcode("blahblah");
 		Item i1 = new Item(c1, p1, ed1, bc1);
 		Item i2 = new Item(c1, p1, ed1, bc1);
