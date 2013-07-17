@@ -185,7 +185,6 @@ public class AddItemBatchController extends Controller implements
 			Barcode barcode = new Barcode();
 			Container storageUnit = getModel().getContainerManager().getAncestorStorageUnit(container);
 			Item item = new Item(storageUnit, product, getView().getEntryDate(), barcode);
-			System.out.println(barcode.getBarcode());
 			getModel().getItemManager().addItem(item);
 		}
 		
