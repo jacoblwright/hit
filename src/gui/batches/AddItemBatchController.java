@@ -1,10 +1,16 @@
 package gui.batches;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+
+import config.IOConfig;
+
+import printers.BarcodePrinter;
 
 import model.Barcode;
 import model.Container;
@@ -22,6 +28,7 @@ public class AddItemBatchController extends Controller implements
 		IAddItemBatchController {
 
 	Container container;
+	Collection<Item> items;
 	/**
 	 * Constructor.
 	 * 
@@ -30,7 +37,7 @@ public class AddItemBatchController extends Controller implements
 	 */
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
-		
+		items = new HashSet();
 		container = (Container)target.getTag();
 		construct();
 	}
@@ -172,7 +179,9 @@ public class AddItemBatchController extends Controller implements
 	public void addItem() {
 		Product product;
 		if(getModel().getProductManager().upcExists(getView().getBarcode())){
-			product = (Product) getView().getSelectedProduct().getTag();
+			Barcode code = new Barcode();
+			code.setBarcode(getView().getBarcode());
+			product = getModel().getProductManager().getProductByUPC(code);
 		}
 		else{
 			getView().displayAddProductView();
@@ -185,7 +194,9 @@ public class AddItemBatchController extends Controller implements
 			Barcode barcode = new Barcode();
 			Container storageUnit = getModel().getContainerManager().getAncestorStorageUnit(container);
 			Item item = new Item(storageUnit, product, getView().getEntryDate(), barcode);
+			System.out.println(item);
 			getModel().getItemManager().addItem(item);
+			items.add(item);
 		}
 		
 		loadValues();
@@ -210,10 +221,20 @@ public class AddItemBatchController extends Controller implements
 	/**
 	 * This method is called when the user clicks the "Done" button
 	 * in the add item batch view.
+	 * @throws IOException 
+	 * @throws IllegalArgumentException 
 	 */
 	@Override
-	public void done() {
+	public void done(){
 		getView().close();
+		if(items.size() != 0){
+			try{
+				BarcodePrinter.printBarcodes(items, IOConfig.getBarcodeTagsFile(), true);
+			}
+			catch(Exception e){
+				getView().displayErrorMessage("Could Not Display PDF");
+			}
+		}
 	}
 	
 }
