@@ -14,6 +14,8 @@ import gui.inventory.*;
 public class AddProductGroupController extends Controller implements
 		IAddProductGroupController {
 	
+	ProductContainerData parent;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -22,7 +24,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	public AddProductGroupController(IView view, ProductContainerData container) {
 		super(view);
-		
+		this.parent = container;
 		construct();
 	}
 
@@ -54,7 +56,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
-	
+		getView().enableOK( false );
 	}
 
 	/**
@@ -79,22 +81,8 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
-		String name = getView().getProductGroupName();
-		String value = getView().getSupplyValue();
-		Enum<SizeUnits> unit = getView().getSupplyUnit();
-		float number;
-		try
-		{
-			number = Float.parseFloat( value );
-		}
-		catch(NumberFormatException e)
-		{
-		  number = 0;
-		}
-		Quantity q = new Quantity( number, unit );
-		
-		Container container = new ProductGroup( name, q );
-		boolean isEnabled = getModel().getContainerManager().canAddContainer( container );
+		Container container = setContainer();
+ 		boolean isEnabled = getModel().getContainerManager().canAddContainer( container );
 		
 		getView().enableOK( isEnabled );
 	}
@@ -105,7 +93,42 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	public void addProductGroup() {
+		Container container = setContainer();
+		getModel().getContainerEditor().addContainer( (Container) parent.getTag(), container );
+	}
+	
+	private Container setContainer() {
+		String name = getView().getProductGroupName();
+		String value = getView().getSupplyValue();
+		Enum<SizeUnits> unit = getView().getSupplyUnit();
+		float number = getNumber( value );
+		Quantity quantity = new Quantity( number, unit );
 		
+		Container result = new ProductGroup( name, quantity );
+		result.setContainer( (Container) parent.getTag() );
+		return result;
+	}
+	
+	private float getNumber(String value) {
+		float number;
+		try
+		{	
+			if( emptyString( value ) ) {
+				number = 0;//add something for 0 values to be ok
+			}
+			else {
+				number = Float.parseFloat( value );
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			number = -1;
+		}
+		return number;
+	}
+
+	private boolean emptyString( String str) {
+		return str.trim().length() == 0;
 	}
 
 }

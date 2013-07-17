@@ -1,5 +1,7 @@
 package model;
 
+import gui.inventory.ProductContainerData;
+
 import java.util.Observable;
 import java.util.Set;
 import java.util.TreeSet;
@@ -27,14 +29,12 @@ public class ContainerManager extends Observable implements Serializable {
 	 * @pre 									none
 	 * @param container	
 	 * @return Set<container>  					list of the descendent containers
-	 * @throws IllegalArgumentException			if container == null
+	 * 											if Null returns empty set
 	 */
-	public Set<Container> getDescendents( Container container )
-	        throws IllegalArgumentException {
-	    
+	public Set<Container> getDescendents( Container container ) {
 		assert true;
 		if( container == null ) {
-			throw new IllegalArgumentException();
+			return new TreeSet<Container>();
 		}
 		TreeSet<Container> result = new TreeSet<Container>();
 		recursivelyGetDescendents( container, result );
@@ -135,6 +135,11 @@ public class ContainerManager extends Observable implements Serializable {
 		else {
 			storageUnits.add( (StorageUnit) container );
 		}
+		setChanged();
+		ChangeObject hint = getHintObject( container );
+		notifyObservers( hint );
+		//notifyObservers( ChangeType.CONTAINER );
+		
 	}
 
 	/** Edits the container and all of the children containers.
@@ -155,13 +160,20 @@ public class ContainerManager extends Observable implements Serializable {
 		}
 		
 		if( oldContainer instanceof ProductGroup ) {
-			oldContainer.setName( newContainer.getName() );
-			((ProductGroup) oldContainer).setThreeMonthSupply( 
-					((ProductGroup) newContainer).getThreeMonthSupply() );
+			newContainer.setContainer( oldContainer.getContainer() );
+			newContainer.setProductGroups( oldContainer.getProductGroups() );
+			newContainer.getContainer().getProductGroups().add( (ProductGroup) newContainer );
+			newContainer.getContainer().getProductGroups().remove( oldContainer );
 		}
 		else {
-			oldContainer.setName( newContainer.getName() );
+			newContainer.setProductGroups( oldContainer.getProductGroups() );
+			storageUnits.remove( oldContainer );
+			storageUnits.add( (StorageUnit) newContainer );
 		}
+		setChanged();
+		ChangeObject hint = getHintObject( oldContainer );
+		notifyObservers( hint );
+		//notifyObservers( ChangeType.CONTAINER );
 	}
 	
 	/** Deletes the container and all of the children containers.
@@ -187,6 +199,10 @@ public class ContainerManager extends Observable implements Serializable {
 		else {
 			storageUnits.remove( container );
 		}
+		setChanged();
+		ChangeObject hint = getHintObject( container.getContainer() );
+		notifyObservers( hint );
+		//notifyObservers( ChangeType.CONTAINER );
 	}
 
 	/**Checks to see if all of the qualifications are met to add the current container.
@@ -225,7 +241,7 @@ public class ContainerManager extends Observable implements Serializable {
 		if( container.getName() == null ) {
 			return false;
 		}
-		for( ProductGroup productGroup : container.getContainer().getProductGroups() ) {
+ 		for( ProductGroup productGroup : container.getContainer().getProductGroups() ) {
 			if( container.getName().equals( productGroup.getName() ) ) {
 				return false;
 			}
@@ -266,12 +282,12 @@ public class ContainerManager extends Observable implements Serializable {
 		}
 	}
 	
-	/**Notifies all of its observers of any changes.
-	 * @pre none
-	 * @post notifies all of the observers of various changes.
-	 */
-	@Override
-	public void notifyObservers() {
-		
+	private ChangeObject getHintObject( Container container ) {
+		ChangeObject result = new ChangeObject();
+		result.setChangeType( ChangeType.CONTAINER );
+		ProductContainerData productContainerData = new ProductContainerData();
+		productContainerData.setProductContainer( container );
+		result.setProductContainerData( productContainerData );
+		return result;
 	}
 }

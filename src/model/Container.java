@@ -109,14 +109,12 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		
 	/** Compares based on name
 	 * @pre				container != null
+	 * @param other
 	 * @return 			int 
 	 */
 	@Override
-	public int compareTo(Container other) throws IllegalArgumentException {
+	public int compareTo(Container other) {
 		assert true;
-		if( other == null ) {
-			throw new IllegalArgumentException();
-		}
 		return name.compareTo(other.name);
 	}
 	

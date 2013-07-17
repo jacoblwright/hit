@@ -11,6 +11,8 @@ import gui.inventory.*;
 public class EditStorageUnitController extends Controller 
 										implements IEditStorageUnitController {
 	
+	private ProductContainerData target;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -19,7 +21,7 @@ public class EditStorageUnitController extends Controller
 	 */
 	public EditStorageUnitController(IView view, ProductContainerData target) {
 		super(view);
-
+		this.target = target;
 		construct();
 	}
 
@@ -51,6 +53,7 @@ public class EditStorageUnitController extends Controller
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableOK( false );
 	}
 
 	/**
@@ -76,7 +79,7 @@ public class EditStorageUnitController extends Controller
 	public void valuesChanged() {
 		String name = getView().getStorageUnitName();
 		Container container = new StorageUnit( name );
-		boolean isEnabled = getModel().getContainerManager().canAddContainer( container );
+		boolean isEnabled = getModel().getContainerManager().canEditContainer( container );
 		
 		getView().enableOK( isEnabled );
 	}
@@ -87,6 +90,11 @@ public class EditStorageUnitController extends Controller
 	 */
 	@Override
 	public void editStorageUnit() {
+		
+		String name = getView().getStorageUnitName();
+		Container newContainer = new StorageUnit( name );
+		Container oldContainer = (Container) target.getTag();
+		getModel().getContainerEditor().editContainer( oldContainer, newContainer );
 	}
 
 }
