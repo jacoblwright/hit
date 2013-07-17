@@ -178,7 +178,14 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	}
 	
 	
-	
+	/**
+	 * This method is called when the user clicks the "Done" button
+	 * in the transfer item batch view.
+	 */
+	@Override
+	public void done() {
+		getView().close();
+	}
 	
 	
 	

@@ -76,8 +76,7 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 
 	@Override
 	protected void done() {
-		// TODO Auto-generated method stub
-		
+		getController().done();
 	}
 	
 }

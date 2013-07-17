@@ -45,7 +45,6 @@ public class ItemBatchController extends Controller {
 			
 		}
 		else {
-//			updateRemoveItemButton();
 			
 			// Get associated item
 			Barcode tag = new Barcode(getView().getBarcode());
