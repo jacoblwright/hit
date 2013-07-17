@@ -10,6 +10,7 @@ import javax.swing.event.*;
 import common.util.DateUtils;
 
 import gui.common.*;
+import model.Container;
 import gui.inventory.*;
 import gui.main.GUI;
 import gui.product.*;
@@ -24,6 +25,7 @@ public class AddItemBatchView extends ItemBatchView implements
 	private JSpinner entryDateSpinner;
 	private JLabel countLabel;
 	private JTextField countField;
+	Container container;
 
 	public AddItemBatchView(GUI parent, DialogBox dialog,
 			ProductContainerData target) {
@@ -246,7 +248,7 @@ public class AddItemBatchView extends ItemBatchView implements
 	public void displayAddProductView() {
 		DialogBox dialogBox = new DialogBox(_parent, "Add Product");
 		AddProductView dialogView = new AddProductView(_parent, dialogBox,
-				getBarcode());
+				getBarcode(), container);
 		dialogBox.display(dialogView, false);
 	}
 

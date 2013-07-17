@@ -73,7 +73,7 @@ public class ItemBatchController extends Controller {
 				
 				// Select the item and update the button
 				getView().selectProduct(plist[0]); // should only ever be size 1
-				getView().selectItem(DataConverter.getItemData(found, ilist));
+				getView().selectItem(DataConverter.toItemDataArray(found, ilist));
 				getView().enableItemAction(true);
 				
 			}
