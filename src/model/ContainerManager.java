@@ -187,7 +187,6 @@ public class ContainerManager extends Observable implements Serializable {
 	public void deleteContainer( Container container ) throws IllegalArgumentException {
 		
 		//removeContainerRecursively( container );
-		ChangeObject hint = getHintObject( container.getContainer() );
 		if( container instanceof ProductGroup ) {
 			if( container.getContainer() == null ) {
 				throw new IllegalArgumentException();
@@ -197,8 +196,8 @@ public class ContainerManager extends Observable implements Serializable {
 		}
 		else {
 			storageUnits.remove( container );
-			hint.setSelectedData( null );
 		}
+		ChangeObject hint = getHintObject( container.getContainer() );
 		setChanged();
 		notifyObservers( hint );
 	}
@@ -281,6 +280,9 @@ public class ContainerManager extends Observable implements Serializable {
 	}
 	
 	private ChangeObject getHintObject( Container container ) {
+		if( container == null ) {
+			return null;
+		}
 		ChangeObject result = new ChangeObject();
 		result.setChangeType( ChangeType.CONTAINER );
 		ProductContainerData productContainerData = new ProductContainerData();

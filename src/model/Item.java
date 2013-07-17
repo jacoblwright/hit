@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**	The physical instance of a Product.
@@ -25,9 +26,6 @@ public class Item extends Entity implements Comparable<Item> {
 	/** date the item was removed */
 	private Date exitTime;
 	
-	/** expiration date of the item */
-	private Date expirationDate;
-	
 	/** pointer to the product container that holds the item */
 	private Container container;
 	
@@ -44,17 +42,17 @@ public class Item extends Entity implements Comparable<Item> {
 	* @pre _container != null, _prod != null
 	*
 	*/
-	public Item(Container container, Product product, Date expirationDate, Barcode tag)  {
+	public Item(Container container, Product product, Date entryDate, Barcode tag)  {
 		assert container != null;
 		assert product != null;
-		assert expirationDate != null;
+		assert entryDate != null;
 		assert tag != null;
 		
 		this.container = container;
 		this.product = product;
-		this.expirationDate = expirationDate;
+		this.entryDate = entryDate;
 		this.tag = tag; // generates unique barcode on initliazation
-		this.entryDate = new Date();
+//		this.expirationDate = product.getShelfLife() + entryDate;
 		
 	}
 
@@ -151,20 +149,12 @@ public class Item extends Entity implements Comparable<Item> {
 	 */
 	public Date getExpirationDate() {
 		assert true;
-		
-		return expirationDate;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(entryDate);
+		cal.roll(Calendar.MONTH, product.getShelfLife());
+		return cal.getTime();
 	}
 
-	/**
-	 * Set the item's expiration date.
-	 * 
-	 * @param expirationDate
-	 */
-	public void setExpirationDate(Date expirationDate) {
-		assert true;
-		
-		this.expirationDate = expirationDate;
-	}
 
 	/** Gets the item's container.
 	 * 
@@ -204,7 +194,7 @@ public class Item extends Entity implements Comparable<Item> {
 		}
 		
 		Item item = (Item) obj;
-		return this.getTag().getBarcode() == item.getTag().getBarcode();
+		return this.getTag().getBarcode().equals(item.getTag().getBarcode());
 	}
 	
 	@Override
@@ -218,7 +208,7 @@ public class Item extends Entity implements Comparable<Item> {
 	public String toString() {
 		return "Item [product=" + product + ", tag=" + tag + ", entryDate="
 				+ entryDate + ", exitDate=" + exitDate + ", exitTime="
-				+ exitTime + ", expirationDate=" + expirationDate
+				+ exitTime + ", expirationDate=" + getExpirationDate()
 				+ ", container=" + container + "]";
 	}
 	
