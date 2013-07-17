@@ -4,6 +4,7 @@ package model;
  * @author jake
  */
 public enum ChangeType {
+	CONTAINER,
 	STORAGE_UNIT,
 	PRODUCT_GROUP,
 	PRODUCT,
