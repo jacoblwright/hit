@@ -161,8 +161,9 @@ public class ContainerManager extends Observable implements Serializable {
 		if( oldContainer instanceof ProductGroup ) {
 			newContainer.setContainer( oldContainer.getContainer() );
 			newContainer.setProductGroups( oldContainer.getProductGroups() );
-			newContainer.getContainer().getProductGroups().add( (ProductGroup) newContainer );
 			newContainer.getContainer().getProductGroups().remove( oldContainer );
+			newContainer.getContainer().getProductGroups().add( (ProductGroup) newContainer );
+			
 		}
 		else {
 			newContainer.setProductGroups( oldContainer.getProductGroups() );
@@ -198,7 +199,7 @@ public class ContainerManager extends Observable implements Serializable {
 			storageUnits.remove( container );
 		}
 		ChangeObject hint;
-		if( parent.getProductGroups().isEmpty() ) {
+		if( parent == null || parent.getProductGroups().isEmpty() ) {
 			hint = getHintObject( parent );
 		}
 		else {

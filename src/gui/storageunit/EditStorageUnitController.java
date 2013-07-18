@@ -53,7 +53,7 @@ public class EditStorageUnitController extends Controller
 	 */
 	@Override
 	protected void enableComponents() {
-		getView().enableOK( false );
+		getView().setStorageUnitName( target.getName() );
 	}
 
 	/**
@@ -80,6 +80,9 @@ public class EditStorageUnitController extends Controller
 		String name = getView().getStorageUnitName();
 		Container container = new StorageUnit( name );
 		boolean isEnabled = getModel().getContainerManager().canEditContainer( container );
+		if( name.equals( target.getName() ) ) {
+			isEnabled = true;
+		}
 		
 		getView().enableOK( isEnabled );
 	}
@@ -90,11 +93,12 @@ public class EditStorageUnitController extends Controller
 	 */
 	@Override
 	public void editStorageUnit() {
-		
 		String name = getView().getStorageUnitName();
-		Container newContainer = new StorageUnit( name );
-		Container oldContainer = (Container) target.getTag();
-		getModel().getContainerEditor().editContainer( oldContainer, newContainer );
+		if( !name.equals( target.getName() ) ) {
+			Container newContainer = new StorageUnit( name );
+			Container oldContainer = (Container) target.getTag();
+			getModel().getContainerEditor().editContainer( oldContainer, newContainer );
+		}
 	}
 
 }

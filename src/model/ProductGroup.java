@@ -146,6 +146,20 @@ public class ProductGroup extends Container {
 		return super.equals(obj) &&  
 				this.threeMonthSupply.equals( ((ProductGroup)obj).threeMonthSupply );
 	}
+	
+	public boolean simpleEquals( Object obj ) {
+		assert true;
+		if ( this == obj ) {
+			return true;
+		}
+		if( !( obj instanceof Container ) )
+		{
+			return false;
+		}
+		return 	( this.getName() != null ? this.getName().equals( ((Container)obj).getName() ) :
+				((Container)obj).getName() == null ) && 
+				this.threeMonthSupply.equals( ((ProductGroup)obj).threeMonthSupply );
+	}
 
 	/**Creates the string version of this object.
 	 * @pre 				none	
