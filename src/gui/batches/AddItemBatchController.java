@@ -176,7 +176,9 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void useScannerChanged() {
-		getView().setBarcode("");
+		if(getView().getUseScanner()){
+			getView().setBarcode("");
+		}
 		enableComponents();
 	}
 
