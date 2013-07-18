@@ -1,5 +1,8 @@
 package model;
 
+import gui.item.ItemData;
+import gui.product.ProductData;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -49,6 +52,8 @@ public class ProductManager extends Observable implements Serializable{
 
 		addProductToContainer(product, container);
 		productByUPC.put(product.getUPC(), product);
+		
+		notify(null);
 	}
 	
 	/** Edits a Product's description, shelf life, quantity, and three month supply
@@ -69,6 +74,8 @@ public class ProductManager extends Observable implements Serializable{
 		before.setShelfLife(after.getShelfLife());
 		before.setSize(after.getSize().getUnit(), after.getSize().getNumber());
 		before.setThreeMonthSupply(after.getThreeMonthSupply());
+		
+		notify(before);
 	}
 	
 	/** Moves a product from one container to another (or simply replaces itself)
@@ -90,6 +97,8 @@ public class ProductManager extends Observable implements Serializable{
 		
 		removeProductFromContainer(product, before);
 		addProductToContainer(product, after);
+		
+		notify(product);
 	}
 	/** Adds product to specific container
 	 * 
@@ -109,6 +118,7 @@ public class ProductManager extends Observable implements Serializable{
 			productSet.add(product);
 			productsByContainer.put(container, productSet);
 		}
+		notify(product);
 	}
 	
 	/** Deletes Product from container's mapping in productsByContainer and removes 
@@ -125,11 +135,11 @@ public class ProductManager extends Observable implements Serializable{
 		
 		product.removeContainer(container);
 		
-		Set tempSet = (HashSet)productsByContainer.get(container);
-		if(!tempSet.contains(product))
+		if(!productsByContainer.get(container).contains(product))
 			throw new IllegalArgumentException();
 
-		tempSet.remove(product);
+		productsByContainer.get(container).remove(product);
+		notify(product);
 	}
 	
 	public void deleteProductFromSystem(Product product) throws IllegalArgumentException{
@@ -144,6 +154,7 @@ public class ProductManager extends Observable implements Serializable{
 			Container tempCon = (Container)it.next();
 			productsByContainer.get(tempCon).remove(product);
 		}
+		notify(null);
 	}
 	
 	/** Return true if after is a valid Product, false otherwise. A valid Product contains a Barcode
@@ -283,8 +294,14 @@ public class ProductManager extends Observable implements Serializable{
 	 * post notifies observers of Product changes
 	 */
 	
-	public void notifyObservers(){
-		
+	private void notify(Product changer) {
+		ChangeObject hint = new ChangeObject();
+		hint.setChangeType(ChangeType.PRODUCT);
+		if (changer != null){
+			hint.setSelectedData(new ProductData(changer));
+		}
+		setChanged();
+		notifyObservers(hint);
 	}
 
 }
