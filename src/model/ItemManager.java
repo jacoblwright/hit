@@ -142,9 +142,9 @@ public class ItemManager implements Serializable {
 	 * 
 	 * @return false if item not found in Storage Unit or removedItems, false otherwise
 	 */
-	public boolean canAddItem(Item item, Container storageUnit){
+	public boolean canAddItem(Item item, Container container){
 		
-		if (storageUnit == null){
+		if (container == null){
 			return false;
 		}
 		
@@ -152,11 +152,19 @@ public class ItemManager implements Serializable {
 			return false;
 		}
 		
-		if (itemsByContainer.containsKey(storageUnit)) {
-			Collection<Item> tmp = getItems(storageUnit);
+		if (itemsByContainer.containsKey(container)) {
+			Collection<Item> tmp = getItems(container);
+			
+			System.out.println(item);
+			System.out.println(container);
+			System.out.println(!tmp.contains(item));
+			System.out.println(!removedItems.contains(item));
+			System.out.println(getItemByTag(item.getTag()) == null);
+			System.out.println(getItemByTag(item.getTag()));
+			System.out.println("----");
+			
 			return 	!tmp.contains(item) &&
-					!removedItems.contains(item) &&
-					getItemByTag(item.getTag()) == null;
+					!removedItems.contains(item);
 		}
 		else {
 			return true;

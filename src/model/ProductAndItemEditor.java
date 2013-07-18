@@ -211,6 +211,7 @@ public class ProductAndItemEditor {
          
          Container containerOfProductInSU =
                  getContainer(item.getProduct(), storageUnit);
+         //System.out.println("containerOfProductInSU:" + containerOfProductInSU);
          
          if (containerOfProductInSU == null) {   
              
@@ -303,8 +304,10 @@ public class ProductAndItemEditor {
                  containerManager.getDescendents(storageUnit);
          //System.out.println(containersInStorageUnit);
          containersInStorageUnit.add(storageUnit);
+         //System.out.println(containersInStorageUnit);
          
          Set<Container> containersOfProduct = product.getContainers();
+         //System.out.println(containersOfProduct);
          
          Container result = null;
          for (Container containerInStorageUnit : containersInStorageUnit) {

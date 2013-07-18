@@ -154,6 +154,7 @@ public class ProductGroup extends Container {
 	@Override
 	public String toString() {
 		assert true;
-		return super.toString() + " ProductGroup [threeMonthSupply=" + threeMonthSupply + "]";
+		//return super.toString() + " ProductGroup [threeMonthSupply=" + threeMonthSupply + "]";
+		return super.toString();
 	}
 }
