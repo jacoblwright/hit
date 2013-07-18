@@ -217,25 +217,59 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
+
+		
 		ProductContainerData productContainerData = getView().getSelectedProductContainer();
-		if(productContainerData !=  null){
-			Collection col = getModel().getProductManager().getProducts((Container)productContainerData.getTag());
-			if (col == null) return;
+		if(productContainerData.getName().isEmpty() && productContainerData != null){
+			Collection<Product> col = getModel().getProductManager().getProducts();
 			ProductData[] productArray = DataConverter.toProductDataArray(col);
-			for(int i = 0; i < productArray.length; i++){
-				try{
-					Collection itemCol = getModel().getItemManager().getItems((Container)productContainerData.getTag(), (Product)productArray[i].getTag());
-					productArray[i].setCount(Integer.toString(itemCol.size()));
-				}
-				catch(NullPointerException e){
-					
-				}
-			}
+			setProductsDataSize(productArray, productContainerData);
 			getView().setProducts(productArray);
 		}
-		else getView().setProducts(null);
+		else if(productContainerData != null && productContainerData.getTag() != null){
+			
+			Collection<Product> col = getModel().getProductManager().
+					getProducts((Container)productContainerData.getTag());
+			ProductData[] productArray = DataConverter.toProductDataArray(col);
+			setProductsDataSize(productArray, productContainerData);
+			getView().setProducts(productArray);
+		}
+		else{
+			getView().setProducts(new ProductData[0]);
+		}
+		getView().setItems(new ItemData[0]);
 	}
 
+	public void setProductsDataSize(ProductData[] productArray, 
+			ProductContainerData productContainerData){
+		
+		for(int i = 0; i < productArray.length; i++){
+			/* Set the count for the product */
+			try{
+				if(productContainerData.getName().isEmpty()){
+					Collection<Item> itemCol = getModel().getItemManager().getItems();
+					Iterator it = itemCol.iterator();
+					int count = 0;
+					while(it.hasNext()){
+						Item item = (Item)it.next();
+						if(item.getProduct().equals(productArray[i].getTag())){
+							count++;
+						}
+					}
+					productArray[i].setCount(Integer.toString(count));
+				}
+				else {
+					Collection<Item> itemCol = getModel().getItemManager().
+							getItems((Container)productContainerData.getTag(), 
+									(Product)productArray[i].getTag());
+					
+					productArray[i].setCount(Integer.toString(itemCol.size()));
+				}
+			}
+			catch(NullPointerException e){ }
+		}
+	}
+	
 	/**
 	 * This method is called when the selected item changes.
 	 */
@@ -243,10 +277,15 @@ public class InventoryController extends Controller
 	public void productSelectionChanged() {
 		
 		ProductData productData = getView().getSelectedProduct();
-		if(productData != null){
-			Collection col = getModel().getItemManager().getItems((Container)getView().getSelectedProductContainer().getTag(), (Product)productData.getTag());
+		Container productContainer = (Container)getView().getSelectedProductContainer().getTag();
+		if(productData != null && productData.getTag() != null && productContainer != null){
+			Collection col = getModel().getItemManager().getItems(productContainer, 
+					(Product)productData.getTag());
 			ItemData[] itemArray = DataConverter.toItemDataArray(col);
 			getView().setItems(itemArray);
+		}
+		if(selectedItemData != null){
+			getView().selectItem(selectedItemData);
 		}
 	}
 
@@ -284,7 +323,12 @@ public class InventoryController extends Controller
 			ProductContainerData productContainerData = getView().getSelectedProductContainer();
 			Container container = (Container)productContainerData.getTag();
 			try{
-				getModel().getProductManager().removeProductFromContainer(product, container);
+				if(container.getName() == null){
+					getModel().getProductManager().deleteProductFromSystem(product);
+				}
+				else getModel().getProductManager().removeProductFromContainer(product, container);
+				
+				productContainerSelectionChanged();
 			}
 			catch (IllegalArgumentException e){
 				getView().displayErrorMessage("Can't Delete Product");
@@ -329,7 +373,9 @@ public class InventoryController extends Controller
 	@Override
 	public void removeItem() {
 		Item item = (Item) getView().getSelectedItem().getTag();
-		getModel().getItemManager().removeItem(item);
+		if(item != null)
+			getModel().getItemManager().removeItem(item);
+		productSelectionChanged();
 	}
 
 	/**
@@ -422,6 +468,8 @@ public class InventoryController extends Controller
 		Container container = (Container)containerData.getTag();
 		
 		getModel().getProductManager().addProductToContainer(product, container);
+		
+		productContainerSelectionChanged();
 	}
 
 	/**

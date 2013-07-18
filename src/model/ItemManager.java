@@ -159,6 +159,15 @@ public class ItemManager extends Observable implements Serializable {
 		
 		if (itemsByContainer.containsKey(container)) {
 			Collection<Item> tmp = getItems(container);
+			/*
+			System.out.println(item);
+			System.out.println(container);
+			System.out.println(!tmp.contains(item));
+			System.out.println(!removedItems.contains(item));
+			System.out.println(getItemByTag(item.getTag()) == null);
+			System.out.println(getItemByTag(item.getTag()));
+			System.out.println("----");
+			*/
 			return 	!tmp.contains(item) &&
 					!removedItems.contains(item);
 		}

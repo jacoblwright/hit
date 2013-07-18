@@ -132,6 +132,20 @@ public class ProductManager extends Observable implements Serializable{
 		tempSet.remove(product);
 	}
 	
+	public void deleteProductFromSystem(Product product) throws IllegalArgumentException{
+		if(!productByUPC.containsValue(product)){
+			throw new IllegalArgumentException();
+		}
+		productByUPC.remove(product.getUPC());
+		
+		Set<Container> containers = product.getContainers();
+		Iterator it = containers.iterator();
+		while(it.hasNext()){
+			Container tempCon = (Container)it.next();
+			productsByContainer.get(tempCon).remove(product);
+		}
+	}
+	
 	/** Return true if after is a valid Product, false otherwise. A valid Product contains a Barcode
 	 * that contains a non-empty upc, a non-empty description, a Quantity that has a
 	 * 

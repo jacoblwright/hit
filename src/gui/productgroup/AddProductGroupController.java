@@ -115,7 +115,7 @@ public class AddProductGroupController extends Controller implements
 		try
 		{	
 			if( emptyString( value ) ) {
-				number = -1;//add something for 0 values to be ok
+				number = -1;
 			}
 			else {
 				number = Float.parseFloat( value );

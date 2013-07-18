@@ -220,10 +220,13 @@ public class Product extends Entity {
 
     @Override
     public String toString() {
+        /*
         return "Product [creationDate=" + creationDate + ", upc=" + upc
                 + ", description=" + description + ", size=" + size
                 + ", shelfLife=" + shelfLife + ", threeMonthSupply="
                 + threeMonthSupply + ", containers=" + containers + "]";
+        */
+        return "Product [upc=" + upc + ", description=" + description + "]"; 
     }
 
 }

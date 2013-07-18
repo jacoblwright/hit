@@ -153,8 +153,7 @@ public class ProductAndItemEditor {
      */
     public void deleteProductFromSystem(Product product) {
         
-        // Waiting for this method to be added to ProductManager.
-        //productManager.deleteProductFromSystem(product);
+        productManager.deleteProductFromSystem(product);
         
     }
 
@@ -211,6 +210,7 @@ public class ProductAndItemEditor {
          
          Container containerOfProductInSU =
                  getContainer(item.getProduct(), storageUnit);
+         //System.out.println("containerOfProductInSU:" + containerOfProductInSU);
          
          if (containerOfProductInSU == null) {   
              
@@ -301,16 +301,22 @@ public class ProductAndItemEditor {
          
          Set<Container> containersInStorageUnit =
                  containerManager.getDescendents(storageUnit);
+         //System.out.println(containersInStorageUnit);
          containersInStorageUnit.add(storageUnit);
+         //System.out.println(containersInStorageUnit);
          
          Set<Container> containersOfProduct = product.getContainers();
+         //System.out.println(containersOfProduct);
          
          Container result = null;
-         for (Container containerInStorageUnit : containersInStorageUnit) {      
+         for (Container containerInStorageUnit : containersInStorageUnit) {
+           //System.out.println(containerInStorageUnit);
              if (containersOfProduct.contains(containerInStorageUnit)) {
                  result = containerInStorageUnit;
              }             
          }
+         
+         //System.out.println(result);
          
          return result;
          
