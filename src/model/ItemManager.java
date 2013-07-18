@@ -1,6 +1,8 @@
 package model;
 
 
+import gui.item.ItemData;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
+import java.util.Observable;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -19,7 +22,7 @@ import java.io.*;
  * @author Nick
  *
  */
-public class ItemManager implements Serializable {
+public class ItemManager extends Observable implements Serializable {
 
 	/**
 	 * Index for quick item lookup by container.
@@ -135,6 +138,8 @@ public class ItemManager implements Serializable {
 		if (!itemByTag.containsKey(itemToAdd.getTag())){
 			itemByTag.put(itemToAdd.getTag(), itemToAdd);
 		}
+		
+		notify(null);
 	}
 
 	/**
@@ -229,6 +234,8 @@ public void moveItem(Item itemToMove, Container target) {
 		}
 		
 		removedItems.add(itemToRemove);
+		
+		notify(null);
 	}
 	
 	/** Change only to the item's entry date.
@@ -245,6 +252,8 @@ public void moveItem(Item itemToMove, Container target) {
 		else{
 			throw new IllegalArgumentException("cannot complete item edit: after is invalid");
 		}
+		
+		notify(after);
 	}
 	
 	
@@ -316,6 +325,16 @@ public void moveItem(Item itemToMove, Container target) {
 	 */
 	public Collection<Item> getRemovedItems(){
 		return removedItems;
+	}
+	
+	private void notify(Item changer) {
+		ChangeObject hint = new ChangeObject();
+		hint.setChangeType(ChangeType.ITEM);
+		if (changer != null){
+			hint.setSelectedData(new ItemData(changer));
+		}
+		setChanged();
+		notifyObservers(hint);
 	}
 	
 //	public void clearAll(){

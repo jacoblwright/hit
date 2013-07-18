@@ -146,34 +146,8 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	}
 
 	
-	private void updateRemoveItemButton(){
-		if (getView().getBarcode().equals("")) {
-			if (getView().getSelectedItem().hasTag()){
-				getView().enableItemAction(
-							((Item) getView().getSelectedItem().getTag())
-							.getContainer() != null );
-					
-			}
-			else {
-				getView().enableItemAction(false);
-			}
-		}
-		else {
-			// first checks if system has tag
-			if ( getModel().getItemManager().doesTagExist(getView().getBarcode())){
-				getView().enableItemAction(
-						getModel().getItemManager().getItems().contains(
-						(Item) getView().getSelectedItem().getTag()) );
-			}
-			else {
-				getView().enableItemAction(false);
-			}
-		}
-	}
-
 	@Override
 	public void selectedProductChanged() {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -187,7 +161,9 @@ public class RemoveItemBatchController extends ItemBatchController implements
 		getView().close();
 	}
 	
-	
+	public void doAction(){
+		getView().displayInformationMessage("Doing remove action");
+	}
 	
 }
 

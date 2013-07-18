@@ -5,7 +5,7 @@ import gui.common.IController;
 /**
  * Controller interface for remove item batch view.
  */
-public interface IRemoveItemBatchController extends IController {
+public interface IRemoveItemBatchController extends IItemBatchController {
 
 	/**
 	 * This method is called when the "Item Barcode" field is changed
@@ -49,5 +49,9 @@ public interface IRemoveItemBatchController extends IController {
 	 */
 	void done();
 
+	/**
+	 * Method is called when barcode is changed in either mode
+	 */
+	void doAction();
 }
 
