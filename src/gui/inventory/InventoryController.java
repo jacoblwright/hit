@@ -31,6 +31,7 @@ public class InventoryController extends Controller
 	public InventoryController(IInventoryView view) {
 		super(view);
 		getModel().getContainerManager().addObserver( this );
+		getModel().getItemManager().addObserver( this );
 		
 
 		construct();

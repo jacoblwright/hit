@@ -24,6 +24,8 @@ public interface IItemBatchController extends IController {
 	void selectedProductChanged();
 	
 	
+	
+	
 	/**
 	 * This method is called when the user clicks the "Undo" button
 	 * in the remove item batch view.

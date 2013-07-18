@@ -337,11 +337,4 @@ public void moveItem(Item itemToMove, Container target) {
 		notifyObservers(hint);
 	}
 	
-//	public void clearAll(){
-//		itemsByContainer.clear();
-//		itemByTag.clear();
-//		removedItemsByDate.clear();
-//		removedItems.clear();
-//	}
-	
 }
