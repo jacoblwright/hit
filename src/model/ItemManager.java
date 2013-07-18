@@ -154,7 +154,7 @@ public class ItemManager implements Serializable {
 		
 		if (itemsByContainer.containsKey(container)) {
 			Collection<Item> tmp = getItems(container);
-			
+			/*
 			System.out.println(item);
 			System.out.println(container);
 			System.out.println(!tmp.contains(item));
@@ -162,7 +162,7 @@ public class ItemManager implements Serializable {
 			System.out.println(getItemByTag(item.getTag()) == null);
 			System.out.println(getItemByTag(item.getTag()));
 			System.out.println("----");
-			
+			*/
 			return 	!tmp.contains(item) &&
 					!removedItems.contains(item);
 		}
