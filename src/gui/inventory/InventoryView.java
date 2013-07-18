@@ -942,6 +942,7 @@ public class InventoryView extends View implements IInventoryView {
 	@Override
 	public void setProducts(ProductData[] products) {
 		boolean disabledEvents = disableEvents();
+		
 		try {
 			_productTableModel.setRowCount(0);
 			for (ProductData pd : products) {			

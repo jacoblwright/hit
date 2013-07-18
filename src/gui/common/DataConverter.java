@@ -27,18 +27,10 @@ public class DataConverter {
 		}
 		return ret;
 	}
-	public static ItemData getItemData(Item item, ItemData[] list){
-		for (int i = 0; i < list.length; i++){
-			if ( list[i].getTag().equals(item) ){
-				return list[i];
-			}
-		}
-		return null;
-		
-	}
 	
 	public static ProductData[] toProductDataArray(Collection<Product> col) {
-		
+		if(col == null)
+			return new ProductData[0];
 		ProductData[] ret = new ProductData[col.size()];
 		int i = 0;
 		Iterator<Product> iter = col.iterator();
