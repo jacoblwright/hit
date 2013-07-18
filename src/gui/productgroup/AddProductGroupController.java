@@ -4,7 +4,6 @@ import model.Container;
 import model.ProductGroup;
 import model.Quantity;
 import model.StorageUnit;
-import model.Unit;
 import gui.common.*;
 import gui.inventory.*;
 

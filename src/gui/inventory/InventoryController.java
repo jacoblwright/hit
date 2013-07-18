@@ -465,9 +465,12 @@ public class InventoryController extends Controller
 										ProductContainerData containerData) {
 		
 		Product product = (Product)productData.getTag();
-		Container container = (Container)containerData.getTag();
+		Container sourceContainer = 
+		        (Container)getView().getSelectedProductContainer().getTag();
+		Container targetContainer = (Container)containerData.getTag();
 		
-		getModel().getProductManager().addProductToContainer(product, container);
+		getModel().getProductAndItemEditor().moveProduct(
+		        product, sourceContainer, targetContainer);
 		
 		productContainerSelectionChanged();
 	}
