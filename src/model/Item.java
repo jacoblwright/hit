@@ -151,9 +151,10 @@ public class Item extends Entity implements Comparable<Item> {
 		assert true;
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(entryDate);
-//		cal.roll(Calendar.MONTH, product.getShelfLife());
+		// TODO: find out how to fix this without rolling calender
+		cal.roll(Calendar.MONTH, product.getShelfLife());
 		Date ret = cal.getTime();
-//		cal.roll(Calendar.MONTH, -product.getShelfLife());
+		cal.roll(Calendar.MONTH, -1*product.getShelfLife());
 		return ret;
 	}
 

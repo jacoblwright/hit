@@ -370,7 +370,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canEditItem() {
-		return true;
+		return getView().getSelectedItem() != null;
 	}
 
 	/**
