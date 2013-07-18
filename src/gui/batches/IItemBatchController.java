@@ -41,5 +41,10 @@ public interface IItemBatchController extends IController {
 	 * in the remove item batch view.
 	 */
 	void done();
+	
+	/**
+	 * Method is called when barcode is changed in either mode
+	 */
+	void doAction();
 
 }
