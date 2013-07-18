@@ -31,8 +31,10 @@ public class AddItemBatchController extends Controller implements
     
     private TextFieldTimer timer;
 
+    ProductData[] productDataProducts;
 	Container container;
 	Collection<Item> items;
+	Collection<Product> products;
 	/**
 	 * Constructor.
 	 * 
@@ -42,11 +44,12 @@ public class AddItemBatchController extends Controller implements
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
 		items = new HashSet();
+		products = new HashSet();
+		productDataProducts = new ProductData[0];
 		container = (Container)target.getTag();
 		construct();
 		
 		timer = new TextFieldTimer(this);
-		
 	}
 
 	/**
@@ -70,6 +73,8 @@ public class AddItemBatchController extends Controller implements
 		getView().setUseScanner(true);
 		Date date = new Date();
 		getView().setEntryDate(date);
+		ProductData[] productData = DataConverter.toProductDataArray(products);
+		getView().setProducts(productData);
 		
 	}
 
@@ -191,7 +196,7 @@ public class AddItemBatchController extends Controller implements
 			getModel().getProductAndItemEditor().addItemToStorageUnit(item, (StorageUnit)storageUnit);
 			items.add(item);
 		}
-		
+		products.add(product);
 		loadValues();
 	}
 	
