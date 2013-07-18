@@ -32,10 +32,10 @@ public class InventoryController extends Controller
 		super(view);
 		getModel().getContainerManager().addObserver( this );
 <<<<<<< HEAD
-		//debugInit();
-=======
 		
->>>>>>> a156b43b85869a7cf7ae0f8363b32c5f9eb71212
+=======
+		//debugInit();
+>>>>>>> b5e64dc20477ab527a3f5232c82bc1c93383710c
 
 		construct();
 		

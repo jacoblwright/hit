@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
+import gui.common.*;
 
 /** Manages alterations to all the Products in the system and handles passing the Product's 
  * 	structure to higher level classes. 
@@ -188,7 +189,7 @@ public class ProductManager extends Observable implements Serializable{
 		assert true;
 	    
 		// If enum is COUNT, then check to see if the value is 1
-		if(qty.getUnit().equals(Unit.count) && qty.getNumber() != 1.0){
+		if(qty.getUnit().equals(SizeUnits.Count) && qty.getNumber() != 1.0){
 			return false;
 		}
 		//If enum is anything but COUNT, check that value is greater than zero
