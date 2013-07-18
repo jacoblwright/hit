@@ -102,9 +102,12 @@ public class EditItemController extends Controller
 	@Override
 	protected void loadValues() {
 		// enters the product description, item barcode, and entry date
-		getView().setDescription("Unknown");
-		getView().setBarcode("Unknown");
-		if (target != null) {
+		
+		if (target == null) {
+			getView().setDescription("Unknown");
+			getView().setBarcode("Unknown");
+		}
+		else {
 		
 			getView().setBarcode(target.getBarcode());
 			
@@ -113,7 +116,7 @@ public class EditItemController extends Controller
 				getView().setDescription(tagalong.getProduct().getDescription());
 			}
 			
-			getView().setEntryDate(target.getEntryDate());
+//			getView().setEntryDate(target.getEntryDate());
 		}
 	}
 

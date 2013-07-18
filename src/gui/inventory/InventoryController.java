@@ -376,7 +376,7 @@ public class InventoryController extends Controller
 		Item item = (Item) getView().getSelectedItem().getTag();
 		if(item != null)
 			getModel().getItemManager().removeItem(item);
-		productSelectionChanged();
+//		productSelectionChanged();
 	}
 
 	/**
@@ -483,6 +483,11 @@ public class InventoryController extends Controller
 	@Override
 	public void moveItemToContainer(ItemData itemData,
 									ProductContainerData containerData) {
+		Container targetContainer = (Container) containerData.getTag();
+		Item itemToMove = (Item) itemData.getTag();
+		if ( (targetContainer != null) && itemToMove != null ){
+			getModel().getProductAndItemEditor().moveItem(itemToMove, targetContainer);
+		}
 	}
 	
 	@Override

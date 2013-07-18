@@ -76,7 +76,8 @@ public class AddItemBatchController extends Controller implements
 			ProductData[] productArray = DataConverter.toProductDataArray(col);
 			for(int i = 0; i < productArray.length; i++){
 				try{
-					Collection itemCol = getModel().getItemManager().getItems(container, (Product)productArray[i].getTag());
+					Collection itemCol = getModel().getItemManager().
+							getItems(container, (Product)productArray[i].getTag());
 					productArray[i].setCount(Integer.toString(itemCol.size()));
 				}
 				catch(NullPointerException e){
@@ -172,7 +173,8 @@ public class AddItemBatchController extends Controller implements
 	public void selectedProductChanged() {
 		ProductData productData = getView().getSelectedProduct();
 		if(productData != null){
-			Collection col = getModel().getItemManager().getItems(container, (Product)productData.getTag());
+			Collection col = getModel().getItemManager().
+					getItems(container, (Product)productData.getTag());
 			ItemData[] itemArray = DataConverter.toItemDataArray(col);
 			getView().setItems(itemArray);
 		}
@@ -202,7 +204,8 @@ public class AddItemBatchController extends Controller implements
 			Container storageUnit = getModel().getContainerManager().
 					getAncestorStorageUnit(container);
 			Item item = new Item(null, product, getView().getEntryDate(), barcode);
-			getModel().getProductAndItemEditor().addItemToStorageUnit(item, (StorageUnit)storageUnit);
+			getModel().getProductAndItemEditor().
+			addItemToStorageUnit(item, (StorageUnit)storageUnit);
 			items.add(item);
 		}
 		

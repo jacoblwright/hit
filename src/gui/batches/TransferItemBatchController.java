@@ -100,7 +100,8 @@ public class TransferItemBatchController extends ItemBatchController implements
 				if ( container != null ){
 					getModel().getProductAndItemEditor().moveItem(selectedItem, container);
 					getView().setItems(DataConverter.toItemDataArray(
-							getModel().getItemManager().getItems(container, selectedItem.getProduct()))
+							getModel().getItemManager().
+							getItems(container, selectedItem.getProduct()))
 																	);
 					
 				}
