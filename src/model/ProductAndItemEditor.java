@@ -153,8 +153,7 @@ public class ProductAndItemEditor {
      */
     public void deleteProductFromSystem(Product product) {
         
-        // Waiting for this method to be added to ProductManager.
-        //productManager.deleteProductFromSystem(product);
+        productManager.deleteProductFromSystem(product);
         
     }
 
