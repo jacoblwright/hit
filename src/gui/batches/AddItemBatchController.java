@@ -67,6 +67,7 @@ public class AddItemBatchController extends Controller implements
 	@Override
 	protected void loadValues() {
 		getView().setCount("1");
+		getView().setUseScanner(true);
 		Date date = new Date();
 		getView().setEntryDate(date);
 		
@@ -148,8 +149,8 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void barcodeChanged() {
-		if(getView().getUseScanner() == true){
-			addItem();
+		if(getView().getUseScanner() == true && !getView().getBarcode().isEmpty()){
+			timer.start();
 		}
 		enableComponents();
 	}
