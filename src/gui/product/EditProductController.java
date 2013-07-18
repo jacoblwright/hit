@@ -120,7 +120,8 @@ public class EditProductController extends Controller
 	@Override
 	public void editProduct() {
 		Product newProduct = new Product(getView().getBarcode(), getView().getDescription(), 
-				getView().getSizeUnit(), Float.parseFloat(getView().getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
+				getView().getSizeUnit(), Float.parseFloat(getView().getSizeValue()),Integer.
+				parseInt(getView().getShelfLife()), 
 				Integer.parseInt(getView().getSupply()) );
 		
 		System.out.println(newProduct);

@@ -2,6 +2,7 @@ package gui.batches;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -11,7 +12,6 @@ import model.Product;
 import gui.common.Controller;
 import gui.common.DataConverter;
 import gui.common.IView;
-import gui.common.ScannerTimer;
 import gui.common.TextFieldTimer;
 import gui.item.ItemData;
 import gui.product.ProductData;
@@ -48,21 +48,31 @@ public class ItemBatchController extends Controller implements ActionListener {
 		if ( getView().getUseScanner() ) {
 			timer.start();
 		}
-		else {
+		
 			
-			// Get associated item
-			Barcode tag = new Barcode(getView().getBarcode());
-			Item found = getModel().getItemManager().getItemByTag(tag);
+		// Get associated item
+		Barcode tag = new Barcode();
+		if (tag.isValidBarcode(getView().getBarcode())){
+			tag.setBarcode(getView().getBarcode());
+		}
+		Item found = getModel().getItemManager().getItemByTag(tag);
 
-			if (found == null) {
-				
-				// TODO: spec says enable action if non empty
-				//       i say enable action if item exists
-				getView().enableItemAction(false); 
-				
+		if (found == null) {
+			
+			// TODO: spec says enable action if non empty
+			//       i say enable action if item exists
+			getView().enableItemAction(false); 
+			
+		}
+		else {
+			if ( found.getContainer() == null ){
+				getView().enableItemAction(false);
 			}
 			else {
-				Collection<Product> tmp = new TreeSet<Product>();
+				if ( !getView().getUseScanner() ) {
+					getView().enableItemAction(true);
+				}
+				Collection<Product> tmp = new ArrayList<Product>();
 				tmp.add(found.getProduct());
 				ProductData[] plist = DataConverter.toProductDataArray(tmp);
 				// Sets the view to display items product
@@ -78,12 +88,26 @@ public class ItemBatchController extends Controller implements ActionListener {
 				// Select the item and update the button
 				getView().selectProduct(plist[0]); // should only ever be size 1
 				getView().selectItem(DataConverter.getItemData(found, ilist));
-				getView().enableItemAction(true);
 				
-				doAction();
+				if ( getView().getUseScanner() ){
+					doAction();
+				}
 				
+				// make it select the item it just moved
+//					ilist = DataConverter.toItemDataArray(
+//							getModel().getItemManager().getItems(
+//									found.getContainer(), found.getProduct()));
+//					ItemData selectedItemData = DataConverter.getItemData(found, ilist);
+//					if ( selectedItemData !=null ){
+//						getView().selectItem(selectedItemData);
+//					}
 			}
 		}
+		
+	}
+	
+	protected void loadValues(){
+		
 	}
 	
 	/**
@@ -96,7 +120,7 @@ public class ItemBatchController extends Controller implements ActionListener {
 	}
 	
 	protected void doAction(){
-		
+		// subclasses
 	}
 
 	@Override

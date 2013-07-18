@@ -80,19 +80,20 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().setUseScanner(true);
 		getView().enableRedo(false);
 		getView().enableUndo(false);
 		getView().enableItemAction(false);
 	}
 
-	/**
-	 * This method is called when the "Item Barcode" field is changed
-	 * in the remove item batch view by the user.
-	 */
-	@Override
-	public void barcodeChanged() {
-		super.barcodeChanged();
-	}
+//	/**
+//	 * This method is called when the "Item Barcode" field is changed
+//	 * in the remove item batch view by the user.
+//	 */
+//	@Override
+//	public void barcodeChanged() {
+//		super.barcodeChanged();
+//	}
 
 	/**
 	 * This method is called when the "Use Barcode Scanner" setting is changed
@@ -162,7 +163,7 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	}
 	
 	public void doAction(){
-		getView().displayInformationMessage("Doing remove action");
+		removeItem();
 	}
 	
 }

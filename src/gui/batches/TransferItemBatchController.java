@@ -1,8 +1,10 @@
 package gui.batches;
 
 import model.Container;
+import model.Item;
 import gui.common.*;
 import gui.inventory.*;
+import gui.item.ItemData;
 import gui.product.*;
 
 /**
@@ -23,6 +25,7 @@ public class TransferItemBatchController extends ItemBatchController implements
 		super(view);
 
 		container = (Container)target.getTag();
+		
 		construct();
 	}
 	
@@ -57,6 +60,10 @@ public class TransferItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().setUseScanner(true);
+		getView().enableRedo(false);
+		getView().enableUndo(false);
+		getView().enableItemAction(false);
 	}
 	
 	/**
@@ -81,6 +88,29 @@ public class TransferItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	public void transferItem() {
+		
+		ItemData selected = getView().getSelectedItem();
+		
+		if ( selected != null ) {
+			Item selectedItem = (Item) selected.getTag();
+			
+			if (selectedItem != null ){
+				
+//				getView().displayInformationMessage("Moving Item " + selectedItem);
+				if ( container != null ){
+					getModel().getProductAndItemEditor().moveItem(selectedItem, container);
+					getView().setItems(DataConverter.toItemDataArray(
+							getModel().getItemManager().getItems(container, selectedItem.getProduct()))
+																	);
+					
+				}
+				else {
+					getView().displayWarningMessage("Could not move item to container");
+				}
+				
+			}
+		}
+		
 	}
 	
 	/**
@@ -109,7 +139,7 @@ public class TransferItemBatchController extends ItemBatchController implements
 	}
 	
 	public void doAction(){
-		getView().displayInformationMessage("Doing move action");
+		transferItem();
 	}
 
 }
