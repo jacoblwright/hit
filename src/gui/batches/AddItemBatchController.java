@@ -70,14 +70,19 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-		getView().setCount("1");
-		getView().setUseScanner(true);
-		Date date = new Date();
-		getView().setEntryDate(date);
+		
 		ProductData[] productData = DataConverter.toProductDataArray(products);
+		
+		ProductData selectProduct = null;
 		for(int i = 0; i < productData.length; i++){
 			int count = 0;
 			Product product = (Product)productData[i].getTag();
+			
+			/* Find selected product */
+			if(productData[i].getBarcode().equals(getView().getBarcode())){
+				selectProduct = productData[i];
+			}
+			
 			Iterator it2 = items.iterator();
 			while(it2.hasNext()){
 				Item item = (Item)it2.next();
@@ -88,6 +93,13 @@ public class AddItemBatchController extends Controller implements
 			productData[i].setCount(Integer.toString(count));
 		}
 		getView().setProducts(productData);
+		getView().selectProduct(selectProduct);
+		selectedProductChanged();
+		getView().setCount("1");
+		getView().setUseScanner(true);
+		Date date = new Date();
+		getView().setEntryDate(date);
+		getView().setBarcode("");
 		
 	}
 
@@ -164,7 +176,9 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void useScannerChanged() {
-		getView().setBarcode("");
+		if(getView().getUseScanner()){
+			getView().setBarcode("");
+		}
 		enableComponents();
 	}
 
@@ -175,11 +189,17 @@ public class AddItemBatchController extends Controller implements
 	@Override
 	public void selectedProductChanged() {
 		ProductData productData = getView().getSelectedProduct();
+		Collection collection = new HashSet();
 		if(productData != null){
-			Collection col = getModel().getItemManager().
-					getItems(container, (Product)productData.getTag());
-			ItemData[] itemArray = DataConverter.toItemDataArray(col);
-			getView().setItems(itemArray);
+			Iterator it = items.iterator();
+			while(it.hasNext()){
+				Item item = (Item)it.next();
+				if(item.getProduct().equals(productData.getTag())){
+					collection.add(item);
+				}
+			}
+			ItemData [] itemData = DataConverter.toItemDataArray(collection);
+			getView().setItems(itemData);
 		}
 	}
 
@@ -199,7 +219,13 @@ public class AddItemBatchController extends Controller implements
 			getView().displayAddProductView();
 			Barcode barcode = new Barcode();
 			barcode.setBarcode(getView().getBarcode());
-			product = getModel().getProductManager().getProductByUPC(barcode);
+			if(getModel().getProductManager().upcExists(getView().getBarcode())){
+				product = getModel().getProductManager().getProductByUPC(barcode);
+			}
+			else {
+				loadValues();
+				return;
+			}
 		}
 		
 		for(int i = 0; i < Integer.parseInt(getView().getCount()); i++){
