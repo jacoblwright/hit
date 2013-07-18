@@ -31,8 +31,7 @@ public class InventoryController extends Controller
 	public InventoryController(IInventoryView view) {
 		super(view);
 		getModel().getContainerManager().addObserver( this );
-		getModel().getItemManager().addObserver( this );
-		
+		getModel().getProductManager().addObserver( this );
 
 		construct();
 		
@@ -285,6 +284,20 @@ public class InventoryController extends Controller
 			ItemData[] itemArray = DataConverter.toItemDataArray(col);
 			getView().setItems(itemArray);
 		}
+		else if (productContainer == null && productData != null && productData.getTag() != null){
+			Collection col = getModel().getItemManager().getItems();
+			Collection<Item> itemCollection = new ArrayList();
+			Iterator it = col.iterator();
+			while(it.hasNext()){
+				Item item = (Item)it.next();
+				if(item.getProduct().equals(productData.getTag())){
+					itemCollection.add(item);
+				}
+			}
+			ItemData[] itemArray = DataConverter.toItemDataArray(itemCollection);
+			getView().setItems(itemArray);
+			
+		}
 		if(selectedItemData != null){
 			getView().selectItem(selectedItemData);
 		}
@@ -303,14 +316,29 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteProduct() {
-		if(getView().getSelectedProduct() != null){
-			ProductData productData = getView().getSelectedProduct();
-			Product product = (Product)productData.getTag();
-
-			if(getModel().getProductAndItemEditor().canDeleteProductFromSystem(product))
-				return true;
+		
+		ProductData productData = getView().getSelectedProduct();
+		if (productData == null) {
+		    return false;
 		}
-		return false;
+		Product product = (Product)productData.getTag();
+		
+		if (getView().getSelectedProductContainer() == null) {
+		    
+		    return getModel().getProductAndItemEditor().
+		            canDeleteProductFromSystem(product);
+		    
+		}
+		else {
+		    
+		    Container container = (Container)getView().
+		            getSelectedProductContainer().getTag();
+		    
+		    return getModel().getProductAndItemEditor().
+		            canRemoveProductFromContainer(product, container);
+		    
+		}
+		
 	}
 
 	/**
@@ -318,24 +346,19 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteProduct() {
-		if(canDeleteProduct()){
-			ProductData productData = getView().getSelectedProduct();
-			Product product = (Product)productData.getTag();
-			ProductContainerData productContainerData = getView().getSelectedProductContainer();
-			Container container = (Container)productContainerData.getTag();
-			try{
-				if(container.getName() == null){
-					getModel().getProductManager().deleteProductFromSystem(product);
-				}
-				else getModel().getProductManager().removeProductFromContainer(product, container);
-				
-				productContainerSelectionChanged();
+		ProductData productData = getView().getSelectedProduct();
+		Product product = (Product)productData.getTag();
+		ProductContainerData productContainerData = getView().getSelectedProductContainer();
+		Container container = (Container)productContainerData.getTag();
+		try{
+			if(productContainerData == null){
+				getModel().getProductManager().deleteProductFromSystem(product);
 			}
-			catch (IllegalArgumentException e){
-				getView().displayErrorMessage("Can't Delete Product");
-			}
+			else getModel().getProductManager().removeProductFromContainer(product, container);
+			
+			productContainerSelectionChanged();
 		}
-		else{
+		catch (IllegalArgumentException e){
 			getView().displayErrorMessage("Can't Delete Product");
 		}
 		
@@ -465,10 +488,14 @@ public class InventoryController extends Controller
 	public void addProductToContainer(ProductData productData, 
 										ProductContainerData containerData) {
 		
-		Product product = (Product)productData.getTag();
-		Container container = (Container)containerData.getTag();
 		
-		getModel().getProductManager().addProductToContainer(product, container);
+		Product product = (Product)productData.getTag();
+		Container sourceContainer = 
+		        (Container)getView().getSelectedProductContainer().getTag();
+		Container targetContainer = (Container)containerData.getTag();
+		
+		getModel().getProductAndItemEditor().moveProduct(
+		        product, sourceContainer, targetContainer);
 		
 		productContainerSelectionChanged();
 	}

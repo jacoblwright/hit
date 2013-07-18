@@ -31,8 +31,10 @@ public class AddItemBatchController extends Controller implements
     
     private TextFieldTimer timer;
 
+    ProductData[] productDataProducts;
 	Container container;
 	Collection<Item> items;
+	Collection<Product> products;
 	/**
 	 * Constructor.
 	 * 
@@ -42,11 +44,12 @@ public class AddItemBatchController extends Controller implements
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
 		items = new HashSet();
+		products = new HashSet();
+		productDataProducts = new ProductData[0];
 		container = (Container)target.getTag();
 		construct();
 		
 		timer = new TextFieldTimer(this);
-		
 	}
 
 	/**
@@ -67,25 +70,12 @@ public class AddItemBatchController extends Controller implements
 	@Override
 	protected void loadValues() {
 		getView().setCount("1");
+		getView().setUseScanner(true);
 		Date date = new Date();
 		getView().setEntryDate(date);
+		ProductData[] productData = DataConverter.toProductDataArray(products);
+		getView().setProducts(productData);
 		
-		if(container !=  null){
-			Collection col = getModel().getProductManager().getProducts(container);
-			if (col == null) return;
-			ProductData[] productArray = DataConverter.toProductDataArray(col);
-			for(int i = 0; i < productArray.length; i++){
-				try{
-					Collection itemCol = getModel().getItemManager().
-							getItems(container, (Product)productArray[i].getTag());
-					productArray[i].setCount(Integer.toString(itemCol.size()));
-				}
-				catch(NullPointerException e){
-					
-				}
-			}
-			getView().setProducts(productArray);
-		}
 	}
 
 	/**
@@ -149,8 +139,8 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void barcodeChanged() {
-		if(getView().getUseScanner() == true){
-			addItem();
+		if(getView().getUseScanner() == true && !getView().getBarcode().isEmpty()){
+			timer.start();
 		}
 		enableComponents();
 	}
@@ -208,7 +198,7 @@ public class AddItemBatchController extends Controller implements
 			addItemToStorageUnit(item, (StorageUnit)storageUnit);
 			items.add(item);
 		}
-		
+		products.add(product);
 		loadValues();
 	}
 	
