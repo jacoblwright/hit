@@ -31,9 +31,11 @@ public class InventoryController extends Controller
 	public InventoryController(IInventoryView view) {
 		super(view);
 		getModel().getContainerManager().addObserver( this );
-		//debugInit();
+		
 
 		construct();
+		
+//		debugInit();
 	}
 
 	/**
@@ -538,17 +540,7 @@ public class InventoryController extends Controller
 	}
 
 	public void debugInit(){
-		Container c1 = new StorageUnit();
-		c1.setName("Storage Unit 1");
-		
-		Container c2 = new ProductGroup();
-		c2.setName("Product Group 1");
-		c2.setContainer(c1);
-		
-		Product p1 = new Product("1", "Descripshun", SizeUnits.Count, 1, 1, 1);
-		if (!getModel().getProductManager().getProducts().contains(p1)){
-			getModel().getProductManager().addNewProduct(p1, c2);
-		}
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Date ed1;
 		try {
@@ -557,20 +549,32 @@ public class InventoryController extends Controller
 		catch (ParseException e){
 			ed1 = null;
 		}
+
+		
+		Container su1 = new StorageUnit("SU1");
+		
+		getModel().getContainerEditor().addContainer(null, su1);
+
+		Product p1 = new Product("1", "Descripshun", SizeUnits.Count, 1, 1, 1);
+		if (!getModel().getProductManager().getProducts().contains(p1)){
+			getModel().getProductManager().addNewProduct(p1, su1);
+		}		
 		Collection<Item> toAdd = new TreeSet<Item>();
 		Barcode bc1 = new Barcode("1");
-		Item i1 = new Item(c2, p1, ed1, bc1);
+		Item i1 = new Item(su1, p1, ed1, bc1);
 		toAdd.add(i1);
 		
 		Barcode bc2 = new Barcode("2");
-		Item i2 = new Item(c2, p1, ed1, bc2);
+		Item i2 = new Item(su1, p1, ed1, bc2);
 		toAdd.add(i2);
 		
 		for (Item i : toAdd) {
-			if (!getModel().getItemManager().getItems(i.getContainer()).contains(i)){
-				getModel().getItemManager().addItem(i);
+			if ( getModel().getItemManager().canAddItem(i, i.getContainer()) ){
+				getModel().getProductAndItemEditor().addItemToStorageUnit(i,(StorageUnit) su1);
 			}
 		}
+		
+
 	}
 }
 

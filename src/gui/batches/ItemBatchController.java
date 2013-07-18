@@ -1,5 +1,7 @@
 package gui.batches;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -10,17 +12,22 @@ import gui.common.Controller;
 import gui.common.DataConverter;
 import gui.common.IView;
 import gui.common.ScannerTimer;
+import gui.common.TextFieldTimer;
 import gui.item.ItemData;
 import gui.product.ProductData;
 
 
 
-public class ItemBatchController extends Controller {
+public class ItemBatchController extends Controller implements ActionListener {
 
+	private TextFieldTimer timer;
+	
 	protected ItemBatchController(IView view) {
 		super(view);
 		
 		construct();
+		
+		timer = new TextFieldTimer(this);
 	}
 	
 	/**
@@ -39,10 +46,7 @@ public class ItemBatchController extends Controller {
 	public void barcodeChanged() {
 		
 		if ( getView().getUseScanner() ) {
-			if (! ScannerTimer.isEntered() ){
-				return;
-			}
-			
+			timer.start();
 		}
 		else {
 			
@@ -76,6 +80,8 @@ public class ItemBatchController extends Controller {
 				getView().selectItem(DataConverter.getItemData(found, ilist));
 				getView().enableItemAction(true);
 				
+				doAction();
+				
 			}
 		}
 	}
@@ -87,5 +93,16 @@ public class ItemBatchController extends Controller {
 	
 	public void done() {
 		getView().close();
+	}
+	
+	protected void doAction(){
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if ( getView().getUseScanner() ){
+			doAction();
+		}
 	}
 }

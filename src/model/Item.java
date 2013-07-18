@@ -43,7 +43,7 @@ public class Item extends Entity implements Comparable<Item> {
 	*
 	*/
 	public Item(Container container, Product product, Date entryDate, Barcode tag)  {
-		assert container != null;
+//		assert container != null;
 		assert product != null;
 		assert entryDate != null;
 		assert tag != null;

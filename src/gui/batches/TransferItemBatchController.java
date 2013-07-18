@@ -107,6 +107,10 @@ public class TransferItemBatchController extends ItemBatchController implements
 	public void done() {
 		getView().close();
 	}
+	
+	public void doAction(){
+		getView().displayInformationMessage("Doing move action");
+	}
 
 }
 

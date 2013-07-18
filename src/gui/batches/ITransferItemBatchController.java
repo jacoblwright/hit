@@ -49,5 +49,9 @@ public interface ITransferItemBatchController extends IItemBatchController {
 //	 */
 //	void done();
 
+	/**
+	 * Method is called when barcode is changed in either mode
+	 */
+	void doAction();
 }
 
