@@ -54,8 +54,16 @@ public class EditProductGroupController extends Controller
 	 */
 	@Override
 	protected void enableComponents() {
-		getView().setSupplyValue( "0" );
-		getView().enableOK( false );
+		getView().setProductGroupName( target.getName() );
+		ProductGroup targetGroup = (ProductGroup) target.getTag();
+		Quantity quantity = targetGroup.getThreeMonthSupply();
+		getView().setSupplyUnit( (SizeUnits) quantity.getUnit() );
+		if( Math.round( quantity.getNumber()) == quantity.getNumber() ) {
+			getView().setSupplyValue( String.valueOf( Math.round( quantity.getNumber() ) ) );
+		}
+		else {
+			getView().setSupplyValue( String.valueOf( quantity.getNumber() ) );
+		}
 	}
 
 	/**
@@ -80,9 +88,15 @@ public class EditProductGroupController extends Controller
 	@Override
 	public void valuesChanged() {
 		Container container = setContainer();
-		boolean isEnabled = getModel().getContainerManager().canEditContainer( container );
-		
-		getView().enableOK( isEnabled );
+		container.setContainer( ((Container) target.getTag()).getContainer() );
+		if( ((ProductGroup) container).isContainerValid() && 
+				target.getName().equals( container.getName() ) ) {
+			getView().enableOK( true );
+		}	
+		else {
+			boolean isEnabled = getModel().getContainerManager().canEditContainer( container );
+			getView().enableOK( isEnabled );
+		}
 	}
 	
 	/**
@@ -92,7 +106,9 @@ public class EditProductGroupController extends Controller
 	@Override
 	public void editProductGroup() {
 		Container container = setContainer();
-		getModel().getContainerEditor().editContainer( (Container) target.getTag(), container );
+		if( !((ProductGroup) target.getTag()).simpleEquals( container ) ) {
+			getModel().getContainerEditor().editContainer( (Container) target.getTag(), container );
+		}
 	}
 	
 	private Container setContainer() {
@@ -112,7 +128,7 @@ public class EditProductGroupController extends Controller
 		try
 		{	
 			if( emptyString( value ) ) {
-				number = -1;//add something for 0 values to be ok
+				number = -1;
 			}
 			else {
 				number = Float.parseFloat( value );
