@@ -52,7 +52,7 @@ public class ProductAndItemEditor {
     public void moveProduct(Product product,
             Container sourceContainer, Container targetContainer) {
         
-        System.out.println("PAIE:moveProduct");
+        //System.out.println("PAIE:moveProduct");
         
         System.out.println("areInSameStorageUnit:" +
                 areInSameStorageUnit(sourceContainer, targetContainer));

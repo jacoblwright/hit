@@ -32,6 +32,7 @@ public class InventoryController extends Controller
 		super(view);
 		getModel().getContainerManager().addObserver( this );
 		getModel().getProductManager().addObserver( this );
+		getModel().getItemManager().addObserver( this );
 
 		construct();
 		
@@ -322,8 +323,8 @@ public class InventoryController extends Controller
 		    return false;
 		}
 		Product product = (Product)productData.getTag();
-		
-		if (getView().getSelectedProductContainer() == null) {
+		ProductContainerData selected = getView().getSelectedProductContainer();
+		if (selected.getTag() == null) {
 		    
 		    return getModel().getProductAndItemEditor().
 		            canDeleteProductFromSystem(product);

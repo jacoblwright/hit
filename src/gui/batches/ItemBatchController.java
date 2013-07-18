@@ -127,6 +127,7 @@ public class ItemBatchController extends Controller implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ( getView().getUseScanner() ){
 			doAction();
+			getView().setBarcode("");
 		}
 	}
 }

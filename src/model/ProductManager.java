@@ -93,7 +93,7 @@ public class ProductManager extends Observable implements Serializable{
 	public void moveProduct(Product product, Container before, Container after) 
 			throws IllegalStateException{
 	    
-	    System.out.println("PM:moveProduct");
+	    //System.out.println("PM:moveProduct");
 		
 		if(!product.getContainers().contains(before))
 			throw new IllegalStateException();
@@ -110,7 +110,7 @@ public class ProductManager extends Observable implements Serializable{
 	 */
 	public void addProductToContainer(Product product, Container container){
 		
-	    System.out.println("PM:addProductToContainer");
+	    //System.out.println("PM:addProductToContainer");
 	    
 		product.addContainer(container);
 		

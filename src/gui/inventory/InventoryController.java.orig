@@ -34,9 +34,7 @@ public class InventoryController extends Controller
 <<<<<<< HEAD
 		getModel().getItemManager().addObserver( this );
 		
-=======
-		getModel().getProductManager().addObserver( this );
->>>>>>> 5f89412a0248c09435ef92380641b06597ab01bf
+>>>>>>> ac64909f3fd767765314f6c7feab021e563014a9
 
 		construct();
 		
@@ -323,27 +321,20 @@ public class InventoryController extends Controller
 	public boolean canDeleteProduct() {
 		
 		ProductData productData = getView().getSelectedProduct();
-		if (productData == null) {
-		    return false;
-		}
 		Product product = (Product)productData.getTag();
 		
-		if (getView().getSelectedProductContainer() == null) {
-		    
-		    return getModel().getProductAndItemEditor().
-		            canDeleteProductFromSystem(product);
-		    
+		if(getView().getSelectedProduct() != null && 
+				getView().getSelectedProductContainer() == null){
+
+
+			return getModel().getProductAndItemEditor().canDeleteProductFromSystem(product);
 		}
-		else {
-		    
-		    Container container = (Container)getView().
-		            getSelectedProductContainer().getTag();
-		    
-		    return getModel().getProductAndItemEditor().
-		            canRemoveProductFromContainer(product, container);
-		    
+		else{
+			getModel().getProductAndItemEditor().canRemoveProductFromContainer(product, 
+					(Container)getView().getSelectedProductContainer().getTag());
 		}
-		
+			
+		return false;
 	}
 
 	/**

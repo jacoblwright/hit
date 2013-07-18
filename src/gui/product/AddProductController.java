@@ -120,7 +120,8 @@ public class AddProductController extends Controller implements
 		
 		
 		Product product = new Product(getView().getBarcode(), getView().getDescription(), 
-				getView().getSizeUnit(), Float.parseFloat(getView().getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
+				getView().getSizeUnit(), Float.parseFloat(getView().
+						getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
 				Integer.parseInt(getView().getSupply()) );
 		
 		if(!getModel().getProductManager().isProductValid(product)){

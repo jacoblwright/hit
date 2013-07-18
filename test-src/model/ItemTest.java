@@ -22,7 +22,6 @@ public class ItemTest {
 	    
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		DateFormat timeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Calendar cal = Calendar.getInstance();
 		
 		Container c1 = new ProductGroup();
 		Product p1 = new Product("1", "Descripshun", SizeUnits.Count, 1, 1, 1);

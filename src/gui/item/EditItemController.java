@@ -1,6 +1,11 @@
 package gui.item;
 
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import gui.common.*;
 import model.Model;
 import model.Item;
@@ -13,7 +18,7 @@ public class EditItemController extends Controller
 										implements IEditItemController {
 	
 	ItemData target;
-	
+	DateFormat dateFormat;
 	/**
 	 * Constructor.
 	 * 
@@ -22,7 +27,7 @@ public class EditItemController extends Controller
 	 */
 	public EditItemController(IView view, ItemData target) {
 		super(view);
-		
+		dateFormat = new SimpleDateFormat("MM/dd/yyy");
 		if (target == null) {
 			getView().displayErrorMessage("You must select an item!");
 			((ItemView)getView()).cancel();
@@ -116,7 +121,7 @@ public class EditItemController extends Controller
 				getView().setDescription(tagalong.getProduct().getDescription());
 			}
 			
-//			getView().setEntryDate(target.getEntryDate());
+			getView().setEntryDate(target.getEntryDate());
 		}
 	}
 
@@ -161,10 +166,11 @@ public class EditItemController extends Controller
 	 * @return copy of tagalong with view's entry date
 	 */
 	private Item createItem(Item tagalong){
+		Date entryDate = getView().getEntryDate(); 
 		return new Item(	
 				tagalong.getContainer(), 
 				tagalong.getProduct(),
-				getView().getEntryDate(),
+				entryDate,
 				tagalong.getTag()
 				
 			);

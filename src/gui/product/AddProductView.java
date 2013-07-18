@@ -8,7 +8,7 @@ import gui.main.GUI;
 @SuppressWarnings("serial")
 public class AddProductView extends ProductView implements IAddProductView {
 
-	public AddProductView(GUI parent, DialogBox dialog, String barcode, Container productContainer) {
+	public AddProductView(GUI parent, DialogBox dialog, String barcode, Container productContainer){
 		super(parent, dialog);
 		
 		construct();		

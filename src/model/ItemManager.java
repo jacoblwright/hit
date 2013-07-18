@@ -106,7 +106,10 @@ public class ItemManager extends Observable implements Serializable {
 		// iterate over all keys of itemsByContainer and appends them to return set
 		
 	    for (Container key : itemsByContainer.keySet()) {
-	        ret.addAll(itemsByContainer.get(key));
+	    	Collection<Item> tmp = itemsByContainer.get(key);
+	    	if ( tmp != null ){
+	    		ret.addAll(tmp);
+	    	}
 	    }
 		return ret;
 	}
@@ -336,5 +339,12 @@ public void moveItem(Item itemToMove, Container target) {
 		setChanged();
 		notifyObservers(hint);
 	}
+	
+//	public void clearAll(){
+//		itemsByContainer.clear();
+//		itemByTag.clear();
+//		removedItemsByDate.clear();
+//		removedItems.clear();
+//	}
 	
 }

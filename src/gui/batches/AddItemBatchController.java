@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import config.IOConfig;
 
@@ -74,6 +75,18 @@ public class AddItemBatchController extends Controller implements
 		Date date = new Date();
 		getView().setEntryDate(date);
 		ProductData[] productData = DataConverter.toProductDataArray(products);
+		for(int i = 0; i < productData.length; i++){
+			int count = 0;
+			Product product = (Product)productData[i].getTag();
+			Iterator it2 = items.iterator();
+			while(it2.hasNext()){
+				Item item = (Item)it2.next();
+				if(item.getProduct().equals(product)){
+					count++;
+				}
+			}
+			productData[i].setCount(Integer.toString(count));
+		}
 		getView().setProducts(productData);
 		
 	}
