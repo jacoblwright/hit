@@ -150,11 +150,13 @@ public class Item extends Entity implements Comparable<Item> {
 	public Date getExpirationDate() {
 		assert true;
 		Calendar cal = Calendar.getInstance();
+		Date current = cal.getTime();
 		cal.setTime(entryDate);
-		// TODO: find out how to fix this without rolling calender
-		cal.roll(Calendar.MONTH, product.getShelfLife());
+
+		//cal.roll(Calendar.MONTH, product.getShelfLife());
+		cal.add(Calendar.MONTH, product.getShelfLife());
 		Date ret = cal.getTime();
-		cal.roll(Calendar.MONTH, -1*product.getShelfLife());
+		cal.setTime(current);
 		return ret;
 	}
 

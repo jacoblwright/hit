@@ -126,7 +126,9 @@ public class RemoveItemBatchController extends ItemBatchController implements
 			}
 		}
 		else {
-			getView().displayErrorMessage("Could not find selected Item!");
+			if (!getView().getUseScanner()){
+				getView().displayErrorMessage("Could not find selected Item!");
+			}
 		}
 	}
 	
