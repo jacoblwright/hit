@@ -219,16 +219,16 @@ public class InventoryController extends Controller
 	@Override
 	public void productContainerSelectionChanged() {
 
-		
 		ProductContainerData productContainerData = getView().getSelectedProductContainer();
-		if(productContainerData.getName().isEmpty() && productContainerData != null){
+		
+		if(productContainerData != null && productContainerData.getTag() == null){
 			Collection<Product> col = getModel().getProductManager().getProducts();
 			ProductData[] productArray = DataConverter.toProductDataArray(col);
 			setProductsDataSize(productArray, productContainerData);
 			getView().setProducts(productArray);
 		}
+		
 		else if(productContainerData != null && productContainerData.getTag() != null){
-			
 			Collection<Product> col = getModel().getProductManager().
 					getProducts((Container)productContainerData.getTag());
 			ProductData[] productArray = DataConverter.toProductDataArray(col);
@@ -247,7 +247,7 @@ public class InventoryController extends Controller
 		for(int i = 0; i < productArray.length; i++){
 			/* Set the count for the product */
 			try{
-				if(productContainerData.getName().isEmpty()){
+				if(productContainerData.getTag() == null){
 					Collection<Item> itemCol = getModel().getItemManager().getItems();
 					Iterator it = itemCol.iterator();
 					int count = 0;
@@ -279,20 +279,24 @@ public class InventoryController extends Controller
 		
 		ProductData productData = getView().getSelectedProduct();
 		Container productContainer = (Container)getView().getSelectedProductContainer().getTag();
+		
 		if(productData != null && productData.getTag() != null && productContainer != null){
 			Collection col = getModel().getItemManager().getItems(productContainer, 
 					(Product)productData.getTag());
 			ItemData[] itemArray = DataConverter.toItemDataArray(col);
 			getView().setItems(itemArray);
 		}
+		
 		else if (productContainer == null && productData != null && productData.getTag() != null){
 			Collection col = getModel().getItemManager().getItems();
 			Collection<Item> itemCollection = new ArrayList();
 			Iterator it = col.iterator();
+			
 			while(it.hasNext()){
 				Item item = (Item)it.next();
 				if(item.getProduct().equals(productData.getTag())){
 					itemCollection.add(item);
+					
 				}
 			}
 			ItemData[] itemArray = DataConverter.toItemDataArray(itemCollection);
@@ -620,6 +624,7 @@ public class InventoryController extends Controller
 		}
 		else if( changeType.equals(ChangeType.ITEM) ) {
 			selectedItemData = (ItemData) ((ChangeObject)arg1).getSelectedData();
+			productContainerSelectionChanged();
 			productSelectionChanged();
 		}
 		else if( changeType.equals(ChangeType.PRODUCT) ) {

@@ -17,7 +17,7 @@ import java.util.Set;
  * @version 1.0
  */
 
-public class Product extends Entity {
+public class Product extends Entity implements Comparable<Product>{
 
 	/** the date this Product was added to the system and is always equal to the earliest entry 
 	 * 	date for any item of this product */
@@ -228,5 +228,12 @@ public class Product extends Entity {
         */
         return "Product [upc=" + upc + ", description=" + description + "]"; 
     }
+    
+	@Override
+	public int compareTo(Product other) {
+		int compared = creationDate.compareTo(other.creationDate);
+	    return compared;
+	    
+	}
 
 }

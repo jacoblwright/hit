@@ -95,6 +95,8 @@ public class AddProductController extends Controller implements
 	@Override
 	protected void loadValues() {
 		getView().setBarcode(upc);
+		getView().setShelfLife("0");
+		getView().setSupply("0");
 	}
 
 	//
