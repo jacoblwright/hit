@@ -170,8 +170,7 @@ public class ContainerManager extends Observable implements Serializable {
 		else {
 			oldContainer.setName( newContainer.getName() );
 			//storageUnits.remove( oldContainer );
-			System.out.println("removed" );
-			storageUnits.add( (StorageUnit) oldContainer );
+			//storageUnits.add( (StorageUnit) oldContainer );
 		}
 		ChangeObject hint = getHintObject( oldContainer );
 		setChanged();
