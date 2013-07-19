@@ -90,6 +90,38 @@ public class ProductAndItemEditor {
         }
         
     }
+    
+    public void moveProductWhenTreeRootIsSelected(
+            Product product, Container targetContainer) {
+        
+        StorageUnit suOftargetContainer =
+                containerManager.getAncestorStorageUnit(targetContainer);
+        
+        if (getContainer(product, suOftargetContainer) == null) {
+            
+            // product is not already within targetContainer's StorageUnit.            
+            System.out.println("PAIE.moveProductWhenTreeRootIsSelected(): " +
+            		"branch where product is not already within " +
+            		"targetContainer's StorageUnit");
+            
+            productManager.addProductToContainer(product, targetContainer);            
+            
+        }
+        else {
+            
+            // product is already within targetContainer's StorageUnit.
+            System.out.println("PAIE.moveProductWhenTreeRootIsSelected(): " +
+                    "branch where product is already within " +
+                    "targetContainer's StorageUnit");
+            
+            Container sourceContainer =
+                    getContainer(product, suOftargetContainer);
+            
+            moveProduct(product, sourceContainer, targetContainer);
+            
+        }
+        
+    }
 
     /**
      * Edits a Product by replacing an older Product with a newer Product.
@@ -295,6 +327,27 @@ public class ProductAndItemEditor {
      }
      
      /*
+     private boolean productExistsWithinSUOfContainer(
+             Product product, Container container) {
+         
+         assert product != null;
+         assert container != null;
+         
+         boolean result = false;
+         
+         Collection<Container> containersOfProduct = product.getContainers();
+         for (Container containerOfProduct : containersOfProduct) {
+             if (areInSameStorageUnit(containerOfProduct, container)) {
+                 result = true;
+             }
+         }
+         
+         return result;
+         
+     }
+     */
+     
+     /*
       * Returns the Container that contains the specified Product in the
       * specified StorageUnit; returns null if the specified product is not
       * within the specified StorageUnit.
@@ -306,22 +359,16 @@ public class ProductAndItemEditor {
          
          Set<Container> containersInStorageUnit =
                  containerManager.getDescendents(storageUnit);
-         //System.out.println(containersInStorageUnit);
          containersInStorageUnit.add(storageUnit);
-         //System.out.println(containersInStorageUnit);
          
          Set<Container> containersOfProduct = product.getContainers();
-         //System.out.println(containersOfProduct);
          
          Container result = null;
          for (Container containerInStorageUnit : containersInStorageUnit) {
-           //System.out.println(containerInStorageUnit);
              if (containersOfProduct.contains(containerInStorageUnit)) {
                  result = containerInStorageUnit;
              }             
          }
-         
-         //System.out.println(result);
          
          return result;
          

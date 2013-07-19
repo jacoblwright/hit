@@ -356,16 +356,19 @@ public class InventoryController extends Controller
 	@Override
 	public void deleteProduct() {
 	    
-	    /* MODIFIED FOR BUG FIX 07/18 23:10 EM
+	    /* 
+	     * MODIFIED FOR BUG FIX 07/18 23:10 EM
 	     * The code was checking whether productContainerData was null rather
 	     * than checking whether productContainerData.getTag() was null
 	     * in order to determine whether the tree root is selected. The result
-	     * was that product deletion wasn't working at all. */
+	     * was that product deletion wasn't working at all.
+	     */
 		ProductData productData = getView().getSelectedProduct();
 		Product product = (Product)productData.getTag();
 		
 		ProductContainerData productContainerData =
 		        getView().getSelectedProductContainer();
+		
 		try{
 		    
 			if (productContainerData.getTag() == null) {			   
@@ -511,15 +514,44 @@ public class InventoryController extends Controller
 	@Override
 	public void addProductToContainer(ProductData productData, 
 										ProductContainerData containerData) {
-		
-		
+	    
+	    /* 
+	     * MODIFIED FOR BUG FIX 07/19 11:36 EM
+	     * Added functionality for the case of moving a Product when the
+	     * tree root is selected.
+	     */	    
 		Product product = (Product)productData.getTag();
-		Container sourceContainer = 
-		        (Container)getView().getSelectedProductContainer().getTag();
+		
+		ProductContainerData selectedProductContainerData =
+                getView().getSelectedProductContainer();
+		
 		Container targetContainer = (Container)containerData.getTag();
 		
-		getModel().getProductAndItemEditor().moveProduct(
-		        product, sourceContainer, targetContainer);
+		ProductAndItemEditor paie = getModel().getProductAndItemEditor();
+		
+		if (selectedProductContainerData.getTag() == null) {
+
+		    // This branch is when tree root is selected.
+		    System.out.println("InventoryController.addProductToContainer():" +
+		    		" branch where tree root is selected");
+		    
+		    paie.moveProductWhenTreeRootIsSelected(
+		            product, targetContainer);
+		    
+		}
+		else {
+		
+		    // This branch is when a particular container is selected.
+		    System.out.println("InventoryController.addProductToContainer():" +
+                    " branch where a particular container is selected");
+		    
+		    Container sourceContainer = 
+		            (Container)getView().getSelectedProductContainer().getTag();
+
+		    paie.moveProduct(
+		            product, sourceContainer, targetContainer);
+
+		}
 		
 		productContainerSelectionChanged();
 	}
