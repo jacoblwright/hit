@@ -1,15 +1,20 @@
 package gui.batches;
 
+import model.Container;
+import model.Item;
 import gui.common.*;
 import gui.inventory.*;
+import gui.item.ItemData;
 import gui.product.*;
 
 /**
  * Controller class for the transfer item batch view.
  */
-public class TransferItemBatchController extends Controller implements
+public class TransferItemBatchController extends ItemBatchController implements
 		ITransferItemBatchController {
 	
+	
+	Container container;
 	/**
 	 * Constructor.
 	 * 
@@ -19,6 +24,8 @@ public class TransferItemBatchController extends Controller implements
 	public TransferItemBatchController(IView view, ProductContainerData target) {
 		super(view);
 
+		container = (Container)target.getTag();
+		
 		construct();
 	}
 	
@@ -53,14 +60,10 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
-	}
-
-	/**
-	 * This method is called when the "Item Barcode" field in the
-	 * transfer item batch view is changed by the user.
-	 */
-	@Override
-	public void barcodeChanged() {
+		getView().setUseScanner(true);
+		getView().enableRedo(false);
+		getView().enableUndo(false);
+		getView().enableItemAction(false);
 	}
 	
 	/**
@@ -85,6 +88,30 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void transferItem() {
+		
+		ItemData selected = getView().getSelectedItem();
+		
+		if ( selected != null ) {
+			Item selectedItem = (Item) selected.getTag();
+			
+			if (selectedItem != null ){
+				
+//				getView().displayInformationMessage("Moving Item " + selectedItem);
+				if ( container != null ){
+					getModel().getProductAndItemEditor().moveItem(selectedItem, container);
+					getView().setItems(DataConverter.toItemDataArray(
+							getModel().getItemManager().
+							getItems(container, selectedItem.getProduct()))
+																	);
+					
+				}
+				else {
+					getView().displayWarningMessage("Could not move item to container");
+				}
+				
+			}
+		}
+		
 	}
 	
 	/**
@@ -110,6 +137,10 @@ public class TransferItemBatchController extends Controller implements
 	@Override
 	public void done() {
 		getView().close();
+	}
+	
+	public void doAction(){
+		transferItem();
 	}
 
 }

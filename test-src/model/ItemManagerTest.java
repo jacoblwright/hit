@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +22,7 @@ public class ItemManagerTest {
 		ItemManager man = new ItemManager();
 		
 		Container pc1 = new StorageUnit();
-		Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
+		Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
 
 		Date expDate1 = dateFormat.parse("1999/1/11");
 		Barcode bc1 = new Barcode("1");
@@ -43,7 +45,7 @@ public class ItemManagerTest {
 		
 		assertFalse(man.canAddItem(i1, pc1));
 		
-		Product p2 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
+		Product p2 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
 		Date expDate2 = dateFormat.parse("1999/3/11");
 		Barcode bc2 = new Barcode("2");
 		Item i2 = new Item(pc1, p2, expDate2, bc2);
@@ -103,7 +105,7 @@ public class ItemManagerTest {
 		
 		// add first item
 		Container pc1 = new StorageUnit();
-		Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
+		Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
 		Date expDate1 = dateFormat.parse("1999/1/11");
 		Barcode bc1 = new Barcode("1");
 		Item i1 = new Item(pc1, p1, expDate1, bc1);
@@ -133,7 +135,7 @@ public class ItemManagerTest {
 		// add second item
 		Container pc2 = new StorageUnit();
 		
-		Product p2 = new Product("123456789", "Anchovies", Unit.count, 1, 1, 1);
+		Product p2 = new Product("123456789", "Anchovies", SizeUnits.Count, 1, 1, 1);
 		Date expDate2 = dateFormat.parse("1999/3/11");
 		Barcode bc2 = new Barcode("2");
 		Item i2 = new Item(pc2, p2, expDate2, bc2);
@@ -157,7 +159,7 @@ public class ItemManagerTest {
 		ItemManager man = new ItemManager();
 		
 		Container pc1 = new StorageUnit();
-		Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
+		Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
 		Date expDate1 = dateFormat.parse("1999/1/11");
 		Barcode bc1 = new Barcode("1");
 		Item i1 = new Item(pc1, p1, expDate1, bc1);
@@ -182,7 +184,7 @@ public class ItemManagerTest {
 		ItemManager man = new ItemManager();
 		
 		Container pc1 = new StorageUnit();
-		Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
+		Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
 		Date expDate1 = dateFormat.parse("1999/3/11");
 		Barcode bc1 = new Barcode("1");
 		Item i1 = new Item(pc1, p1, expDate1, bc1);
@@ -207,7 +209,7 @@ public class ItemManagerTest {
 			
 		}
 		
-		Product p2 = new Product("21", "Candied meatballs", Unit.count, 1, 1, 1);
+		Product p2 = new Product("21", "Candied meatballs", SizeUnits.Count, 1, 1, 1);
 		Item i4 = new Item(pc1, p2, expDate1, bc1);
 		
 		assertFalse(man.canEditItem(i1, i4));
@@ -229,16 +231,16 @@ public class ItemManagerTest {
 		ItemManager man = new ItemManager();
 		
 		Container pc1 = new StorageUnit();
-		Product p1 = new Product("123456789", "Descripshun", Unit.count, 1, 1, 1);
+		Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
 		Date expDate1 = dateFormat.parse("1999/3/11");
 		Barcode bc1 = new Barcode("1");
 		Item i1 = new Item(pc1, p1, expDate1, bc1);
 		i1.setEntryDate(dateFormat.parse("1999/1/11"));
 		
 		man.addItem(i1);
-		assertTrue(man.isTagUnique("2"));
+		assertTrue(man.doesTagExist("2"));
 		assertEquals(1, man.getItems().size());
-		assertFalse(man.isTagUnique("1"));
+		assertFalse(man.doesTagExist("1"));
 		
 	}
 

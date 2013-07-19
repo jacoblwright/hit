@@ -1,5 +1,6 @@
 package gui.product;
 
+import model.Container;
 import gui.common.*;
 import gui.main.GUI;
 
@@ -7,12 +8,12 @@ import gui.main.GUI;
 @SuppressWarnings("serial")
 public class AddProductView extends ProductView implements IAddProductView {
 
-	public AddProductView(GUI parent, DialogBox dialog, String barcode) {
+	public AddProductView(GUI parent, DialogBox dialog, String barcode, Container productContainer){
 		super(parent, dialog);
 		
 		construct();		
 
-		_controller = new AddProductController(this, barcode);
+		_controller = new AddProductController(this, barcode, productContainer);
 	}
 
 	@Override

@@ -140,6 +140,9 @@ public interface IAddItemBatchView extends IView {
 	 * Displays the add item view.
 	 */
 	void displayAddProductView();
+	
+	
+//	void done();
 
 }
 

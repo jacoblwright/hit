@@ -1,23 +1,28 @@
 package model;
 
-/**
-*
-* Item Manager Description:
-*	Creates and manages Items. This involves adding, moving, and removing items.
-*
-*/
+
+import gui.item.ItemData;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Date;
+import java.util.Observable;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.io.*;
 
-public class ItemManager {
+/**
+ * Manages all of the item manipulations, and indexing.
+ * 
+ * @author Nick
+ *
+ */
+public class ItemManager extends Observable implements Serializable {
 
 	/**
 	 * Index for quick item lookup by container.
@@ -43,8 +48,8 @@ public class ItemManager {
 	*/
 	ItemManager() {
 		itemsByContainer = new HashMap<Container, Set<Item>>();
-		itemByTag = new HashMap<Barcode, Item>();
-		removedItems = new HashSet<Item>();
+		itemByTag = new TreeMap<Barcode, Item>();
+		removedItems = new TreeSet<Item>();
 		removedItemsByDate = new HashMap<String, Set<Item>>();
 		dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	}
@@ -65,10 +70,10 @@ public class ItemManager {
 			throw new IllegalArgumentException("param: product is null");
 		}
 		
-		
-		Collection<Item> ret = new HashSet<Item>();
+	
+		Collection<Item> ret = new TreeSet<Item>();
 		for(Item item : getItems(container)){
-			if (item.getProduct() == product) {
+			if (item.getProduct().equals(product)) {
 				ret.add(item);
 			}
 		}
@@ -87,7 +92,7 @@ public class ItemManager {
 			return itemsByContainer.get(container);
 		}
 		else {
-			return new HashSet<Item>(); // returns empty collection if no key found.
+			return new TreeSet<Item>(); // returns empty collection if no key found.
 		}
 	}
 	
@@ -101,7 +106,10 @@ public class ItemManager {
 		// iterate over all keys of itemsByContainer and appends them to return set
 		
 	    for (Container key : itemsByContainer.keySet()) {
-	        ret.addAll(itemsByContainer.get(key));
+	    	Collection<Item> tmp = itemsByContainer.get(key);
+	    	if ( tmp != null ){
+	    		ret.addAll(tmp);
+	    	}
 	    }
 		return ret;
 	}
@@ -115,7 +123,7 @@ public class ItemManager {
 	* @throws IllegalArgumentException if !canAddItem()
 	*/
 	public void addItem(Item itemToAdd) throws IllegalArgumentException {
-
+	
 		if (itemToAdd == null){
 			throw new IllegalArgumentException("param itemToAdd is null");
 		}
@@ -125,7 +133,7 @@ public class ItemManager {
 		
 		// starts new collection if index does not have container key
 		if (!itemsByContainer.containsKey(itemToAdd.getContainer())) {
-			itemsByContainer.put(itemToAdd.getContainer(), new HashSet<Item>());
+			itemsByContainer.put(itemToAdd.getContainer(), new TreeSet<Item>());
 		}
 		
 		itemsByContainer.get(itemToAdd.getContainer()).add(itemToAdd);
@@ -133,6 +141,8 @@ public class ItemManager {
 		if (!itemByTag.containsKey(itemToAdd.getTag())){
 			itemByTag.put(itemToAdd.getTag(), itemToAdd);
 		}
+		
+		notify(null);
 	}
 
 	/**
@@ -140,9 +150,9 @@ public class ItemManager {
 	 * 
 	 * @return false if item not found in Storage Unit or removedItems, false otherwise
 	 */
-	public boolean canAddItem(Item item, Container storageUnit){
+	public boolean canAddItem(Item item, Container container){
 		
-		if (storageUnit == null){
+		if (container == null){
 			return false;
 		}
 		
@@ -150,11 +160,19 @@ public class ItemManager {
 			return false;
 		}
 		
-		if (itemsByContainer.containsKey(storageUnit)) {
-			Collection<Item> tmp = getItems(storageUnit);
-			boolean result = !tmp.contains(item);
-			result = result && !removedItems.contains(item);
-			return result;
+		if (itemsByContainer.containsKey(container)) {
+			Collection<Item> tmp = getItems(container);
+			/*
+			System.out.println(item);
+			System.out.println(container);
+			System.out.println(!tmp.contains(item));
+			System.out.println(!removedItems.contains(item));
+			System.out.println(getItemByTag(item.getTag()) == null);
+			System.out.println(getItemByTag(item.getTag()));
+			System.out.println("----");
+			*/
+			return 	!tmp.contains(item) &&
+					!removedItems.contains(item);
 		}
 		else {
 			return true;
@@ -162,27 +180,25 @@ public class ItemManager {
 	
 	}
 	
-	/**
-	* Updates indexes from the move.
-	* 
-	* @pre itemToMove.product exists (only) in the target container
-	* @post itemToMove.container = target
-	* @post updates indexes
-	* 
-	* @throws IllegalStateException if pre-conditions are not met
-	* @throws IllegalArgumentExcpetion if itemToMove is bad
-	*/
-	public void moveItem(Item itemToMove, Container target) {
-		
-		// remove item from itemsByContainer index
-		itemsByContainer.get(itemToMove.getContainer()).remove(itemToMove);
-		
-		// change container pointer since addItem can't
-		itemToMove.setContainer(target);
-		
-		// add it back to the appropriate container
-		addItem(itemToMove);
-	}
+/**
+* Updates indexes from the move.
+* 
+* @pre itemToMove.product exists (only) in the target container
+* @post itemToMove.container = target
+* @post updates indexes
+* 
+*/
+public void moveItem(Item itemToMove, Container target) {
+	
+	// remove item from itemsByContainer index
+	itemsByContainer.get(itemToMove.getContainer()).remove(itemToMove);
+	
+	// change container pointer since addItem can't
+	itemToMove.setContainer(target);
+	
+	// add it back to the appropriate container
+	addItem(itemToMove);
+}
 	
 	
 	/** Removes the item from any container but keeps track of it in the item history.
@@ -195,7 +211,6 @@ public class ItemManager {
 	 * @post sets itemToRemove.container to null
 	 * @post updates to removedItemsByDate
 	 * 
-	 * @throws IllegalStateException if preconditions are not met
 	 * @throws IllegalArgumentException if itemToRemove is bad
 	 * 
 	 */
@@ -216,28 +231,32 @@ public class ItemManager {
 			removedItemsByDate.get(exitDate_str).add(itemToRemove);
 		}
 		else {
-			Set<Item> newSet = new HashSet<Item>();
+			Set<Item> newSet = new TreeSet<Item>();
 			newSet.add(itemToRemove);
 			removedItemsByDate.put(exitDate_str, newSet);
 		}
 		
 		removedItems.add(itemToRemove);
+		
+		notify(null);
 	}
 	
 	/** Change only to the item's entry date.
 	 * 
-	 * @param oldItem - item before edit
-	 * @param newItem - item after edit
+	 * @param before - item before edit
+	 * @param after - item after edit
 	 * 
 	 * @throws IllegalArgumentException
 	 */
 	public void editItem(Item before, Item after) throws IllegalArgumentException {
 		if (canEditItem(before, after)){
-			before.setEntryDate(after.getEntryDate());; // TODO: will this work?
+			before.setEntryDate(after.getEntryDate());
 		}
 		else{
 			throw new IllegalArgumentException("cannot complete item edit: after is invalid");
 		}
+		
+		notify(after);
 	}
 	
 	
@@ -284,7 +303,7 @@ public class ItemManager {
 	 * @param barcode - string representing a valid barcode
 	 * @return boolean whether or not it is unique
 	 */
-	public boolean isTagUnique(String barcode) {
+	public boolean doesTagExist(String barcode) {
 		
 		for (Item item : getItems()){
 			if (item.getTag().getBarcode() == barcode){
@@ -310,5 +329,22 @@ public class ItemManager {
 	public Collection<Item> getRemovedItems(){
 		return removedItems;
 	}
+	
+	private void notify(Item changer) {
+		ChangeObject hint = new ChangeObject();
+		hint.setChangeType(ChangeType.ITEM);
+		if (changer != null){
+			hint.setSelectedData(new ItemData(changer));
+		}
+		setChanged();
+		notifyObservers(hint);
+	}
+	
+//	public void clearAll(){
+//		itemsByContainer.clear();
+//		itemByTag.clear();
+//		removedItemsByDate.clear();
+//		removedItems.clear();
+//	}
 	
 }

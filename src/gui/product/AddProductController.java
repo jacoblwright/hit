@@ -1,6 +1,8 @@
 package gui.product;
 
+import model.*;
 import gui.common.*;
+import gui.inventory.ProductContainerData;
 
 /**
  * Controller class for the add item view.
@@ -8,15 +10,22 @@ import gui.common.*;
 public class AddProductController extends Controller implements
 		IAddProductController {
 	
+	String upc;
+	Container container;
+	
 	/**
 	 * Constructor.
 	 * 
 	 * @param view Reference to the add product view
 	 * @param barcode Barcode for the product being added
 	 */
-	public AddProductController(IView view, String barcode) {
+	public AddProductController(IView view, String barcode, Container cont) {
 		super(view);
 		
+		upc = barcode;
+		container = cont;
+		loadValues();
+		enableComponents();
 		construct();
 	}
 
@@ -48,6 +57,32 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableBarcode(false);
+		getView().enableDescription(true);
+		getView().enableShelfLife(true);
+		getView().enableSupply(true);
+		
+		if(getView().getSizeUnit() == SizeUnits.Count){
+			getView().setSizeValue("1");
+			getView().enableSizeValue(false);
+		}
+		else getView().enableSizeValue(true);
+		
+		if(getView().getBarcode() == null || getView().getBarcode().equals(""))
+			getView().displayErrorMessage("Barcode should not be empty");
+		
+		try{
+			int shelf = Integer.parseInt(getView().getShelfLife());
+			int supply = Integer.parseInt(getView().getSupply());
+			Float.parseFloat(getView().getSizeValue());
+			if(!getView().getDescription().isEmpty() && supply >= 0 && shelf >= 0)
+				getView().enableOK(true);
+			else getView().enableOK(false);
+		}
+		catch(NumberFormatException e){
+			getView().enableOK(false);
+		}
+		
 	}
 
 	/**
@@ -59,6 +94,7 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setBarcode(upc);
 	}
 
 	//
@@ -71,6 +107,8 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
+
 	}
 	
 	/**
@@ -79,6 +117,26 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	public void addProduct() {
+		
+		
+		Product product = new Product(getView().getBarcode(), getView().getDescription(), 
+				getView().getSizeUnit(), Float.parseFloat(getView().
+						getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
+				Integer.parseInt(getView().getSupply()) );
+		
+		if(!getModel().getProductManager().isProductValid(product)){
+			getView().displayErrorMessage("Can't add invalid product.");
+			return;
+		}
+		
+		try{
+			getModel().getProductManager().addNewProduct(product, container);
+		}
+		catch (IllegalArgumentException e){
+			getView().displayErrorMessage("Can't add valid product");
+		}
+
+		
 	}
 
 }

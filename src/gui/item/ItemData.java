@@ -2,6 +2,9 @@ package gui.item;
 
 import java.util.*;
 
+import model.Model;
+import model.Item;
+import model.Container;
 import gui.common.Tagable;
 
 /**
@@ -51,6 +54,33 @@ public class ItemData extends Tagable {
 		_barcode = "";
 		_storageUnit = "";
 		_productGroup = "";
+	}
+	
+	public ItemData(Item item) {
+		doItemConversion(item);
+		this.setTag(item);
+	}
+	
+	private void doItemConversion(Item item) {
+		
+		this.setBarcode(item.getTag().getBarcode());
+		this.setEntryDate(item.getEntryDate());
+		this.setExpirationDate(item.getExpirationDate());
+		
+		Container itemContainer = item.getContainer();
+		Container rootSU = Model.getInstance().
+				getContainerManager().getAncestorStorageUnit(itemContainer);
+		this.setStorageUnit(rootSU.getName());
+		
+		if (itemContainer.equals(rootSU)) {
+			this.setProductGroup("");
+		}
+		else {
+			this.setProductGroup(item.getContainer().getName());
+		}
+		
+		this.setTag(item);
+		
 	}
 	
 	/**
@@ -151,6 +181,23 @@ public class ItemData extends Tagable {
 	 */
 	public void setProductGroup(String productGroup) {
 		this._productGroup = productGroup;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if (this == obj ){
+			return true;
+		}
+		else if ( !(obj instanceof ItemData ) ){
+			return false;
+		}
+		else{
+			return this.getBarcode().equals(((ItemData)obj).getBarcode());
+		}
+	}
+	
+	public int compareTo(ItemData other){
+		return this.getBarcode().compareTo(other.getBarcode());
 	}
 
 }

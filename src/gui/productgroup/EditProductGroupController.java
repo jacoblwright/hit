@@ -1,5 +1,8 @@
 package gui.productgroup;
 
+import model.Container;
+import model.ProductGroup;
+import model.Quantity;
 import gui.common.*;
 import gui.inventory.*;
 
@@ -9,6 +12,8 @@ import gui.inventory.*;
 public class EditProductGroupController extends Controller 
 										implements IEditProductGroupController {
 	
+	private ProductContainerData target;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -17,7 +22,7 @@ public class EditProductGroupController extends Controller
 	 */
 	public EditProductGroupController(IView view, ProductContainerData target) {
 		super(view);
-
+		this.target = target;
 		construct();
 	}
 
@@ -49,6 +54,16 @@ public class EditProductGroupController extends Controller
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().setProductGroupName( target.getName() );
+		ProductGroup targetGroup = (ProductGroup) target.getTag();
+		Quantity quantity = targetGroup.getThreeMonthSupply();
+		getView().setSupplyUnit( (SizeUnits) quantity.getUnit() );
+		if( Math.round( quantity.getNumber()) == quantity.getNumber() ) {
+			getView().setSupplyValue( String.valueOf( Math.round( quantity.getNumber() ) ) );
+		}
+		else {
+			getView().setSupplyValue( String.valueOf( quantity.getNumber() ) );
+		}
 	}
 
 	/**
@@ -72,6 +87,16 @@ public class EditProductGroupController extends Controller
 	 */
 	@Override
 	public void valuesChanged() {
+		Container container = setContainer();
+		container.setContainer( ((Container) target.getTag()).getContainer() );
+		if( ((ProductGroup) container).isContainerValid() && 
+				target.getName().equals( container.getName() ) ) {
+			getView().enableOK( true );
+		}	
+		else {
+			boolean isEnabled = getModel().getContainerManager().canEditContainer( container );
+			getView().enableOK( isEnabled );
+		}
 	}
 	
 	/**
@@ -80,7 +105,46 @@ public class EditProductGroupController extends Controller
 	 */
 	@Override
 	public void editProductGroup() {
+		Container container = setContainer();
+		if( !((ProductGroup) target.getTag()).simpleEquals( container ) ) {
+			getModel().getContainerEditor().editContainer( (Container) target.getTag(), container );
+		}
 	}
+	
+	private Container setContainer() {
+		String name = getView().getProductGroupName();
+		String value = getView().getSupplyValue();
+		Enum<SizeUnits> unit = getView().getSupplyUnit();
+		float number = getNumber( value );
+		Quantity quantity = new Quantity( number, unit );
+		
+		Container result = new ProductGroup( name, quantity );
+		result.setContainer( (Container) target.getTag() );
+		return result;
+	}
+	
+	private float getNumber(String value) {
+		float number;
+		try
+		{	
+			if( emptyString( value ) ) {
+				number = -1;
+			}
+			else {
+				number = Float.parseFloat( value );
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			number = -1;
+		}
+		return number;
+	}
+
+	private boolean emptyString( String str) {
+		return str.trim().length() == 0;
+	}
+
 
 }
 

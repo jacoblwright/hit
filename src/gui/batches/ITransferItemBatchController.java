@@ -5,25 +5,25 @@ import gui.common.IController;
 /**
  * Controller interface for transfer item batch view.
  */
-public interface ITransferItemBatchController extends IController {
+public interface ITransferItemBatchController extends IItemBatchController {
 
-	/**
-	 * This method is called when the "Item Barcode" field in the
-	 * transfer item batch view is changed by the user.
-	 */
-	void barcodeChanged();
+//	/**
+//	 * This method is called when the "Item Barcode" field in the
+//	 * transfer item batch view is changed by the user.
+//	 */
+//	void barcodeChanged();
 	
-	/**
-	 * This method is called when the "Use Barcode Scanner" setting in the
-	 * transfer item batch view is changed by the user.
-	 */
-	void useScannerChanged();
+//	/**
+//	 * This method is called when the "Use Barcode Scanner" setting in the
+//	 * transfer item batch view is changed by the user.
+//	 */
+//	void useScannerChanged();
 	
-	/**
-	 * This method is called when the selected product changes
-	 * in the transfer item batch view.
-	 */
-	void selectedProductChanged();
+//	/**
+//	 * This method is called when the selected product changes
+//	 * in the transfer item batch view.
+//	 */
+//	void selectedProductChanged();
 	
 	/**
 	 * This method is called when the user clicks the "Transfer Item" button
@@ -43,11 +43,15 @@ public interface ITransferItemBatchController extends IController {
 	 */
 	void redo();
 	
-	/**
-	 * This method is called when the user clicks the "Done" button
-	 * in the transfer item batch view.
-	 */
-	void done();
+//	/**
+//	 * This method is called when the user clicks the "Done" button
+//	 * in the transfer item batch view.
+//	 */
+//	void done();
 
+	/**
+	 * Method is called when barcode is changed in either mode
+	 */
+	void doAction();
 }
 

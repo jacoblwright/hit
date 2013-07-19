@@ -4,13 +4,24 @@ import gui.common.*;
 import gui.item.*;
 import gui.product.*;
 
+// Just for debug testing
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
 import java.util.*;
+
+import model.*;
 
 /**
  * Controller class for inventory view.
  */
 public class InventoryController extends Controller 
-									implements IInventoryController {
+									implements IInventoryController, Observer {
+	private final String EMPTY = "";
+	private ProductContainerData selectedContainerData;
+	private ProductData selectedProductData;
+	private ItemData selectedItemData;
 
 	/**
 	 * Constructor.
@@ -19,8 +30,13 @@ public class InventoryController extends Controller
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
+		getModel().getContainerManager().addObserver( this );
+		getModel().getProductManager().addObserver( this );
+		getModel().getItemManager().addObserver( this );
 
 		construct();
+		
+//		debugInit();
 	}
 
 	/**
@@ -40,28 +56,41 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
+		Set<StorageUnit> storageUnits = getModel().getContainerManager().getRoot();
 		ProductContainerData root = new ProductContainerData();
-		
-		ProductContainerData basementCloset = new ProductContainerData("Basement Closet");
-		
-		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
-		toothpaste.addChild(new ProductContainerData("Kids"));
-		toothpaste.addChild(new ProductContainerData("Parents"));
-		basementCloset.addChild(toothpaste);
-		
-		root.addChild(basementCloset);
-		
-		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
-		
-		ProductContainerData soup = new ProductContainerData("Soup");
-		soup.addChild(new ProductContainerData("Chicken Noodle"));
-		soup.addChild(new ProductContainerData("Split Pea"));
-		soup.addChild(new ProductContainerData("Tomato"));
-		foodStorage.addChild(soup);
-		
-		root.addChild(foodStorage);
+		for( StorageUnit container : storageUnits ) {
+			ProductContainerData child = new ProductContainerData();
+			child.setProductContainer( container );
+			root.addChild( child );
+		}
 		
 		getView().setProductContainers(root);
+		
+		if( selectedContainerData != null ) {	
+			getView().selectProductContainer( selectedContainerData );
+		}
+		loadContextPanel( selectedContainerData );
+		
+	}
+
+	private void loadContextPanel( ProductContainerData selectedContainer ) {
+		if( selectedContainer != null ) {
+			if( selectedContainer.getTag() == null ) {
+				allStorageUnitsSelected();
+			}
+			else if( selectedContainer.getTag() instanceof StorageUnit ) {
+				storageUnitSelected();
+			}
+			else if( selectedContainer.getTag() instanceof ProductGroup ) {
+				productGroupSelected();
+			}
+			else {
+				setContextPanel( EMPTY, EMPTY, EMPTY );
+			}
+		}
+		else {
+			setContextPanel( EMPTY, EMPTY, EMPTY );
+		}
 	}
 
 	/**
@@ -120,7 +149,8 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteStorageUnit() {
-		return true;
+		ProductContainerData pcd = getView().getSelectedProductContainer();
+		return getModel().getContainerEditor().canDeleteContainer( (Container) pcd.getTag() );
 	}
 	
 	/**
@@ -128,6 +158,8 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteStorageUnit() {
+		ProductContainerData pcd = getView().getSelectedProductContainer();
+		getModel().getContainerEditor().deleteContainer( (Container) pcd.getTag() );
 	}
 
 	/**
@@ -151,7 +183,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteProductGroup() {
-		return true;
+		return canDeleteStorageUnit();
 	}
 
 	/**
@@ -167,6 +199,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteProductGroup() {
+		deleteStorageUnit();
 	}
 
 	private Random rand = new Random();
@@ -185,54 +218,90 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
-		List<ProductData> productDataList = new ArrayList<ProductData>();		
-		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
-		if (selectedContainer != null) {
-			int productCount = rand.nextInt(20) + 1;
-			for (int i = 1; i <= productCount; ++i) {
-				ProductData productData = new ProductData();			
-				productData.setBarcode(getRandomBarcode());
-				int itemCount = rand.nextInt(25) + 1;
-				productData.setCount(Integer.toString(itemCount));
-				productData.setDescription("Item " + i);
-				productData.setShelfLife("3 months");
-				productData.setSize("1 pounds");
-				productData.setSupply("10 count");
-				
-				productDataList.add(productData);
-			}
-		}
-		getView().setProducts(productDataList.toArray(new ProductData[0]));
+
 		
+		ProductContainerData productContainerData = getView().getSelectedProductContainer();
+		if(productContainerData.getName().isEmpty() && productContainerData != null){
+			Collection<Product> col = getModel().getProductManager().getProducts();
+			ProductData[] productArray = DataConverter.toProductDataArray(col);
+			setProductsDataSize(productArray, productContainerData);
+			getView().setProducts(productArray);
+		}
+		else if(productContainerData != null && productContainerData.getTag() != null){
+			
+			Collection<Product> col = getModel().getProductManager().
+					getProducts((Container)productContainerData.getTag());
+			ProductData[] productArray = DataConverter.toProductDataArray(col);
+			setProductsDataSize(productArray, productContainerData);
+			getView().setProducts(productArray);
+		}
+		else{
+			getView().setProducts(new ProductData[0]);
+		}
 		getView().setItems(new ItemData[0]);
 	}
 
+	public void setProductsDataSize(ProductData[] productArray, 
+			ProductContainerData productContainerData){
+		
+		for(int i = 0; i < productArray.length; i++){
+			/* Set the count for the product */
+			try{
+				if(productContainerData.getName().isEmpty()){
+					Collection<Item> itemCol = getModel().getItemManager().getItems();
+					Iterator it = itemCol.iterator();
+					int count = 0;
+					while(it.hasNext()){
+						Item item = (Item)it.next();
+						if(item.getProduct().equals(productArray[i].getTag())){
+							count++;
+						}
+					}
+					productArray[i].setCount(Integer.toString(count));
+				}
+				else {
+					Collection<Item> itemCol = getModel().getItemManager().
+							getItems((Container)productContainerData.getTag(), 
+									(Product)productArray[i].getTag());
+					
+					productArray[i].setCount(Integer.toString(itemCol.size()));
+				}
+			}
+			catch(NullPointerException e){ }
+		}
+	}
+	
 	/**
 	 * This method is called when the selected item changes.
 	 */
 	@Override
 	public void productSelectionChanged() {
-		List<ItemData> itemDataList = new ArrayList<ItemData>();		
-		ProductData selectedProduct = getView().getSelectedProduct();
-		if (selectedProduct != null) {
-			Date now = new Date();
-			GregorianCalendar cal = new GregorianCalendar();
-			int itemCount = Integer.parseInt(selectedProduct.getCount());
-			for (int i = 1; i <= itemCount; ++i) {
-				cal.setTime(now);
-				ItemData itemData = new ItemData();
-				itemData.setBarcode(getRandomBarcode());
-				cal.add(Calendar.MONTH, -rand.nextInt(12));
-				itemData.setEntryDate(cal.getTime());
-				cal.add(Calendar.MONTH, 3);
-				itemData.setExpirationDate(cal.getTime());
-				itemData.setProductGroup("Some Group");
-				itemData.setStorageUnit("Some Unit");
-				
-				itemDataList.add(itemData);
-			}
+		
+		ProductData productData = getView().getSelectedProduct();
+		Container productContainer = (Container)getView().getSelectedProductContainer().getTag();
+		if(productData != null && productData.getTag() != null && productContainer != null){
+			Collection col = getModel().getItemManager().getItems(productContainer, 
+					(Product)productData.getTag());
+			ItemData[] itemArray = DataConverter.toItemDataArray(col);
+			getView().setItems(itemArray);
 		}
-		getView().setItems(itemDataList.toArray(new ItemData[0]));
+		else if (productContainer == null && productData != null && productData.getTag() != null){
+			Collection col = getModel().getItemManager().getItems();
+			Collection<Item> itemCollection = new ArrayList();
+			Iterator it = col.iterator();
+			while(it.hasNext()){
+				Item item = (Item)it.next();
+				if(item.getProduct().equals(productData.getTag())){
+					itemCollection.add(item);
+				}
+			}
+			ItemData[] itemArray = DataConverter.toItemDataArray(itemCollection);
+			getView().setItems(itemArray);
+			
+		}
+		if(selectedItemData != null){
+			getView().selectItem(selectedItemData);
+		}
 	}
 
 	/**
@@ -248,7 +317,37 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canDeleteProduct() {
-		return true;
+		
+		ProductData productData = getView().getSelectedProduct();
+		if (productData == null) {
+		    return false;
+		}
+		
+		Product product = (Product)productData.getTag();
+		
+		ProductContainerData selected = getView().getSelectedProductContainer();
+		if (selected.getTag() == null) {
+		
+		    System.out.println("IventoryController.canDeleteProduct():" +
+		    		"canDeleteProductFromSystem() branch");
+		    
+		    return getModel().getProductAndItemEditor().
+		            canDeleteProductFromSystem(product);
+		    
+		}
+		else {
+		    
+		    System.out.println("IventoryController.canDeleteProduct():" +
+                    "canRemoveProductFromContainer() branch");
+		    
+		    Container container = (Container)getView().
+		            getSelectedProductContainer().getTag();
+		    
+		    return getModel().getProductAndItemEditor().
+		            canRemoveProductFromContainer(product, container);
+		    
+		}
+		
 	}
 
 	/**
@@ -256,6 +355,40 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteProduct() {
+	    
+	    /* 
+	     * MODIFIED FOR BUG FIX 07/18 23:10 EM
+	     * The code was checking whether productContainerData was null rather
+	     * than checking whether productContainerData.getTag() was null
+	     * in order to determine whether the tree root is selected. The result
+	     * was that product deletion wasn't working at all.
+	     */
+		ProductData productData = getView().getSelectedProduct();
+		Product product = (Product)productData.getTag();
+		
+		ProductContainerData productContainerData =
+		        getView().getSelectedProductContainer();
+		
+		try{
+		    
+			if (productContainerData.getTag() == null) {			   
+				getModel().getProductManager().deleteProductFromSystem(product);
+			}
+			else {
+			    
+			    Container container = (Container)productContainerData.getTag();
+			    getModel().getProductManager().removeProductFromContainer(
+			            product, container);
+			    
+			}
+			    
+			productContainerSelectionChanged();
+			
+		}
+		catch (IllegalArgumentException e){
+			getView().displayErrorMessage("Can't Delete Product");
+		}
+		
 	}
 
 	/**
@@ -263,7 +396,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canEditItem() {
-		return true;
+		return getView().getSelectedItem() != null;
 	}
 
 	/**
@@ -279,7 +412,10 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canRemoveItem() {
-		return true;
+		if(getView().getSelectedItem() != null){
+			return true;
+		}
+		else return false;
 	}
 
 	/**
@@ -287,6 +423,10 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void removeItem() {
+		Item item = (Item) getView().getSelectedItem().getTag();
+		if(item != null)
+			getModel().getItemManager().removeItem(item);
+//		productSelectionChanged();
 	}
 
 	/**
@@ -294,7 +434,10 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public boolean canEditProduct() {
-		return true;
+		if(getView().getSelectedProduct() != null){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -370,7 +513,47 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void addProductToContainer(ProductData productData, 
-										ProductContainerData containerData) {		
+										ProductContainerData containerData) {
+	    
+	    /* 
+	     * MODIFIED FOR BUG FIX 07/19 11:36 EM
+	     * Added functionality for the case of moving a Product when the
+	     * tree root is selected.
+	     */	    
+		Product product = (Product)productData.getTag();
+		
+		ProductContainerData selectedProductContainerData =
+                getView().getSelectedProductContainer();
+		
+		Container targetContainer = (Container)containerData.getTag();
+		
+		ProductAndItemEditor paie = getModel().getProductAndItemEditor();
+		
+		if (selectedProductContainerData.getTag() == null) {
+
+		    // This branch is when tree root is selected.
+		    System.out.println("InventoryController.addProductToContainer():" +
+		    		" branch where tree root is selected");
+		    
+		    paie.moveProductWhenTreeRootIsSelected(
+		            product, targetContainer);
+		    
+		}
+		else {
+		
+		    // This branch is when a particular container is selected.
+		    System.out.println("InventoryController.addProductToContainer():" +
+                    " branch where a particular container is selected");
+		    
+		    Container sourceContainer = 
+		            (Container)getView().getSelectedProductContainer().getTag();
+
+		    paie.moveProduct(
+		            product, sourceContainer, targetContainer);
+
+		}
+		
+		productContainerSelectionChanged();
 	}
 
 	/**
@@ -383,7 +566,104 @@ public class InventoryController extends Controller
 	@Override
 	public void moveItemToContainer(ItemData itemData,
 									ProductContainerData containerData) {
+		Container targetContainer = (Container) containerData.getTag();
+		Item itemToMove = (Item) itemData.getTag();
+		if ( (targetContainer != null) && itemToMove != null ){
+			getModel().getProductAndItemEditor().moveItem(itemToMove, targetContainer);
+		}
+	}
+	
+	@Override
+	public void allStorageUnitsSelected() {
+		setContextPanel( "All", EMPTY, EMPTY );
 	}
 
+	@Override
+	public void storageUnitSelected() {
+		Container container = (Container) getView().getSelectedProductContainer().getTag();	
+		setContextPanel( container.getName(),EMPTY,EMPTY );
+		}
+
+	@Override
+	public void productGroupSelected() {
+		Container container = (Container) getView().getSelectedProductContainer().getTag();
+		Container unit = getModel().getContainerManager().getAncestorStorageUnit(container);
+		Quantity quantity = ( (ProductGroup) container).getThreeMonthSupply(); 
+		if( quantity.getNumber() == 0 ) {
+			setContextPanel( unit.getName(), container.getName(), EMPTY );
+		}
+		else {
+			String supply;
+			if( Math.round( quantity.getNumber() ) == quantity.getNumber() ) {
+				supply = String.valueOf( Math.round( quantity.getNumber() ) );
+			}
+			else {
+				supply = String.valueOf( quantity.getNumber() );
+			}
+			supply += " " + quantity.getUnit().name();
+			setContextPanel( unit.getName(), container.getName(), supply );
+		}
+	}
+	
+	private void setContextPanel(String unit, String group, String supply) {
+		getView().setContextUnit( unit );
+		getView().setContextGroup( group );
+		getView().setContextSupply( supply );
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		ChangeType changeType = ((ChangeObject) arg1).getChangeType();
+		if( changeType.equals(ChangeType.CONTAINER) ) {
+			selectedContainerData = (ProductContainerData) ((ChangeObject)arg1).getSelectedData();
+			loadValues();
+		}
+		else if( changeType.equals(ChangeType.ITEM) ) {
+			selectedItemData = (ItemData) ((ChangeObject)arg1).getSelectedData();
+			productSelectionChanged();
+		}
+		else if( changeType.equals(ChangeType.PRODUCT) ) {
+			selectedProductData = (ProductData) ((ChangeObject)arg1).getSelectedData();
+			productContainerSelectionChanged();
+		}
+	}
+
+	public void debugInit(){
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date ed1;
+		try {
+			ed1 = dateFormat.parse("2013/11/9");
+		}
+		catch (ParseException e){
+			ed1 = null;
+		}
+
+		
+		Container su1 = new StorageUnit("SU1");
+		
+		getModel().getContainerEditor().addContainer(null, su1);
+
+		Product p1 = new Product("1", "Descripshun", SizeUnits.Count, 1, 1, 1);
+		if (!getModel().getProductManager().getProducts().contains(p1)){
+			getModel().getProductManager().addNewProduct(p1, su1);
+		}		
+		Collection<Item> toAdd = new TreeSet<Item>();
+		Barcode bc1 = new Barcode("1");
+		Item i1 = new Item(su1, p1, ed1, bc1);
+		toAdd.add(i1);
+		
+		Barcode bc2 = new Barcode("2");
+		Item i2 = new Item(su1, p1, ed1, bc2);
+		toAdd.add(i2);
+		
+		for (Item i : toAdd) {
+			if ( getModel().getItemManager().canAddItem(i, i.getContainer()) ){
+				getModel().getProductAndItemEditor().addItemToStorageUnit(i,(StorageUnit) su1);
+			}
+		}
+		
+
+	}
 }
 

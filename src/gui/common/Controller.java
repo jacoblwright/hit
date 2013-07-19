@@ -1,5 +1,8 @@
 package gui.common;
 
+import gui.inventory.ProductContainerData;
+import model.Model;
+
 /**
  * Controller is a base class that provides common functionality required
  * by all controllers in the program (i.e., all controller classes extend Controller).
@@ -49,6 +52,10 @@ package gui.common;
 	 */
 	protected IView getView() {
 		return _view;
+	}
+	
+	protected Model getModel() {
+		return Model.getInstance();
 	}
 	
 	/**

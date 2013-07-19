@@ -8,9 +8,15 @@ public class BarcodeTest {
 
 	@Test
 	public void constructor1test() {
-		Barcode b = new Barcode();
-		String barcode = b.getBarcode();
-		assertNotNull( barcode );
+	    
+		for (int i = 0; i < 25; i++) {
+		    
+		    Barcode b = new Barcode();
+		    
+		    //System.out.println(b);
+		    
+		}
+		
 	}
 
 }

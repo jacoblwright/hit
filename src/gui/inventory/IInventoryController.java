@@ -156,6 +156,21 @@ public interface IInventoryController extends IController {
 	void itemSelectionChanged();
 	
 	/**
+	 * This method is called whenever the root storage unit is selected.
+	 */
+	void allStorageUnitsSelected();
+	
+	/**
+	 * This method is called whenever a storage unit is selected.
+	 */
+	void storageUnitSelected();
+	
+	/**
+	 * This method is called whenever a product group is selected.
+	 */
+	void productGroupSelected();
+	
+	/**
 	 * This method is called when the user drags a product into a
 	 * product container.
 	 * 

@@ -1,8 +1,10 @@
 package model;
 
-import java.io.Serializable;
+import gui.common.SizeUnits;
 
-/** Quantity holds a Unit and a number value associated with that Unit
+import java.io.*;
+
+/** Quantity holds a Unit and a number value associated with that Unit.
  * ex. unit = 'count' & number = 1, or unit = 'pounds' & number = 2.4.
  * 
  * @author jake
@@ -10,13 +12,19 @@ import java.io.Serializable;
  */
 public class Quantity implements Serializable {
 	
-	private static final long serialVersionUID = 3907772370880513015L;
 
 	/**	number associated with unit */
 	private float number;
 	
 	/** unit that H.I.T. measures such as count, pounds, ounces, grams, etc... */
-	private Unit unit;
+	private Enum<SizeUnits> unit;
+
+	public Quantity(){}
+	
+	public Quantity(Float number, Enum<SizeUnits> unit) {
+		this.number = number;
+		this.unit = unit;
+	}
 
 	/**Sets the number and unit variables.
 	 * 
@@ -26,7 +34,7 @@ public class Quantity implements Serializable {
 	 * @param unit		various types of measurement such as count, pounds, ounces, etc...
 	 * @throws IllegalArgumentException
 	 */
-	public void setQuantity( float number, Unit unit ) throws IllegalArgumentException {
+	public void setQuantity( float number, Enum<SizeUnits> unit ) throws IllegalArgumentException {
 		if( unit == null ) {
 			throw new IllegalArgumentException();
 		}
@@ -34,7 +42,7 @@ public class Quantity implements Serializable {
 		this.unit = unit;
 	}
 	
-	/**Getter for number
+	/**Getter for number.
 	 * @pre 			none
 	 * @return 			Returns the float value of number.
 	 */
@@ -43,16 +51,16 @@ public class Quantity implements Serializable {
 		return number;
 	}
 	
-	/**Getter for Unit
+	/**Getter for Unit.
 	 * @pre 			none
 	 * @return			Returns the unit.
 	 */
-	public Unit getUnit() {
+	public Enum<SizeUnits> getUnit() {
 		assert true;
 		return unit;
 	}
 
-	/**Creates the string version of this object
+	/**Creates the string version of this object.
 	 * @pre 				none	
 	 * @return String		this.toString()
 	 */
@@ -62,7 +70,7 @@ public class Quantity implements Serializable {
 		return "Quantity [number=" + number + ", unit=" + unit + "]";
 	}
 
-	/**Creates a unique hashcode for this object
+	/**Creates a unique hashcode for this object.
 	 * @pre					none
 	 * @return int			unique Integer
 	 */
@@ -76,7 +84,7 @@ public class Quantity implements Serializable {
 		return result;
 	}
 	
-	/**checks equality between two objects
+	/**checks equality between two objects.
 	 * @pre						none
 	 * @param obj				obj in question fo equality		
 	 * @return boolean 			if this == obj return true, otherwise false.

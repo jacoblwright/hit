@@ -1,18 +1,15 @@
 package model;
 
-/**
-*
-* Item Description:
-*	The physical instance of a Product.
+import java.util.Calendar;
+import java.util.Date;
+
+/**	The physical instance of a Product.
 *	It describes the product it is associated with, as well as the product container
 *	that holds the item.
 *
 */
 
-import java.util.Date;
-
-
-public class Item extends Entity {
+public class Item extends Entity implements Comparable<Item> {
 	
 	/** Points to the product that describes the item. */
 	private Product product;
@@ -29,35 +26,33 @@ public class Item extends Entity {
 	/** date the item was removed */
 	private Date exitTime;
 	
-	/** expiration date of the item */
-	private Date expirationDate;
-	
 	/** pointer to the product container that holds the item */
 	private Container container;
 	
 	
-	/**
-	*
-	* @param _container - associated product container
-	* @param _expires - date the product expires
-	*
-	* @pre _container != null, _prod != null
-	* 
-	* Builds Item instance and initializes members to default values
+	/** Builds Item instance and initializes members to default values
 	*	entry date is captured, sets expires, sets container, barcode generated automatically
 	*
+	*
+	* @param container - associated product container
+	* @param product - associated product
+	* @param expirationDate - date the item expires
+	* @param tag - associated tag barcode
+	*
+	* @pre _container != null, _prod != null
+	*
 	*/
-	public Item(Container container, Product product, Date expirationDate, Barcode barcode)  {
-		assert container != null;
+	public Item(Container container, Product product, Date entryDate, Barcode tag)  {
+//		assert container != null;
 		assert product != null;
-		assert expirationDate != null;
-		assert barcode != null;
+		assert entryDate != null;
+		assert tag != null;
 		
 		this.container = container;
 		this.product = product;
-		this.expirationDate = expirationDate;
-		this.tag = barcode; // generates unique barcode on initliazation
-		this.entryDate = new Date();
+		this.entryDate = entryDate;
+		this.tag = tag; // generates unique barcode on initliazation
+//		this.expirationDate = product.getShelfLife() + entryDate;
 		
 	}
 
@@ -154,20 +149,15 @@ public class Item extends Entity {
 	 */
 	public Date getExpirationDate() {
 		assert true;
-		
-		return expirationDate;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(entryDate);
+		// TODO: find out how to fix this without rolling calender
+		cal.roll(Calendar.MONTH, product.getShelfLife());
+		Date ret = cal.getTime();
+		cal.roll(Calendar.MONTH, -1*product.getShelfLife());
+		return ret;
 	}
 
-	/**
-	 * Set the item's expiration date.
-	 * 
-	 * @param expirationDate
-	 */
-	public void setExpirationDate(Date expirationDate) {
-		assert true;
-		
-		this.expirationDate = expirationDate;
-	}
 
 	/** Gets the item's container.
 	 * 
@@ -207,15 +197,26 @@ public class Item extends Entity {
 		}
 		
 		Item item = (Item) obj;
-		return this.getTag().getBarcode() == item.getTag().getBarcode();
+		return this.getTag().getBarcode().equals(item.getTag().getBarcode());
 	}
-
+	
+	@Override
+	public int compareTo(Item other) {
+		int compared = entryDate.compareTo(other.entryDate);
+	    if (compared == 0){
+	    	return getTag().getBarcode().compareTo(other.getTag().getBarcode());
+	    }
+	    else {
+	    	return compared;
+	    }
+	    
+	}
 
 	@Override
 	public String toString() {
 		return "Item [product=" + product + ", tag=" + tag + ", entryDate="
 				+ entryDate + ", exitDate=" + exitDate + ", exitTime="
-				+ exitTime + ", expirationDate=" + expirationDate
+				+ exitTime + ", expirationDate=" + getExpirationDate()
 				+ ", container=" + container + "]";
 	}
 	

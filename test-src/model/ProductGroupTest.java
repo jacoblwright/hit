@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import gui.common.SizeUnits;
+
 import java.util.TreeSet;
 
 import org.junit.Test;
@@ -13,14 +15,14 @@ public class ProductGroupTest {
 	private String NAME = "name1";
 	private String DIFF_NAME = "name2";
 	private float FLOAT = 2.3f;
-	private Unit UNIT_COUNT = Unit.count;
-	private Unit UNIT_PINTS = Unit.pints;
+	private Enum<SizeUnits> UNIT_COUNT = SizeUnits.Count;
+	private Enum<SizeUnits> UNIT_PINTS = SizeUnits.Pints;
 	private float unspecified = 0;
 	
 	@Test
 	public void constructorTest() {
 		Quantity expectedResult = new Quantity();
-		expectedResult.setQuantity( unspecified, Unit.unspecified );
+		expectedResult.setQuantity( unspecified, UNIT_COUNT );
 		
 		ProductGroup pg = new ProductGroup();
 		assertEquals( expectedResult, pg.getThreeMonthSupply() );

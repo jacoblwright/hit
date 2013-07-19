@@ -257,6 +257,9 @@ public class InventoryView extends View implements IInventoryView {
 			    			enableAllStorageUnitsMenuItems();
 			    			_allStorageUnitsMenu.show(e.getComponent(), e.getX(), e.getY());
 						}
+						else {
+							allStorageUnitsSelected();
+						}
 					}
 					else if (node.isStorageUnit()) {
 						if (e.isPopupTrigger()) {
@@ -264,12 +267,18 @@ public class InventoryView extends View implements IInventoryView {
 			    			enableStorageUnitMenuItems();
 			    			_storageUnitMenu.show(e.getComponent(), e.getX(), e.getY());
 						}
+						else {
+							storageUnitSelected();
+						}
 					}
 					else if (node.isProductGroup()) {
 						if (e.isPopupTrigger()) {
 			    			_productContainerTree.requestFocus();
 			    			enableProductGroupMenuItems();
 			    			_productGroupMenu.show(e.getComponent(), e.getX(), e.getY());
+						}
+						else {
+							productGroupSelected();
 						}
 					}
 				}
@@ -597,6 +606,18 @@ public class InventoryView extends View implements IInventoryView {
 	//////////////////
 	// Action Methods
 	//////////////////
+	
+	private void allStorageUnitsSelected() {
+		getController().allStorageUnitsSelected();
+	}
+	
+	private void storageUnitSelected() {
+		getController().storageUnitSelected();
+	}
+	
+	private void productGroupSelected() {
+		getController().productGroupSelected();
+	}
 
 	private void addStorageUnit() {
 		getController().addStorageUnit();
@@ -921,6 +942,7 @@ public class InventoryView extends View implements IInventoryView {
 	@Override
 	public void setProducts(ProductData[] products) {
 		boolean disabledEvents = disableEvents();
+		
 		try {
 			_productTableModel.setRowCount(0);
 			for (ProductData pd : products) {			

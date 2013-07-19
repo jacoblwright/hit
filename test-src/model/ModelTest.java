@@ -5,22 +5,21 @@ import org.junit.Test;
 
 public class ModelTest {
     
-    /*
+    
     // Check to see that the files are written properly to disk.
     @Test
     public void saveTest() throws Exception {
         
-        Model m = new Model();
+        Model m = Model.getInstance();
         
         m.save();
         
     }
-    */
-
+    
     @Test
     public void gettersAndSettersTest() {
         
-        Model m = new Model();
+        Model m = Model.getInstance();
         
         ContainerManager containerManager = new ContainerManager();
         ProductManager productManager = new ProductManager();

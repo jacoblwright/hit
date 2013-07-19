@@ -1,6 +1,15 @@
 package gui.item;
 
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import gui.common.*;
+import model.Model;
+import model.Item;
+import model.Barcode;
 
 /**
  * Controller class for the edit item view.
@@ -8,6 +17,8 @@ import gui.common.*;
 public class EditItemController extends Controller 
 										implements IEditItemController {
 	
+	ItemData target;
+	DateFormat dateFormat;
 	/**
 	 * Constructor.
 	 * 
@@ -16,8 +27,25 @@ public class EditItemController extends Controller
 	 */
 	public EditItemController(IView view, ItemData target) {
 		super(view);
-
+		dateFormat = new SimpleDateFormat("MM/dd/yyy");
+		if (target == null) {
+			getView().displayErrorMessage("You must select an item!");
+			((ItemView)getView()).cancel();
+			enableComponents();
+			getView().enableOK(false);
+			getView().enableEntryDate(false);
+			
+		}
+		else {
+			// Attach item as ItemData tag
+			Barcode tag = new Barcode(target.getBarcode());
+			target.setTag(getModel().getItemManager().getItemByTag(tag));
+			this.target = target;
+		}
 		construct();
+		
+		
+		
 	}
 
 	//
@@ -48,6 +76,25 @@ public class EditItemController extends Controller
 	 */
 	@Override
 	protected void enableComponents() {
+		// enables only the entry date field
+		getView().enableBarcode(false);
+		getView().enableDescription(false);
+		
+		if (target == null) {
+			getView().enableOK(false);
+			getView().enableEntryDate(false);
+		}
+		else {
+			// Create item to check validity
+			Item tagalong = (Item) target.getTag();
+			if (tagalong == null) {
+				getView().enableOK(false);
+			}
+			else {
+				getView().enableOK(getModel().
+							getItemManager().canEditItem(tagalong, createItem(tagalong)));
+			}
+		}
 	}
 
 	/**
@@ -59,6 +106,23 @@ public class EditItemController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
+		// enters the product description, item barcode, and entry date
+		
+		if (target == null) {
+			getView().setDescription("Unknown");
+			getView().setBarcode("Unknown");
+		}
+		else {
+		
+			getView().setBarcode(target.getBarcode());
+			
+			Item tagalong = (Item) target.getTag();
+			if (tagalong != null){
+				getView().setDescription(tagalong.getProduct().getDescription());
+			}
+			
+			getView().setEntryDate(target.getEntryDate());
+		}
 	}
 
 	//
@@ -71,6 +135,10 @@ public class EditItemController extends Controller
 	 */
 	@Override
 	public void valuesChanged() {
+		
+		Item before = (Item) target.getTag();
+		Item after = createItem(before);
+		getView().enableOK(getModel().getItemManager().canEditItem(before, after));
 	}
 	
 	/**
@@ -79,7 +147,33 @@ public class EditItemController extends Controller
 	 */
 	@Override
 	public void editItem() {
+		
+		// Create new item 
+		Item tagalong = (Item) target.getTag();
+		if (tagalong == null) {
+			getView().displayErrorMessage("I'm sorry but you cannot edit this item.");
+		}
+		else {
+			Item newItem = createItem(tagalong);
+			getModel().getProductAndItemEditor().editItem(tagalong, newItem);
+		}
 	}
-
+	
+	/** Creates new item copy with the view's get entry date
+	 * 
+	 * 
+	 * @param tagalong - item used to clone
+	 * @return copy of tagalong with view's entry date
+	 */
+	private Item createItem(Item tagalong){
+		Date entryDate = getView().getEntryDate(); 
+		return new Item(	
+				tagalong.getContainer(), 
+				tagalong.getProduct(),
+				entryDate,
+				tagalong.getTag()
+				
+			);
+	}
 }
 
