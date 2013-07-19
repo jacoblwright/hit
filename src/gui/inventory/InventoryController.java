@@ -322,15 +322,23 @@ public class InventoryController extends Controller
 		if (productData == null) {
 		    return false;
 		}
+		
 		Product product = (Product)productData.getTag();
+		
 		ProductContainerData selected = getView().getSelectedProductContainer();
 		if (selected.getTag() == null) {
+		
+		    System.out.println("IventoryController.canDeleteProduct():" +
+		    		"canDeleteProductFromSystem() branch");
 		    
 		    return getModel().getProductAndItemEditor().
 		            canDeleteProductFromSystem(product);
 		    
 		}
 		else {
+		    
+		    System.out.println("IventoryController.canDeleteProduct():" +
+                    "canRemoveProductFromContainer() branch");
 		    
 		    Container container = (Container)getView().
 		            getSelectedProductContainer().getTag();
@@ -347,17 +355,32 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteProduct() {
+	    
+	    /* MODIFIED FOR BUG FIX 07/18 23:10 EM
+	     * The code was checking whether productContainerData was null rather
+	     * than checking whether productContainerData.getTag() was null
+	     * in order to determine whether the tree root is selected. The result
+	     * was that product deletion wasn't working at all. */
 		ProductData productData = getView().getSelectedProduct();
 		Product product = (Product)productData.getTag();
-		ProductContainerData productContainerData = getView().getSelectedProductContainer();
-		Container container = (Container)productContainerData.getTag();
+		
+		ProductContainerData productContainerData =
+		        getView().getSelectedProductContainer();
 		try{
-			if(productContainerData == null){
+		    
+			if (productContainerData.getTag() == null) {			   
 				getModel().getProductManager().deleteProductFromSystem(product);
 			}
-			else getModel().getProductManager().removeProductFromContainer(product, container);
-			
+			else {
+			    
+			    Container container = (Container)productContainerData.getTag();
+			    getModel().getProductManager().removeProductFromContainer(
+			            product, container);
+			    
+			}
+			    
 			productContainerSelectionChanged();
+			
 		}
 		catch (IllegalArgumentException e){
 			getView().displayErrorMessage("Can't Delete Product");

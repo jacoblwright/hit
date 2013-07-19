@@ -54,8 +54,8 @@ public class ProductAndItemEditor {
         
         //System.out.println("PAIE:moveProduct");
         
-        System.out.println("areInSameStorageUnit:" +
-                areInSameStorageUnit(sourceContainer, targetContainer));
+        //System.out.println("areInSameStorageUnit:" +
+                //areInSameStorageUnit(sourceContainer, targetContainer));
         
         if (areInSameStorageUnit(sourceContainer, targetContainer)) {
             
