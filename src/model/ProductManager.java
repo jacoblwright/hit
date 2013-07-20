@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 import gui.common.*;
 
 /** Manages alterations to all the Products in the system and handles passing the Product's 
@@ -33,7 +36,7 @@ public class ProductManager extends Observable implements Serializable{
 	 * and HashMap<Barcode, Product */ 
 	public ProductManager(){
 		assert true;
-		productsByContainer = new HashMap<Container, Set<Product>>();
+		productsByContainer = new TreeMap<Container, Set<Product>>();
 		productByUPC = new HashMap<Barcode, Product>();
 	}
 	
@@ -236,9 +239,7 @@ public class ProductManager extends Observable implements Serializable{
 	 * @return		returns a collection of Products associated with this particular container
 	 * @throws IllegalArgumentException if the container is not contained within the map
 	 */
-	public Collection getProducts(Container container){
-		if(!productsByContainer.containsKey(container))
-			return null;
+	public Collection<Product> getProducts(Container container){
 		
 		return productsByContainer.get(container); 
 		
@@ -248,9 +249,9 @@ public class ProductManager extends Observable implements Serializable{
 	 * 
 	 * @return returns a collection of all Products
 	 */
-	public Collection getProducts(){ 
+	public Collection<Product> getProducts(){ 
 		assert true;
-		return productByUPC.values();
+		return new TreeSet<Product>(productByUPC.values());
 	}
 	
 	/** Returns a Product that pertains to a particular Barcode.

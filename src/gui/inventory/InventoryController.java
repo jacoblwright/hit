@@ -68,6 +68,8 @@ public class InventoryController extends Controller
 		
 		if( selectedContainerData != null ) {	
 			getView().selectProductContainer( selectedContainerData );
+			productContainerSelectionChanged();
+			productSelectionChanged();
 		}
 		loadContextPanel( selectedContainerData );
 		
@@ -238,6 +240,7 @@ public class InventoryController extends Controller
 		else{
 			getView().setProducts(new ProductData[0]);
 		}
+		
 		getView().setItems(new ItemData[0]);
 	}
 

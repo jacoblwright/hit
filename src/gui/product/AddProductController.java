@@ -21,7 +21,7 @@ public class AddProductController extends Controller implements
 	 */
 	public AddProductController(IView view, String barcode, Container cont) {
 		super(view);
-		
+
 		upc = barcode;
 		container = cont;
 		loadValues();

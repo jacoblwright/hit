@@ -232,8 +232,12 @@ public class Product extends Entity implements Comparable<Product>{
 	@Override
 	public int compareTo(Product other) {
 		int compared = creationDate.compareTo(other.creationDate);
-	    return compared;
-	    
+		if(compared < 0)
+			return 1;
+		else if (compared == 0)
+			return 0;
+		else
+			return -1;
 	}
 
 }

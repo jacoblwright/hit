@@ -47,7 +47,7 @@ public class ItemManager extends Observable implements Serializable {
 	* Constructs the ItemManager
 	*/
 	ItemManager() {
-		itemsByContainer = new HashMap<Container, Set<Item>>();
+		itemsByContainer = new TreeMap<Container, Set<Item>>();
 		itemByTag = new TreeMap<Barcode, Item>();
 		removedItems = new TreeSet<Item>();
 		removedItemsByDate = new HashMap<String, Set<Item>>();
