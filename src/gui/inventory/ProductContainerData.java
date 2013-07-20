@@ -118,7 +118,7 @@ public class ProductContainerData extends Tagable {
 	}
 	
 	private void setContainerRecursively(ProductContainerData aChild, Container container) {
-		Set<ProductGroup> children = container.getProductGroups();
+		Set<ProductGroup> children = container.getProductGroups();		
 		if( children.isEmpty() ) {
 			return;
 		}

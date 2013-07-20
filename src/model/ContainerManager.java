@@ -138,7 +138,6 @@ public class ContainerManager extends Observable implements Serializable {
 		ChangeObject hint = getHintObject( container );
 		setChanged();
 		notifyObservers( hint );
-		//notifyObservers( ChangeType.CONTAINER );
 		
 	}
 
@@ -158,19 +157,22 @@ public class ContainerManager extends Observable implements Serializable {
 				!canEditContainer( newContainer ) ) {
 			throw new IllegalArgumentException();
 		}
+		
 		if( oldContainer instanceof ProductGroup ) {
-			newContainer.setContainer( oldContainer.getContainer() );
-			newContainer.setProductGroups( oldContainer.getProductGroups() );
-			newContainer.getContainer().getProductGroups().remove( oldContainer );
-			newContainer.getContainer().getProductGroups().add( (ProductGroup) newContainer );
-			
+			Container parent = oldContainer.getContainer();	//added for bug fix
+			parent.getProductGroups().remove( (ProductGroup) oldContainer ); 
+			oldContainer.setName( newContainer.getName() );
+			((ProductGroup) oldContainer).setThreeMonthSupply( 
+					((ProductGroup) newContainer).getThreeMonthSupply() );
+			parent.getProductGroups().add( (ProductGroup) oldContainer );
 		}
 		else {
-			newContainer.setProductGroups( oldContainer.getProductGroups() );
 			storageUnits.remove( oldContainer );
-			storageUnits.add( (StorageUnit) newContainer );
+			oldContainer.setName( newContainer.getName() );
+			storageUnits.add( (StorageUnit) oldContainer ); //added for bug fix
 		}
-		ChangeObject hint = getHintObject( newContainer );
+		
+		ChangeObject hint = getHintObject( oldContainer );
 		setChanged();
 		notifyObservers( hint );
 	}
