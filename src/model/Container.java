@@ -149,7 +149,8 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		{
 			return false;
 		}
-		return 	( this.getName() != null ? this.getName().equals( ((Container)obj).getName() ) :
+		return 	this.getId() == ((Container)obj).getId() &&
+				( this.getName() != null ? this.getName().equals( ((Container)obj).getName() ) :
 				((Container)obj).getName() == null ) &&
 				this.getProductGroupsSize() == ((Container)obj).getProductGroupsSize() &&
 				( this.productGroups != null ? this.productGroups.equals( 
