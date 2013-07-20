@@ -21,7 +21,7 @@ public class AddProductController extends Controller implements
 	 */
 	public AddProductController(IView view, String barcode, Container cont) {
 		super(view);
-		
+
 		upc = barcode;
 		container = cont;
 		loadValues();
@@ -95,6 +95,8 @@ public class AddProductController extends Controller implements
 	@Override
 	protected void loadValues() {
 		getView().setBarcode(upc);
+		getView().setShelfLife("0");
+		getView().setSupply("0");
 	}
 
 	//

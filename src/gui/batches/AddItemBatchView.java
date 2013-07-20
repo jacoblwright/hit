@@ -32,7 +32,7 @@ public class AddItemBatchView extends ItemBatchView implements
 		super(parent, dialog);
 
 		construct();
-
+		container = (Container)target.getTag();
 		_controller = new AddItemBatchController(this, target);
 	}
 
