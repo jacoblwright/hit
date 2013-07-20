@@ -4,6 +4,7 @@ package gui.item;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import gui.common.*;
@@ -135,10 +136,20 @@ public class EditItemController extends Controller
 	 */
 	@Override
 	public void valuesChanged() {
-		
-		Item before = (Item) target.getTag();
-		Item after = createItem(before);
-		getView().enableOK(getModel().getItemManager().canEditItem(before, after));
+		if ( getView().getEntryDate() == null ) {
+			getView().enableOK(false);
+		}
+		else {
+			
+			if ( getView().getEntryDate().getTime() > Calendar.getInstance().getTime().getTime()){
+				getView().enableOK(false);
+			}
+			else {
+				Item before = (Item) target.getTag();
+				Item after = createItem(before);
+				getView().enableOK(getModel().getItemManager().canEditItem(before, after));
+			}
+		}
 	}
 	
 	/**
@@ -154,7 +165,9 @@ public class EditItemController extends Controller
 			getView().displayErrorMessage("I'm sorry but you cannot edit this item.");
 		}
 		else {
+//			getView().displayInformationMessage("Editing item");
 			Item newItem = createItem(tagalong);
+			Date entry = getView().getEntryDate();
 			getModel().getProductAndItemEditor().editItem(tagalong, newItem);
 		}
 	}
