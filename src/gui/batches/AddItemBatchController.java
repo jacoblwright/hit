@@ -49,7 +49,7 @@ public class AddItemBatchController extends Controller implements
 		productDataProducts = new ProductData[0];
 		container = (Container)target.getTag();
 		construct();
-		
+		setDefaultValues();
 		timer = new TextFieldTimer(this);
 	}
 
@@ -61,6 +61,9 @@ public class AddItemBatchController extends Controller implements
 		return (IAddItemBatchView) super.getView();
 	}
 
+	protected void setDefaultValues() {
+		getView().setUseScanner(true);
+	}
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -96,7 +99,6 @@ public class AddItemBatchController extends Controller implements
 		getView().selectProduct(selectProduct);
 		selectedProductChanged();
 		getView().setCount("1");
-		getView().setUseScanner(true);
 		Date date = new Date();
 		getView().setEntryDate(date);
 		getView().setBarcode("");
