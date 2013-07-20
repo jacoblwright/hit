@@ -118,46 +118,43 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return name.compareTo(other.name);
 	}
 	
-	/**Creates a unique hashcode for this object.
-	 * @pre					none
-	 * @return int			unique Integer
-	 */
-	@Override
-	public int hashCode() {
-		assert true;
-		int hash = HASH_BASE_PRIME;
-		hash = ( hash * HASH_MULTIPLIER_PRIME ) + this.getId();
-		hash = createHash( hash, this.name );
-		if( container != null ) {
-			hash = hash + container.name.hashCode();
-		}
-		hash = createHash( hash, this.productGroups );
-		return hash;
-	}
-
-	/**checks equality between two objects.
-	 * @pre						none
-	 * @param obj				obj in question fo equality		
-	 * @return boolean 			if this == obj return true, otherwise false.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		assert true;
-		if ( this == obj ) {
-			return true;
-		}
-		if( !( obj instanceof Container ) )
-		{
-			return false;
-		}
-		return 	( this.getName() != null ? this.getName().equals( ((Container)obj).getName() ) :
-				((Container)obj).getName() == null ) &&
-				this.getProductGroupsSize() == ((Container)obj).getProductGroupsSize() &&
-				( this.container != null ? this.container.name.equals( 
-				((Container)obj).container.name ):((Container)obj).container == null ) &&
-				( this.productGroups != null ? this.productGroups.equals( 
-				((Container)obj).productGroups ):((Container)obj).productGroups == null );
-	}
+//	/**Creates a unique hashcode for this object.
+//	 * @pre					none
+//	 * @return int			unique Integer
+//	 */
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = super.hashCode();
+//		result = prime * result
+//				+ ((container == null) ? 0 : container.hashCode());
+//		result = prime * result + ((name == null) ? 0 : name.hashCode());
+//		result = prime * result
+//				+ ((productGroups == null) ? 0 : productGroups.hashCode());
+//		return result;
+//	}
+//
+//	/**checks equality between two objects.
+//	 * @pre						none
+//	 * @param obj				obj in question fo equality		
+//	 * @return boolean 			if this == obj return true, otherwise false.
+//	 */
+//	@Override
+//	public boolean equals(Object obj) {
+//		assert true;
+//		if ( this == obj ) {
+//			return true;
+//		}
+//		if( !( obj instanceof Container ) )
+//		{
+//			return false;
+//		}
+//		return 	( this.getName() != null ? this.getName().equals( ((Container)obj).getName() ) :
+//				((Container)obj).getName() == null ) &&
+//				this.getProductGroupsSize() == ((Container)obj).getProductGroupsSize() &&
+//				( this.productGroups != null ? this.productGroups.equals( 
+//				((Container)obj).productGroups ):((Container)obj).productGroups == null );
+//	}
 
 	/**Creates the string version of this object.
 	 * @pre 				none	
@@ -173,5 +170,36 @@ public abstract class Container extends Entity implements Comparable<Container> 
 	    */
 		return "Container [name=" + name + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((productGroups == null) ? 0 : productGroups.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		Container other = (Container) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (productGroups == null) {
+			if (other.productGroups != null)
+				return false;
+		} else if (!productGroups.equals(other.productGroups))
+			return false;
+		return true;
+	}
+
 
 }
