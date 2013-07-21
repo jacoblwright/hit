@@ -397,7 +397,7 @@ public class InventoryController extends Controller
 			            product, container);
 			    
 			}
-			    
+			selectedProductData = null;    
 			productContainerSelectionChanged();
 			
 		}
