@@ -76,14 +76,14 @@ public class Model {
         }
         catch (IOException e) {
             
-            e.printStackTrace();
+            //e.printStackTrace();
             
             createNewManagers();
             
         }
         catch (ClassNotFoundException e) {
             
-            e.printStackTrace();
+            //e.printStackTrace();
             
             createNewManagers();
             

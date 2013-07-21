@@ -157,21 +157,21 @@ public class ContainerManager extends Observable implements Serializable {
 				!canEditContainer( newContainer ) ) {
 			throw new IllegalArgumentException();
 		}
+		
 		if( oldContainer instanceof ProductGroup ) {
+			Container parent = oldContainer.getContainer();	//added for bug fix
+			parent.getProductGroups().remove( (ProductGroup) oldContainer ); 
 			oldContainer.setName( newContainer.getName() );
 			((ProductGroup) oldContainer).setThreeMonthSupply( 
 					((ProductGroup) newContainer).getThreeMonthSupply() );
-			
-//			Container parent = oldContainer.getContainer();
-//			parent.getProductGroups().remove( (ProductGroup) oldContainer );
-//			parent.getProductGroups().add( (ProductGroup) oldContainer );
-			
+			parent.getProductGroups().add( (ProductGroup) oldContainer );
 		}
 		else {
+			storageUnits.remove( oldContainer );
 			oldContainer.setName( newContainer.getName() );
-			//storageUnits.remove( oldContainer );
-			//storageUnits.add( (StorageUnit) oldContainer );
+			storageUnits.add( (StorageUnit) oldContainer ); //added for bug fix
 		}
+		
 		ChangeObject hint = getHintObject( oldContainer );
 		setChanged();
 		notifyObservers( hint );

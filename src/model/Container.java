@@ -133,28 +133,29 @@ public abstract class Container extends Entity implements Comparable<Container> 
 //				+ ((productGroups == null) ? 0 : productGroups.hashCode());
 //		return result;
 //	}
-//
-//	/**checks equality between two objects.
-//	 * @pre						none
-//	 * @param obj				obj in question fo equality		
-//	 * @return boolean 			if this == obj return true, otherwise false.
-//	 */
-//	@Override
-//	public boolean equals(Object obj) {
-//		assert true;
-//		if ( this == obj ) {
-//			return true;
-//		}
-//		if( !( obj instanceof Container ) )
-//		{
-//			return false;
-//		}
-//		return 	( this.getName() != null ? this.getName().equals( ((Container)obj).getName() ) :
-//				((Container)obj).getName() == null ) &&
-//				this.getProductGroupsSize() == ((Container)obj).getProductGroupsSize() &&
-//				( this.productGroups != null ? this.productGroups.equals( 
-//				((Container)obj).productGroups ):((Container)obj).productGroups == null );
-//	}
+
+	/**checks equality between two objects.
+	 * @pre						none
+	 * @param obj				obj in question fo equality		
+	 * @return boolean 			if this == obj return true, otherwise false.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		assert true;
+		if ( this == obj ) {
+			return true;
+		}
+		if( !( obj instanceof Container ) )
+		{
+			return false;
+		}
+		return 	this.getId() == ((Container)obj).getId() &&
+				( this.getName() != null ? this.getName().equals( ((Container)obj).getName() ) :
+				((Container)obj).getName() == null ) &&
+				this.getProductGroupsSize() == ((Container)obj).getProductGroupsSize() &&
+				( this.productGroups != null ? this.productGroups.equals( 
+				((Container)obj).productGroups ):((Container)obj).productGroups == null );
+	}
 
 	/**Creates the string version of this object.
 	 * @pre 				none	
@@ -181,25 +182,25 @@ public abstract class Container extends Entity implements Comparable<Container> 
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (getClass() != obj.getClass())
-			return false;
-		Container other = (Container) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (productGroups == null) {
-			if (other.productGroups != null)
-				return false;
-		} else if (!productGroups.equals(other.productGroups))
-			return false;
-		return true;
-	}
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		Container other = (Container) obj;
+//		if (name == null) {
+//			if (other.name != null)
+//				return false;
+//		} else if (!name.equals(other.name))
+//			return false;
+//		if (productGroups == null) {
+//			if (other.productGroups != null)
+//				return false;
+//		} else if (!productGroups.equals(other.productGroups))
+//			return false;
+//		return true;
+//	}
 
 
 }
