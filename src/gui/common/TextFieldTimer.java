@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 public class TextFieldTimer {
 
-    private final int DELAY = 300;
+    private final int DELAY = 500;
     
     private Timer timer;
     
