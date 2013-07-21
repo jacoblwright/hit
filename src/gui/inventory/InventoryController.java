@@ -66,11 +66,17 @@ public class InventoryController extends Controller
 		
 		getView().setProductContainers(root);
 		
-		if( selectedContainerData != null ) {	
-			getView().selectProductContainer( selectedContainerData );
+		if( selectedContainerData != null || selectedProductData != null ) {
+			if (selectedContainerData != null)
+				getView().selectProductContainer( selectedContainerData );
+			
+			if (selectedProductData != null)
+				getView().selectProduct(selectedProductData);
+			
 			productContainerSelectionChanged();
 			productSelectionChanged();
 		}
+		
 		loadContextPanel( selectedContainerData );
 		
 	}
@@ -281,6 +287,10 @@ public class InventoryController extends Controller
 	public void productSelectionChanged() {
 		
 		ProductData productData = getView().getSelectedProduct();
+		
+		if(selectedProductData != null){
+			productData = selectedProductData;
+		}
 		Container productContainer = (Container)getView().getSelectedProductContainer().getTag();
 		
 		if(productData != null && productData.getTag() != null && productContainer != null){
@@ -508,7 +518,9 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void editProduct() {
+		selectedProductData = getView().getSelectedProduct();
 		getView().displayEditProductView();
+		productSelectionChanged();
 	}
 	
 	/**
