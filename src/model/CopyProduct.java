@@ -5,7 +5,7 @@ package model;
  * @author andrew
  *
  */
-public class CopyProduct implements Command{
+public class CopyProduct extends Command{
 
 	/** A constructor that sets the product being copied to container
 	 * 

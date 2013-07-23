@@ -5,7 +5,7 @@ package model;
  * @author andrew
  *
  */
-public class MoveItem implements Command{
+public class MoveItem extends Command{
 	
 	/** A constructor that sets the item that is being moved and the container it is
 	 * being moved to.
