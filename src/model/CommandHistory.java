@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Collection;
+
 
 /**
  * This class holds the data structures that manage the undo/redo functionality.
@@ -33,7 +35,7 @@ public class CommandHistory {
 	 * @return true if undo stack is not empty, false otherwise
 	 */
 	public boolean canUndo(){
-		
+		return false;
 	}
 	
 	/**
@@ -50,7 +52,7 @@ public class CommandHistory {
 	 * @return true if redo stack is not empty, false otherwise.
 	 */
 	public boolean canRedo(){
-		
+		return false;
 	}
 	
 	/**

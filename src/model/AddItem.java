@@ -5,7 +5,7 @@ package model;
  * @author andrew
  *
  */
-public class AddItem implements Command{
+public class AddItem extends Command{
 	
 	/** A constructor that sets the item being added to the system.
 	 * 

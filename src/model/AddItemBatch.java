@@ -6,7 +6,7 @@ package model;
  * @author andrew
  *
  */
-public class AddItemBatch implements Command{
+public class AddItemBatch extends Command{
 	
 	/** A constructor that builds a list of sub Commands to add an item.
 	 * 

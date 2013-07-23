@@ -5,7 +5,7 @@ package model;
  * @author andrew
  *
  */
-public class RemoveItemBatch implements Command{
+public class RemoveItemBatch extends Command{
 	
 	/** A constructor that creates a list of sub commands to remove an item.
 	 * 

@@ -5,7 +5,7 @@ package model;
  * @author andrew
  *
  */
-public class TransferItemBatch implements Command{
+public class TransferItemBatch extends Command{
 	
 	/** A constructor that builds a list of sub Commands to transfer an item to
 	 * a new storage unit.
