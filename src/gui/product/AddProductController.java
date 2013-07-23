@@ -72,12 +72,13 @@ public class AddProductController extends Controller implements
 			getView().displayErrorMessage("Barcode should not be empty");
 		
 		try{
-			int shelf = Integer.parseInt(getView().getShelfLife());
-			int supply = Integer.parseInt(getView().getSupply());
-			Float.parseFloat(getView().getSizeValue());
-			if(!getView().getDescription().isEmpty() && supply >= 0 && shelf >= 0)
-				getView().enableOK(true);
-			else getView().enableOK(false);
+			if(getView().getDescription().isEmpty() ||
+					Integer.parseInt(getView().getSupply()) < 0 || 
+					Integer.parseInt(getView().getShelfLife()) < 0 ||
+					Float.parseFloat(getView().getSizeValue()) <= 0
+					)
+				getView().enableOK(false);
+			else getView().enableOK(true);
 		}
 		catch(NumberFormatException e){
 			getView().enableOK(false);

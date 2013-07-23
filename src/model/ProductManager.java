@@ -240,8 +240,11 @@ public class ProductManager extends Observable implements Serializable{
 	 * @throws IllegalArgumentException if the container is not contained within the map
 	 */
 	public Collection<Product> getProducts(Container container){
+		assert true;
 		
-		return productsByContainer.get(container); 
+		if (productsByContainer.get(container) != null)
+			return new TreeSet(productsByContainer.get(container)); 
+		else return null;
 		
 	}
 	
@@ -251,7 +254,10 @@ public class ProductManager extends Observable implements Serializable{
 	 */
 	public Collection<Product> getProducts(){ 
 		assert true;
-		return new TreeSet<Product>(productByUPC.values());
+		
+		if(productByUPC.values() != null)
+			return new TreeSet(productByUPC.values());
+		else return null;
 	}
 	
 	/** Returns a Product that pertains to a particular Barcode.

@@ -70,9 +70,12 @@ public class EditProductController extends Controller
 			Integer.parseInt(getView().getShelfLife());
 			Integer.parseInt(getView().getSupply());
 			Float.parseFloat(getView().getSizeValue());
-			if(!getView().getDescription().isEmpty())
-				getView().enableOK(true);
-			else getView().enableOK(false);
+			if(getView().getDescription().isEmpty() || 
+					Integer.parseInt(getView().getShelfLife()) < 0 || 
+					Integer.parseInt(getView().getSupply()) < 0 || 
+					Float.parseFloat(getView().getSizeValue()) <= 0)
+				getView().enableOK(false);
+			else getView().enableOK(true);
 		}
 		catch(NumberFormatException e){
 			getView().enableOK(false);
@@ -90,12 +93,13 @@ public class EditProductController extends Controller
 	protected void loadValues() {
 		getView().setBarcode(product.getBarcode());
 		getView().setDescription(product.getDescription());
-		/* These four need to be parsed */
 		getView().setSizeValue(product.getCount());
-		//SizeUnits su = SizeUnits.valueOf(product.getSize());
-		//getView().setSizeUnit(su);
-		//getView().setShelfLife(product.getShelfLife());
-		//getView().setSupply(product.getSupply());
+		
+		Product productToEdit = (Product)product.getTag();
+		getView().setSizeUnit((SizeUnits)productToEdit.getSize().getUnit());
+		getView().setSizeValue(Float.toString(productToEdit.getSize().getNumber()));
+		getView().setShelfLife(Integer.toString(productToEdit.getShelfLife()));
+		getView().setSupply(Integer.toString(productToEdit.getThreeMonthSupply()));
 		
 		enableComponents();
 	}
@@ -119,12 +123,11 @@ public class EditProductController extends Controller
 	 */
 	@Override
 	public void editProduct() {
+		
 		Product newProduct = new Product(getView().getBarcode(), getView().getDescription(), 
 				getView().getSizeUnit(), Float.parseFloat(getView().getSizeValue()),Integer.
 				parseInt(getView().getShelfLife()), 
 				Integer.parseInt(getView().getSupply()) );
-		
-		System.out.println(newProduct);
 		
 		if(!getModel().getProductManager().isProductValid(newProduct)){
 			getView().displayErrorMessage("Can't edit to invalid product.");

@@ -42,8 +42,6 @@ public class Product extends Entity implements Comparable<Product>{
 	/** the set of containers that contain this Product */
 	private Set<Container> containers;
 	
-
-	
 	/**	A constructor for instantiating a Product
 	 * 
 	 * @param code	the string that will help initialize the Product's Barcode object
@@ -226,18 +224,18 @@ public class Product extends Entity implements Comparable<Product>{
                 + ", shelfLife=" + shelfLife + ", threeMonthSupply="
                 + threeMonthSupply + ", containers=" + containers + "]";
         */
-        return "Product [upc=" + upc + ", description=" + description + "]"; 
+        return "Product [upc=" + upc + ", description=" + description + ", date=" + creationDate +"]"; 
     }
     
 	@Override
 	public int compareTo(Product other) {
 		int compared = creationDate.compareTo(other.creationDate);
 		if(compared < 0)
-			return 1;
-		else if (compared == 0)
-			return 0;
-		else
 			return -1;
+		else if (compared > 0)
+			return 1;
+		else
+			return 0;
 	}
 
 }
