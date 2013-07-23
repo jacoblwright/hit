@@ -169,7 +169,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 				( productGroups != null ? productGroups.toString() : "null" ) +
 				", container=" + ( container != null ? container.name : "null" ) + "]";
 	    */
-		return "Container [name=" + name + "]";
+		return "Container [name=" + name + " entity=" + super.toString() + "]";
 	}
 
 	@Override
