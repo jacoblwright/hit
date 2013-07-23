@@ -13,7 +13,7 @@ public class MoveItem extends Command{
 	 * @param item	the item being moved
 	 * @param container	the container the item is being move into
 	 */
-	public MoveItem(Item item, Container container){}
+	public MoveItem(Item item){}
 
 	/** Moves the item to its new container
 	 * 

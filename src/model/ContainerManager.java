@@ -152,11 +152,15 @@ public class ContainerManager extends Observable implements Serializable {
 	 */
 	public void editContainer( Container oldContainer, Container newContainer ) 
 			throws IllegalArgumentException {
+		
 		if( oldContainer == null || 
 				newContainer == null || 
 				!canEditContainer( newContainer ) ) {
 			throw new IllegalArgumentException();
 		}
+		
+		System.out.println(" ------ Editing container --------");
+		System.out.println("Before: " + oldContainer + "\nAfter:" + newContainer + "");
 		
 		if( oldContainer instanceof ProductGroup ) {
 			Container parent = oldContainer.getContainer();	//added for bug fix

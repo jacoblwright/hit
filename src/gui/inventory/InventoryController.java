@@ -306,6 +306,7 @@ public class InventoryController extends Controller
 			
 			while(it.hasNext()){
 				Item item = (Item)it.next();
+				
 				if(item.getProduct().equals(productData.getTag())){
 					itemCollection.add(item);
 					

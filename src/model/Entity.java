@@ -43,7 +43,7 @@ public abstract class Entity implements Serializable {
 	@Override
 	public String toString() {
 		assert true;
-		return "Entity [id=" + id + "]";
+		return "Entity [id=" + id + " obj=" + super.toString() + "]";
 	}
 
 	/**Creates a unique hashcode for this object.
