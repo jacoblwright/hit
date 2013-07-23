@@ -1,5 +1,6 @@
 package model;
 
+
 /** A sub command that adds an item to the system.
  * 
  * @author andrew
@@ -11,7 +12,7 @@ public class AddItem extends Command{
 	 * 
 	 * @param item	the Item being added to the system.
 	 */
-	public AddItem(Item item){}
+	public AddItem(Item item, Container target){}
 	
 	/** Adds item to the system
 	 * 
