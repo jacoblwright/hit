@@ -116,6 +116,8 @@ public class RemoveItemBatchController extends ItemBatchController implements
 			if (itemToRemove != null){
 				Container previousContainer = itemToRemove.getContainer();
 				getModel().getProductAndItemEditor().removeItem(itemToRemove);
+				
+				// updates itself with new values
 				getView().setItems(DataConverter.toItemDataArray(
 								getModel().getItemManager().getItems(
 										previousContainer, 
