@@ -58,9 +58,6 @@ public class ItemBatchController extends Controller implements ActionListener {
 		Item found = getModel().getItemManager().getItemByTag(tag);
 
 		if (found == null) {
-			
-			// TODO: spec says enable action if non empty
-			//       i say enable action if item exists
 			getView().enableItemAction(false); 
 			
 		}

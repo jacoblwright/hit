@@ -5,7 +5,7 @@ package model;
  * @author andrew
  *
  */
-public class RemoveItem extends Command{
+public class RemoveItem extends LeafCommand{
 
 	/** A constructor that sets the Item being removed
 	 * 

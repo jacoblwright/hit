@@ -10,9 +10,9 @@ import java.util.Collection;
  */
 public class CommandHistory {
 	
-	Collection<Command> undoStack;
+	Collection<ICommand> undoStack;
 	
-	Collection<Command> redoStack;
+	Collection<ICommand> redoStack;
 	
 	/**
 	 * Builds a command history class
@@ -25,7 +25,7 @@ public class CommandHistory {
 	/**
 	 * Executes the command and pushes it on the undo stack
 	 */
-	public void doCommand(Command doCommand){
+	public void doCommand(ICommand doCommand){
 		
 	}
 	

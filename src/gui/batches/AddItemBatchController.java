@@ -27,7 +27,7 @@ import java.awt.event.*;
 /**
  * Controller class for the add item batch view.
  */
-public class AddItemBatchController extends Controller implements
+public class AddItemBatchController extends ItemBatchController implements
 		IAddItemBatchController, ActionListener {
     
     private TextFieldTimer timer;
@@ -277,6 +277,8 @@ public class AddItemBatchController extends Controller implements
 			}
 		}
 	}
+	
+	public void doAction(){}
 
     @Override
     public void actionPerformed(ActionEvent e) {

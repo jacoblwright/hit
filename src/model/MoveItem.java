@@ -5,7 +5,7 @@ package model;
  * @author andrew
  *
  */
-public class MoveItem extends Command{
+public class MoveItem extends LeafCommand{
 	
 	/** A constructor that sets the item that is being moved and the container it is
 	 * being moved to.

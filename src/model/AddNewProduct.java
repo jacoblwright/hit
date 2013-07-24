@@ -5,7 +5,7 @@ package model;
  * @author andrew
  *
  */
-public class AddNewProduct extends Command{
+public class AddNewProduct extends LeafCommand{
 	
 	/** A constructor that sets the Product being added and sets the Container product
 	 * is being added to.

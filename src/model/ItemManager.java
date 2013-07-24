@@ -22,6 +22,7 @@ import java.io.*;
  * @author Nick
  *
  */
+@SuppressWarnings("serial")
 public class ItemManager extends Observable implements Serializable {
 
 	/**

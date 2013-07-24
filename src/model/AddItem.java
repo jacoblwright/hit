@@ -6,7 +6,7 @@ package model;
  * @author andrew
  *
  */
-public class AddItem extends Command{
+public class AddItem extends LeafCommand{
 	
 	/** A constructor that sets the item being added to the system.
 	 * 
