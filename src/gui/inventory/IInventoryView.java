@@ -155,7 +155,6 @@ public interface IInventoryView extends IView {
 	
 	/**
 	 * Displays the edit storage unit view.
-	 * @param selectedContainer 
 	 */
 	void displayEditStorageUnitView();
 	
