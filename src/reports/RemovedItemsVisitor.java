@@ -2,7 +2,7 @@ package reports;
 
 import java.util.List;
 
-public class RemovedItemsVisitor extends Visitor {
+public class RemovedItemsVisitor implements Visitor {
 
     @Override
     public List<Record> visitAll() {

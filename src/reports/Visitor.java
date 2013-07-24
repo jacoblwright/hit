@@ -2,8 +2,8 @@ package reports;
 
 import java.util.*;
 
-public abstract class Visitor {
+public interface Visitor {
     
-    public abstract List<Record> visitAll();
+    public List<Record> visitAll();
 
 }
