@@ -23,7 +23,7 @@ public class DataConverter {
 		Iterator<Item> iter = col.iterator();
 		while (iter.hasNext()) {
 			Item item = iter.next();
-			ret[i] = new ItemData();
+			ret[i] = new ItemData(item);
 			System.out.println("Display " + item);
 			i++;
 		}

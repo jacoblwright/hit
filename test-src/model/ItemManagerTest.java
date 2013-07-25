@@ -159,6 +159,7 @@ public class ItemManagerTest {
 		ItemManager man = new ItemManager();
 		
 		Container pc1 = new StorageUnit();
+		pc1.setName("a");
 		Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
 		Date expDate1 = dateFormat.parse("1999/1/11");
 		Barcode bc1 = new Barcode("1");
@@ -167,10 +168,14 @@ public class ItemManagerTest {
 		man.addItem(i1);
 		
 		Container pc2 = new ProductGroup();
+		pc2.setName("b");
 		
 		assertEquals(i1.getContainer(), pc1);
+		assertEquals(1, man.getItems(pc1).size());
 		man.moveItem(i1, pc2);
 		assertEquals(i1.getContainer(), pc2);
+		assertEquals(0, man.getItems(pc1).size());
+		assertEquals(1, man.getItems(pc2).size());
 		assertFalse(man.getItems(pc1).contains(i1));
 		assertTrue(man.getItems(pc2).contains(i1));
 		

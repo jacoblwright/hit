@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Collection;
+import java.util.Stack;
 
 
 /**
@@ -10,14 +10,16 @@ import java.util.Collection;
  */
 public class CommandHistory {
 	
-	Collection<ICommand> undoStack;
+	Stack<ICommand> undoStack;
 	
-	Collection<ICommand> redoStack;
+	Stack<ICommand> redoStack;
 	
 	/**
 	 * Builds a command history class
 	 */
 	public CommandHistory(){
+		undoStack = new Stack<ICommand>();
+		redoStack = new Stack<ICommand>();
 	
 	}
 	
@@ -26,7 +28,8 @@ public class CommandHistory {
 	 * Executes the command and pushes it on the undo stack
 	 */
 	public void doCommand(ICommand doCommand){
-		
+		undoStack.push(doCommand);
+		doCommand.execute();
 	}
 	
 	/** 
@@ -35,7 +38,7 @@ public class CommandHistory {
 	 * @return true if undo stack is not empty, false otherwise
 	 */
 	public boolean canUndo(){
-		return false;
+		return !undoStack.isEmpty();
 	}
 	
 	/**
@@ -43,7 +46,9 @@ public class CommandHistory {
 	 * Then adds the command to the redo stack.
 	 */
 	public void undo(){
-		
+		ICommand cmd = undoStack.pop();
+		cmd.unexecute();
+		redoStack.push(cmd);
 	}
 	
 	/**
@@ -52,7 +57,7 @@ public class CommandHistory {
 	 * @return true if redo stack is not empty, false otherwise.
 	 */
 	public boolean canRedo(){
-		return false;
+		return !redoStack.isEmpty();
 	}
 	
 	/**
@@ -60,6 +65,9 @@ public class CommandHistory {
 	 * and then adds the command back onto the undo stack.
 	 */
 	public void redo(){
+		ICommand cmd = redoStack.pop();
+		cmd.execute();
+		undoStack.push(cmd);
 		
 	}
 	

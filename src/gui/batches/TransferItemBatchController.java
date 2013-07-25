@@ -1,7 +1,6 @@
 package gui.batches;
 
-import model.Container;
-import model.Item;
+import model.*;
 import gui.common.*;
 import gui.inventory.*;
 import gui.item.ItemData;
@@ -98,7 +97,9 @@ public class TransferItemBatchController extends ItemBatchController implements
 				
 //				getView().displayInformationMessage("Moving Item " + selectedItem);
 				if ( container != null ){
-					getModel().getProductAndItemEditor().moveItem(selectedItem, container);
+					cmdHistory.doCommand(new TransferItemToSU(selectedItem, 
+															 (StorageUnit) container));
+
 					getView().setItems(DataConverter.toItemDataArray(
 							getModel().getItemManager().
 							getItems(container, selectedItem.getProduct()))

@@ -192,7 +192,8 @@ public class ItemManager extends Observable implements Serializable {
 public void moveItem(Item itemToMove, Container target) {
 	
 	// remove item from itemsByContainer index
-	itemsByContainer.get(itemToMove.getContainer()).remove(itemToMove);
+	Collection<Item> tmp = itemsByContainer.get(itemToMove.getContainer());
+	tmp.remove(itemToMove);
 	
 	// change container pointer since addItem can't
 	itemToMove.setContainer(target);

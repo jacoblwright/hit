@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.TreeSet;
 
 import model.Barcode;
+import model.CommandHistory;
 import model.Item;
 import model.Product;
 import gui.common.Controller;
@@ -22,12 +23,15 @@ public class ItemBatchController extends Controller implements ActionListener {
 
 	private TextFieldTimer timer;
 	
+	protected CommandHistory cmdHistory;
+	
 	protected ItemBatchController(IView view) {
 		super(view);
 		
 		construct();
 		
 		timer = new TextFieldTimer(this);
+		cmdHistory = new CommandHistory();
 	}
 	
 	/**
@@ -117,7 +121,7 @@ public class ItemBatchController extends Controller implements ActionListener {
 	}
 	
 	protected void doAction(){
-		// subclasses
+		// subclasses must override
 	}
 
 	@Override

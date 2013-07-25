@@ -9,13 +9,7 @@ import java.util.TreeSet;
 import gui.common.*;
 import gui.item.ItemData;
 import gui.product.*;
-import model.Container;
-import model.ItemManager;
-import model.Model;
-import model.Item;
-import model.Barcode;
-import model.Product;
-import model.ProductGroup;
+import model.*;
 
 /**
  * Controller class for the remove item batch view.
@@ -115,8 +109,8 @@ public class RemoveItemBatchController extends ItemBatchController implements
 			Item itemToRemove = (Item) selected.getTag();
 			if (itemToRemove != null){
 				Container previousContainer = itemToRemove.getContainer();
-				getModel().getProductAndItemEditor().removeItem(itemToRemove);
-				
+				cmdHistory.doCommand(new RemoveItemFromSU(itemToRemove));
+
 				// updates itself with new values
 				getView().setItems(DataConverter.toItemDataArray(
 								getModel().getItemManager().getItems(

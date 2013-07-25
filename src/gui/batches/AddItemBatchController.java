@@ -8,20 +8,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import config.IOConfig;
-
 import printers.BarcodePrinter;
-
-import model.Barcode;
-import model.Container;
-import model.Item;
-import model.Product;
-import model.StorageUnit;
+import model.*;
 import gui.common.*;
 import gui.inventory.*;
 import gui.item.ItemData;
 import gui.product.*;
+
 import java.awt.event.*;
 
 /**
@@ -191,17 +187,27 @@ public class AddItemBatchController extends ItemBatchController implements
 	@Override
 	public void selectedProductChanged() {
 		ProductData productData = getView().getSelectedProduct();
-		Collection collection = new HashSet();
+//		Collection collection = new HashSet();
+//		if(productData != null){
+//			Iterator it = items.iterator();
+//			while(it.hasNext()){
+//				Item item = (Item)it.next();
+//				if(item.getProduct().equals(productData.getTag())){
+//					collection.add(item);
+//				}
+//			}
+//			ItemData [] itemData = DataConverter.toItemDataArray(collection);
+//			getView().setItems(itemData);
+//		}
 		if(productData != null){
-			Iterator it = items.iterator();
-			while(it.hasNext()){
-				Item item = (Item)it.next();
-				if(item.getProduct().equals(productData.getTag())){
-					collection.add(item);
+			Collection<Item> allProductItems = new TreeSet<Item>();
+			for (Item i : getModel().getItemManager().getItems()){
+				if ( i.getProduct().equals(productData.getTag()) ) {
+					allProductItems.add(i);
 				}
 			}
-			ItemData [] itemData = DataConverter.toItemDataArray(collection);
-			getView().setItems(itemData);
+			
+			getView().setItems(DataConverter.toItemDataArray(allProductItems));
 		}
 	}
 
@@ -235,8 +241,7 @@ public class AddItemBatchController extends ItemBatchController implements
 			Container storageUnit = getModel().getContainerManager().
 					getAncestorStorageUnit(container);
 			Item item = new Item(null, product, getView().getEntryDate(), barcode);
-			getModel().getProductAndItemEditor().
-			addItemToStorageUnit(item, (StorageUnit)storageUnit);
+			cmdHistory.doCommand(new AddItemToSU(item, (StorageUnit) storageUnit));
 			items.add(item);
 		}
 		products.add(product);

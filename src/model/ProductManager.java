@@ -1,6 +1,5 @@
 package model;
 
-import gui.item.ItemData;
 import gui.product.ProductData;
 
 import java.io.Serializable;

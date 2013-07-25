@@ -1,16 +1,29 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Iterator;
+
 public class CompositeCommand implements ICommand {
 
+	List<ICommand> commandList;
+	
+	public CompositeCommand(){
+		commandList = new ArrayList<ICommand>();
+	}
+	
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		
+		for (ICommand cmd : commandList) {
+			cmd.execute();
+		}
 	}
 
 	@Override
 	public void unexecute() {
-		// TODO Auto-generated method stub
+		for (int i = (commandList.size() - 1); i >= 0; i-- ) {
+			commandList.get(i).unexecute();
+		}
 		
 	}
 	
