@@ -174,6 +174,7 @@ public class ProductStatVisitor implements Visitor {
 	public int getItemsCreatedOnAndBeforeDate(Date date, Product product){
 		
 		Set<Item> items = productToAllItemsMap.get(product);
+		if(items == null) return 0;
 		Iterator<Item> it = items.iterator();
 		
 		int count = 0;
@@ -189,6 +190,7 @@ public class ProductStatVisitor implements Visitor {
 	public int getItemsRemovedOnAndBeforeDate(Date date, Product product){
 		
 		Set<Item> items = productToAllItemsMap.get(product);
+		if(items == null) return 0;
 		Iterator<Item> it = items.iterator();
 		
 		int count = 0;
@@ -202,6 +204,7 @@ public class ProductStatVisitor implements Visitor {
 	
 	public int getItemsRemovedDuringReportPeriod(Product product){
 		Set<Item> items = removedProductToItemsMap.get(product);
+		if(items == null) return 0;
 		Iterator<Item> it = items.iterator();
 		
 		int count = 0;
@@ -215,6 +218,7 @@ public class ProductStatVisitor implements Visitor {
 	
 	public int getItemsAddedDuringReportPeriod(Product product){
 		Set<Item> items = productToAllItemsMap.get(product);
+		if(items == null) return 0;
 		Iterator<Item> it = items.iterator();
 		
 		int count = 0;
@@ -269,6 +273,7 @@ public class ProductStatVisitor implements Visitor {
 	
 	public double getUsedAverage(Product product){
 		Set<Item> items = usedItemsDuringPeriod.get(product);
+		if(items == null) return 0;
 		int runningTotal = 0;
 		int dayTotal = 0;
 		Iterator<Item> it = items.iterator();
@@ -299,12 +304,19 @@ public class ProductStatVisitor implements Visitor {
 	
 	public int getMaximumAge(Product product, Map<Product, Set<Item>> itemMap){
 		Set<Item> items = itemMap.get(product);
+		if(items == null) return 0;
 		int maximum = 0;
+		int itemAge;
 		Iterator<Item> it = items.iterator();
 		
 		while(it.hasNext()){
 			Item item = (Item)it.next();
-			int itemAge = daysBetween(item.getEntryDate(), item.getExitTime());
+			if(item.getExitTime() != null){
+				itemAge = daysBetween(item.getEntryDate(), item.getExitTime());
+			}
+			else {
+				itemAge = daysBetween(item.getEntryDate(), new Date());
+			}
 			if(itemAge > maximum){
 				maximum = itemAge;
 			}

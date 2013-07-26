@@ -208,7 +208,7 @@ public class ProductStatRecord implements Record {
 		List<String> productAttributes = new ArrayList();
 		productAttributes.add(description);
 		productAttributes.add(barcode);
-		productAttributes.add(size.getNumber() + " " + size.getUnit().toString());
+		productAttributes.add((int)size.getNumber() + " " + size.getUnit().toString());
 		productAttributes.add(Integer.toString(threeMonthSupply));
 		productAttributes.add(Integer.toString(currentSupply));
 		productAttributes.add(Double.toString(averageSupply));
@@ -222,5 +222,21 @@ public class ProductStatRecord implements Record {
 		
         return productAttributes;
     }
+	
+	public String toString(){
+		return "ProductStatRecord[ description= " + description + 
+				", barcode= " + barcode +
+				", size= " + (int)size.getNumber() + " " + size.getUnit().toString() +
+				", threeMonthSupply= " + Integer.toString(threeMonthSupply) +
+				", currentSupply= " + Integer.toString(currentSupply) +
+				", averageSupply= " + Double.toString(averageSupply) +
+				", minimumSupply= " + Integer.toString(minimumSupply) +
+				", maximumSupply= " + Integer.toString(maximumSupply) +
+				", shelfLife= " + Integer.toString(shelfLife) + " months" +
+				", usedAverageAge= " + Double.toString(usedAge) +
+				", usedMaximumAge= " + Integer.toString(maximumAge) +
+				", currentAverageSupply= " + Double.toString(currentAverageSupply) +
+				", currentMaximumSupply= " + Integer.toString(maximumCurrentSupply) + "\n";
+	}
 
 }

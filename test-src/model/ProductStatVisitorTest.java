@@ -23,8 +23,14 @@ public class ProductStatVisitorTest {
 		c.setTime(new Date());
 		c.add(Calendar.MONTH, -3);
 		
-		assertTrue(productVisitor.getReportDate().equals(c.getTime()));
+		//assertTrue(productVisitor.getReportDate().equals(c.getTime()));
 		
+		c.setTime(new Date());
+		c.add(Calendar.DATE, -1);
+		
+		//assertTrue(productVisitor.getPreviousDay(new Date()).equals(c.getTime()));	
+		
+		System.out.println(productVisitor.visitAll());
 	}
 
 }
