@@ -1,6 +1,6 @@
 package model;
 
-/** A Command that removes an item from the Product and Container, but not the system.
+/** A Command that iterates through its children to remove an item.
  * 
  * @author andrew
  *

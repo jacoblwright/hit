@@ -1,6 +1,6 @@
 package model;
 
-/** A command that performs an item transfer within the system.
+/** A Command that iterates through its children to transfer an item.
  * 
  * @author andrew
  *
