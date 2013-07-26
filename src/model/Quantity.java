@@ -59,6 +59,49 @@ public class Quantity implements Serializable {
 		assert true;
 		return unit;
 	}
+	
+	public String getQuantityString() {
+		return number + unit.name().toLowerCase();
+	}
+	
+	public boolean isUnspecified() {
+		if(number <= 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isVolume() {
+		if(!isUnspecified()) {
+			if(unit.equals(SizeUnits.FluidOunces) ||
+					unit.equals(SizeUnits.Gallons) ||
+					unit.equals(SizeUnits.Liters) ||
+					unit.equals(SizeUnits.Pints) ||
+					unit.equals(SizeUnits.Quarts) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isWeight() {
+		if(!isUnspecified()) {
+			if(unit.equals(SizeUnits.Grams) ||
+					unit.equals(SizeUnits.Kilograms) ||
+					unit.equals(SizeUnits.Ounces) ||
+					unit.equals(SizeUnits.Pounds) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isCount() {
+		if(!isUnspecified() && unit.equals(SizeUnits.Count)) {
+			return true;
+		}
+		return false;
+	}
 
 	/**Creates the string version of this object.
 	 * @pre 				none	
