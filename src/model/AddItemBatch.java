@@ -1,6 +1,6 @@
 package model;
 
-/** A Command that adds an item to the system.
+/** A Command that iterates through its children to add an item.
  * 
  * 
  * @author andrew
