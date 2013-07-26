@@ -216,7 +216,7 @@ public class Item extends Entity implements Comparable<Item> {
 
 	@Override
 	public String toString() {
-		return "Item [ tag=" + tag + ", container=" + container + "]";
+		return "Item [product=" + product.getDescription() + ", tag=" + tag + ", container=" + container + "]";
 //		return "Item [product=" + product + ", tag=" + tag + ", entryDate="
 //				+ entryDate + ", exitDate=" + exitDate + ", exitTime="
 //				+ exitTime + ", expirationDate=" + getExpirationDate()
