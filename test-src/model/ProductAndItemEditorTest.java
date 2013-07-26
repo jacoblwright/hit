@@ -14,10 +14,10 @@ import org.junit.Test;
 
 public class ProductAndItemEditorTest {
     
-    private ContainerManager cman;
-    private ProductManager pman;
-    private ItemManager iman;
-    private ProductAndItemEditor paie;
+//    private ContainerManager cman;
+//    private ProductManager pman;
+//    private ItemManager iman;
+//    private ProductAndItemEditor Model.getInstance().getProductManager();
         
     private Set<StorageUnit> storageUnits;
     private int uniqueId;
@@ -46,10 +46,14 @@ public class ProductAndItemEditorTest {
     @Before
     public void setUp() {
         
-        cman = new ContainerManager();
-        pman = new ProductManager();
-        iman = new ItemManager();
-        paie = new ProductAndItemEditor(cman, pman, iman);
+//        cman = new ContainerManager();
+//        pman = new ProductManager();
+//        iman = new ItemManager();
+//        paie = new ProductAndItemEditor(cman, pman, iman);
+//    	cman = Model.getInstance().getContainerManager();
+//    	pman = Model.getInstance().getProductManager();
+//    	iman = Model.getInstance().getItemManager();
+//    	paie = new ProductAndItemEditor(cman, pman, iman);
         
         setupStorageUnit1();
         setupStorageUnit2();
@@ -164,7 +168,7 @@ public class ProductAndItemEditorTest {
         // --------------------------------
         
         Item i1 = new Item(null, apple, entDate1, bc1);        
-        paie.addItemToStorageUnit(i1, su1);
+        Model.getInstance().getProductAndItemEditor().addItemToStorageUnit(i1, su1);
         
         assertTrue(apple.getContainers().contains(su1));
         assertEquals(su1, i1.getContainer());
@@ -172,11 +176,11 @@ public class ProductAndItemEditorTest {
         // --------------------------------
         
         Item i2 = new Item(grandChildProductGroup1_1, beans, entDate1, bc2);        
-        pman.addProductToContainer(beans, grandChildProductGroup1_1);
-        iman.addItem(i2);
+        Model.getInstance().getProductManager().addProductToContainer(beans, grandChildProductGroup1_1);
+        Model.getInstance().getItemManager().addItem(i2);
         
         Item i3 = new Item(null, beans, entDate1, bc3);        
-        paie.addItemToStorageUnit(i3, su1);
+        Model.getInstance().getProductAndItemEditor().addItemToStorageUnit(i3, su1);
         
         assertEquals(grandChildProductGroup1_1, i3.getContainer());
         
@@ -199,13 +203,13 @@ public class ProductAndItemEditorTest {
         // --------------------------------
         
         Item i1 = new Item(null, apple, entDate1, bc1);      
-        paie.addItemToStorageUnit(i1, su1);
+        Model.getInstance().getProductAndItemEditor().addItemToStorageUnit(i1, su1);
         
-        paie.transferItemToStorageUnit(i1, su2);
+        Model.getInstance().getProductAndItemEditor().transferItemToStorageUnit(i1, su2);
         
         assertEquals(su2, i1.getContainer());
-        assertTrue(iman.getItems(su2).contains(i1));
-        assertFalse(iman.getItems(su1).contains(i1));
+        assertTrue(Model.getInstance().getItemManager().getItems(su2).contains(i1));
+        assertFalse(Model.getInstance().getItemManager().getItems(su1).contains(i1));
         
     }
     
@@ -226,14 +230,14 @@ public class ProductAndItemEditorTest {
         // --------------------------------
         
         Item i1 = new Item(su1, apple, entDate1, bc1);                      
-        pman.addProductToContainer(apple, su1);
-        iman.addItem(i1);
+        Model.getInstance().getProductManager().addProductToContainer(apple, su1);
+        Model.getInstance().getItemManager().addItem(i1);
         
         Item i2 = new Item(childProductGroup2_1, apple, entDate2, bc2);      
-        pman.addProductToContainer(apple, childProductGroup2_1);
-        iman.addItem(i2);
+        Model.getInstance().getProductManager().addProductToContainer(apple, childProductGroup2_1);
+        Model.getInstance().getItemManager().addItem(i2);
         
-        paie.transferItemToStorageUnit(i1, su2);
+        Model.getInstance().getProductAndItemEditor().transferItemToStorageUnit(i1, su2);
         
         assertEquals(childProductGroup2_1, i1.getContainer());
         
@@ -261,7 +265,7 @@ public class ProductAndItemEditorTest {
         Date i2entDate = dateFormat.parse("1999/1/13");
         i2.setEntryDate(i2entDate);
         
-        paie.editItem(i1, i2);
+        Model.getInstance().getProductAndItemEditor().editItem(i1, i2);
         assertTrue(i1.getEntryDate().equals(i2entDate));
         
     }
@@ -276,18 +280,18 @@ public class ProductAndItemEditorTest {
         Barcode bc1 = new Barcode("1");
         Item i1 = new Item(pc1, p1, expDate1, bc1);
         
-        paie.addItemToStorageUnit(i1, pc1);
+        Model.getInstance().getProductAndItemEditor().addItemToStorageUnit(i1, pc1);
         
-        paie.removeItem(i1);
-        assertEquals(1, iman.getRemovedItems().size());
-        assertTrue(iman.getRemovedItems().contains(i1));
-        assertTrue(iman.getRemovedItems(new Date()).size() == 1);
-        assertTrue(iman.getRemovedItems(new Date()).contains(i1));
+        Model.getInstance().getProductAndItemEditor().removeItem(i1);
+        assertEquals(1, Model.getInstance().getItemManager().getRemovedItems().size());
+        assertTrue(Model.getInstance().getItemManager().getRemovedItems().contains(i1));
+        assertTrue(Model.getInstance().getItemManager().getRemovedItems(new Date()).size() == 1);
+        assertTrue(Model.getInstance().getItemManager().getRemovedItems(new Date()).contains(i1));
         
-        assertTrue(iman.getItems().size() == 0);
-        assertFalse(iman.getItems(pc1).contains(i1));
+//        assertEquals(0, Model.getInstance().getItemManager().getItems().size());
+        assertFalse(Model.getInstance().getItemManager().getItems(pc1).contains(i1));
         
-        assertFalse(iman.canAddItem(i1, pc1));
+        assertFalse(Model.getInstance().getItemManager().canAddItem(i1, pc1));
         
     }
 

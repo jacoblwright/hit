@@ -5,7 +5,7 @@ import gui.common.IController;
 /**
  * Controller interface for add item batch view.
  */
-public interface IAddItemBatchController extends IController {
+public interface IAddItemBatchController extends IItemBatchController {
 
 	/**
 	 * This method is called when the "Entry Date" field in the
@@ -60,6 +60,11 @@ public interface IAddItemBatchController extends IController {
 	 * in the add item batch view.
 	 */
 	void done();
+	
+	/**
+	 * Method is called when barcode is changed in either mode
+	 */
+	void doAction();
 
 }
 

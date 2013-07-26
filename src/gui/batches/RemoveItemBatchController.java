@@ -9,13 +9,7 @@ import java.util.TreeSet;
 import gui.common.*;
 import gui.item.ItemData;
 import gui.product.*;
-import model.Container;
-import model.ItemManager;
-import model.Model;
-import model.Item;
-import model.Barcode;
-import model.Product;
-import model.ProductGroup;
+import model.*;
 
 /**
  * Controller class for the remove item batch view.
@@ -57,16 +51,16 @@ public class RemoveItemBatchController extends ItemBatchController implements
 			return (IRemoveItemBatchView)super.getView();
 		}
 	
-	/**
-	 * Loads data into the controller's view.
-	 * 
-	 *  {@pre None}
-	 *  
-	 *  {@post The controller has loaded data into its view}
-	 */
-	@Override
-	protected void loadValues() {
-	}
+//	/**
+//	 * Loads data into the controller's view.
+//	 * 
+//	 *  {@pre None}
+//	 *  
+//	 *  {@post The controller has loaded data into its view}
+//	 */
+//	@Override
+//	protected void loadValues() {
+//	}
 
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
@@ -81,8 +75,8 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	@Override
 	protected void enableComponents() {
 		getView().setUseScanner(true);
-		getView().enableRedo(false);
-		getView().enableUndo(false);
+		getView().enableRedo(cmdHistory.canRedo());
+		getView().enableUndo(cmdHistory.canUndo());
 		getView().enableItemAction(false);
 	}
 
@@ -110,27 +104,22 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	public void removeItem() {
-		ItemData selected = getView().getSelectedItem();
-		if (selected != null){
-			Item itemToRemove = (Item) selected.getTag();
-			if (itemToRemove != null){
-				Container previousContainer = itemToRemove.getContainer();
-				getModel().getProductAndItemEditor().removeItem(itemToRemove);
-				
-				// updates itself with new values
-				getView().setItems(DataConverter.toItemDataArray(
-								getModel().getItemManager().getItems(
-										previousContainer, 
-										itemToRemove.getProduct())));
+		if (selectedItem != null){
+			if ( selectedItem.getContainer() == null ) {
+				getView().displayWarningMessage("The given item has already been removed!");
 			}
 			else {
-				getView().displayErrorMessage("Could not remove item!");
+				cmdHistory.doCommand(new RemoveItemFromSU(selectedItem));
 			}
+
+//			// updates itself with new values
+//			getView().setItems(DataConverter.toItemDataArray(
+//							getModel().getItemManager().getItems(
+//									previousContainer, 
+//									selectedItem.getProduct())));
 		}
 		else {
-			if (!getView().getUseScanner()){
-				getView().displayErrorMessage("Could not find selected Item!");
-			}
+			getView().displayErrorMessage("Could not remove item!");
 		}
 	}
 	
@@ -140,6 +129,9 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	public void redo() {
+		super.redo();
+		enableComponents();
+		loadValues();
 	}
 
 	/**
@@ -148,6 +140,9 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	public void undo() {
+		super.undo();
+		enableComponents();
+		loadValues();
 	}
 
 	
@@ -168,6 +163,8 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	
 	public void doAction(){
 		removeItem();
+		enableComponents();
+		loadValues();
 	}
 	
 }
