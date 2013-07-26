@@ -52,4 +52,14 @@ public class DataConverter {
 		}
 		return ret;
 	}
+	
+	public static ProductData getProductData(Product product, ProductData[] list){
+		for (int i = 0; i < list.length; i++){
+			if ( list[i].getTag().equals(product) ){
+				return list[i];
+			}
+		}
+		return null;
+		
+	}
 }

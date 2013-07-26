@@ -15,6 +15,7 @@ public class RemoveItem implements ILeafCommand{
 	 */
 	public RemoveItem(Item item) throws IllegalArgumentException{
 		this.item = item;
+		this.prevContainer = item.getContainer();
 		
 		if (item.getContainer() == null){
 			throw new IllegalArgumentException(
@@ -35,6 +36,6 @@ public class RemoveItem implements ILeafCommand{
 	 * 
 	 */
 	public void unexecute(){
-		
+		Model.getInstance().getItemManager().undoRemoveItem(item, prevContainer);
 	}
 }

@@ -37,6 +37,8 @@ public class CopyProduct implements ILeafCommand{
 	/** Removes product from container
 	 * 
 	 */
-	public void unexecute(){}
+	public void unexecute(){
+		Model.getInstance().getProductManager().removeProductFromContainer(product, container);
+	}
 	
 }

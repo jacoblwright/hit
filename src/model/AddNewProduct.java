@@ -37,6 +37,8 @@ public class AddNewProduct implements ILeafCommand{
 	/** Removes a Product from the system and detaches it from the container
 	 * 
 	 */
-	public void unexecute(){}
+	public void unexecute(){
+		Model.getInstance().getProductManager().deleteProductFromSystem(product);
+	}
 
 }

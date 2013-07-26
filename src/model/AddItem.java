@@ -34,6 +34,8 @@ public class AddItem implements ILeafCommand{
 	/** Removes item from the system
 	 * 
 	 */
-	public void unexecute(){}
+	public void unexecute(){
+		Model.getInstance().getItemManager().deleteItem(item, target);
+	}
 
 }

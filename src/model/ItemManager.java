@@ -146,6 +146,50 @@ public class ItemManager extends Observable implements Serializable {
 		notify(null);
 	}
 
+	/** Deletes item complete from the model, whether it has only been added,
+	 * 	or if it has been removed as well.
+	 * 
+	 * @param itemToDelete - the item you wish to completely remove from the system
+	 * @param container - the container it existed in last
+	 */
+	public void deleteItem(Item itemToDelete, Container container){
+		removeRemovedItem(itemToDelete);
+		removeAddedItemFromSystem(itemToDelete, container);
+		
+	}
+	
+	private void removeAddedItemFromSystem(Item itemToDelete, Container container){
+		Collection<Item> items = itemsByContainer.get(container);
+		if (items == null ){
+			throw new IllegalArgumentException(
+					"cannot delete item: it does not appear to be added");
+		}
+		items.remove(itemToDelete);
+		itemByTag.remove(itemToDelete.getTag());
+		
+		notify(null);
+	}
+	
+	private void removeRemovedItem(Item item){
+		Date exitTime = item.getExitTime();
+		if (exitTime != null ){
+			String exit_str = dateFormat.format(exitTime);
+			if (removedItemsByDate.containsKey(exit_str)) {
+				removedItemsByDate.get(exit_str).remove(item);
+			}
+			
+			removedItems.remove(item);
+			item.setExitTime(null);
+		}
+		notify(null);
+	}
+	
+	public void undoRemoveItem(Item item, Container target){
+		removeRemovedItem(item);
+		item.setContainer(target);
+		addItem(item);
+	}
+	
 	/**
 	 * Checks whether or not the item can be added.
 	 * 
@@ -224,7 +268,7 @@ public void moveItem(Item itemToMove, Container target) {
 		// update container index
 		itemsByContainer.get(itemToRemove.getContainer()).remove(itemToRemove);
 		Date exitDate = new Date();
-		String exitDate_str = dateFormat.format(exitDate);
+		String exitDate_str = dateFormat.format(exitDate); // capture date at midnight
 		
 		itemToRemove.setExitTime(exitDate);
 		itemToRemove.setContainer(null);

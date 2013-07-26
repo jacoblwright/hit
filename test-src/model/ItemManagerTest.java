@@ -248,5 +248,39 @@ public class ItemManagerTest {
 		assertFalse(man.doesTagExist("1"));
 		
 	}
+	@Test public void testRemoveItemFromSystem() throws ParseException {
+		ItemManager man = new ItemManager();
+		
+		Container pc1 = new StorageUnit();
+		pc1.setName("a");
+		Product p1 = new Product("123456789", "Descripshun", SizeUnits.Count, 1, 1, 1);
+		Date expDate1 = dateFormat.parse("1999/3/11");
+		Barcode bc1 = new Barcode("1");
+		Item i1 = new Item(pc1, p1, expDate1, bc1);
+		i1.setEntryDate(dateFormat.parse("1999/1/11"));
+		
+		man.addItem(i1);
+		
+		man.deleteItem(i1, pc1);
+		
+		assertEquals(0, man.getItems(pc1).size());
+		assertEquals(null, man.getItemByTag(i1.getTag()));
+		assertFalse(man.getRemovedItems().contains(i1));
+		
+		Item i2 = new Item(pc1, p1, expDate1, bc1);
+		i2.setEntryDate(dateFormat.parse("1999/1/11"));
+		
+		man.addItem(i2);
+		man.removeItem(i2);
+		
+		Date exitTime = i2.getExitTime();
+		man.deleteItem(i2, pc1);
+		
+		assertFalse(man.getItems(pc1).contains(i2));
+		assertEquals(null, man.getItemByTag(i2.getTag()));
+		assertFalse(man.getRemovedItems().contains(i2));
+		assertFalse(man.getRemovedItems(exitTime).contains(i2));
+		
+	}
 
 }

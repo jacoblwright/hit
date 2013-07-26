@@ -9,6 +9,8 @@ public class MoveItem implements ILeafCommand{
 	
 	Item item;
 	Container target;
+	Container previous;
+	
 	/** A constructor that sets the item that is being moved and the container it is
 	 * being moved to.
 	 * 
@@ -22,6 +24,7 @@ public class MoveItem implements ILeafCommand{
 		}
 		
 		this.item = item;
+		this.previous = item.getContainer();
 		this.target = target;
 	}
 
@@ -35,5 +38,7 @@ public class MoveItem implements ILeafCommand{
 	/** Moves the item back to its old container
 	 * 
 	 */
-	public void unexecute(){}
+	public void unexecute(){
+		Model.getInstance().getItemManager().moveItem(item, previous);
+	}
 }
