@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import model.Model;
 import model.Product;
@@ -20,6 +21,7 @@ public class NMonthSupplyProductVisitor implements Visitor {
 	public NMonthSupplyProductVisitor(int timePeriod){
 		months = timePeriod;
 		model = Model.getInstance();
+		productItemsMap = new TreeMap();
 		addProductsToMap();
 		addItemsToMap();
 	}
