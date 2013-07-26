@@ -70,7 +70,7 @@ public class ProductAndItemEditor {
             StorageUnit targetSU =
                     containerManager.getAncestorStorageUnit(targetContainer);         
             Container containerOfProductInTargetSU =
-                    getContainer(product, targetSU);    
+                    getContainerOfProductInSU(product, targetSU);    
             
             if (containerOfProductInTargetSU == null) {
                 
@@ -97,7 +97,7 @@ public class ProductAndItemEditor {
         StorageUnit suOftargetContainer =
                 containerManager.getAncestorStorageUnit(targetContainer);
         
-        if (getContainer(product, suOftargetContainer) == null) {
+        if (getContainerOfProductInSU(product, suOftargetContainer) == null) {
             
             // product is not already within targetContainer's StorageUnit.            
             System.out.println("PAIE.moveProductWhenTreeRootIsSelected(): " +
@@ -115,7 +115,7 @@ public class ProductAndItemEditor {
                     "targetContainer's StorageUnit");
             
             Container sourceContainer =
-                    getContainer(product, suOftargetContainer);
+                    getContainerOfProductInSU(product, suOftargetContainer);
             
             moveProduct(product, sourceContainer, targetContainer);
             
@@ -211,7 +211,7 @@ public class ProductAndItemEditor {
          }
          
          Container containerOfProductInSU =
-                 getContainer(item.getProduct(), storageUnit);
+                 getContainerOfProductInSU(item.getProduct(), storageUnit);
          
          if (containerOfProductInSU == null) {   
              
@@ -246,7 +246,7 @@ public class ProductAndItemEditor {
          }
          
          Container containerOfProductInSU =
-                 getContainer(item.getProduct(), storageUnit);
+                 getContainerOfProductInSU(item.getProduct(), storageUnit);
          //System.out.println("containerOfProductInSU:" + containerOfProductInSU);
          
          if (containerOfProductInSU == null) {   
@@ -352,7 +352,8 @@ public class ProductAndItemEditor {
       * specified StorageUnit; returns null if the specified product is not
       * within the specified StorageUnit.
       */
-     private Container getContainer(Product product, StorageUnit storageUnit) {
+     public Container getContainerOfProductInSU(
+             Product product, StorageUnit storageUnit) {
          
          assert product != null;
          assert storageUnit != null;
