@@ -210,7 +210,9 @@ public class ProductAndItemEditor {
              throw new IllegalArgumentException();
          }
     	 else {
-	    	 ICommand addItemToStorageUnit = new AddItemToSU(item, storageUnit);
+    		 List<Item> tmp = new ArrayList<Item>();
+    		 tmp.add(item);
+	    	 ICommand addItemToStorageUnit = new AddItemsToSU(tmp, storageUnit);
 	    	 addItemToStorageUnit.execute();
 	    	 return;
 
