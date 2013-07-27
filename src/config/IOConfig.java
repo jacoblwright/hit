@@ -8,18 +8,19 @@ public class IOConfig {
     private final static String C_MANAGER_FILENAME = "cm.hit";
     private final static String P_MANAGER_FILENAME = "pm.hit";
     private final static String I_MANAGER_FILENAME = "im.hit";
+    private final static String REPORT_TIME_FILENAME = "report_time.hit";
     
     private final static String PRINTER_OUTPUT_DIR_NAME = "hit_printer_output";
     private final static String BARCODE_TAGS_FILENAME = "barcode_tags.pdf";
-    private final static String REPORT_FILENAME = "report.pdf";
+    private final static String REPORT_FILENAME = "report.pdf";   
     
     private static File containerManagerFile;
     private static File productManagerFile;
     private static File itemManagerFile;
+    private static File reportTimeFile;
     
-    private static File barcodeTagsFile;
-    
-    private static File reportFile;
+    private static File barcodeTagsFile;    
+    private static File reportFile;        
     
     static {
         
@@ -35,12 +36,15 @@ public class IOConfig {
                 System.getProperty("user.home") + File.separator +
                 OBJECT_DATA_DIR_NAME + File.separator +
                 I_MANAGER_FILENAME);
+        reportTimeFile = new File(
+                System.getProperty("user.home") + File.separator +
+                OBJECT_DATA_DIR_NAME + File.separator +
+                REPORT_TIME_FILENAME);
         
         barcodeTagsFile = new File(
                 System.getProperty("user.home") + File.separator +
                 PRINTER_OUTPUT_DIR_NAME + File.separator +
-                BARCODE_TAGS_FILENAME);
-        
+                BARCODE_TAGS_FILENAME);      
         reportFile = new File(
                 System.getProperty("user.home") + File.separator +
                 PRINTER_OUTPUT_DIR_NAME + File.separator +
@@ -58,6 +62,10 @@ public class IOConfig {
 
     public static File getItemManagerFile() {
         return itemManagerFile;
+    }
+    
+    public static File getReportTimeFile() {
+        return reportTimeFile;
     }
     
     public static File getBarcodeTagsFile() {
