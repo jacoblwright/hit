@@ -20,7 +20,7 @@ public class RemovedItemsVisitor implements Visitor {
 	Map<Product, Integer> removedItemsFromProductMap;
 	Map<Product, Integer> currentItemMap;
 	
-	public RemovedItemsVisitor(Date date){
+	public RemovedItemsVisitor(Iterator<Item> it, Date date){
 		reportDate = date;
 		
 		model = Model.getInstance();
