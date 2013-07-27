@@ -20,7 +20,6 @@ public class RemovedItemsVisitor implements Visitor {
 	Map<Product, Integer> removedItemsFromProductMap;
 	Map<Product, Integer> currentItemMap;
 	
-	
 	public RemovedItemsVisitor(Iterator<Item> it, Date date){
 		reportDate = date;
 		
@@ -60,18 +59,22 @@ public class RemovedItemsVisitor implements Visitor {
     	
     	while(it.hasNext()){
     		Item item = (Item)it.next();
-    		if(!alreadyAddedList.contains(item.getProduct())){
-    			RemovedItemsRecord record = new RemovedItemsRecord();
-    			record.setDescription(item.getProduct().getDescription());
-    			record.setSize(item.getProduct().getSize());
-    			record.setBarcode(item.getProduct().getUPC().getBarcode());
-    			record.setRemovedItems(removedItemsFromProductMap.get(item.getProduct()));
-    			record.setCurrentSupply(currentItemMap.get(item.getProduct()));
-    			
-    			removedItemsList.add(record);
-    			alreadyAddedList.add(item.getProduct());
+    		
+    		if(alreadyAddedList.contains(item.getProduct())){
+    			continue;
     		}
+			RemovedItemsRecord record = new RemovedItemsRecord();
+			record.setDescription(item.getProduct().getDescription());
+			record.setSize(item.getProduct().getSize());
+			record.setBarcode(item.getProduct().getUPC().getBarcode());
+			record.setRemovedItems(removedItemsFromProductMap.get(item.getProduct()));
+			if(currentItemMap.get(item.getProduct()) == null){
+				record.setCurrentSupply(0);
+			}
+			else record.setCurrentSupply(currentItemMap.get(item.getProduct()));
     			
+			removedItemsList.add(record);
+			alreadyAddedList.add(item.getProduct());   			
     	}
 
         return removedItemsList;
