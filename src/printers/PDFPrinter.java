@@ -2,6 +2,7 @@ package printers;
 
 import java.util.List;
 import java.io.*;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
@@ -12,6 +13,7 @@ public class PDFPrinter extends Printer implements ReportPrinter {
     private File file;
     
     private Document document;
+    private PdfWriter writer;
     
     public PDFPrinter(File file) throws IOException {
         
@@ -20,6 +22,15 @@ public class PDFPrinter extends Printer implements ReportPrinter {
         this.file = file;
         
         document = new Document(PageSize.LETTER);
+        
+        try {
+            writer = PdfWriter.getInstance(
+                    document, new FileOutputStream(file));
+        }
+        catch (DocumentException d) {
+            throw new IOException(d.getMessage());
+        }
+        
         document.open();            
         document.setMargins(
                 MARGINS, MARGINS, MARGINS, MARGINS);
