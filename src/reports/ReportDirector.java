@@ -2,7 +2,6 @@ package reports;
 
 import java.util.*;
 import java.io.*;
-import model.*;
 import config.IOConfig;
 import printers.*;
 import gui.common.*;
@@ -41,7 +40,7 @@ public class ReportDirector {
     public static void generateRemovedItemsReport(Date date,
             FileFormat format) throws IOException {
         
-ReportPrinter p = getPrinter(format);
+        ReportPrinter p = getPrinter(format);
         
         p.printTitle("Items Removed Since " + date);
         p.printBlankLine();
@@ -149,8 +148,30 @@ ReportPrinter p = getPrinter(format);
     
     }
     
-    public static void generateNoticesReport(FileFormat format) {
+    public static void generateNoticesReport(FileFormat format)
+            throws IOException{
         
+        ReportPrinter p = getPrinter(format);
+        
+        p.printTitle("Notices");
+        p.printBlankLine();
+        p.printBlankLine();
+        
+        p.printHeading("3-Month Supply Warnings");
+        p.printBlankLine();
+                
+        Visitor visitor = new NoticesVisitor();
+        List<Record> records = visitor.visitAll();
+        for (Record record : records) {
+            
+            List<String> valuesAsStrings = record.getValuesAsStrings();
+            for (String valueString : valuesAsStrings) {
+                p.printLine(valueString);
+            }
+            
+            p.printBlankLine();
+            
+        }
         
     }
     
@@ -175,6 +196,7 @@ ReportPrinter p = getPrinter(format);
     }
     
     public static int getValidMonths(String numOfMonths) {
+        
     	int number = 0;
 		try
 		{	
@@ -193,9 +215,10 @@ ReportPrinter p = getPrinter(format);
 			number = -1;
 		}
 		return number;
+		
     }
     
-	private static boolean emptyString( String str) {
+	private static boolean emptyString(String str) {
 		return str.trim().length() == 0;
 	}
     
