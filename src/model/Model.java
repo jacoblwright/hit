@@ -2,6 +2,7 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import reports.*;
 
 import config.IOConfig;
 
@@ -16,9 +17,8 @@ public class Model {
     private ProductManager productManager;
     private ItemManager itemManager;
     
-    
-    
-    
+    private ReportTime reportTime;
+        
     /**
      * Loads the saved object data of the managers and constructs the editors
      * using those managers.
@@ -73,18 +73,29 @@ public class Model {
                 itemManager = new ItemManager();
             }
             
+            file = IOConfig.getReportTimeFile();
+            ReportTime rt = null;
+            if (file.exists() && file.canRead()) {
+                rt = (ReportTime)Serializer.load(file);
+            }
+            if (rt != null) {
+                reportTime = rt;
+            }
+            else {
+                reportTime = new ReportTime();
+            }            
         
         }
         catch (IOException e) {
             
-            //e.printStackTrace();
+            e.printStackTrace();
             
             createNewManagers();
             
         }
         catch (ClassNotFoundException e) {
             
-            //e.printStackTrace();
+            e.printStackTrace();
             
             createNewManagers();
             
@@ -133,6 +144,8 @@ public class Model {
                 productManager, IOConfig.getProductManagerFile());
         Serializer.save(
                 itemManager, IOConfig.getItemManagerFile());
+        Serializer.save(
+                reportTime, IOConfig.getReportTimeFile());
         
     }
     
@@ -149,41 +162,55 @@ public class Model {
     public ContainerEditor getContainerEditor() {
         return containerEditor;
     }
-
+    
+    /*
     public void setContainerEditor(ContainerEditor containerEditor) {
         this.containerEditor = containerEditor;
     }
-
+     */
+    
     public ContainerManager getContainerManager() {
         return containerManager;
     }
     
+    /*
     public void setContainerManager(ContainerManager containerManager) {
         this.containerManager = containerManager;
     }
-
+    */
+    
     public ProductAndItemEditor getProductAndItemEditor() {
         return productAndItemEditor;
     }
-
+    
+    /*
     public void setProductAndItemEditor(ProductAndItemEditor productAndItemEditor) {
         this.productAndItemEditor = productAndItemEditor;
     }
-
+    */
+    
     public ProductManager getProductManager() {
         return productManager;
     }
-
+    
+    /*
     public void setProductManager(ProductManager productManager) {
         this.productManager = productManager;
     }
-
+    */
+    
     public ItemManager getItemManager() {
         return itemManager;
     }
-
+    
+    /*
     public void setItemManager(ItemManager itemManager) {
         this.itemManager = itemManager;
+    }
+    */
+    
+    public ReportTime getReportTime() {
+        return reportTime;
     }
     
 }

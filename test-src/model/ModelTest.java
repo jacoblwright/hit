@@ -31,6 +31,7 @@ public class ModelTest {
                 new ProductAndItemEditor(
                         containerManager, productManager, itemManager);
         
+        /*
         m.setContainerEditor(containerEditor);
         assertTrue(containerEditor == m.getContainerEditor());
         
@@ -45,6 +46,7 @@ public class ModelTest {
         
         m.setItemManager(itemManager);
         assertTrue(itemManager == m.getItemManager());
+        */
         
     }
 
