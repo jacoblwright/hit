@@ -54,12 +54,12 @@ public class NMonthSupplyContainerRecord implements
 
 	@Override
     public List<String> getValuesAsStrings() {
-		List<String> containerAttribute = new ArrayList<String>();
-		containerAttribute.add(productGroup.getName());
-		containerAttribute.add(storageUnit.getName());
-		containerAttribute.add(threeMonthSupply.getQuantityString());
-		containerAttribute.add(currentSupply.getQuantityString());
-        return containerAttribute;        
+		List<String> result = new ArrayList<String>();
+		result.add(productGroup.getName());
+		result.add(storageUnit.getName());
+		result.add(threeMonthSupply.getQuantityString());
+		result.add(currentSupply.getQuantityString());
+        return result;        
     }
 
 	@Override
@@ -81,6 +81,38 @@ public class NMonthSupplyContainerRecord implements
 				* result
 				+ ((threeMonthSupply == null) ? 0 : threeMonthSupply.hashCode());
 		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NMonthSupplyContainerRecord other = (NMonthSupplyContainerRecord) obj;
+		if (currentSupply == null) {
+			if (other.currentSupply != null)
+				return false;
+		} else if (!currentSupply.equals(other.currentSupply))
+			return false;
+		if (productGroup == null) {
+			if (other.productGroup != null)
+				return false;
+		} else if (!productGroup.equals(other.productGroup))
+			return false;
+		if (storageUnit == null) {
+			if (other.storageUnit != null)
+				return false;
+		} else if (!storageUnit.equals(other.storageUnit))
+			return false;
+		if (threeMonthSupply == null) {
+			if (other.threeMonthSupply != null)
+				return false;
+		} else if (!threeMonthSupply.equals(other.threeMonthSupply))
+			return false;
+		return true;
 	}
 
 	public void simpleInitialize(Container productGroup, float scale, Model model) {

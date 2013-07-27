@@ -20,10 +20,8 @@ public class RemovedItemsVisitorTest {
 		c.add(Calendar.MONTH, -3);
 		
 		Model model = Model.getInstance();
-		Iterator<Item> items = model.getItemManager().getRemovedItems().iterator();
 		
 		RemovedItemsVisitor riv = new RemovedItemsVisitor(c.getTime());
-		System.out.println(riv.visitAll());
 	}
 
 }

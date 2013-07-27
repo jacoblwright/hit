@@ -1,5 +1,7 @@
 package gui.product;
 
+import java.util.Date;
+
 import model.*;
 import gui.common.*;
 import gui.inventory.ProductContainerData;
@@ -12,6 +14,7 @@ public class AddProductController extends Controller implements
 	
 	String upc;
 	Container container;
+	Date productDate;
 	
 	/**
 	 * Constructor.
@@ -19,11 +22,12 @@ public class AddProductController extends Controller implements
 	 * @param view Reference to the add product view
 	 * @param barcode Barcode for the product being added
 	 */
-	public AddProductController(IView view, String barcode, Container cont) {
+	public AddProductController(IView view, String barcode, Container cont, Date date) {
 		super(view);
 
 		upc = barcode;
 		container = cont;
+		productDate = date;
 		loadValues();
 		enableComponents();
 		construct();
@@ -126,6 +130,7 @@ public class AddProductController extends Controller implements
 				getView().getSizeUnit(), Float.parseFloat(getView().
 						getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
 				Integer.parseInt(getView().getSupply()) );
+		product.setCreationDate(productDate);
 		
 		if(!getModel().getProductManager().isProductValid(product)){
 			getView().displayErrorMessage("Can't add invalid product.");
