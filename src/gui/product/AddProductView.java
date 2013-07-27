@@ -1,5 +1,7 @@
 package gui.product;
 
+import java.util.Date;
+
 import model.Container;
 import gui.common.*;
 import gui.main.GUI;
@@ -8,12 +10,13 @@ import gui.main.GUI;
 @SuppressWarnings("serial")
 public class AddProductView extends ProductView implements IAddProductView {
 
-	public AddProductView(GUI parent, DialogBox dialog, String barcode, Container productContainer){
+	public AddProductView(GUI parent, DialogBox dialog, String barcode, 
+			Container productContainer, Date date){
 		super(parent, dialog);
 		
 		construct();		
 
-		_controller = new AddProductController(this, barcode, productContainer);
+		_controller = new AddProductController(this, barcode, productContainer, date);
 	}
 
 	@Override

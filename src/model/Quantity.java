@@ -63,9 +63,9 @@ public class Quantity implements Serializable {
 	public String getQuantityString() {
 		if( Math.round( number ) == number ) {
 			String numberStr = String.valueOf( Math.round( number ) );
-			return numberStr + unit.name().toLowerCase();
+			return numberStr + " " + unit.name().toLowerCase();
 		}
-		return number + unit.name().toLowerCase();
+		return number + " " + unit.name().toLowerCase();
 	}
 	
 	public boolean isUnspecified() {

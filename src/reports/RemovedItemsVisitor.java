@@ -1,6 +1,7 @@
 package reports;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -21,7 +22,13 @@ public class RemovedItemsVisitor implements Visitor {
 	Map<Product, Integer> currentItemMap;
 	
 	public RemovedItemsVisitor(Date date){
-		reportDate = date;
+		if(date == null){
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			c.add(Calendar.YEAR, -20);
+			reportDate = c.getTime();
+		}
+		else reportDate = date;
 		
 		model = Model.getInstance();
 		
@@ -39,6 +46,11 @@ public class RemovedItemsVisitor implements Visitor {
 		
 		while(it.hasNext()){
 			Item item = (Item)it.next();
+			
+			/* Item was removed since last report */
+			if(item.getExitTime() != null && item.getExitTime().before(reportDate) ||
+					!model.getProductManager().upcExists(item.getProduct().getUPC().getBarcode()))
+				continue;
 			
 			if(itemMap.containsKey(item.getProduct())){
 				int count = (Integer)itemMap.get(item.getProduct()) + 1;
@@ -64,7 +76,8 @@ public class RemovedItemsVisitor implements Visitor {
 			/* If the product barcode is no longer in the system, skip it.
 			 * If the product has already been added, skip it. */
 			if(!model.getProductManager().upcExists(item.getProduct().getUPC().getBarcode())
-					|| alreadyAddedList.contains(item.getProduct()))
+					|| alreadyAddedList.contains(item.getProduct())
+					|| item.getExitTime().before(reportDate))
 				continue;
     		
 			RemovedItemsRecord record = new RemovedItemsRecord();

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import model.Model;
 import model.Product;
@@ -34,7 +35,7 @@ public class NMonthSupplyProductVisitor implements Visitor {
 			Product product = (Product)it.next();
 			if(product.getThreeMonthSupply() == 0)
 				continue;
-			productItemsMap.put(product, null);
+			productItemsMap.put(product, new TreeSet());
 		}
 	}
 	
@@ -53,9 +54,14 @@ public class NMonthSupplyProductVisitor implements Visitor {
 	public boolean hasThreeMonthSupply(Product product) throws IllegalArgumentException{
 		if(!productItemsMap.containsKey(product))
 			throw new IllegalArgumentException();
-		int onHand = productItemsMap.get(product).size();
+		
+		int onHand = 0;
+		if(productItemsMap.get(product) != null )
+			onHand = productItemsMap.get(product).size();
+		
 		if(onHand < getNMonthSupplyAmount(product))
 			return false;
+		
 		else return true;
 	}
 	
@@ -66,12 +72,12 @@ public class NMonthSupplyProductVisitor implements Visitor {
     @Override
     public List<Record> visitAll() {
     	List<Record> recordList = new ArrayList();
-    	
-    	Collection collection = productItemsMap.entrySet();
+    	Collection collection = productItemsMap.keySet();
     	Iterator it = collection.iterator();
     	
     	while(it.hasNext()){
     		Product product = (Product)it.next();
+    		
     		if(hasThreeMonthSupply(product))
     			continue;
     		
@@ -79,7 +85,10 @@ public class NMonthSupplyProductVisitor implements Visitor {
     		record.setDescription(product.getDescription());
     		record.setBarcode(product.getUPC().getBarcode());
     		record.setNMonthSupply(getNMonthSupplyAmount(product));
-    		record.setCurrentSupply(productItemsMap.get(product).size());
+    		if(productItemsMap.get(product) != null){
+    			record.setCurrentSupply(productItemsMap.get(product).size());
+    		}
+    		else record.setCurrentSupply(0);	
     		
     		recordList.add(record);
     	}

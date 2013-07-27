@@ -47,6 +47,7 @@ public class ExpiredItemsVisitorTest {
 		
 		storageUnits.add( su1 );
 		storageUnits.add( su2 );
+		Model.getInstance().getContainerManager().setStorageUnits(storageUnits);
 		
 		containerManager.setStorageUnits( storageUnits );
         Product apple = new Product("100", "Apple",
@@ -159,11 +160,8 @@ public class ExpiredItemsVisitorTest {
 	
 	@Test
 	public void expiredItemsVisitorTest() {
-		Set<Container> su = new TreeSet<Container>();
-		su.addAll(storageUnits);
-		Iterator<Container> cpt = new ContainerPreorderIterator(su);
 		
-		ExpiredItemsVisitor eiv = new ExpiredItemsVisitor(cpt);
+		ExpiredItemsVisitor eiv = new ExpiredItemsVisitor();
 		List<Record> records = eiv.visitAll();
 		
 		for(Record record : records) {

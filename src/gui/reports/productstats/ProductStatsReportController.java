@@ -1,5 +1,8 @@
 package gui.reports.productstats;
 
+import java.io.IOException;
+
+import reports.ReportDirector;
 import gui.common.*;
 
 /**
@@ -47,6 +50,16 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		try{
+			int months = Integer.parseInt(getView().getMonths());
+			if(months > 0 && months <= 100){
+				getView().enableOK(true);
+			}
+			else getView().enableOK(false);
+		}
+		catch(IllegalArgumentException e){
+			getView().enableOK(false);
+		}
 	}
 
 	/**
@@ -58,6 +71,7 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setMonths("3");
 	}
 
 	//
@@ -70,6 +84,7 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 	
 	/**
@@ -78,6 +93,13 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	@Override
 	public void display() {
+		try{
+			ReportDirector.generateProductStatReport(Integer.parseInt(getView().getMonths()), 
+													getView().getFormat());
+		}
+		catch(IOException e){
+			getView().displayErrorMessage("Invalid Month Value");
+		}
 	}
 
 }

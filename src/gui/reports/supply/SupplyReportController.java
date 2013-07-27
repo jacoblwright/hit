@@ -1,5 +1,8 @@
 package gui.reports.supply;
 
+import java.io.IOException;
+
+import reports.ReportDirector;
 import gui.common.*;
 
 /**
@@ -48,6 +51,15 @@ import gui.common.*;
 	 */
 	@Override
 	protected void enableComponents() {
+		try{
+			int months = Integer.parseInt(getView().getMonths());
+			if( months > 0 && months <= 100)
+				getView().enableOK(true);
+			else getView().enableOK(false);
+		}
+		catch(IllegalArgumentException e){
+			getView().enableOK(false);
+		}
 	}
 
 	/**
@@ -59,6 +71,8 @@ import gui.common.*;
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setMonths("3");
+		getView().enableOK(true);
 	}
 
 	//
@@ -71,6 +85,7 @@ import gui.common.*;
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 	
 	/**
@@ -79,6 +94,14 @@ import gui.common.*;
 	 */
 	@Override
 	public void display() {
+		try{
+			ReportDirector.generateNMonthSupplyReport(Integer.parseInt(getView().getMonths()), 
+														getView().getFormat());
+		}
+		catch(IOException e){
+			getView().displayErrorMessage("Illegal Month Value");
+		}
+		
 	}
 
 }

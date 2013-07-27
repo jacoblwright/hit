@@ -26,7 +26,7 @@ public class ReportDirector {
         columnHeadings.add("Expriation Date");
         columnHeadings.add("Item Barcode");
         
-        Visitor visitor = new ExpiredItemsVisitor(getContainerIterator());
+        Visitor visitor = new ExpiredItemsVisitor();
         List<Record> records = visitor.visitAll();
         List<List<String>> recordsAsStrings = new LinkedList<List<String>>();
         for (Record record : records) {
@@ -103,8 +103,7 @@ ReportPrinter p = getPrinter(format);
         columnHeadings.add("3-month supply");
         columnHeadings.add("Current supply");
         
-        visitor = new NMonthSupplyContainerVisitor(
-                getContainerIterator(), numOfMonths);
+        visitor = new NMonthSupplyContainerVisitor(numOfMonths);
         records.clear();
         records = visitor.visitAll();
         recordsAsStrings.clear();

@@ -122,47 +122,5 @@ public class ExpiredItemsRecord implements Record, Comparable<ExpiredItemsRecord
 		result = prime * result + ((tag == null) ? 0 : Integer.valueOf(tag.getBarcode()));
 		return result;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ExpiredItemsRecord other = (ExpiredItemsRecord) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (entry == null) {
-			if (other.entry != null)
-				return false;
-		} else if (!entry.equals(other.entry))
-			return false;
-		if (expire == null) {
-			if (other.expire != null)
-				return false;
-		} else if (!expire.equals(other.expire))
-			return false;
-		if (productGroup == null) {
-			if (other.productGroup != null)
-				return false;
-		} else if (!productGroup.equals(other.productGroup))
-			return false;
-		if (storageUnit == null) {
-			if (other.storageUnit != null)
-				return false;
-		} else if (!storageUnit.equals(other.storageUnit))
-			return false;
-		if (tag == null) {
-			if (other.tag != null)
-				return false;
-		} else if (!tag.equals(other.tag))
-			return false;
-		return true;
-	}
 	
 }

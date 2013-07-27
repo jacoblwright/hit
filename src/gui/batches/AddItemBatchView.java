@@ -248,7 +248,7 @@ public class AddItemBatchView extends ItemBatchView implements
 	public void displayAddProductView() {
 		DialogBox dialogBox = new DialogBox(_parent, "Add Product");
 		AddProductView dialogView = new AddProductView(_parent, dialogBox,
-				getBarcode(), container);
+				getBarcode(), container, getEntryDate() );
 		dialogBox.display(dialogView, false);
 	}
 

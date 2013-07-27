@@ -3,6 +3,7 @@ package reports;
 import gui.common.SizeUnits;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -20,9 +21,14 @@ public class NMonthSupplyContainerVisitor implements Visitor {
 	private final int numMonths;
 	private List<Record> records;
 	private float scale;
+	private Converter converter;
 	
-	public NMonthSupplyContainerVisitor(Iterator<Container> containerTree, int numMonths) {
-		this.containerTree = containerTree;
+	public NMonthSupplyContainerVisitor(int numMonths) {
+		Set<Container> su = new TreeSet<Container>();
+		su.addAll(getModel().getContainerManager().getRoot());
+		containerTree = new ContainerPreorderIterator(su);
+		
+		converter = new Converter();
 		this.numMonths = numMonths;
 		records = new ArrayList<Record>();
 		scale = numMonths / 3;
@@ -45,14 +51,14 @@ public class NMonthSupplyContainerVisitor implements Visitor {
 			Set<Container> containerSet = new TreeSet<Container>();
 			containerSet.add(container);
 			Iterator<Container> containerIter = new ContainerPreorderIterator(containerSet);
-			return checkNMonthSupply(containerIter);
+			return checkNMonthSupply(container, containerIter);
 		}
 		return null;
 	}
 	
-	private Record checkNMonthSupply(Iterator<Container> containerIter) {
+	private Record checkNMonthSupply(Container container, Iterator<Container> containerIter) {
 		NMonthSupplyContainerRecord record = new NMonthSupplyContainerRecord();
-		ProductGroup productGroup = (ProductGroup) containerIter.next();
+		ProductGroup productGroup = (ProductGroup) container;
 		record.simpleInitialize(productGroup, scale, getModel());
 	    float currentSupply = 0;
 		
@@ -74,24 +80,19 @@ public class NMonthSupplyContainerVisitor implements Visitor {
 	private float getSupply(ProductGroup productGroup, 
 			Iterator<Container> container, boolean count) {
 		float currentSupply = 0;
-		List<Item> items = 
-				(List<Item>) getModel().getItemManager().getItems(productGroup);
-		currentSupply += getSupplyRecursively(
-				items, productGroup.getThreeMonthSupply().getUnit(), count, 
-				productGroup.getThreeMonthSupply().isVolume());
 		
 		while(container.hasNext()) {
 			ProductGroup pGroup = (ProductGroup) container.next();
-			List<Item> items1 = (List<Item>) getModel().getItemManager().getItems(pGroup);
+			Collection<Item> items = getModel().getItemManager().getItems(pGroup);
 			currentSupply += getSupplyRecursively(
-					items1, productGroup.getThreeMonthSupply().getUnit(), count, 
+					items, productGroup.getThreeMonthSupply().getUnit(), count, 
 					productGroup.getThreeMonthSupply().isVolume());
 		}
 		return currentSupply;
 	}
 	
 	private float getSupplyRecursively(
-			List<Item> items, Enum<SizeUnits> unit, boolean count, boolean volume) {
+			Collection<Item> items, Enum<SizeUnits> unit, boolean count, boolean volume) {
 		float currentSupply = 0;
 		if(count) {
 			currentSupply += getCountSupply(items);
@@ -102,30 +103,28 @@ public class NMonthSupplyContainerVisitor implements Visitor {
 		return currentSupply;
 	}
 	
-	private float getConvertedSupply(List<Item> items, Enum<SizeUnits> unit, boolean volume) {
+	private float getConvertedSupply(Collection<Item> items, Enum<SizeUnits> unit, boolean volume) {
 		float currentSupply = 0;
 		for(Item item : items) {
 			//checks if the units are of the same type, volume or weight
-			if(item.getProduct().getSize().getUnit().equals(unit)) {
-				try {
-					if(volume) {
-						currentSupply += Converter.convertVolume(
-								item.getProduct().getSize(), unit);
-					}
-					else {
-						currentSupply += Converter.convertWeight(
-								item.getProduct().getSize(), unit);
-					}
-				} catch(IllegalArgumentException e) {
-					System.out.println(
-							"Item = " + item.getProduct().getDescription() + " is inconsistent");
+			try {
+				if(volume) {
+					currentSupply += converter.convertVolume(
+							item.getProduct().getSize(), unit);
 				}
+				else {
+					currentSupply += converter.convertWeight(
+							item.getProduct().getSize(), unit);
+				}
+			} catch(IllegalArgumentException e) {
+				System.out.println(
+						"Item = " + item.getProduct().getDescription() + " is inconsistent");
 			}
 		}
 		return currentSupply;
 	}
 
-	private float getCountSupply(List<Item> items) {
+	private float getCountSupply(Collection<Item> items) {
 		return items.size();
 	}
 

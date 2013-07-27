@@ -1,5 +1,6 @@
 package gui.reports.removed;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -54,6 +55,10 @@ public class RemovedReportController extends Controller implements
 	@Override
 	protected void enableComponents() {
 		
+		if(getModel().getReportTime().getLastReport() == null){
+			getView().enableSinceLast(false);
+		}
+		
 		if(getView().getSinceDate()){
 			getView().enableSinceDateValue(true);
 		}
@@ -81,12 +86,12 @@ public class RemovedReportController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-		getView().enableOK(true);
 		getView().setSinceDateValue(new Date());
-		if(ReportTime.getLastReport() == null){
-			getView().enableSinceDateValue(true);
+		if(getModel().getReportTime().getLastReport() != null){
+			getView().setSinceLastValue(getModel().getReportTime().getLastReport());
+			getView().setSinceLast(true);
 		}
-		else getView().setSinceLastValue(ReportTime.getLastReport());
+		else getView().setSinceDate(true);
 	}
 
 	//
@@ -105,15 +110,22 @@ public class RemovedReportController extends Controller implements
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the removed items report view.
+	 * @throws IOException 
 	 */
 	@Override
-	public void display() {
-		ReportTime.setLastReport(new Date());
-		/* Evan will be altering the method parameters to match the following method calls */
-		if(getView().getSinceDate())
-			ReportDirector.generateRemovedItemsReport(getView().getSinceDateValue(), getView().getFormat());
-		else
-			ReportDirector.generateRemovedItemsReport(new Date(), getView().getFormat());
+	public void display(){
+
+		try{
+			if(getView().getSinceDate())
+				ReportDirector.generateRemovedItemsReport(getView().getSinceDateValue(), 
+						getView().getFormat());
+			else
+				ReportDirector.generateRemovedItemsReport(getModel().getReportTime().getLastReport(), 
+						getView().getFormat());
+			
+			getModel().getReportTime().setLastReport(new Date());
+		}
+		catch (IOException e){}
 	}
 
 }
