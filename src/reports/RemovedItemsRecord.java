@@ -1,5 +1,6 @@
 package reports;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,8 @@ public class RemovedItemsRecord implements Record, Comparable<RemovedItemsRecord
 	private String barcode;
 	private int removedItems;
 	private int currentSupply;
+	
+	private DecimalFormat df = new DecimalFormat("0.##");
 	
 	public void setDescription(String desc){
 		this.description = desc;
@@ -61,7 +64,7 @@ public class RemovedItemsRecord implements Record, Comparable<RemovedItemsRecord
     public List<String> getValuesAsStrings() {
     	List<String> itemAttributes = new ArrayList();
     	itemAttributes.add(description);
-    	itemAttributes.add(size.getNumber() + " " + size.getUnit().toString());
+    	itemAttributes.add(df.format(size.getNumber()) + " " + size.getUnit().toString());
     	itemAttributes.add(barcode);
     	itemAttributes.add(Integer.toString(removedItems));
     	itemAttributes.add(Integer.toString(currentSupply));
@@ -75,7 +78,7 @@ public class RemovedItemsRecord implements Record, Comparable<RemovedItemsRecord
 	
 	public String toString(){
 		return "RemovedItemsRecord [description = " + description +
-				", Size = " + size.getNumber() + " " + size.getUnit().toString() +
+				", Size = " + df.format(size.getNumber()) + " " + size.getUnit().toString() +
 				", Barcode = " + barcode +
 				", Removed = " + Integer.toString(removedItems) +
 				", CurrentSupply = " + Integer.toString(currentSupply) + "\n";

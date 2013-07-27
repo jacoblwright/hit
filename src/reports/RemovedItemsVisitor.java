@@ -25,20 +25,21 @@ public class RemovedItemsVisitor implements Visitor {
 		
 		model = Model.getInstance();
 		
-		removedItemsList = new ArrayList();
+		removedItemsList = new ArrayList<Record>();
 		
-		removedItemsFromProductMap = new TreeMap();
-		currentItemMap = new TreeMap();
+		removedItemsFromProductMap = new TreeMap<Product, Integer>();
+		currentItemMap = new TreeMap<Product, Integer>();
 		
     	createItemMap(currentItemMap, model.getItemManager().getItems()); 
     	createItemMap(removedItemsFromProductMap, model.getItemManager().getRemovedItems());
 	}
 	
-	public void createItemMap(Map itemMap, Collection collection){
+	public void createItemMap(Map<Product, Integer> itemMap, Collection<Item> collection){
 		Iterator<Item> it = collection.iterator();
 		
 		while(it.hasNext()){
 			Item item = (Item)it.next();
+			
 			if(itemMap.containsKey(item.getProduct())){
 				int count = (Integer)itemMap.get(item.getProduct()) + 1;
 				itemMap.remove(item.getProduct());
@@ -52,7 +53,7 @@ public class RemovedItemsVisitor implements Visitor {
     @Override
     public List<Record> visitAll() {
     	
-    	List<Product> alreadyAddedList = new ArrayList();
+    	List<Product> alreadyAddedList = new ArrayList<Product>();
     	
     	Collection<Item> collection = model.getItemManager().getRemovedItems();
     	Iterator<Item> it = collection.iterator();
@@ -60,9 +61,12 @@ public class RemovedItemsVisitor implements Visitor {
     	while(it.hasNext()){
     		Item item = (Item)it.next();
     		
-    		if(alreadyAddedList.contains(item.getProduct())){
-    			continue;
-    		}
+			/* If the product barcode is no longer in the system, skip it.
+			 * If the product has already been added, skip it. */
+			if(!model.getProductManager().upcExists(item.getProduct().getUPC().getBarcode())
+					|| alreadyAddedList.contains(item.getProduct()))
+				continue;
+    		
 			RemovedItemsRecord record = new RemovedItemsRecord();
 			record.setDescription(item.getProduct().getDescription());
 			record.setSize(item.getProduct().getSize());
