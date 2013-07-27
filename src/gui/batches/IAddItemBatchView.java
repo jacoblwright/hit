@@ -10,7 +10,7 @@ import gui.product.ProductData;
 /**
  * View interface for add item batch view.
  */
-public interface IAddItemBatchView extends IView {
+public interface IAddItemBatchView extends IItemBatchView {
 	
 	/**
 	 * Closes the add item batch view.

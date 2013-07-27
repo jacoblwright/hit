@@ -133,7 +133,7 @@ public class ProductManagerTest {
 		pmanager.addNewProduct(product4, container2);
 		pmanager.addNewProduct(product5, container2);
 		
-		HashMap testMap = (HashMap)pmanager.getProductsByContainer();
+		Map testMap = pmanager.getProductsByContainer();
 		
 		/* Size of Map should be two since there are only two added containers */
 		assertEquals(2, testMap.size());

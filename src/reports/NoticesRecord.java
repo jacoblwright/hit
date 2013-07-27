@@ -31,7 +31,7 @@ public class NoticesRecord implements Record {
                     "(size: " + product.getSize() + ") " +
                     "in product group " +
                     Model.getInstance().getProductAndItemEditor().
-                    getContainerOfProductInSU(product, storageUnit).getName();
+                    getContainer(product, storageUnit).getName();
             lines.add(line);
             
         }

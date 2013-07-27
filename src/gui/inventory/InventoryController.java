@@ -33,10 +33,10 @@ public class InventoryController extends Controller
 		getModel().getContainerManager().addObserver( this );
 		getModel().getProductManager().addObserver( this );
 		getModel().getItemManager().addObserver( this );
-
+	
 		construct();
 		
-//		debugInit();
+	//		debugInit();
 	}
 
 	/**
@@ -65,17 +65,11 @@ public class InventoryController extends Controller
 		}
 		getView().setProductContainers(root);
 		
-		if( selectedContainerData != null || selectedProductData != null ) {
-			if (selectedContainerData != null)
-				getView().selectProductContainer( selectedContainerData );
-			
-			if (selectedProductData != null)
-				getView().selectProduct(selectedProductData);
-			
+		if( selectedContainerData != null ) {	
+			getView().selectProductContainer( selectedContainerData );
 			productContainerSelectionChanged();
 			productSelectionChanged();
 		}
-		
 		loadContextPanel( selectedContainerData );
 		
 	}
@@ -227,26 +221,50 @@ public class InventoryController extends Controller
 	public void productContainerSelectionChanged() {
 
 		ProductContainerData productContainerData = getView().getSelectedProductContainer();
+		ItemData selectedItem = getView().getSelectedItem();
 		
+		ProductData[] productArray;
+		ItemData[] itemArray = new ItemData[0];
+		ProductData selectedProduct = getView().getSelectedProduct();
 		if(productContainerData != null && productContainerData.getTag() == null){
 			Collection<Product> col = getModel().getProductManager().getProducts();
-			ProductData[] productArray = DataConverter.toProductDataArray(col);
+			productArray = DataConverter.toProductDataArray(col);
 			setProductsDataSize(productArray, productContainerData);
-			getView().setProducts(productArray);
+			
 		}
 		
 		else if(productContainerData != null && productContainerData.getTag() != null){
 			Collection<Product> col = getModel().getProductManager().
 					getProducts((Container)productContainerData.getTag());
-			ProductData[] productArray = DataConverter.toProductDataArray(col);
+			productArray = DataConverter.toProductDataArray(col);
 			setProductsDataSize(productArray, productContainerData);
-			getView().setProducts(productArray);
+			if (selectedProduct != null){
+				if ( selectedProduct.hasTag()){
+					itemArray = DataConverter.toItemDataArray(
+							getModel().getItemManager().getItems(
+									(Container) productContainerData.getTag(), (Product) selectedProduct.getTag()));
+				}
+			}
+			
 		}
 		else{
-			getView().setProducts(new ProductData[0]);
+			productArray = new ProductData[0];
+		}
+		getView().setProducts(productArray);
+		if ( selectedProduct != null){
+			if (selectedProduct.hasTag()){
+				getView().selectProduct(DataConverter.getProductData((Product) selectedProduct.getTag(), productArray));
+			}
 		}
 		
-		getView().setItems(new ItemData[0]);
+		getView().setItems(itemArray);
+		if (selectedItem != null ){
+			if (selectedItem.hasTag()){
+				getView().selectItem(DataConverter.getItemData((Item) selectedItem.getTag(), itemArray));
+				ItemData tmp = getView().getSelectedItem();
+				getView();
+			}
+		}
 	}
 
 	public void setProductsDataSize(ProductData[] productArray, 
@@ -287,16 +305,20 @@ public class InventoryController extends Controller
 		
 		ProductData productData = getView().getSelectedProduct();
 		
-		if(selectedProductData != null){
-			productData = selectedProductData;
-		}
 		Container productContainer = (Container)getView().getSelectedProductContainer().getTag();
 		
 		if(productData != null && productData.getTag() != null && productContainer != null){
+			ItemData selectedItemData = getView().getSelectedItem();
 			Collection<Item> col = getModel().getItemManager().getItems(productContainer, 
 					(Product)productData.getTag());
 			ItemData[] itemArray = DataConverter.toItemDataArray(col);
 			getView().setItems(itemArray);
+			if (selectedItemData != null){
+				if (selectedItemData.hasTag()){
+					getView().selectItem(DataConverter.getItemData((Item) selectedItemData.getTag(), itemArray));
+				}
+			}
+			
 		}
 		
 		else if (productContainer == null && productData != null && productData.getTag() != null){
@@ -314,9 +336,9 @@ public class InventoryController extends Controller
 			}
 			ItemData[] itemArray = DataConverter.toItemDataArray(itemCollection);
 			getView().setItems(itemArray);
-			
 		}
-		if(selectedItemData != null){
+		
+		if ( selectedItemData != null ){
 			getView().selectItem(selectedItemData);
 		}
 	}
@@ -398,7 +420,7 @@ public class InventoryController extends Controller
 			            product, container);
 			    
 			}
-			selectedProductData = null;    
+			    
 			productContainerSelectionChanged();
 			
 		}
@@ -518,9 +540,7 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void editProduct() {
-		selectedProductData = getView().getSelectedProduct();
 		getView().displayEditProductView();
-		productSelectionChanged();
 	}
 	
 	/**
@@ -632,6 +652,7 @@ public class InventoryController extends Controller
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+
 		ChangeType changeType = ((ChangeObject) arg1).getChangeType();
 		if( changeType.equals(ChangeType.CONTAINER) ) {
 			selectedContainerData = (ProductContainerData) ((ChangeObject)arg1).getSelectedData();
@@ -641,6 +662,7 @@ public class InventoryController extends Controller
 			selectedItemData = (ItemData) ((ChangeObject)arg1).getSelectedData();
 			productContainerSelectionChanged();
 			productSelectionChanged();
+			itemSelectionChanged();
 		}
 		else if( changeType.equals(ChangeType.PRODUCT) ) {
 			selectedProductData = (ProductData) ((ChangeObject)arg1).getSelectedData();

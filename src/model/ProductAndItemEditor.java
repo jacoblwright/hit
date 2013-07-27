@@ -70,7 +70,7 @@ public class ProductAndItemEditor {
             StorageUnit targetSU =
                     containerManager.getAncestorStorageUnit(targetContainer);         
             Container containerOfProductInTargetSU =
-                    getContainerOfProductInSU(product, targetSU);    
+                    getContainer(product, targetSU);    
             
             if (containerOfProductInTargetSU == null) {
                 
@@ -97,7 +97,7 @@ public class ProductAndItemEditor {
         StorageUnit suOftargetContainer =
                 containerManager.getAncestorStorageUnit(targetContainer);
         
-        if (getContainerOfProductInSU(product, suOftargetContainer) == null) {
+        if (getContainer(product, suOftargetContainer) == null) {
             
             // product is not already within targetContainer's StorageUnit.            
             System.out.println("PAIE.moveProductWhenTreeRootIsSelected(): " +
@@ -115,7 +115,7 @@ public class ProductAndItemEditor {
                     "targetContainer's StorageUnit");
             
             Container sourceContainer =
-                    getContainerOfProductInSU(product, suOftargetContainer);
+                    getContainer(product, suOftargetContainer);
             
             moveProduct(product, sourceContainer, targetContainer);
             
@@ -206,26 +206,35 @@ public class ProductAndItemEditor {
      public void addItemToStorageUnit(Item item, StorageUnit storageUnit)
              throws IllegalArgumentException {
      
-         if (item == null || storageUnit == null) {
+    	 if (item == null || storageUnit == null) {
              throw new IllegalArgumentException();
          }
+    	 else {
+    		 List<Item> tmp = new ArrayList<Item>();
+    		 tmp.add(item);
+	    	 ICommand addItemToStorageUnit = new AddItemsToSU(tmp, storageUnit);
+	    	 addItemToStorageUnit.execute();
+	    	 return;
+
          
-         Container containerOfProductInSU =
-                 getContainerOfProductInSU(item.getProduct(), storageUnit);
-         
-         if (containerOfProductInSU == null) {   
-             
-             productManager.addProductToContainer(
-                     item.getProduct(), storageUnit);
-             
-             item.setContainer(storageUnit);           
-         
-         }
-         else {
-             item.setContainer(containerOfProductInSU);
-         }
-         
-         itemManager.addItem(item);
+//	         Container containerOfProductInSU =
+//	                 getContainer(item.getProduct(), storageUnit);
+//	         
+//	         if (containerOfProductInSU == null) {   
+//	             
+//	             productManager.addProductToContainer(
+//	                     item.getProduct(), storageUnit);
+//	             
+//	             item.setContainer(storageUnit);           
+//	         
+//	         }
+//	         else {
+//	             item.setContainer(containerOfProductInSU);
+//	         }
+//	         
+//	         itemManager.addItem(item);
+	         
+    	 }
          
      }
      
@@ -241,25 +250,30 @@ public class ProductAndItemEditor {
      public void transferItemToStorageUnit(Item item, StorageUnit storageUnit)
              throws IllegalArgumentException {
      
+    	 
+    	 
          if (item == null || storageUnit == null) {
              throw new IllegalArgumentException();
          }
          
-         Container containerOfProductInSU =
-                 getContainerOfProductInSU(item.getProduct(), storageUnit);
-         //System.out.println("containerOfProductInSU:" + containerOfProductInSU);
+         ICommand trans = new TransferItemToSU(item, storageUnit);
+         trans.execute();
          
-         if (containerOfProductInSU == null) {   
-             
-             productManager.addProductToContainer(
-                     item.getProduct(), storageUnit);
-             
-             itemManager.moveItem(item, storageUnit);   
-             
-         }
-         else {
-             itemManager.moveItem(item, containerOfProductInSU);
-         }
+//         Container containerOfProductInSU =
+//                 getContainer(item.getProduct(), storageUnit);
+//         //System.out.println("containerOfProductInSU:" + containerOfProductInSU);
+//         
+//         if (containerOfProductInSU == null) {   
+//             
+//             productManager.addProductToContainer(
+//                     item.getProduct(), storageUnit);
+//             
+//             itemManager.moveItem(item, storageUnit);   
+//             
+//         }
+//         else {
+//             itemManager.moveItem(item, containerOfProductInSU);
+//         }
          
      }
     
@@ -312,7 +326,8 @@ public class ProductAndItemEditor {
       */
      public void removeItem(Item itemToRemove) throws IllegalArgumentException {
      
-         itemManager.removeItem(itemToRemove);
+    	 ICommand remove = new RemoveItemFromSU(itemToRemove);
+    	 remove.execute();
          
      }
      
@@ -352,8 +367,7 @@ public class ProductAndItemEditor {
       * specified StorageUnit; returns null if the specified product is not
       * within the specified StorageUnit.
       */
-     public Container getContainerOfProductInSU(
-             Product product, StorageUnit storageUnit) {
+     public Container getContainer(Product product, StorageUnit storageUnit) {
          
          assert product != null;
          assert storageUnit != null;
