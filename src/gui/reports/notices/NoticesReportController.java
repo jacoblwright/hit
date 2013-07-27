@@ -1,5 +1,8 @@
 package gui.reports.notices;
 
+import java.io.IOException;
+
+import reports.ReportDirector;
 import gui.common.*;
 
 /**
@@ -78,6 +81,12 @@ public class NoticesReportController extends Controller implements
 	 */
 	@Override
 	public void display() {
+		try {
+			ReportDirector.generateNoticesReport(getView().getFormat());
+		} catch (Throwable e) {
+			getView().displayErrorMessage("IO/Error in generating notices report");
+		}
+		
 	}
 
 }

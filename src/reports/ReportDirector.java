@@ -26,7 +26,7 @@ public class ReportDirector {
         columnHeadings.add("Expriation Date");
         columnHeadings.add("Item Barcode");
         
-        Visitor visitor = new ExpiredItemsVisitor(getContainerIterator());
+        Visitor visitor = new ExpiredItemsVisitor();
         List<Record> records = visitor.visitAll();
         List<List<String>> recordsAsStrings = new LinkedList<List<String>>();
         for (Record record : records) {
@@ -103,8 +103,7 @@ ReportPrinter p = getPrinter(format);
         columnHeadings.add("3-month supply");
         columnHeadings.add("Current supply");
         
-        visitor = new NMonthSupplyContainerVisitor(
-                getContainerIterator(), numOfMonths);
+        visitor = new NMonthSupplyContainerVisitor(numOfMonths);
         records.clear();
         records = visitor.visitAll();
         recordsAsStrings.clear();
@@ -150,7 +149,7 @@ ReportPrinter p = getPrinter(format);
     
     }
     
-    public static void generatNoticesReport(FileFormat format) {
+    public static void generateNoticesReport(FileFormat format) {
         
         
     }
@@ -175,13 +174,38 @@ ReportPrinter p = getPrinter(format);
         
     }
     
-    private static Iterator<Container> getContainerIterator() {
-        
-        Set<Container> containerRoot = new HashSet<Container>();
-        containerRoot.addAll(
-                Model.getInstance().getContainerManager().getRoot());
-        return new ContainerPreorderIterator(containerRoot);        
-        
+    public static int getValidMonths(String numOfMonths) {
+    	int number = 0;
+		try
+		{	
+			if( emptyString( numOfMonths ) ) {
+				number = -1;
+			}
+			else {
+				number = Integer.parseInt( numOfMonths );
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			number = -1;
+		}
+		if(number < 1 || number > 100) {
+			number = -1;
+		}
+		return number;
     }
+    
+	private static boolean emptyString( String str) {
+		return str.trim().length() == 0;
+	}
+    
+//    private static Iterator<Container> getContainerIterator() {
+//        
+//        Set<Container> containerRoot = new HashSet<Container>();
+//        containerRoot.addAll(
+//                Model.getInstance().getContainerManager().getRoot());
+//        return new ContainerPreorderIterator(containerRoot);        
+//        
+//    }
     
 }

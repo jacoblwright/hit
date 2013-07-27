@@ -21,14 +21,14 @@ public class NoticesRecord implements Record {
         line = "Product group " + productGroup.getName() + " " +
                 "in storage unit " + storageUnit.getName() + " " +
                 "has a three-month supply (" +
-                productGroup.getThreeMonthSupply() + ") " +
+                productGroup.getThreeMonthSupply().getQuantityString() + ") " +
                 "that is inconsistent with the following products:";
         lines.add(line);
         
         for (Product product : productsWithQuantityMismatch) {
             
             line = "- Product " + product.getDescription() + " " +
-                    "(size: " + product.getSize() + ") " +
+                    "(size: " + product.getSize().getQuantityString() + ") " +
                     "in product group " +
                     Model.getInstance().getProductAndItemEditor().
                     getContainer(product, storageUnit).getName();

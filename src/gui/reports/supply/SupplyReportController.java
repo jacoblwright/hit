@@ -1,5 +1,8 @@
 package gui.reports.supply;
 
+import java.io.IOException;
+
+import reports.ReportDirector;
 import gui.common.*;
 
 /**
@@ -71,6 +74,7 @@ import gui.common.*;
 	 */
 	@Override
 	public void valuesChanged() {
+		getView().enableOK(ReportDirector.getValidMonths(getView().getMonths()) != -1);		
 	}
 	
 	/**
@@ -79,6 +83,27 @@ import gui.common.*;
 	 */
 	@Override
 	public void display() {
+		try {
+			int months = getNumber(getView().getMonths());
+			ReportDirector.generateNMonthSupplyReport(months, getView().getFormat());
+		} catch (Throwable e) {
+			getView().displayErrorMessage("IO/Error in generating n month supply report");
+		}
+	}
+	
+	private int getNumber(String value) throws NumberFormatException {
+		int number;
+		if( emptyString( value ) ) {
+			throw new IllegalArgumentException();
+		}
+		else {
+			number = Integer.parseInt( value );
+		}
+		return number;
+	}
+	
+	private boolean emptyString( String str) {
+		return str.trim().length() == 0;
 	}
 
 }

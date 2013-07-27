@@ -49,13 +49,15 @@ public class NoticesVisitor implements Visitor {
 		List<Product> mismatchedProducts = new ArrayList<Product>();
 		Collection<Product> products = getModel().getProductManager().getProducts(container);
 		for( Product product : products) {
-			if(product.getSize().isVolume() != volume) {
+			System.out.println("DESCRIPTION " + product.getDescription());
+			if((product.getSize().isVolume() != volume) || product.getSize().isCount()) {
+				System.out.println("MISMATCHED: DESCRIPTION " + product.getDescription());
 				mismatchedProducts.add(product);
 			}
 		}
 		if(!mismatchedProducts.isEmpty()) {
 			NoticesRecord record = new NoticesRecord();
-			record.setProductGroup(container);
+			record.setProductGroup((ProductGroup) container);
 			record.setThreeMonthSupplyQuantity(((ProductGroup) container).getThreeMonthSupply());
 			record.setProductsWithQuantityMismatch(mismatchedProducts);
 			return record;
