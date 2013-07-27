@@ -216,7 +216,7 @@ public class Item extends Entity implements Comparable<Item> {
 	public String toString() {
 		//return "Item [product=" + product.getDescription() + ", tag=" + tag + ", container=" + container + "]";
 		return "Item [product=" + product + ", tag=" + tag + ", entryDate="
-				+ entryDate + ", exitDate=" + exitDate + ", exitTime="
+				+ entryDate + ", exitDate=" + exitTime + ", exitTime="
 				+ exitTime + ", expirationDate=" + getExpirationDate()
 				+ ", container=" + container + "]";
 	}

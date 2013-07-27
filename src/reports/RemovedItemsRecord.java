@@ -72,5 +72,13 @@ public class RemovedItemsRecord implements Record, Comparable<RemovedItemsRecord
 	public int compareTo(RemovedItemsRecord o) {
 		return this.getDescription().compareTo(o.getDescription());
 	}
+	
+	public String toString(){
+		return "RemovedItemsRecord [description = " + description +
+				", Size = " + size.getNumber() + " " + size.getUnit().toString() +
+				", Barcode = " + barcode +
+				", Removed = " + Integer.toString(removedItems) +
+				", CurrentSupply = " + Integer.toString(currentSupply) + "\n";
+	}
 
 }
