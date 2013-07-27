@@ -3,6 +3,7 @@ package gui.reports.removed;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import reports.ReportDirector;
 import reports.ReportTime;
 
 import gui.common.*;
@@ -108,6 +109,11 @@ public class RemovedReportController extends Controller implements
 	@Override
 	public void display() {
 		ReportTime.setLastReport(new Date());
+		/* Evan will be altering the method parameters to match the following method calls */
+		if(getView().getSinceDate())
+			ReportDirector.generateRemovedItemsReport(getView().getSinceDateValue(), getView().getFormat());
+		else
+			ReportDirector.generateRemovedItemsReport(new Date(), getView().getFormat());
 	}
 
 }
