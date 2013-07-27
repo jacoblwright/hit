@@ -1,10 +1,14 @@
 package reports;
 
+import gui.common.SizeUnits;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Container;
+import model.Model;
+import model.ProductGroup;
 import model.Quantity;
 import model.StorageUnit;
 
@@ -108,6 +112,14 @@ public class NMonthSupplyContainerRecord implements Record, Comparable<NMonthSup
 		} else if (!threeMonthSupply.equals(other.threeMonthSupply))
 			return false;
 		return true;
+	}
+
+	public void simpleInitialize(Container productGroup, float scale, Model model) {
+		setProductGroup(productGroup);
+		setStorageUnit(model.getContainerManager().getAncestorStorageUnit(productGroup));
+		float number = ((ProductGroup) productGroup).getThreeMonthSupply().getNumber();
+		Enum<SizeUnits> unit = ((ProductGroup) productGroup).getThreeMonthSupply().getUnit();
+		setThreeMonthSupply(new Quantity(scale * number, unit));
 	}
 
 

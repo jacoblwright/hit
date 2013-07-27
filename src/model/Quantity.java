@@ -61,6 +61,10 @@ public class Quantity implements Serializable {
 	}
 	
 	public String getQuantityString() {
+		if( Math.round( number ) == number ) {
+			String numberStr = String.valueOf( Math.round( number ) );
+			return numberStr + unit.name().toLowerCase();
+		}
 		return number + unit.name().toLowerCase();
 	}
 	
@@ -145,5 +149,10 @@ public class Quantity implements Serializable {
 		return this.number == ((Quantity)obj).number &&
 				( this.unit != null ? this.unit.name().equals( ((Quantity)obj).unit.name() )
 						:((Quantity)obj).unit == null );
+	}
+
+	public float convertTo(Enum<SizeUnits> otherUnit) {
+		
+		return 0;
 	}
 }
