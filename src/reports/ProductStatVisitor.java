@@ -183,7 +183,6 @@ public class ProductStatVisitor implements Visitor {
 			if(!item.getEntryDate().after(date))
 				count++;
 		}
-
 		return count;
 	}
 	
@@ -196,10 +195,9 @@ public class ProductStatVisitor implements Visitor {
 		int count = 0;
 		while(it.hasNext()){
 			Item item = (Item)it.next();
-			if(!item.getEntryDate().before(date))
+			if(item.getExitTime().before(date))
 				count++;
 		}
-
 		return count;
 	}
 	
@@ -275,8 +273,8 @@ public class ProductStatVisitor implements Visitor {
 	public double getUsedAverage(Product product){
 		Set<Item> items = usedItemsDuringPeriod.get(product);
 		if(items == null) return 0;
-		int runningTotal = 0;
-		int dayTotal = 0;
+		double runningTotal = 0;
+		double dayTotal = 0;
 		Iterator<Item> it = items.iterator();
 		
 		while(it.hasNext()){
