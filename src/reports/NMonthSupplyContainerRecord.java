@@ -12,7 +12,8 @@ import model.ProductGroup;
 import model.Quantity;
 import model.StorageUnit;
 
-public class NMonthSupplyContainerRecord implements Record, Comparable<NMonthSupplyContainerRecord> {
+public class NMonthSupplyContainerRecord implements 
+					Record, Comparable<NMonthSupplyContainerRecord> {
 	
 	private Container productGroup;
 	private StorageUnit storageUnit;
@@ -80,38 +81,6 @@ public class NMonthSupplyContainerRecord implements Record, Comparable<NMonthSup
 				* result
 				+ ((threeMonthSupply == null) ? 0 : threeMonthSupply.hashCode());
 		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		NMonthSupplyContainerRecord other = (NMonthSupplyContainerRecord) obj;
-		if (currentSupply == null) {
-			if (other.currentSupply != null)
-				return false;
-		} else if (!currentSupply.equals(other.currentSupply))
-			return false;
-		if (productGroup == null) {
-			if (other.productGroup != null)
-				return false;
-		} else if (!productGroup.equals(other.productGroup))
-			return false;
-		if (storageUnit == null) {
-			if (other.storageUnit != null)
-				return false;
-		} else if (!storageUnit.equals(other.storageUnit))
-			return false;
-		if (threeMonthSupply == null) {
-			if (other.threeMonthSupply != null)
-				return false;
-		} else if (!threeMonthSupply.equals(other.threeMonthSupply))
-			return false;
-		return true;
 	}
 
 	public void simpleInitialize(Container productGroup, float scale, Model model) {

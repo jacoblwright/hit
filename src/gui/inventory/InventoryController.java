@@ -242,7 +242,8 @@ public class InventoryController extends Controller
 				if ( selectedProduct.hasTag()){
 					itemArray = DataConverter.toItemDataArray(
 							getModel().getItemManager().getItems(
-									(Container) productContainerData.getTag(), (Product) selectedProduct.getTag()));
+									(Container) productContainerData.getTag(), 
+									(Product) selectedProduct.getTag()));
 				}
 			}
 			
@@ -253,14 +254,17 @@ public class InventoryController extends Controller
 		getView().setProducts(productArray);
 		if ( selectedProduct != null){
 			if (selectedProduct.hasTag()){
-				getView().selectProduct(DataConverter.getProductData((Product) selectedProduct.getTag(), productArray));
+				getView().selectProduct(
+						DataConverter.getProductData((Product) 
+								selectedProduct.getTag(), productArray));
 			}
 		}
 		
 		getView().setItems(itemArray);
 		if (selectedItem != null ){
 			if (selectedItem.hasTag()){
-				getView().selectItem(DataConverter.getItemData((Item) selectedItem.getTag(), itemArray));
+				getView().selectItem(
+						DataConverter.getItemData((Item) selectedItem.getTag(), itemArray));
 				ItemData tmp = getView().getSelectedItem();
 				getView();
 			}
@@ -315,7 +319,9 @@ public class InventoryController extends Controller
 			getView().setItems(itemArray);
 			if (selectedItemData != null){
 				if (selectedItemData.hasTag()){
-					getView().selectItem(DataConverter.getItemData((Item) selectedItemData.getTag(), itemArray));
+					getView().selectItem(
+							DataConverter.getItemData((Item) 
+									selectedItemData.getTag(), itemArray));
 				}
 			}
 			

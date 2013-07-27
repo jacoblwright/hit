@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import model.Container;
 import model.Item;
@@ -18,8 +20,10 @@ public class ExpiredItemsVisitor implements Visitor {
 	private List<Record> records;
 	private Date now;
 	
-	public ExpiredItemsVisitor( Iterator<Container> containerTree ) {
-		this.containerTree = containerTree;
+	public ExpiredItemsVisitor() {
+		Set<Container> su = new TreeSet<Container>();
+		su.addAll(getModel().getContainerManager().getRoot());
+		this.containerTree = new ContainerPreorderIterator(su);
 		records = new ArrayList<Record>();
 		now = new Date();
 	}
