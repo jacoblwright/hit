@@ -23,17 +23,26 @@ public class DataConverter {
 		Iterator<Item> iter = col.iterator();
 		while (iter.hasNext()) {
 			Item item = iter.next();
-			ret[i] = new ItemData();
-			System.out.println("Display " + item);
-			i++;
+			
+			if (item.getContainer() != null){
+				ret[i] = new ItemData(item);
+				System.out.println("Display " + item);
+				i++;
+			}
+			
 		}
 		return ret;
 	}
 	
 	public static ItemData getItemData(Item item, ItemData[] list){
+		if (list == null){
+			return null;
+		}
 		for (int i = 0; i < list.length; i++){
-			if ( list[i].getTag().equals(item) ){
-				return list[i];
+			if (list[i] != null ){
+				if ( list[i].getTag().equals(item) ){
+					return list[i];
+				}
 			}
 		}
 		return null;
@@ -51,5 +60,15 @@ public class DataConverter {
 			i++;
 		}
 		return ret;
+	}
+	
+	public static ProductData getProductData(Product product, ProductData[] list){
+		for (int i = 0; i < list.length; i++){
+			if ( list[i].getTag().equals(product) ){
+				return list[i];
+			}
+		}
+		return null;
+		
 	}
 }

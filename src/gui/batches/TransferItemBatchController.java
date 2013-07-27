@@ -1,7 +1,6 @@
 package gui.batches;
 
-import model.Container;
-import model.Item;
+import model.*;
 import gui.common.*;
 import gui.inventory.*;
 import gui.item.ItemData;
@@ -37,16 +36,16 @@ public class TransferItemBatchController extends ItemBatchController implements
 		return (ITransferItemBatchView)super.getView();
 	}
 
-	/**
-	 * Loads data into the controller's view.
-	 * 
-	 *  {@pre None}
-	 *  
-	 *  {@post The controller has loaded data into its view}
-	 */
-	@Override
-	protected void loadValues() {
-	}
+//	/**
+//	 * Loads data into the controller's view.
+//	 * 
+//	 *  {@pre None}
+//	 *  
+//	 *  {@post The controller has loaded data into its view}
+//	 */
+//	@Override
+//	protected void loadValues() {
+//	}
 
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
@@ -61,8 +60,8 @@ public class TransferItemBatchController extends ItemBatchController implements
 	@Override
 	protected void enableComponents() {
 		getView().setUseScanner(true);
-		getView().enableRedo(false);
-		getView().enableUndo(false);
+		getView().enableRedo(cmdHistory.canRedo());
+		getView().enableUndo(cmdHistory.canUndo());
 		getView().enableItemAction(false);
 	}
 	
@@ -89,29 +88,23 @@ public class TransferItemBatchController extends ItemBatchController implements
 	@Override
 	public void transferItem() {
 		
-		ItemData selected = getView().getSelectedItem();
-		
-		if ( selected != null ) {
-			Item selectedItem = (Item) selected.getTag();
+		if (selectedItem != null ){
 			
-			if (selectedItem != null ){
-				
-//				getView().displayInformationMessage("Moving Item " + selectedItem);
-				if ( container != null ){
-					getModel().getProductAndItemEditor().moveItem(selectedItem, container);
-					getView().setItems(DataConverter.toItemDataArray(
-							getModel().getItemManager().
-							getItems(container, selectedItem.getProduct()))
-																	);
-					
-				}
-				else {
-					getView().displayWarningMessage("Could not move item to container");
-				}
+			if ( container != null ){
+				cmdHistory.doCommand(new TransferItemToSU(selectedItem, 
+														 (StorageUnit) container));
+//
+//				getView().setItems(DataConverter.toItemDataArray(
+//						getModel().getItemManager().
+//						getItems(container, selectedItem.getProduct()))
+//																);
+				loadValues();
 				
 			}
-		}
-		
+			else {
+				getView().displayWarningMessage("Could not move item to container");
+			}	
+		}		
 	}
 	
 	/**
@@ -120,6 +113,9 @@ public class TransferItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	public void redo() {
+		super.redo();
+		enableComponents();
+		loadValues();
 	}
 
 	/**
@@ -128,6 +124,9 @@ public class TransferItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	public void undo() {
+		super.undo();
+		enableComponents();
+		loadValues();
 	}
 
 	/**
@@ -141,6 +140,8 @@ public class TransferItemBatchController extends ItemBatchController implements
 	
 	public void doAction(){
 		transferItem();
+		enableComponents();
+		loadValues();
 	}
 
 }

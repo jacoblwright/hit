@@ -4,38 +4,37 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
+import java.util.TreeSet;
 
 import config.IOConfig;
-
 import printers.BarcodePrinter;
-
-import model.Barcode;
-import model.Container;
-import model.Item;
-import model.Product;
-import model.StorageUnit;
+import model.*;
 import gui.common.*;
 import gui.inventory.*;
 import gui.item.ItemData;
 import gui.product.*;
+
 import java.awt.event.*;
 
 /**
  * Controller class for the add item batch view.
  */
-public class AddItemBatchController extends Controller implements
+public class AddItemBatchController extends ItemBatchController implements
 		IAddItemBatchController, ActionListener {
     
     private TextFieldTimer timer;
 
+	Stack<List<Item>> itemBatches;
+	Stack<List<Item>> redoItemBatches;
     ProductData[] productDataProducts;
 	Container container;
-	Collection<Item> items;
-	Collection<Product> products;
 	/**
 	 * Constructor.
 	 * 
@@ -44,12 +43,12 @@ public class AddItemBatchController extends Controller implements
 	 */
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
-		items = new HashSet();
-		products = new HashSet();
 		productDataProducts = new ProductData[0];
 		container = (Container)target.getTag();
-		construct();
+		itemBatches = new Stack<List<Item>>();
+		redoItemBatches = new Stack<List<Item>>();
 		setDefaultValues();
+		construct();
 		timer = new TextFieldTimer(this);
 	}
 
@@ -63,47 +62,43 @@ public class AddItemBatchController extends Controller implements
 
 	protected void setDefaultValues() {
 		getView().setUseScanner(true);
-	}
-	/**
-	 * Loads data into the controller's view.
-	 * 
-	 *  {@pre None}
-	 *  
-	 *  {@post The controller has loaded data into its view}
-	 */
-	@Override
-	protected void loadValues() {
-		
-		ProductData[] productData = DataConverter.toProductDataArray(products);
-		
-		ProductData selectProduct = null;
-		for(int i = 0; i < productData.length; i++){
-			int count = 0;
-			Product product = (Product)productData[i].getTag();
-			
-			/* Find selected product */
-			if(productData[i].getBarcode().equals(getView().getBarcode())){
-				selectProduct = productData[i];
-			}
-			
-			Iterator it2 = items.iterator();
-			while(it2.hasNext()){
-				Item item = (Item)it2.next();
-				if(item.getProduct().equals(product)){
-					count++;
-				}
-			}
-			productData[i].setCount(Integer.toString(count));
-		}
-		getView().setProducts(productData);
-		getView().selectProduct(selectProduct);
-		selectedProductChanged();
 		getView().setCount("1");
-		Date date = new Date();
-		getView().setEntryDate(date);
-		getView().setBarcode("");
 		
 	}
+//	/**
+//	 * Loads data into the controller's view.
+//	 * 
+//	 *  {@pre None}
+//	 *  
+//	 *  {@post The controller has loaded data into its view}
+//	 */
+//	@Override
+//	protected void loadValues() {
+//		
+//		ProductData[] productData = DataConverter.toProductDataArray(products);
+//		
+//		ProductData selectProduct = null;
+//		for(int i = 0; i < productData.length; i++){
+//			int count = 0;
+//			Product product = (Product)productData[i].getTag();
+//			
+//			/* Find selected product */
+//			if(productData[i].getBarcode().equals(getView().getBarcode())){
+//				selectProduct = productData[i];
+//			}
+//			
+//			Iterator it2 = items.iterator();
+//			while(it2.hasNext()){
+//				Item item = (Item)it2.next();
+//				if(item.getProduct().equals(product)){
+//					count++;
+//				}
+//			}
+//			productData[i].setCount(Integer.toString(count));
+//		}
+
+//		
+//	}
 
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
@@ -133,10 +128,11 @@ public class AddItemBatchController extends Controller implements
 		catch(IllegalArgumentException e){
 			getView().enableItemAction(false);
 		}
-
 		
-		getView().enableRedo(false);
-		getView().enableUndo(false);
+		Date date = new Date();
+		getView().setEntryDate(date);
+		getView().enableRedo(cmdHistory.canRedo());
+		getView().enableUndo(cmdHistory.canUndo());
 	}
 
 	/**
@@ -157,17 +153,14 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void countChanged() {
-		enableComponents();
-	}
-
-	/**
-	 * This method is called when the "Product Barcode" field in the
-	 * add item batch view is changed by the user.
-	 */
-	@Override
-	public void barcodeChanged() {
-		if(getView().getUseScanner() == true && !getView().getBarcode().isEmpty()){
-			timer.start();
+		try {
+			if (!getView().getCount().equals("")){
+				Integer.parseInt(getView().getCount());
+			}
+		}
+		catch (NumberFormatException e){
+			getView().displayErrorMessage("You may only use numbers in the count.");
+			getView().setCount("1");
 		}
 		enableComponents();
 	}
@@ -191,17 +184,27 @@ public class AddItemBatchController extends Controller implements
 	@Override
 	public void selectedProductChanged() {
 		ProductData productData = getView().getSelectedProduct();
-		Collection collection = new HashSet();
+//		Collection collection = new HashSet();
+//		if(productData != null){
+//			Iterator it = items.iterator();
+//			while(it.hasNext()){
+//				Item item = (Item)it.next();
+//				if(item.getProduct().equals(productData.getTag())){
+//					collection.add(item);
+//				}
+//			}
+//			ItemData [] itemData = DataConverter.toItemDataArray(collection);
+//			getView().setItems(itemData);
+//		}
 		if(productData != null){
-			Iterator it = items.iterator();
-			while(it.hasNext()){
-				Item item = (Item)it.next();
-				if(item.getProduct().equals(productData.getTag())){
-					collection.add(item);
+			Collection<Item> allProductItems = new TreeSet<Item>();
+			for (Item i : getModel().getItemManager().getItems()){
+				if ( i.getProduct().equals(productData.getTag()) ) {
+					allProductItems.add(i);
 				}
 			}
-			ItemData [] itemData = DataConverter.toItemDataArray(collection);
-			getView().setItems(itemData);
+			
+			getView().setItems(DataConverter.toItemDataArray(allProductItems));
 		}
 	}
 
@@ -226,21 +229,32 @@ public class AddItemBatchController extends Controller implements
 			}
 			else {
 				loadValues();
+				enableComponents();
 				return;
 			}
 		}
 		
+		List<Item> itemsToAdd = new ArrayList<Item>();
 		for(int i = 0; i < Integer.parseInt(getView().getCount()); i++){
 			Barcode barcode = new Barcode();
-			Container storageUnit = getModel().getContainerManager().
-					getAncestorStorageUnit(container);
+			
 			Item item = new Item(null, product, getView().getEntryDate(), barcode);
-			getModel().getProductAndItemEditor().
-			addItemToStorageUnit(item, (StorageUnit)storageUnit);
-			items.add(item);
+			itemsToAdd.add(item);
+			
 		}
-		products.add(product);
+		
+		Container storageUnit = getModel().getContainerManager().
+				getAncestorStorageUnit(container);
+		
+		cmdHistory.doCommand(new AddItemsToSU(itemsToAdd, (StorageUnit) storageUnit));
+		itemBatches.push(itemsToAdd);
+		if (!products.contains(product)){
+			products.add(product);
+		}
+//		items = getModel().getItemManager().getItems(container, product);
+		selectedProduct = product;
 		loadValues();
+		enableComponents();
 	}
 	
 	/**
@@ -249,6 +263,10 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void redo() {
+		super.redo();
+		itemBatches.push(redoItemBatches.pop());
+		enableComponents();
+		loadValues();
 	}
 
 	/**
@@ -257,6 +275,10 @@ public class AddItemBatchController extends Controller implements
 	 */
 	@Override
 	public void undo() {
+		super.undo();
+		redoItemBatches.push(itemBatches.pop());
+		enableComponents();
+		loadValues();
 	}
 
 	/**
@@ -268,22 +290,30 @@ public class AddItemBatchController extends Controller implements
 	@Override
 	public void done(){
 		getView().close();
-		if(items.size() != 0){
+		if(itemBatches.size() != 0){
 			try{
-				BarcodePrinter.printBarcodes(items, IOConfig.getBarcodeTagsFile(), true);
+				Collection<Item> addedItems = new TreeSet<Item>();
+				while (!itemBatches.isEmpty()){
+					addedItems.addAll(itemBatches.pop());
+				}
+				BarcodePrinter.printBarcodes(addedItems, IOConfig.getBarcodeTagsFile(), true);
 			}
 			catch(Exception e){
 				getView().displayErrorMessage("Could Not Display PDF");
 			}
 		}
 	}
+	
+	public void doAction(){
+		addItem();
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-        addItem();
-        
-    }
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        
+//        addItem();
+//        
+//    }
 	
 }
 

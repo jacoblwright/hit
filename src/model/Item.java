@@ -9,6 +9,7 @@ import java.util.Date;
 *
 */
 
+@SuppressWarnings("serial")
 public class Item extends Entity implements Comparable<Item> {
 	
 	/** Points to the product that describes the item. */
@@ -19,9 +20,6 @@ public class Item extends Entity implements Comparable<Item> {
 	
 	/** date the item entered */
 	private Date entryDate;
-	
-	/** time the item was removed */
-	private Date exitDate;
 	
 	/** date the item was removed */
 	private Date exitTime;

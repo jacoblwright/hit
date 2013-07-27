@@ -26,17 +26,17 @@ public interface IItemBatchController extends IController {
 	
 	
 	
-	/**
-	 * This method is called when the user clicks the "Undo" button
-	 * in the remove item batch view.
-	 */
-	void undo();
-	
-	/**
-	 * This method is called when the user clicks the "Redo" button
-	 * in the remove item batch view.
-	 */
-	void redo();
+//	/**
+//	 * This method is called when the user clicks the "Undo" button
+//	 * in the remove item batch view.
+//	 */
+//	void undo();
+//	
+//	/**
+//	 * This method is called when the user clicks the "Redo" button
+//	 * in the remove item batch view.
+//	 */
+//	void redo();
 	
 	/**
 	 * This method is called when the user clicks the "Done" button
