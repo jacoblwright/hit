@@ -3,6 +3,8 @@ package gui.reports.removed;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import reports.ReportTime;
+
 import gui.common.*;
 
 /**
@@ -80,7 +82,10 @@ public class RemovedReportController extends Controller implements
 	protected void loadValues() {
 		getView().enableOK(true);
 		getView().setSinceDateValue(new Date());
-		getView().enableSinceDateValue(false);
+		if(ReportTime.getLastReport() == null){
+			getView().enableSinceDateValue(true);
+		}
+		else getView().setSinceLastValue(ReportTime.getLastReport());
 	}
 
 	//
@@ -102,6 +107,7 @@ public class RemovedReportController extends Controller implements
 	 */
 	@Override
 	public void display() {
+		ReportTime.setLastReport(new Date());
 	}
 
 }
