@@ -183,10 +183,10 @@ public class ReportDirector {
         switch (format) {
 
             case PDF:
-                p = new PDFPrinter(IOConfig.getReportFile());
+                p = new PDFPrinter(IOConfig.getReportFilePDF());
                 break;
             case HTML:
-                p = new HTMLPrinter(IOConfig.getReportFile());
+                p = new HTMLPrinter(IOConfig.getReportFileHTML());
                 break;
 
         }

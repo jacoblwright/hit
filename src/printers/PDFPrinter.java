@@ -12,7 +12,6 @@ public class PDFPrinter extends Printer implements ReportPrinter {
     private File file;
     
     private Document document;
-    private PdfWriter writer;
     
     public PDFPrinter(File file) throws IOException {
         
@@ -20,21 +19,10 @@ public class PDFPrinter extends Printer implements ReportPrinter {
         
         this.file = file;
         
-        try {           
-            
-            document = new Document(PageSize.LETTER);
-            
-            writer = PdfWriter.getInstance(
-                    document, new FileOutputStream(file));
-                        
-            document.open();            
-            document.setMargins(
-                    MARGINS, MARGINS, MARGINS, MARGINS);
-        
-        }
-        catch (DocumentException e) {
-            throw new IOException(e.getMessage());
-        }
+        document = new Document(PageSize.LETTER);
+        document.open();            
+        document.setMargins(
+                MARGINS, MARGINS, MARGINS, MARGINS);
         
     }
     
