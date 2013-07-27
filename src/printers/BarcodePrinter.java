@@ -13,9 +13,9 @@ import com.itextpdf.text.pdf.Barcode;
  * Provides a method to create a PDF file with images of barcodes for a
  * specified Collection of Item objects.
  */
-public class BarcodePrinter {
+public class BarcodePrinter extends Printer {
     
-    private static final int MARGINS_PT = 36;
+    private static final int MARGINS = 36;
     
     private static final int ROW_HEIGHT = 108;
     
@@ -57,7 +57,7 @@ public class BarcodePrinter {
                         
             document.open();            
             document.setMargins(
-                    MARGINS_PT, MARGINS_PT, MARGINS_PT, MARGINS_PT);
+                    MARGINS, MARGINS, MARGINS, MARGINS);
             
             PdfContentByte pcb = writer.getDirectContent();
             
@@ -129,30 +129,6 @@ public class BarcodePrinter {
             }
         }
 
-    }
-    
-    private static void checkFile(File file) throws IOException {
-        
-        //System.out.println(file);
-        
-        if (file == null) {
-            throw new IllegalArgumentException("Specified file is null.");
-        }
-        
-        if (file.exists() && (!file.isFile() || !file.canWrite())) {
-            throw new IOException("Specified file is not valid.");
-        }
-        
-        if (!file.exists()) {
-            
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-            
-            file.createNewFile();
-            
-        }
-        
     }
     
     private static String truncateDescription(String s) {

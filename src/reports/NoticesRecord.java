@@ -5,34 +5,46 @@ import model.*;
 
 public class NoticesRecord implements Record {
     
-    private Container productGroup;
+    private ProductGroup productGroup;
     private Quantity threeMonthSupplyQuantity;
     private List<Product> productsWithQuantityMismatch;
 
     @Override
     public List<String> getValuesAsStrings() {
-        
-        // In progress --Evan
-        
-        /*
+ 
         List<String> lines = new LinkedList<String>();
+        String line;
         
-        String line = "";
-        line += "Product group " + productGroup.getName() + ": ";
+        StorageUnit storageUnit = Model.getInstance().getContainerManager().
+                getAncestorStorageUnit(productGroup);
         
+        line = "Product group " + productGroup.getName() + " " +
+                "in storage unit " + storageUnit.getName() + " " +
+                "has a three-month supply (" +
+                productGroup.getThreeMonthSupply() + ") " +
+                "that is inconsistent with the following products:";
+        lines.add(line);
         
+        for (Product product : productsWithQuantityMismatch) {
+            
+            line = "- Product " + product.getDescription() + " " +
+                    "(size: " + product.getSize() + ") " +
+                    "in product group " +
+                    Model.getInstance().getProductAndItemEditor().
+                    getContainer(product, storageUnit).getName();
+            lines.add(line);
+            
+        }
+                
         return lines;
-        */
-        
-        return null;
         
     }
 
-    public Container getProductGroup() {
+    public ProductGroup getProductGroup() {
         return productGroup;
     }
 
-    public void setProductGroup(Container productGroup) {
+    public void setProductGroup(ProductGroup productGroup) {
         this.productGroup = productGroup;
     }
 

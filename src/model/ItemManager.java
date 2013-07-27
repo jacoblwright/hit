@@ -31,6 +31,14 @@ public class ItemManager extends Observable implements Serializable {
 	private Map<Container, Set<Item>> itemsByContainer;
 	
 	/**
+	 * Sets map<Container, Set<Item>> for testing purposes
+	 * @param itemsByContainer
+	 */
+	public void setItemsByContainer( Map<Container, Set<Item>> itemsByContainer ) {
+		this.itemsByContainer = itemsByContainer;
+	}
+	
+	/**
 	* Index for quick item lookup from the tag.
 	*/
 	private Map<Barcode, Item> itemByTag;
