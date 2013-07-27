@@ -52,5 +52,12 @@ public class NoticesRecord implements Record {
             List<Product> productsWithQuantityMismatch) {
         this.productsWithQuantityMismatch = productsWithQuantityMismatch;
     }
+    
+    public void addProductsWithQuantityMismatch(Product mismatchProduct) {
+    	if(productsWithQuantityMismatch == null) {
+    		productsWithQuantityMismatch = new ArrayList<Product>();
+    	}
+    	productsWithQuantityMismatch.add(mismatchProduct);
+    }
 
 }

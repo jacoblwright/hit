@@ -54,12 +54,12 @@ public class NMonthSupplyContainerRecord implements
 
 	@Override
     public List<String> getValuesAsStrings() {
-		List<String> result = new ArrayList<String>();
-		result.add(productGroup.getName());
-		result.add(storageUnit.getName());
-		result.add(threeMonthSupply.getQuantityString());
-		result.add(currentSupply.getQuantityString());
-        return result;        
+		List<String> containerAttribute = new ArrayList<String>();
+		containerAttribute.add(productGroup.getName());
+		containerAttribute.add(storageUnit.getName());
+		containerAttribute.add(threeMonthSupply.getQuantityString());
+		containerAttribute.add(currentSupply.getQuantityString());
+        return containerAttribute;        
     }
 
 	@Override

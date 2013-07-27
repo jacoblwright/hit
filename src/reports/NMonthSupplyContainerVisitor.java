@@ -30,12 +30,12 @@ public class NMonthSupplyContainerVisitor implements Visitor {
 		
 		converter = new Converter();
 		this.numMonths = numMonths;
-		records = new ArrayList<Record>();
 		scale = numMonths / 3;
 	}
 	
     @Override
     public List<Record> visitAll() {
+    	records = new ArrayList<Record>();
         while(containerTree.hasNext()) {
         	Record subRecord = getNMonthSupply(containerTree.next()); 
         	if(subRecord != null) {

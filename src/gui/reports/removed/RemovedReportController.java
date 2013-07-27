@@ -1,5 +1,10 @@
 package gui.reports.removed;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import reports.ReportTime;
+
 import gui.common.*;
 
 /**
@@ -47,6 +52,23 @@ public class RemovedReportController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		
+		if(getView().getSinceDate()){
+			getView().enableSinceDateValue(true);
+		}
+		else getView().enableSinceDateValue(false);
+			
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			String result = sdf.format(getView().getSinceDateValue());
+			if(getView().getSinceDateValue().after(new Date())){
+				getView().enableOK(false);
+			}
+			else getView().enableOK(true);
+		}
+		catch(Exception e){
+			getView().enableOK(false);
+		}
 	}
 
 	/**
@@ -58,6 +80,12 @@ public class RemovedReportController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		getView().enableOK(true);
+		getView().setSinceDateValue(new Date());
+		if(ReportTime.getLastReport() == null){
+			getView().enableSinceDateValue(true);
+		}
+		else getView().setSinceLastValue(ReportTime.getLastReport());
 	}
 
 	//
@@ -70,6 +98,7 @@ public class RemovedReportController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -78,6 +107,7 @@ public class RemovedReportController extends Controller implements
 	 */
 	@Override
 	public void display() {
+		ReportTime.setLastReport(new Date());
 	}
 
 }
