@@ -1,6 +1,7 @@
 package reports;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -36,6 +37,8 @@ public class ExpiredItemsVisitor implements Visitor {
 		Collection<Item> itemList = getModel().getItemManager().getItems(container);
 		List<ExpiredItemsRecord> subRecords = new ArrayList<ExpiredItemsRecord>();
 		for(Item item : itemList) {
+			Date d = getDateAtMidnight(item.getExpirationDate());
+			Date d1 = getDateAtMidnight(now);
 			if(getDateAtMidnight(item.getExpirationDate()).equals(getDateAtMidnight(now)) ||
 					getDateAtMidnight(item.getExpirationDate()).before(getDateAtMidnight(now))) {
 				ExpiredItemsRecord exprItemRecord = new ExpiredItemsRecord();
@@ -54,8 +57,13 @@ public class ExpiredItemsVisitor implements Visitor {
 	}
 
 	private Date getDateAtMidnight( Date date ) {
-    	Long time = date.getTime();
-		return new Date(time - time % (24 * 60 * 60 * 1000));
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+	    cal.set(Calendar.MINUTE, 0);
+	    cal.set(Calendar.SECOND, 0);
+	    cal.set(Calendar.MILLISECOND, 0);
+	    return cal.getTime();
     }
 
 	private Model getModel() {

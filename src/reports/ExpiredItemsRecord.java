@@ -73,9 +73,9 @@ public class ExpiredItemsRecord implements Record, Comparable<ExpiredItemsRecord
 		result.add(description);
 		result.add(storageUnit.getName());
 		result.add(productGroup.getName());
-		String entryStr = new SimpleDateFormat("MM-dd-yyyy").format(entry);
+		String entryStr = new SimpleDateFormat("MM/dd/yyyy").format(entry);
 		result.add(entryStr);
-		String expireStr = new SimpleDateFormat("MM-dd-yyyy").format(expire);
+		String expireStr = new SimpleDateFormat("MM/dd/yyyy").format(expire);
 		result.add(expireStr);
 		result.add(tag.getBarcode());
         return result;        

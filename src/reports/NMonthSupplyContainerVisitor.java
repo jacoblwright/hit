@@ -15,11 +15,13 @@ public class NMonthSupplyContainerVisitor implements Visitor {
 	private Iterator<Container> containerTree;
 	private final int numMonths;
 	private List<Record> records;
+	private float scale;
 	
 	public NMonthSupplyContainerVisitor(Iterator<Container> containerTree, int numMonths) {
 		this.containerTree = containerTree;
 		this.numMonths = numMonths;
 		records = new ArrayList<Record>();
+		scale = numMonths / 3;
 	}
 	
     @Override
