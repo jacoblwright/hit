@@ -90,14 +90,14 @@ public class Model {
             
             e.printStackTrace();
             
-            createNewManagers();
+            createNewFiles();
             
         }
         catch (ClassNotFoundException e) {
             
             e.printStackTrace();
             
-            createNewManagers();
+            createNewFiles();
             
         }
         
@@ -149,13 +149,14 @@ public class Model {
         
     }
     
-    private void createNewManagers() {
+    private void createNewFiles() {
         
         assert true;
         
         containerManager = new ContainerManager();
         productManager = new ProductManager();
         itemManager = new ItemManager();
+        reportTime = new ReportTime();
         
     }
     

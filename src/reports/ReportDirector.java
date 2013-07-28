@@ -1,5 +1,6 @@
 package reports;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.*;
 import config.IOConfig;
@@ -42,7 +43,9 @@ public class ReportDirector {
         
         ReportPrinter p = getPrinter(format);
         
-        p.printTitle("Items Removed Since " + date);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd H:mm");
+        
+        p.printTitle("Items Removed Since " + df.format(date));
         p.printBlankLine();
         p.printBlankLine();
         
@@ -173,6 +176,8 @@ public class ReportDirector {
             
         }
         
+        p.close(true);
+        
     }
     
     private static ReportPrinter getPrinter(FileFormat format)
@@ -221,14 +226,5 @@ public class ReportDirector {
 	private static boolean emptyString(String str) {
 		return str.trim().length() == 0;
 	}
-    
-//    private static Iterator<Container> getContainerIterator() {
-//        
-//        Set<Container> containerRoot = new HashSet<Container>();
-//        containerRoot.addAll(
-//                Model.getInstance().getContainerManager().getRoot());
-//        return new ContainerPreorderIterator(containerRoot);        
-//        
-//    }
     
 }

@@ -5,13 +5,13 @@ import java.util.Date;
 
 public class ReportTime implements Serializable{
 	
-	static Date lastReport = null;
+	Date lastReport = null;
 	
-	public static void setLastReport(Date date){
+	public void setLastReport(Date date){
 		lastReport = date;
 	}
 	
-	public static Date getLastReport(){
+	public Date getLastReport(){
 		return lastReport;
 	}
 

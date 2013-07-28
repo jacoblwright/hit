@@ -62,7 +62,17 @@ public class NoticesRecord implements Record {
 
     public void setProductsWithQuantityMismatch(
             List<Product> productsWithQuantityMismatch) {
+        
+        Collections.sort(productsWithQuantityMismatch,
+                new Comparator<Product>() {
+            @Override
+            public int compare(Product p1, Product p2) {                
+                return p1.getDescription().compareTo(p2.getDescription());                
+            }    
+        });
+        
         this.productsWithQuantityMismatch = productsWithQuantityMismatch;
+        
     }
     
     public void addProductsWithQuantityMismatch(Product mismatchProduct) {

@@ -51,7 +51,6 @@ import gui.common.*;
 	 */
 	@Override
 	protected void enableComponents() {
-		getView().enableOK(false);
 	}
 
 	/**
