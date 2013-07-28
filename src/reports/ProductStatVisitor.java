@@ -76,7 +76,7 @@ public class ProductStatVisitor implements Visitor {
 		
 		while(it.hasNext()){
 			Product product = (Product)it.next();
-			currentProductToItemsMap.put(product, new TreeSet());
+			itemMap.put(product, new TreeSet());
 		}
 	}
 	
@@ -130,7 +130,7 @@ public class ProductStatVisitor implements Visitor {
 		
 		Collection<Item>  itemCollection2 = model.getItemManager().getItems();
 		Iterator<Item> it2 = itemCollection2.iterator();
-		addItemsToMap(currentProductToItemsMap, it2);
+		addItemsToMap(productToAllItemsMap, it2);
 	}
 	
 	/** Creates the usedItemsDuringPeriod
@@ -183,20 +183,19 @@ public class ProductStatVisitor implements Visitor {
 			if(!item.getEntryDate().after(date))
 				count++;
 		}
-		
 		return count;
 	}
 	
 	public int getItemsRemovedOnAndBeforeDate(Date date, Product product){
 		
-		Set<Item> items = productToAllItemsMap.get(product);
+		Set<Item> items = removedProductToItemsMap.get(product);
 		if(items == null) return 0;
 		Iterator<Item> it = items.iterator();
 		
 		int count = 0;
 		while(it.hasNext()){
 			Item item = (Item)it.next();
-			if(!item.getEntryDate().before(date))
+			if(item.getExitTime().before(date))
 				count++;
 		}
 		return count;
@@ -274,8 +273,8 @@ public class ProductStatVisitor implements Visitor {
 	public double getUsedAverage(Product product){
 		Set<Item> items = usedItemsDuringPeriod.get(product);
 		if(items == null) return 0;
-		int runningTotal = 0;
-		int dayTotal = 0;
+		double runningTotal = 0;
+		double dayTotal = 0;
 		Iterator<Item> it = items.iterator();
 		
 		while(it.hasNext()){
@@ -289,8 +288,8 @@ public class ProductStatVisitor implements Visitor {
 	
 	public double getCurrentItemsAverage(Product product){
 		Set<Item> items = currentProductToItemsMap.get(product);
-		int runningTotal = 0;
-		int dayTotal = 0;
+		double runningTotal = 0;
+		double dayTotal = 0;
 		Iterator<Item> it = items.iterator();
 		
 		while(it.hasNext()){
@@ -298,7 +297,6 @@ public class ProductStatVisitor implements Visitor {
 			runningTotal += daysBetween(item.getEntryDate(), new Date());
 			dayTotal++;
 		}
-		
 		return runningTotal / dayTotal;
 	}
 	
@@ -328,19 +326,18 @@ public class ProductStatVisitor implements Visitor {
 	public double getSupplyAverage(Product product){
 		Date date = new Date();
 		double runningTotal = 0;
-		int dayTotal = 0;
-		
-		while (!date.before(reportDate)){
+		double dayTotal = 0;
+
+		while (!date.before(reportDate) && !date.before(product.getCreationDate())){
 			runningTotal += getDayTotal(date, product);
 			dayTotal++;
 			date = getPreviousDay(date);
 		}
-		
 		return runningTotal / dayTotal;
 	}
 	
 	public int daysBetween(Date d1, Date d2){
-		return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+		return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 	}
 	
     @Override
@@ -357,10 +354,10 @@ public class ProductStatVisitor implements Visitor {
     		record.setBarcode(product.getUPC().getBarcode());
     		record.setSize(product.getSize());
     		record.setThreeMonthSupply(product.getThreeMonthSupply());
-    		
+
     		record.setCurrentSupply(getCurrentItemAmount(product));
     		record.setAverageSupply(getSupplyAverage(product));
-    		
+
     		record.setMaximumSupply(getMaximumSupply(product));
     		record.setMinimumSupply(getMinimumSupply(product));
     		
@@ -371,13 +368,13 @@ public class ProductStatVisitor implements Visitor {
     		
     		record.setUsedAge(getUsedAverage(product));
     		record.setMaximumAge(getMaximumAge(product, usedItemsDuringPeriod));
-    		
+
     		record.setCurrentAverageSupply(getCurrentItemsAverage(product));
     		record.setMaximumCurrentSupply(getMaximumAge(product, currentProductToItemsMap));
     		
     		recordList.add(record);
     	}
-    	
+	
         return recordList;
     }
 

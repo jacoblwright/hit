@@ -1,5 +1,6 @@
 package reports;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class ProductStatRecord implements Record {
 	private int maximumAge;
 	private double currentAverageSupply;
 	private int maximumCurrentSupply;
+	
+	private DecimalFormat df = new DecimalFormat("0.##");
 	
     public String getDescription() {
 		return description;
@@ -206,18 +209,29 @@ public class ProductStatRecord implements Record {
 	@Override
     public List<String> getValuesAsStrings() {
 		List<String> productAttributes = new ArrayList();
+		
 		productAttributes.add(description);
 		productAttributes.add(barcode);
-		productAttributes.add((int)size.getNumber() + " " + size.getUnit().toString());
+		productAttributes.add(df.format(size.getNumber()) + " " + size.getUnit().toString());
 		productAttributes.add(Integer.toString(threeMonthSupply));
-		productAttributes.add(Integer.toString(currentSupply));
-		productAttributes.add(Double.toString(averageSupply));
-		productAttributes.add(Integer.toString(minimumSupply));
-		productAttributes.add(Integer.toString(maximumSupply));
-		productAttributes.add(Integer.toString(shelfLife) + " months");
-		productAttributes.add(Double.toString(usedAge) + " / " + 
+		
+		productAttributes.add(Integer.toString(currentSupply) + " / " + 
+								df.format(averageSupply));
+		
+		productAttributes.add(Integer.toString(minimumSupply) + " / " + 
+								Integer.toString(maximumSupply));
+		
+		productAttributes.add(Integer.toString(usedSupply) + " / " +
+								Integer.toString(addedSupply));
+		
+		if(shelfLife == 0)
+			productAttributes.add("");
+		else productAttributes.add(Integer.toString(shelfLife) + " months");
+		
+		productAttributes.add(df.format(usedAge) + " / " + 
 								Integer.toString(maximumAge));
-		productAttributes.add(Double.toString(currentAverageSupply) + " / " + 
+		
+		productAttributes.add(df.format(currentAverageSupply) + " / " + 
 								Integer.toString(maximumCurrentSupply));
 		
         return productAttributes;

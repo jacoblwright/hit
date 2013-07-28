@@ -1,5 +1,6 @@
 package reports;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ public class NMonthSupplyProductRecord implements Record, Comparable<NMonthSuppl
 	private String barcode;
 	private double NMonthSupply;
 	private int currentSupply;
+	
+	private DecimalFormat df = new DecimalFormat("0.##");
 
 	public void setDescription(String desc){
 		this.description = desc;
@@ -48,8 +51,8 @@ public class NMonthSupplyProductRecord implements Record, Comparable<NMonthSuppl
     	List<String> productAttributes = new ArrayList<String>();
     	productAttributes.add(description);
     	productAttributes.add(barcode);
-    	productAttributes.add(NMonthSupply + " count");
-    	productAttributes.add(currentSupply + " count");
+    	productAttributes.add(df.format(NMonthSupply) + " count");
+    	productAttributes.add(df.format(currentSupply) + " count");
         return productAttributes;
     }
 

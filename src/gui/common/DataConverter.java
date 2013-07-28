@@ -26,7 +26,6 @@ public class DataConverter {
 			
 			if (item.getContainer() != null){
 				ret[i] = new ItemData(item);
-				System.out.println("Display " + item);
 				i++;
 			}
 			

@@ -51,7 +51,6 @@ import gui.common.*;
 	 */
 	@Override
 	protected void enableComponents() {
-		getView().enableOK(false);
 	}
 
 	/**
@@ -63,6 +62,8 @@ import gui.common.*;
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setMonths("3");
+		getView().enableOK(true);
 	}
 
 	//

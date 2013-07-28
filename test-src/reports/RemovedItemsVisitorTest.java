@@ -1,10 +1,12 @@
-package model;
+package reports;
 
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+
+import model.Model;
 
 import org.junit.Test;
 
