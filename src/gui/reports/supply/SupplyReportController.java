@@ -90,7 +90,7 @@ import gui.common.*;
 			ReportDirector.generateNMonthSupplyReport(months, getView().getFormat());
 		} catch (Throwable e) {
 			
-			getView().displayErrorMessage("Error in generating n month supply report" + e.getMessage());
+			getView().displayErrorMessage("Error in generating n month supply report");
 		}
 	}
 	
