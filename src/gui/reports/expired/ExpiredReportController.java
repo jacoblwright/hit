@@ -86,7 +86,7 @@ public class ExpiredReportController extends Controller implements
 		try {
 			ReportDirector.generateExpiredItemsReport(getView().getFormat());
 		} catch (IOException e) {
-			getView().displayErrorMessage("IO/Error in generating expired items report");
+			getView().displayErrorMessage("Error in generating expired items report");
 		}
 	}
 

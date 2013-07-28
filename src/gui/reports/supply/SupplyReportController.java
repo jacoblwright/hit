@@ -51,6 +51,7 @@ import gui.common.*;
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableOK(false);
 	}
 
 	/**
@@ -87,7 +88,8 @@ import gui.common.*;
 			int months = getNumber(getView().getMonths());
 			ReportDirector.generateNMonthSupplyReport(months, getView().getFormat());
 		} catch (Throwable e) {
-			getView().displayErrorMessage("IO/Error in generating n month supply report");
+			
+			getView().displayErrorMessage("Error in generating n month supply report" + e.getMessage());
 		}
 	}
 	

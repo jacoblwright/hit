@@ -84,7 +84,7 @@ public class NoticesReportController extends Controller implements
 		try {
 			ReportDirector.generateNoticesReport(getView().getFormat());
 		} catch (Throwable e) {
-			getView().displayErrorMessage("IO/Error in generating notices report");
+			getView().displayErrorMessage("Error in generating notices report");
 		}
 		
 	}
