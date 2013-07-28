@@ -130,7 +130,8 @@ public class AddProductController extends Controller implements
 				getView().getSizeUnit(), Float.parseFloat(getView().
 						getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
 				Integer.parseInt(getView().getSupply()) );
-		product.setCreationDate(productDate);
+		
+		//product.setCreationDate(productDate);
 		
 		if(!getModel().getProductManager().isProductValid(product)){
 			getView().displayErrorMessage("Can't add invalid product.");
