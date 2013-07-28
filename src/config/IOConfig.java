@@ -12,7 +12,8 @@ public class IOConfig {
     
     private final static String PRINTER_OUTPUT_DIR_NAME = "hit_printer_output";
     private final static String BARCODE_TAGS_FILENAME = "barcode_tags.pdf";
-    private final static String REPORT_FILENAME = "report.pdf";   
+    private final static String REPORT_FILENAME_PDF = "report.pdf";   
+    private final static String REPORT_FILENAME_HTML = "report.html";   
     
     private static File containerManagerFile;
     private static File productManagerFile;
@@ -20,7 +21,8 @@ public class IOConfig {
     private static File reportTimeFile;
     
     private static File barcodeTagsFile;    
-    private static File reportFile;        
+    private static File reportFilePDF;        
+    private static File reportFileHTML;        
     
     static {
         
@@ -45,10 +47,14 @@ public class IOConfig {
                 System.getProperty("user.home") + File.separator +
                 PRINTER_OUTPUT_DIR_NAME + File.separator +
                 BARCODE_TAGS_FILENAME);      
-        reportFile = new File(
+        reportFilePDF = new File(
                 System.getProperty("user.home") + File.separator +
                 PRINTER_OUTPUT_DIR_NAME + File.separator +
-                REPORT_FILENAME);
+                REPORT_FILENAME_PDF);
+        reportFileHTML = new File(
+                System.getProperty("user.home") + File.separator +
+                PRINTER_OUTPUT_DIR_NAME + File.separator +
+                REPORT_FILENAME_HTML);
         
     }
 
@@ -72,8 +78,12 @@ public class IOConfig {
         return barcodeTagsFile;
     }
     
-    public static File getReportFile() {
-        return reportFile;
+    public static File getReportFilePDF() {
+        return reportFilePDF;
+    }
+    
+    public static File getReportFileHTML() {
+        return reportFileHTML;
     }
 
 }

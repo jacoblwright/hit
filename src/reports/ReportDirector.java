@@ -1,8 +1,8 @@
 package reports;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.*;
-import model.*;
 import config.IOConfig;
 import printers.*;
 import gui.common.*;
@@ -41,9 +41,11 @@ public class ReportDirector {
     public static void generateRemovedItemsReport(Date date,
             FileFormat format) throws IOException {
         
-ReportPrinter p = getPrinter(format);
+        ReportPrinter p = getPrinter(format);
         
-        p.printTitle("Items Removed Since " + date);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd H:mm");
+        
+        p.printTitle("Items Removed Since " + df.format(date));
         p.printBlankLine();
         p.printBlankLine();
         
@@ -149,8 +151,32 @@ ReportPrinter p = getPrinter(format);
     
     }
     
-    public static void generateNoticesReport(FileFormat format) {
+    public static void generateNoticesReport(FileFormat format)
+            throws IOException{
         
+        ReportPrinter p = getPrinter(format);
+        
+        p.printTitle("Notices");
+        p.printBlankLine();
+        p.printBlankLine();
+        
+        p.printHeading("3-Month Supply Warnings");
+        p.printBlankLine();
+                
+        Visitor visitor = new NoticesVisitor();
+        List<Record> records = visitor.visitAll();
+        for (Record record : records) {
+            
+            List<String> valuesAsStrings = record.getValuesAsStrings();
+            for (String valueString : valuesAsStrings) {
+                p.printLine(valueString);
+            }
+            
+            p.printBlankLine();
+            
+        }
+        
+        p.close(true);
         
     }
     
@@ -162,10 +188,10 @@ ReportPrinter p = getPrinter(format);
         switch (format) {
 
             case PDF:
-                p = new PDFPrinter(IOConfig.getReportFile());
+                p = new PDFPrinter(IOConfig.getReportFilePDF());
                 break;
             case HTML:
-                p = new HTMLPrinter(IOConfig.getReportFile());
+                p = new HTMLPrinter(IOConfig.getReportFileHTML());
                 break;
 
         }
@@ -175,6 +201,7 @@ ReportPrinter p = getPrinter(format);
     }
     
     public static int getValidMonths(String numOfMonths) {
+        
     	int number = 0;
 		try
 		{	
@@ -193,19 +220,11 @@ ReportPrinter p = getPrinter(format);
 			number = -1;
 		}
 		return number;
+		
     }
     
-	private static boolean emptyString( String str) {
+	private static boolean emptyString(String str) {
 		return str.trim().length() == 0;
 	}
-    
-//    private static Iterator<Container> getContainerIterator() {
-//        
-//        Set<Container> containerRoot = new HashSet<Container>();
-//        containerRoot.addAll(
-//                Model.getInstance().getContainerManager().getRoot());
-//        return new ContainerPreorderIterator(containerRoot);        
-//        
-//    }
     
 }

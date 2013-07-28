@@ -6,12 +6,12 @@ import config.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class PDFPrinterTest {
+public class HTMLPrinterTest {
 
     @Test
     public void test() throws Exception {
         
-        ReportPrinter p = new PDFPrinter(IOConfig.getReportFilePDF());
+        ReportPrinter p = new HTMLPrinter(IOConfig.getReportFileHTML());
         
         p.printTitle("Title");
         
