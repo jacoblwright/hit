@@ -2,6 +2,7 @@ package reports;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class NMonthSupplyProductVisitor implements Visitor {
 
     @Override
     public List<Record> visitAll() {
-    	List<Record> recordList = new ArrayList();
+    	List<NMonthSupplyProductRecord> recordList = new ArrayList();
     	Collection collection = productItemsMap.keySet();
     	Iterator it = collection.iterator();
     	
@@ -92,7 +93,10 @@ public class NMonthSupplyProductVisitor implements Visitor {
     		
     		recordList.add(record);
     	}
-        return recordList;
+    	Collections.sort(recordList);
+    	List<Record> records = new ArrayList<Record>();
+    	records.addAll(recordList);
+        return records;
     }
 
 }

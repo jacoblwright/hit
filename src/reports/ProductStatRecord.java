@@ -6,7 +6,7 @@ import java.util.List;
 
 import model.Quantity;
 
-public class ProductStatRecord implements Record {
+public class ProductStatRecord implements Record, Comparable<ProductStatRecord> {
 
 	private String description;
 	private String barcode;
@@ -251,6 +251,11 @@ public class ProductStatRecord implements Record {
 				", usedMaximumAge= " + Integer.toString(maximumAge) +
 				", currentAverageSupply= " + Double.toString(currentAverageSupply) +
 				", currentMaximumSupply= " + Integer.toString(maximumCurrentSupply) + "\n";
+	}
+	
+	@Override
+	public int compareTo(ProductStatRecord o) {
+		return this.getDescription().compareTo(o.getDescription());
 	}
 
 }

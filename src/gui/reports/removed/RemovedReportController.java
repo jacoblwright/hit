@@ -120,8 +120,8 @@ public class RemovedReportController extends Controller implements
 				ReportDirector.generateRemovedItemsReport(getView().getSinceDateValue(), 
 						getView().getFormat());
 			else
-				ReportDirector.generateRemovedItemsReport(getModel().getReportTime().getLastReport(), 
-						getView().getFormat());
+				ReportDirector.generateRemovedItemsReport(
+						getModel().getReportTime().getLastReport(), getView().getFormat());
 			
 			getModel().getReportTime().setLastReport(new Date());
 		}
