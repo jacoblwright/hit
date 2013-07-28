@@ -3,6 +3,7 @@ package reports;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +22,7 @@ import model.Item;
  *
  */
 
-public class ProductStatVisitor implements Visitor {
+public class ProductStatVisitor implements Visitor{
 	
 	private Model model;
 	private Date reportDate;
@@ -342,7 +343,7 @@ public class ProductStatVisitor implements Visitor {
 	
     @Override
     public List<Record> visitAll() {
-    	List<Record> recordList = new ArrayList<Record>();
+    	List<ProductStatRecord> recordList = new ArrayList<ProductStatRecord>();
     	
     	Collection<Product> productCollection = model.getProductManager().getProducts();
     	Iterator<Product> it = productCollection.iterator();
@@ -374,8 +375,11 @@ public class ProductStatVisitor implements Visitor {
     		
     		recordList.add(record);
     	}
+    	Collections.sort(recordList);
+    	List<Record> records = new ArrayList<Record>();
+    	records.addAll(recordList);
 	
-        return recordList;
+        return records;
     }
 
 	public Date getReportDate() {
@@ -420,7 +424,6 @@ public class ProductStatVisitor implements Visitor {
 			Map<Product, Set<Item>> usedItemsDuringPeriod) {
 		this.usedItemsDuringPeriod = usedItemsDuringPeriod;
 	}
-    
     
 
 }

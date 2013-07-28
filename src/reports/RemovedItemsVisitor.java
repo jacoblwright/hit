@@ -3,6 +3,7 @@ package reports;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +18,7 @@ public class RemovedItemsVisitor implements Visitor {
 	
 	Model model;
 	Date reportDate;
-	List<Record> removedItemsList;
+	List<RemovedItemsRecord> removedItemsList;
 	Map<Product, Integer> removedItemsFromProductMap;
 	Map<Product, Integer> currentItemMap;
 	
@@ -32,7 +33,7 @@ public class RemovedItemsVisitor implements Visitor {
 		
 		model = Model.getInstance();
 		
-		removedItemsList = new ArrayList<Record>();
+		removedItemsList = new ArrayList<RemovedItemsRecord>();
 		
 		removedItemsFromProductMap = new TreeMap<Product, Integer>();
 		currentItemMap = new TreeMap<Product, Integer>();
@@ -93,8 +94,11 @@ public class RemovedItemsVisitor implements Visitor {
 			removedItemsList.add(record);
 			alreadyAddedList.add(item.getProduct());   			
     	}
+    	Collections.sort(removedItemsList);
+    	List<Record> records = new ArrayList<Record>();
+    	records.addAll(removedItemsList);
 
-        return removedItemsList;
+        return records;
     }
 
 }
