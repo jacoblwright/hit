@@ -107,7 +107,9 @@ public class EditProductGroupController extends Controller
 	public void editProductGroup() {
 		Container container = setContainer();
 		if( !((ProductGroup) target.getTag()).simpleEquals( container ) ) {
+			Container oldContainer = (Container) target.getTag();
 			getModel().getContainerEditor().editContainer( (Container) target.getTag(), container );
+			//Add code to move product and items to this container
 		}
 	}
 	

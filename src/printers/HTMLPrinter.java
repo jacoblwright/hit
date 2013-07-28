@@ -22,8 +22,8 @@ public class HTMLPrinter extends Printer implements ReportPrinter {
     @Override
     public void printTitle(String title) throws IOException {
         
-        b.append("<center><span style=\"font-size:24;font-weight:bold;\">" +
-        		title + "</span></center><br>\n");
+        b.append("<span style=\"font-size:24;font-weight:bold;\">" +
+        		title + "</span><br>\n");
         
     }
 

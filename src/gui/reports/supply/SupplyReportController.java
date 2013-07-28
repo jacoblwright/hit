@@ -51,15 +51,7 @@ import gui.common.*;
 	 */
 	@Override
 	protected void enableComponents() {
-		try{
-			int months = Integer.parseInt(getView().getMonths());
-			if( months > 0 && months <= 100)
-				getView().enableOK(true);
-			else getView().enableOK(false);
-		}
-		catch(IllegalArgumentException e){
-			getView().enableOK(false);
-		}
+		getView().enableOK(false);
 	}
 
 	/**
@@ -85,7 +77,7 @@ import gui.common.*;
 	 */
 	@Override
 	public void valuesChanged() {
-		enableComponents();
+		getView().enableOK(ReportDirector.getValidMonths(getView().getMonths()) != -1);		
 	}
 	
 	/**
@@ -94,14 +86,13 @@ import gui.common.*;
 	 */
 	@Override
 	public void display() {
-		try{
-			ReportDirector.generateNMonthSupplyReport(Integer.parseInt(getView().getMonths()), 
-														getView().getFormat());
+		try {
+			int months = getNumber(getView().getMonths());
+			ReportDirector.generateNMonthSupplyReport(months, getView().getFormat());
+		} catch (Throwable e) {
+			
+			getView().displayErrorMessage("Error in generating n month supply report" + e.getMessage());
 		}
-		catch(IOException e){
-			getView().displayErrorMessage("Illegal Month Value");
-		}
-		
 	}
 	
 	private int getNumber(String value) throws NumberFormatException {
