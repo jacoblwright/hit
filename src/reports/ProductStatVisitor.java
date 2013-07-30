@@ -225,9 +225,7 @@ public class ProductStatVisitor implements Visitor{
 		System.out.println(reportDate);
 		while(it.hasNext()){
 			Item item = (Item)it.next();
-			System.out.println(item.getEntryDate());
 			if(!item.getEntryDate().before(reportDate))
-				System.out.println("Added");
 				count++;
 		}
 		return count;
