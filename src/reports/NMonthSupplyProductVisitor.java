@@ -16,7 +16,7 @@ import model.Item;
 
 public class NMonthSupplyProductVisitor implements Visitor {
 	
-	private int months;
+	private float months;
 	private Model model;
 	private Map <Product, Set<Item>> productItemsMap;
 	

@@ -249,6 +249,10 @@ public class AddItemBatchController extends ItemBatchController implements
 			Item item = new Item(null, product, getView().getEntryDate(), barcode);
 			itemsToAdd.add(item);
 			
+			if(product.getCreationDate().after(getView().getEntryDate())){
+				product.setCreationDate(getView().getEntryDate());
+			}
+			
 		}
 		
 		Container storageUnit = getModel().getContainerManager().

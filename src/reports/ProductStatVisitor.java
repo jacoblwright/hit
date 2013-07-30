@@ -222,6 +222,7 @@ public class ProductStatVisitor implements Visitor{
 		Iterator<Item> it = items.iterator();
 		
 		int count = 0;
+		System.out.println(reportDate);
 		while(it.hasNext()){
 			Item item = (Item)it.next();
 			if(!item.getEntryDate().before(reportDate))
@@ -234,8 +235,9 @@ public class ProductStatVisitor implements Visitor{
 		Date date = new Date();
 		int minimum = getCurrentItemAmount(product);
 		
-		while(date.after(reportDate)){
+		while(date.after(reportDate) && !date.before(product.getCreationDate())){
 			int dayAmount = getDayTotal(date, product);
+			System.out.println("Day Amount: " + dayAmount);
 			if(dayAmount < minimum)
 				minimum = dayAmount;
 			date = getPreviousDay(date);
@@ -298,6 +300,9 @@ public class ProductStatVisitor implements Visitor{
 			runningTotal += daysBetween(item.getEntryDate(), new Date());
 			dayTotal++;
 		}
+		
+		if(dayTotal == 0) return 0;
+		
 		return runningTotal / dayTotal;
 	}
 	
