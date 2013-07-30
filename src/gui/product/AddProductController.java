@@ -131,6 +131,7 @@ public class AddProductController extends Controller implements
 						getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
 				Integer.parseInt(getView().getSupply()) );
 		
+		System.out.println(productDate);
 		//product.setCreationDate(productDate);
 		
 		if(!getModel().getProductManager().isProductValid(product)){

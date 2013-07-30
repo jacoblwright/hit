@@ -24,7 +24,7 @@ public class ProductStatRecord implements Record, Comparable<ProductStatRecord> 
 	private double currentAverageSupply;
 	private int maximumCurrentSupply;
 	
-	private DecimalFormat df = new DecimalFormat("0.##");
+	private DecimalFormat df = new DecimalFormat("0.#");
 	
     public String getDescription() {
 		return description;
@@ -243,13 +243,13 @@ public class ProductStatRecord implements Record, Comparable<ProductStatRecord> 
 				", size= " + (int)size.getNumber() + " " + size.getUnit().toString() +
 				", threeMonthSupply= " + Integer.toString(threeMonthSupply) +
 				", currentSupply= " + Integer.toString(currentSupply) +
-				", averageSupply= " + Double.toString(averageSupply) +
+				", averageSupply= " + df.format(Double.toString(averageSupply)) +
 				", minimumSupply= " + Integer.toString(minimumSupply) +
 				", maximumSupply= " + Integer.toString(maximumSupply) +
 				", shelfLife= " + Integer.toString(shelfLife) + " months" +
-				", usedAverageAge= " + Double.toString(usedAge) +
+				", usedAverageAge= " + df.format(Double.toString(usedAge)) +
 				", usedMaximumAge= " + Integer.toString(maximumAge) +
-				", currentAverageSupply= " + Double.toString(currentAverageSupply) +
+				", currentAverageSupply= " + df.format(Double.toString(currentAverageSupply)) +
 				", currentMaximumSupply= " + Integer.toString(maximumCurrentSupply) + "\n";
 	}
 	
