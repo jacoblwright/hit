@@ -23,7 +23,7 @@ public class ReportDirector {
         columnHeadings.add("Storage Unit");
         columnHeadings.add("Product Group");
         columnHeadings.add("Entry Date");
-        columnHeadings.add("Expriation Date");
+        columnHeadings.add("Expiration Date");//fixed bug was spelled Expriation
         columnHeadings.add("Item Barcode");
         
         Visitor visitor = new ExpiredItemsVisitor();

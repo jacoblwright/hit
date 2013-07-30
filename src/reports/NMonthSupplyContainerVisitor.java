@@ -124,7 +124,13 @@ public class NMonthSupplyContainerVisitor implements Visitor {
 	}
 
 	private float getCountSupply(Collection<Item> items) {
-		return items.size();
+		int supplyCount = 0;
+		for(Item item : items) {
+			if(item.getProduct().getShelfLife() != 0) {
+				supplyCount++;
+			}
+		}
+		return supplyCount;
 	}
 
 	private Model getModel() {

@@ -241,7 +241,7 @@ public class ProductManager extends Observable implements Serializable{
 		
 		if (productsByContainer.get(container) != null)
 			return new TreeSet<Product>(productsByContainer.get(container)); 
-		else return null;
+		else return new TreeSet<Product>();
 		
 	}
 	

@@ -41,13 +41,15 @@ public class ExpiredItemsVisitor implements Visitor {
 		Collection<Item> itemList = getModel().getItemManager().getItems(container);
 		List<ExpiredItemsRecord> subRecords = new ArrayList<ExpiredItemsRecord>();
 		for(Item item : itemList) {
-			Date d = getDateAtMidnight(item.getExpirationDate());
-			Date d1 = getDateAtMidnight(now);
-			if(getDateAtMidnight(item.getExpirationDate()).equals(getDateAtMidnight(now)) ||
+			if(item.getProduct().getShelfLife() != 0) { //Added this line of code to fix bug 84
+				Date d = getDateAtMidnight(item.getExpirationDate());
+				Date d1 = getDateAtMidnight(now);
+				if(getDateAtMidnight(item.getExpirationDate()).equals(getDateAtMidnight(now)) ||
 					getDateAtMidnight(item.getExpirationDate()).before(getDateAtMidnight(now))) {
-				ExpiredItemsRecord exprItemRecord = new ExpiredItemsRecord();
-				exprItemRecord.initialize(item, getModel());
-				subRecords.add(exprItemRecord);
+					ExpiredItemsRecord exprItemRecord = new ExpiredItemsRecord();
+					exprItemRecord.initialize(item, getModel());
+					subRecords.add(exprItemRecord);
+				}
 			}
 		}
 		return sortedSubRecords(subRecords);
