@@ -1,6 +1,9 @@
 package gui.reports.expired;
 
 
+import java.io.IOException;
+
+import reports.ReportDirector;
 import gui.common.*;
 
 
@@ -80,6 +83,11 @@ public class ExpiredReportController extends Controller implements
 	 */
 	@Override
 	public void display() {
+		try {
+			ReportDirector.generateExpiredItemsReport(getView().getFormat());
+		} catch (IOException e) {
+			getView().displayErrorMessage("Error in generating expired items report");
+		}
 	}
 
 }

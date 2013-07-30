@@ -48,7 +48,7 @@ public class NMonthSupplyProductRecord implements Record, Comparable<NMonthSuppl
 	}
     @Override
     public List<String> getValuesAsStrings() {
-    	List<String> productAttributes = new ArrayList();
+    	List<String> productAttributes = new ArrayList<String>();
     	productAttributes.add(description);
     	productAttributes.add(barcode);
     	productAttributes.add(df.format(NMonthSupply) + " count");

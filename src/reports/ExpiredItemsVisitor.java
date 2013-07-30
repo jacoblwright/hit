@@ -24,12 +24,12 @@ public class ExpiredItemsVisitor implements Visitor {
 		Set<Container> su = new TreeSet<Container>();
 		su.addAll(getModel().getContainerManager().getRoot());
 		this.containerTree = new ContainerPreorderIterator(su);
-		records = new ArrayList<Record>();
 		now = new Date();
 	}
 
     @Override
     public List<Record> visitAll() {
+    	records = new ArrayList<Record>();
     	while(containerTree.hasNext()) {
     		List<Record> subRecords = checkItemExpiration(containerTree.next());
     		records.addAll(subRecords);

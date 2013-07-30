@@ -3,9 +3,8 @@ package model;
 import gui.common.SizeUnits;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 /** Product holds a number of attributes pertaining to a product including
  * the creation date, upc, description, size, shelf life, three month supply,
@@ -65,7 +64,7 @@ public class Product extends Entity implements Comparable<Product>{
 		setSize(u, num);
 		setShelfLife(life);
 		setThreeMonthSupply(supply);
-		containers = new HashSet<Container>();
+		containers = new TreeSet<Container>();
 	}
 	
 	@Override

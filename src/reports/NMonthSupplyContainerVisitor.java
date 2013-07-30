@@ -18,24 +18,23 @@ import model.Quantity;
 public class NMonthSupplyContainerVisitor implements Visitor {
 
 	private Iterator<Container> containerTree;
-	private final int numMonths;
 	private List<Record> records;
 	private float scale;
 	private Converter converter;
 	
 	public NMonthSupplyContainerVisitor(int numMonths) {
+		scale = 0;
 		Set<Container> su = new TreeSet<Container>();
 		su.addAll(getModel().getContainerManager().getRoot());
 		containerTree = new ContainerPreorderIterator(su);
 		
 		converter = new Converter();
-		this.numMonths = numMonths;
-		records = new ArrayList<Record>();
-		scale = numMonths / 3;
+		scale = numMonths / 3f;
 	}
 	
     @Override
     public List<Record> visitAll() {
+    	records = new ArrayList<Record>();
         while(containerTree.hasNext()) {
         	Record subRecord = getNMonthSupply(containerTree.next()); 
         	if(subRecord != null) {

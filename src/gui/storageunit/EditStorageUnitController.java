@@ -98,6 +98,7 @@ public class EditStorageUnitController extends Controller
 			Container newContainer = new StorageUnit( name );
 			Container oldContainer = (Container) target.getTag();
 			getModel().getContainerEditor().editContainer( oldContainer, newContainer );
+			
 		}
 	}
 

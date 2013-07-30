@@ -5,10 +5,7 @@ import gui.product.ProductData;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
@@ -24,6 +21,7 @@ import gui.common.*;
  * @version 1.0
  */
 
+@SuppressWarnings("serial")
 public class ProductManager extends Observable implements Serializable{
 	/** Maps containers to sets of products. */
 	private Map <Container, Set<Product>> productsByContainer;
@@ -36,7 +34,7 @@ public class ProductManager extends Observable implements Serializable{
 	public ProductManager(){
 		assert true;
 		productsByContainer = new TreeMap<Container, Set<Product>>();
-		productByUPC = new HashMap<Barcode, Product>();
+		productByUPC = new TreeMap<Barcode, Product>();
 	}
 	
 	/** Adds a product to the system
@@ -121,7 +119,7 @@ public class ProductManager extends Observable implements Serializable{
 			productsByContainer.get(container).add(product);
 		}
 		else {
-			Set<Product> productSet = new HashSet<Product>();
+			Set<Product> productSet = new TreeSet<Product>();
 			productSet.add(product);
 			productsByContainer.put(container, productSet);
 		}
@@ -156,7 +154,7 @@ public class ProductManager extends Observable implements Serializable{
 		productByUPC.remove(product.getUPC());
 		
 		Set<Container> containers = product.getContainers();
-		Iterator it = containers.iterator();
+		Iterator<Container> it = containers.iterator();
 		while(it.hasNext()){
 			Container tempCon = (Container)it.next();
 			productsByContainer.get(tempCon).remove(product);
@@ -223,7 +221,7 @@ public class ProductManager extends Observable implements Serializable{
 	 */
 	public boolean upcExists(String upc){
 		assert true;
-		Iterator it = productByUPC.keySet().iterator();
+		Iterator<Barcode> it = productByUPC.keySet().iterator();
 		while(it.hasNext()){
 			Barcode code = (Barcode) it.next();
 			if(upc.equals(code.getBarcode()))
@@ -242,7 +240,7 @@ public class ProductManager extends Observable implements Serializable{
 		assert true;
 		
 		if (productsByContainer.get(container) != null)
-			return new TreeSet(productsByContainer.get(container)); 
+			return new TreeSet<Product>(productsByContainer.get(container)); 
 		else return null;
 		
 	}
@@ -255,7 +253,7 @@ public class ProductManager extends Observable implements Serializable{
 		assert true;
 		
 		if(productByUPC.values() != null)
-			return new TreeSet(productByUPC.values());
+			return new TreeSet<Product>(productByUPC.values());
 		else return null;
 	}
 	
@@ -267,8 +265,8 @@ public class ProductManager extends Observable implements Serializable{
 	 */
 	public Product getProductByUPC(Barcode barcode) throws IllegalArgumentException{ 
 		
-		Collection barcodes = productByUPC.keySet();
-		Iterator it = barcodes.iterator();
+		Set<Barcode> barcodes = productByUPC.keySet();
+		Iterator<Barcode> it = barcodes.iterator();
 		while(it.hasNext()){
 			Barcode code = (Barcode)it.next();
 			if(code.equals(barcode)){
@@ -285,7 +283,7 @@ public class ProductManager extends Observable implements Serializable{
 	 * 
 	 * @return	HashMap of Products mapped by a Barcode
 	 */
-	public Map getProductsByUPC(){
+	public Map <Barcode, Product> getProductsByUPC(){
 		assert true;
 		return productByUPC;
 	}
@@ -294,7 +292,7 @@ public class ProductManager extends Observable implements Serializable{
 	 * 
 	 * @return	HashMap of Products mapped by a Container
 	 */
-	public Map getProductsByContainer(){
+	public Map<Container, Set<Product>> getProductsByContainer(){
 		assert true;
 		return productsByContainer;
 	}
