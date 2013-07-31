@@ -8,6 +8,8 @@ public class ProductAndItemEditor {
     private ProductManager productManager;
     private ItemManager itemManager;
     
+    private Product newlyAddedProduct;
+    
     /**
      * Constructs the editor with the specified managers.
      * @param productManager the ProductManager that this editor will use
@@ -422,4 +424,12 @@ public class ProductAndItemEditor {
          
      }
 
+     
+     public void setNewlyAddedProduct(Product product){
+     	this.newlyAddedProduct = product;
+     }
+     
+     public Product getNewlyAddedProduct(){
+     	return this.newlyAddedProduct;
+     }
 }

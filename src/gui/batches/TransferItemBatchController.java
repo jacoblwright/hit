@@ -105,6 +105,9 @@ public class TransferItemBatchController extends ItemBatchController implements
 				getView().displayWarningMessage("Could not move item to container");
 			}	
 		}		
+
+		enableComponents();
+		loadValues();
 	}
 	
 	/**
@@ -140,8 +143,6 @@ public class TransferItemBatchController extends ItemBatchController implements
 	
 	public void doAction(){
 		transferItem();
-		enableComponents();
-		loadValues();
 	}
 
 }

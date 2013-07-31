@@ -30,7 +30,7 @@ public class AddNewProduct implements ILeafCommand{
 	 * 
 	 */
 	public void execute(){
-		Model.getInstance().getProductManager().addProductToContainer(
+		Model.getInstance().getProductManager().addNewProduct(
                 product, container);
 	}
 	

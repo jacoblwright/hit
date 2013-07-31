@@ -31,6 +31,7 @@ public class AddProductController extends Controller implements
 		loadValues();
 		enableComponents();
 		construct();
+		getModel().getProductAndItemEditor().setNewlyAddedProduct(null);
 	}
 
 	//
@@ -140,7 +141,8 @@ public class AddProductController extends Controller implements
 		}
 		
 		try{
-			getModel().getProductManager().addNewProduct(product, container);
+			getModel().getProductAndItemEditor().setNewlyAddedProduct(product);
+//			getModel().getProductManager().addNewProduct(product, container);
 		}
 		catch (IllegalArgumentException e){
 			getView().displayErrorMessage("Can't add valid product");
