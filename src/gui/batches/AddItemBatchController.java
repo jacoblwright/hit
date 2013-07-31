@@ -63,6 +63,8 @@ public class AddItemBatchController extends ItemBatchController implements
 	protected void setDefaultValues() {
 		getView().setUseScanner(true);
 		getView().setCount("1");
+		Date date = new Date();
+		getView().setEntryDate(date);
 		
 	}
 //	/**
@@ -129,8 +131,6 @@ public class AddItemBatchController extends ItemBatchController implements
 			getView().enableItemAction(false);
 		}
 		
-		Date date = new Date();
-		getView().setEntryDate(date);
 		getView().enableRedo(cmdHistory.canRedo());
 		getView().enableUndo(cmdHistory.canUndo());
 	}

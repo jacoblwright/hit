@@ -204,7 +204,7 @@ public class Item extends Entity implements Comparable<Item> {
 	public int compareTo(Item other) {
 		int compared = entryDate.compareTo(other.entryDate);
 	    if (compared == 0){
-	    	return getTag().getBarcode().compareTo(other.getTag().getBarcode());
+	    	return this.getEntryDate().compareTo(other.getEntryDate());
 	    }
 	    else {
 	    	return compared;
