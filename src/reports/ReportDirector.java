@@ -52,9 +52,9 @@ public class ReportDirector {
         List<String> columnHeadings = new LinkedList<String>();
         columnHeadings.add("Description");
         columnHeadings.add("Size");
-        columnHeadings.add("Product barcode");
+        columnHeadings.add("Product Barcode");
         columnHeadings.add("Removed");
-        columnHeadings.add("Current supply");
+        columnHeadings.add("Current Supply");
         
         Visitor visitor = new RemovedItemsVisitor(date);
         List<Record> records = visitor.visitAll();
@@ -83,8 +83,8 @@ public class ReportDirector {
         List<String> columnHeadings = new LinkedList<String>();
         columnHeadings.add("Description");
         columnHeadings.add("Barcode");
-        columnHeadings.add("3-month supply");
-        columnHeadings.add("Current supply");
+        columnHeadings.add("3-Month Supply");
+        columnHeadings.add("Current Supply");
         
         Visitor visitor = new NMonthSupplyProductVisitor(numOfMonths);
         List<Record> records = visitor.visitAll();
@@ -100,10 +100,10 @@ public class ReportDirector {
         p.printBlankLine();
         
         columnHeadings.clear();
-        columnHeadings.add("Product group");
-        columnHeadings.add("Storage unit");
-        columnHeadings.add("3-month supply");
-        columnHeadings.add("Current supply");
+        columnHeadings.add("Product Group");
+        columnHeadings.add("Storage Unit");
+        columnHeadings.add("3-Month Supply");
+        columnHeadings.add("Current Supply");
         
         visitor = new NMonthSupplyContainerVisitor(numOfMonths);
         records.clear();
@@ -131,13 +131,13 @@ public class ReportDirector {
         columnHeadings.add("Description");
         columnHeadings.add("Barcode");
         columnHeadings.add("Size");
-        columnHeadings.add("3-month supply");
-        columnHeadings.add("Supply: cur/avg");
-        columnHeadings.add("Supply: min/max");
-        columnHeadings.add("Supply: used/added");
-        columnHeadings.add("Supply: Shelf life");
-        columnHeadings.add("Used age: avg/max");
-        columnHeadings.add("Cur age: avg/max");
+        columnHeadings.add("3-Month Supply");
+        columnHeadings.add("Supply: Cur/Avg");
+        columnHeadings.add("Supply: Min/Max");
+        columnHeadings.add("Supply: Used/Added");
+        columnHeadings.add("Supply: Shelf Life");
+        columnHeadings.add("Used Age: Avg/Max");
+        columnHeadings.add("Cur Age: Avg/Max");
         
         Visitor visitor = new ProductStatVisitor(numOfMonths);
         List<Record> records = visitor.visitAll();
