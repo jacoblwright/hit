@@ -121,6 +121,9 @@ public class RemoveItemBatchController extends ItemBatchController implements
 		else {
 			getView().displayErrorMessage("Could not remove item!");
 		}
+
+		enableComponents();
+		loadValues();
 	}
 	
 	/**
@@ -163,8 +166,6 @@ public class RemoveItemBatchController extends ItemBatchController implements
 	
 	public void doAction(){
 		removeItem();
-		enableComponents();
-		loadValues();
 	}
 	
 }

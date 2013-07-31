@@ -31,10 +31,19 @@ public class AddItemsToSU extends CompositeCommand{
                 	getContainer(items.get(0).getProduct(), storageUnit);
         
         Container targetContainer;
-        if (containerOfProductInSU == null) {   
+        if (containerOfProductInSU == null) {
             
         	// append addProduct command
-        	commandList.add(new AddNewProduct(items.get(0).getProduct(), storageUnit));
+        	if ( Model.getInstance().getProductManager().
+        			upcExists(items.get(0).getProduct().getUPC().getBarcode())){
+        		commandList.add(new CopyProduct(items.get(0).getProduct(), storageUnit));
+        	}
+        	else {
+        		
+        		commandList.add(new AddNewProduct(Model.getInstance().
+        				getProductAndItemEditor().getNewlyAddedProduct(),
+        				storageUnit));
+        	}
         	targetContainer = storageUnit;
         
         }

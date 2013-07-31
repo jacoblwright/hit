@@ -109,7 +109,18 @@ public abstract class ItemBatchController extends Controller implements ActionLi
 	}
 	
 	protected void loadValues(){
+		
 		if (selectedProduct != null) {
+//			Collection<Product> productsInSystem = new ArrayList<Product>();
+//			
+//			for (Product cur : products){
+//				if (getModel().getProductManager().upcExists(cur.getUPC().getBarcode())){
+//					productsInSystem.add(cur);
+//				}
+//			}
+//			
+//			products = productsInSystem;
+			
 			ProductData[] productData = DataConverter.toProductDataArray(products);
 			
 			Collection<Item> pitems = getModel().getItemManager().getItems();
@@ -137,6 +148,7 @@ public abstract class ItemBatchController extends Controller implements ActionLi
 			if (selectedItem != null) {
 				getView().selectItem(DataConverter.getItemData(selectedItem, itemData));
 			}
+		
 		}
 		
 		

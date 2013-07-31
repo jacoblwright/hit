@@ -33,7 +33,8 @@ public class AddItemBatchController extends ItemBatchController implements
 
 	Stack<List<Item>> itemBatches;
 	Stack<List<Item>> redoItemBatches;
-    ProductData[] productDataProducts;
+    Stack<Product> newProducts;
+    Stack<Product> redoNewProducts;
 	Container container;
 	/**
 	 * Constructor.
@@ -43,10 +44,12 @@ public class AddItemBatchController extends ItemBatchController implements
 	 */
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
-		productDataProducts = new ProductData[0];
+
 		container = (Container)target.getTag();
 		itemBatches = new Stack<List<Item>>();
 		redoItemBatches = new Stack<List<Item>>();
+		newProducts = new Stack<Product>();
+		redoNewProducts = new Stack<Product>();
 		setDefaultValues();
 		construct();
 		timer = new TextFieldTimer(this);
@@ -222,51 +225,61 @@ public class AddItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	public void addItem() {
+
 		Product product;
 		if(getModel().getProductManager().upcExists(getView().getBarcode())){
 			Barcode code = new Barcode();
 			code.setBarcode(getView().getBarcode());
 			product = getModel().getProductManager().getProductByUPC(code);
+			newProducts.push(null);
 		}
 		else{
 			getView().displayAddProductView();
+			
 			Barcode barcode = new Barcode();
 			barcode.setBarcode(getView().getBarcode());
 			if(getModel().getProductManager().upcExists(getView().getBarcode())){
 				product = getModel().getProductManager().getProductByUPC(barcode);
 			}
 			else {
-				loadValues();
-				enableComponents();
-				return;
+				product = getModel().getProductAndItemEditor().getNewlyAddedProduct();
+				if (product != null){
+					newProducts.push(product);
+				}
 			}
 		}
 		
-		List<Item> itemsToAdd = new ArrayList<Item>();
-		for(int i = 0; i < Integer.parseInt(getView().getCount()); i++){
-			Barcode barcode = new Barcode();
-			
-			Item item = new Item(null, product, getView().getEntryDate(), barcode);
-			itemsToAdd.add(item);
-			
-			if(product.getCreationDate().after(getView().getEntryDate())){
-				product.setCreationDate(getView().getEntryDate());
+		if (product != null){
+			List<Item> itemsToAdd = new ArrayList<Item>();
+			for(int i = 0; i < Integer.parseInt(getView().getCount()); i++){
+				Barcode barcode = new Barcode();
+				
+				Item item = new Item(null, product, getView().getEntryDate(), barcode);
+				itemsToAdd.add(item);
+				
+				if(product.getCreationDate().after(getView().getEntryDate())){
+					product.setCreationDate(getView().getEntryDate());
+				}
 			}
 			
+			Container storageUnit = getModel().getContainerManager().
+					getAncestorStorageUnit(container);
+			
+			cmdHistory.doCommand(new AddItemsToSU(itemsToAdd, (StorageUnit) storageUnit));
+			itemBatches.push(itemsToAdd);
+			
+			if (!products.contains(product)){
+				products.add(product);
+			}
+			
+			Collection<Product> allProducts = getModel().getProductManager().getProducts();
+			Collection<Product> allProductsList = new ArrayList<Product>();
+			allProductsList.addAll(allProducts);
+
+			selectedProduct = product;
+			loadValues();
+			enableComponents();
 		}
-		
-		Container storageUnit = getModel().getContainerManager().
-				getAncestorStorageUnit(container);
-		
-		cmdHistory.doCommand(new AddItemsToSU(itemsToAdd, (StorageUnit) storageUnit));
-		itemBatches.push(itemsToAdd);
-		if (!products.contains(product)){
-			products.add(product);
-		}
-//		items = getModel().getItemManager().getItems(container, product);
-		selectedProduct = product;
-		loadValues();
-		enableComponents();
 	}
 	
 	/**
@@ -277,6 +290,11 @@ public class AddItemBatchController extends ItemBatchController implements
 	public void redo() {
 		super.redo();
 		itemBatches.push(redoItemBatches.pop());
+		Product newProduct = redoNewProducts.pop();
+		newProducts.push(newProduct);
+		if (newProduct != null){
+			products.add(newProduct);
+		}
 		enableComponents();
 		loadValues();
 	}
@@ -289,6 +307,11 @@ public class AddItemBatchController extends ItemBatchController implements
 	public void undo() {
 		super.undo();
 		redoItemBatches.push(itemBatches.pop());
+		Product newProduct = newProducts.pop();
+		redoNewProducts.push(newProduct);
+		if (newProduct != null){
+			products.remove(newProduct);
+		}
 		enableComponents();
 		loadValues();
 	}
