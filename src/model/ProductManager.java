@@ -116,6 +116,7 @@ public class ProductManager extends Observable implements Serializable{
 		
 		/* Add Product to Container Map */
 		if(productsByContainer.containsKey(container)){
+			boolean isContained = productsByContainer.get(container).contains(product);
 			productsByContainer.get(container).add(product);
 		}
 		else {
