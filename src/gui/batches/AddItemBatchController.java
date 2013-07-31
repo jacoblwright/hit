@@ -65,45 +65,44 @@ public class AddItemBatchController extends ItemBatchController implements
 
 	protected void setDefaultValues() {
 		getView().setUseScanner(true);
+		resetComponents();
+		
+	}
+	
+	protected void resetComponents(){
 		getView().setCount("1");
 		Date date = new Date();
 		getView().setEntryDate(date);
-		
+		getView().giveBarcodeFocus();
 	}
-//	/**
-//	 * Loads data into the controller's view.
-//	 * 
-//	 *  {@pre None}
-//	 *  
-//	 *  {@post The controller has loaded data into its view}
-//	 */
-//	@Override
-//	protected void loadValues() {
-//		
-//		ProductData[] productData = DataConverter.toProductDataArray(products);
-//		
-//		ProductData selectProduct = null;
-//		for(int i = 0; i < productData.length; i++){
-//			int count = 0;
-//			Product product = (Product)productData[i].getTag();
-//			
-//			/* Find selected product */
-//			if(productData[i].getBarcode().equals(getView().getBarcode())){
-//				selectProduct = productData[i];
-//			}
-//			
-//			Iterator it2 = items.iterator();
-//			while(it2.hasNext()){
-//				Item item = (Item)it2.next();
-//				if(item.getProduct().equals(product)){
-//					count++;
-//				}
-//			}
-//			productData[i].setCount(Integer.toString(count));
-//		}
+	/**
+	 * Loads data into the controller's view.
+	 * 
+	 *  {@pre None}
+	 *  
+	 *  {@post The controller has loaded data into its view}
+	 */
+	@Override
+	protected void loadValues() {
 
-//		
-//	}
+		super.loadValues();
+		
+		if (itemBatches == null || selectedProduct == null){
+			return;
+		}
+		
+		
+		Collection<Item> productBatchItems = new TreeSet<Item>();
+		for (Collection<Item> cur : itemBatches){
+			for (Item curItem : cur){
+				if (curItem.getProduct() == selectedProduct){
+					productBatchItems.add(curItem);
+				}
+			}
+		}
+		
+		getView().setItems(DataConverter.toItemDataArray(productBatchItems));
+	}
 
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
@@ -150,13 +149,13 @@ public class AddItemBatchController extends ItemBatchController implements
 			getView().enableItemAction(false);
 	}
 	
-	@Override
-		public void barcodeChanged() {
-			if(getView().getUseScanner() == true && !getView().getBarcode().isEmpty()){
-				timer.start();
-			}
-			enableComponents();
-		}
+//	@Override
+//		public void barcodeChanged() {
+//			if(getView().getUseScanner() == true && !getView().getBarcode().isEmpty()){
+//				timer.start();
+//			}
+//			enableComponents();
+//		}
 
 	/**
 	 * This method is called when the "Count" field in the
@@ -166,11 +165,15 @@ public class AddItemBatchController extends ItemBatchController implements
 	public void countChanged() {
 		try {
 			if (!getView().getCount().equals("")){
-				Integer.parseInt(getView().getCount());
+				int count = Integer.parseInt(getView().getCount());
+				if (count < 0){
+					throw new NumberFormatException("negative number");
+				}
 			}
 		}
 		catch (NumberFormatException e){
-			getView().displayErrorMessage("You may only use numbers in the count.");
+			getView().displayErrorMessage(
+					"You may only use positive whole numbers in the count.");
 			getView().setCount("1");
 		}
 		enableComponents();
@@ -194,7 +197,7 @@ public class AddItemBatchController extends ItemBatchController implements
 	 */
 	@Override
 	public void selectedProductChanged() {
-		ProductData productData = getView().getSelectedProduct();
+//		ProductData productData = getView().getSelectedProduct();
 //		Collection collection = new HashSet();
 //		if(productData != null){
 //			Iterator it = items.iterator();
@@ -207,16 +210,18 @@ public class AddItemBatchController extends ItemBatchController implements
 //			ItemData [] itemData = DataConverter.toItemDataArray(collection);
 //			getView().setItems(itemData);
 //		}
-		if(productData != null){
-			Collection<Item> allProductItems = new TreeSet<Item>();
-			for (Item i : getModel().getItemManager().getItems()){
-				if ( i.getProduct().equals(productData.getTag()) ) {
-					allProductItems.add(i);
-				}
-			}
-			
-			getView().setItems(DataConverter.toItemDataArray(allProductItems));
-		}
+//		if(productData != null){
+//			Collection<Item> allProductItems = new TreeSet<Item>();
+//			for (Item i : getModel().getItemManager().getItems()){
+//				if ( i.getProduct().equals(productData.getTag()) ) {
+//					allProductItems.add(i);
+//				}
+//			}
+//			
+//			getView().setItems(DataConverter.toItemDataArray(allProductItems));
+//		}
+		selectedProduct = (Product) getView().getSelectedItem().getTag();
+		loadValues();
 	}
 
 	/**
@@ -279,6 +284,8 @@ public class AddItemBatchController extends ItemBatchController implements
 			selectedProduct = product;
 			loadValues();
 			enableComponents();
+//			getView().setBarcode("");
+			resetComponents();
 		}
 	}
 	

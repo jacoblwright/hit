@@ -76,19 +76,19 @@ public abstract class ItemBatchController extends Controller implements ActionLi
 		Item foundItem = getModel().getItemManager().getItemByTag(barcode);
 		
 		if (foundProduct != null){
-//			if ( !products.contains(foundProduct) ){
-//				products.add(foundProduct);
-//			}
-			products = new ArrayList<Product>();
-			products.add(foundProduct);
+			if (!products.contains(foundProduct)){
+				products.add(foundProduct);
+			}
 			selectedProduct = foundProduct;
 		}
 		else {
 			if ( foundItem != null ) {
 				selectedItem = foundItem;
 				selectedProduct = selectedItem.getProduct();
-				products = new ArrayList<Product>();
-				products.add(selectedItem.getProduct());
+//				products = new ArrayList<Product>();
+				if (!products.contains(selectedItem.getProduct())){
+					products.add(selectedItem.getProduct());
+				}
 			}
 			else {
 				selectedProduct = null;
@@ -96,12 +96,13 @@ public abstract class ItemBatchController extends Controller implements ActionLi
 			}
 		}
 		
+		loadValues();
+		
 		if ( !getView().getUseScanner() && ( foundItem != null || foundProduct != null ) ){
 //			if ( getView().getUseScanner() ){
 //				doAction();
 //			}
 //			else {
-				loadValues();
 				getView().enableItemAction(true);
 //			}
 		}
