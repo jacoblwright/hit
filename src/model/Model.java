@@ -2,6 +2,8 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+
+import plugins.UPCDescriptionFetcher;
 import reports.*;
 
 import config.IOConfig;
@@ -16,6 +18,8 @@ public class Model {
     private ProductAndItemEditor productAndItemEditor;
     private ProductManager productManager;
     private ItemManager itemManager;
+    
+    private UPCDescriptionFetcher upcDescriptionFetcher;
     
     private ReportTime reportTime;
         
@@ -158,6 +162,15 @@ public class Model {
         itemManager = new ItemManager();
         reportTime = new ReportTime();
         
+    }
+    
+    /** Returns a UPCDescriptionFetcher object used for find the description of a upc
+     * 
+     * @return UPCDescriptionFetcher object
+     */
+    
+    public UPCDescriptionFetcher getUPCDescriptionFetcher() {
+    	return null;
     }
     
     public ContainerEditor getContainerEditor() {
