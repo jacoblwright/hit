@@ -164,51 +164,21 @@ public class Model {
         return containerEditor;
     }
     
-    /*
-    public void setContainerEditor(ContainerEditor containerEditor) {
-        this.containerEditor = containerEditor;
-    }
-     */
-    
     public ContainerManager getContainerManager() {
         return containerManager;
     }
-    
-    /*
-    public void setContainerManager(ContainerManager containerManager) {
-        this.containerManager = containerManager;
-    }
-    */
     
     public ProductAndItemEditor getProductAndItemEditor() {
         return productAndItemEditor;
     }
     
-    /*
-    public void setProductAndItemEditor(ProductAndItemEditor productAndItemEditor) {
-        this.productAndItemEditor = productAndItemEditor;
-    }
-    */
-    
     public ProductManager getProductManager() {
         return productManager;
     }
     
-    /*
-    public void setProductManager(ProductManager productManager) {
-        this.productManager = productManager;
-    }
-    */
-    
     public ItemManager getItemManager() {
         return itemManager;
     }
-    
-    /*
-    public void setItemManager(ItemManager itemManager) {
-        this.itemManager = itemManager;
-    }
-    */
     
     public ReportTime getReportTime() {
         return reportTime;

@@ -21,32 +21,7 @@ public class ModelTest {
         
         Model m = Model.getInstance();
         
-        ContainerManager containerManager = new ContainerManager();
-        ProductManager productManager = new ProductManager();
-        ItemManager itemManager = new ItemManager();
         
-        ContainerEditor containerEditor =
-                new ContainerEditor(containerManager, itemManager);
-        ProductAndItemEditor productAndItemEditor =
-                new ProductAndItemEditor(
-                        containerManager, productManager, itemManager);
-        
-        /*
-        m.setContainerEditor(containerEditor);
-        assertTrue(containerEditor == m.getContainerEditor());
-        
-        m.setContainerManager(containerManager);
-        assertTrue(containerManager == m.getContainerManager());
-        
-        m.setProductAndItemEditor(productAndItemEditor);
-        assertTrue(productAndItemEditor == m.getProductAndItemEditor());
-        
-        m.setProductManager(productManager);
-        assertTrue(productManager == m.getProductManager());
-        
-        m.setItemManager(itemManager);
-        assertTrue(itemManager == m.getItemManager());
-        */
         
     }
 
