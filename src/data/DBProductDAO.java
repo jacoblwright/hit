@@ -2,6 +2,9 @@ package data;
 
 import java.util.Collection;
 
+/**
+ * Database implementation of ComponentDAO for Product.
+ */
 public class DBProductDAO implements ComponentDAO<ProductDTO> {
 
     @Override

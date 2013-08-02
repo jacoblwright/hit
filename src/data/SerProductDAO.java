@@ -2,6 +2,9 @@ package data;
 
 import java.util.Collection;
 
+/**
+ * Serialization implementation of ComponentDAO for Product.
+ */
 public class SerProductDAO implements ComponentDAO<ProductDTO> {
 
     @Override

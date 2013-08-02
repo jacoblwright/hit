@@ -1,5 +1,8 @@
 package data;
 
+/**
+ * Databast implementation of ComprehensiveDAO.
+ */
 public class DBComprehensiveDAO implements ComprehensiveDAO {
 
     @Override

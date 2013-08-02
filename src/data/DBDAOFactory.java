@@ -1,5 +1,8 @@
 package data;
 
+/**
+ * Instantiates and returns database implementations of the various DAOs.
+ */
 public class DBDAOFactory implements DAOFactory {
 
     @Override

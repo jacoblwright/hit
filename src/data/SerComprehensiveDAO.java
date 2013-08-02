@@ -5,6 +5,9 @@ import java.io.*;
 import reports.ReportTime;
 import config.*;
 
+/**
+ * Serialization implementation of ComprehensiveDAO.
+ */
 public class SerComprehensiveDAO implements ComprehensiveDAO {
 
     /**

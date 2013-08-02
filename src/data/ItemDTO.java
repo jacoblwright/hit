@@ -2,6 +2,9 @@ package data;
 
 import model.*;
 
+/**
+ * Data transfer object for Item.
+ */
 public class ItemDTO {
     
     private Item item;

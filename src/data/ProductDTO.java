@@ -2,6 +2,9 @@ package data;
 
 import model.*;
 
+/**
+ * Data transfer object for Product.
+ */
 public class ProductDTO {
     
     private Product product;

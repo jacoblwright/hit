@@ -2,6 +2,9 @@ package data;
 
 import java.util.Collection;
 
+/**
+ * Database implementation of ComponentDAO for Product to Container mapping.
+ */
 public class DBProductToContainerDAO
         implements ComponentDAO<ProductToContainerDTO> {
 

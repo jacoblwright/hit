@@ -2,6 +2,9 @@ package data;
 
 import java.util.Collection;
 
+/**
+ * Database implementation of ComponentDAO for Item.
+ */
 public class DBItemDAO implements ComponentDAO<ItemDTO> {
 
     @Override

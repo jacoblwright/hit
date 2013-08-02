@@ -3,6 +3,9 @@ package data;
 import model.*;
 import java.util.*;
 
+/**
+ * Serialization implementation of ComponentDAO for Container.
+ */
 public class SerContainerDAO implements ComponentDAO<Container> {
 
     @Override

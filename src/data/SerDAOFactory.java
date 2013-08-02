@@ -1,5 +1,8 @@
 package data;
 
+/**
+ * Instantiates and returns serialization implementations of the various DAO.
+ */
 public class SerDAOFactory implements DAOFactory {
 
     @Override

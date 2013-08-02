@@ -2,6 +2,9 @@ package data;
 
 import java.sql.Connection;
 
+/**
+ * Database implementation of Transaction.
+ */
 public class DBTransaction implements Transaction {
 
     @Override

@@ -3,6 +3,9 @@ package data;
 import model.*;
 import java.util.*;
 
+/**
+ * Data transfer object for Product to Container mapping.
+ */
 public class ProductToContainerDTO {
     
     private Product product;

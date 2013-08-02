@@ -2,6 +2,9 @@ package data;
 
 import java.sql.Connection;
 
+/**
+ * Serialization implementation of Transaction.
+ */
 public class SerTransaction implements Transaction {
 
     @Override

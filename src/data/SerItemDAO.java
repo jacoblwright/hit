@@ -2,6 +2,9 @@ package data;
 
 import java.util.Collection;
 
+/**
+ * Serialization implementation of ComponentDAO for Item.
+ */
 public class SerItemDAO implements ComponentDAO<ItemDTO> {
 
     @Override
