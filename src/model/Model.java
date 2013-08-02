@@ -14,6 +14,8 @@ public class Model {
     private ProductManager productManager;
     private ItemManager itemManager;
     
+    //private UPCDescriptionFetcher upcDescriptionFetcher;
+    
     private ReportTime reportTime;
     
     private DAOFactory dAOFactory;

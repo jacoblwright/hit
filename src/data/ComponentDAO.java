@@ -10,13 +10,13 @@ import java.util.*;
 public interface ComponentDAO<T> {
     
     /**
-     * Adds the specified DTO to the databse.
+     * Adds the specified DTO to the database.
      */
     public void create(T e);
 
     /**
-     * Returns a Collection of all of the records in the database, each record
-     * being represented by the DTO T.
+     * Returns a Collection of all of the records in the appropriate table,
+     * each record being represented by the DTO T.
      */
     public Collection<T> readAll();
     
