@@ -1,5 +1,25 @@
 package data;
 
-public class SerContainerDAO implements ContainerDAO {
+import model.*;
+import java.util.*;
+
+public class SerContainerDAO implements ComponentDAO<Container> {
+
+    @Override
+    public void create(Container e) {
+    }
+
+    @Override
+    public Collection<Container> readAll() {
+        return null;
+    }
+
+    @Override
+    public void update(Container e) {
+    }
+
+    @Override
+    public void delete(Container e) {
+    }
 
 }

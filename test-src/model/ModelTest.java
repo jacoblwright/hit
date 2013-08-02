@@ -12,16 +12,12 @@ public class ModelTest {
         
         Model m = Model.getInstance();
         
-        m.save();
-        
     }
     
     @Test
     public void gettersAndSettersTest() {
         
-        Model m = Model.getInstance();
-        
-        
+        Model m = Model.getInstance(); 
         
     }
 
