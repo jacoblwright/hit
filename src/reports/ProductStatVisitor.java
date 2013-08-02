@@ -63,6 +63,10 @@ public class ProductStatVisitor implements Visitor{
 	public void setReportDate(int months){
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
 		c.add(Calendar.MONTH, -months);
 		reportDate = c.getTime();
 	}
@@ -222,7 +226,6 @@ public class ProductStatVisitor implements Visitor{
 		Iterator<Item> it = items.iterator();
 		
 		int count = 0;
-		System.out.println(reportDate);
 		while(it.hasNext()){
 			Item item = (Item)it.next();
 			if(!item.getEntryDate().before(reportDate))
@@ -237,7 +240,6 @@ public class ProductStatVisitor implements Visitor{
 		
 		while(date.after(reportDate) && !date.before(product.getCreationDate())){
 			int dayAmount = getDayTotal(date, product);
-			System.out.println("Day Amount: " + dayAmount);
 			if(dayAmount < minimum)
 				minimum = dayAmount;
 			date = getPreviousDay(date);
