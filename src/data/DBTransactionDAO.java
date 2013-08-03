@@ -35,8 +35,6 @@ public class DBTransactionDAO implements TransactionDAO {
             throw new IOException(e.getMessage());
         }
         
-        connection = null;
-        
     }
 
     @Override
@@ -99,7 +97,7 @@ public class DBTransactionDAO implements TransactionDAO {
     public Connection getConnection() throws IOException {
         
         if (connection == null) {
-            throw new IllegalStateException("A transation must be started" +
+            throw new IllegalStateException("A transation must be started " +
             		"before getting a connection.");
         }
         
@@ -177,7 +175,11 @@ public class DBTransactionDAO implements TransactionDAO {
 
         }
         finally {
+            
             connection.close();
+            
+            connection = null;
+            
         }
         
     }
