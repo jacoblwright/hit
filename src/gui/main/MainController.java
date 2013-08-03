@@ -49,7 +49,7 @@ public class MainController extends Controller implements IMainController {
 		
 		try {
 			
-			getModel().save();
+			getModel().getComprehensiveDAO().save();
 			
 		} catch (IOException e) {
 			getView().displayErrorMessage("Error saving information");

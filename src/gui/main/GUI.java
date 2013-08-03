@@ -3,7 +3,10 @@ package gui.main;
 
 import javax.swing.*;
 
+import data.SerComprehensiveDAO;
+
 import java.awt.event.*;
+import java.io.IOException;
 
 import gui.common.*;
 import gui.inventory.*;
@@ -12,7 +15,7 @@ import gui.reports.supply.*;
 import gui.reports.notices.*;
 import gui.reports.productstats.*;
 import gui.reports.removed.*;
-
+import model.*;
 
 @SuppressWarnings("serial")
 public final class GUI extends JFrame implements IMainView {
@@ -149,6 +152,18 @@ public final class GUI extends JFrame implements IMainView {
 	//
 	
     public static void main(final String[] args) {
+        
+        // To do: add arg parsing.
+        // --------------------------------
+        Model.getInstance().setComprehensiveDAO(new SerComprehensiveDAO());
+        try {
+            Model.getInstance().getComprehensiveDAO().load();
+        }
+        catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        // --------------------------------
+        
      	try {
     		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     	}
