@@ -6,6 +6,8 @@ package gui.common;
  */
 public enum SizeUnits {
 	
+	Unspecified("unspecified"),
+	
 	// Weight units
 	Pounds("pounds"),
 	Ounces("ounces"),

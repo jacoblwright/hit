@@ -6,23 +6,26 @@ import java.util.*;
 /**
  * Serialization implementation of ComponentDAO for Container.
  */
-public class SerContainerDAO implements ComponentDAO<Container> {
+public class SerContainerDAO implements ComponentDAO<ContainerDTO> {
 
     @Override
-    public void create(Container e) {
+    public void create(ContainerDTO e) {
+    	return;
     }
 
     @Override
-    public Collection<Container> readAll() {
-        return null;
+    public Collection<ContainerDTO> readAll() {
+        return new ArrayList<ContainerDTO>( 1 );
     }
 
     @Override
-    public void update(Container e) {
+    public void update(ContainerDTO e) {
+    	return;
     }
 
     @Override
-    public void delete(Container e) {
+    public void delete(ContainerDTO e) {
+    	return;
     }
 
 }

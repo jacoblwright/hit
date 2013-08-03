@@ -174,12 +174,7 @@ public abstract class Container extends Entity implements Comparable<Container> 
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result
-				+ ((productGroups == null) ? 0 : productGroups.hashCode());
-		return result;
+		return this.getId();
 	}
 
 //	@Override
