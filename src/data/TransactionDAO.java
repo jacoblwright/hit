@@ -12,7 +12,7 @@ public interface TransactionDAO {
     
     public void endTransaction() throws IOException;
     
-    public Connection getConnection() throws IOException;
+    public Connection getConnection();
     
     public void notifyTransactionFailed();
     
