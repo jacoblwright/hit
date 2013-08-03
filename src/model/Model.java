@@ -3,6 +3,7 @@ package model;
 import reports.*;
 import data.*;
 import plugins.*;
+import java.io.*;
 
 public class Model {
     
@@ -43,6 +44,19 @@ public class Model {
         }
         
         return instance;
+        
+    }
+    
+    public void initialize() throws IOException {
+        
+        if (dAOFactory == null) {
+            throw new IllegalStateException("DAOFactory has not been set.");
+        }
+        
+        transaction = dAOFactory.createTransactionDAO();
+        comprehensiveDAO = dAOFactory.createComprehensiveDAO();
+        
+        comprehensiveDAO.load();
         
     }
     
