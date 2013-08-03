@@ -9,6 +9,15 @@ import config.*;
  * Serialization implementation of ComprehensiveDAO.
  */
 public class SerComprehensiveDAO implements ComprehensiveDAO {
+    
+    private ContainerEditor containerEditor;
+    private ContainerManager containerManager;
+    
+    private ProductAndItemEditor productAndItemEditor;
+    private ProductManager productManager;
+    private ItemManager itemManager;
+    
+    private ReportTime reportTime;
 
     /**
      * Saves the state of the managers to disk.
@@ -42,15 +51,6 @@ public class SerComprehensiveDAO implements ComprehensiveDAO {
      */
     @Override
     public void load() {
-        
-        ContainerEditor containerEditor;
-        ContainerManager containerManager;
-        
-        ProductAndItemEditor productAndItemEditor;
-        ProductManager productManager;
-        ItemManager itemManager;
-        
-        ReportTime reportTime;
         
         try {
             
@@ -112,20 +112,14 @@ public class SerComprehensiveDAO implements ComprehensiveDAO {
             
             e.printStackTrace();
             
-            containerManager = new ContainerManager();
-            productManager = new ProductManager();
-            itemManager = new ItemManager();
-            reportTime = new ReportTime();
+            initialize();
             
         }
         catch (ClassNotFoundException e) {
             
             e.printStackTrace();
             
-            containerManager = new ContainerManager();
-            productManager = new ProductManager();
-            itemManager = new ItemManager();
-            reportTime = new ReportTime();
+            initialize();
             
         }
         
@@ -145,6 +139,16 @@ public class SerComprehensiveDAO implements ComprehensiveDAO {
         m.setItemManager(itemManager);
         
         m.setReportTime(reportTime);
+        
+    }
+    
+    private void initialize() {
+        
+        containerManager = new ContainerManager();
+        productManager = new ProductManager();
+        itemManager = new ItemManager();
+        reportTime = new ReportTime();
+        reportTime.setName("removed_items");
         
     }
 

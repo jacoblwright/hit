@@ -1,7 +1,7 @@
 package data;
 
 /**
- * Databast implementation of ComprehensiveDAO.
+ * Database implementation of ComprehensiveDAO.
  */
 public class DBComprehensiveDAO implements ComprehensiveDAO {
 

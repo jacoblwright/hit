@@ -2,6 +2,7 @@ package model;
 
 import reports.*;
 import data.*;
+import plugins.*;
 
 public class Model {
     
@@ -21,7 +22,7 @@ public class Model {
     
     private ComprehensiveDAO comprehensiveDAO;
     
-    //private UPCDescriptionFetcher upcDescriptionFetcher;
+    private UPCDescriptionFetcher upcDescriptionFetcher;
     
     private Model() {
         
