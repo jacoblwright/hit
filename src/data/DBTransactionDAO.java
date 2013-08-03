@@ -122,10 +122,10 @@ public class DBTransactionDAO implements TransactionDAO {
 
             Statement s = connection.createStatement();
 
-            s.executeUpdate("DROP TABLE IF EXISTS product;");
-            s.executeUpdate("DROP TABLE IF EXISTS item;");
             s.executeUpdate("DROP TABLE IF EXISTS container;");
+            s.executeUpdate("DROP TABLE IF EXISTS product;");
             s.executeUpdate("DROP TABLE IF EXISTS productToContainer;");
+            s.executeUpdate("DROP TABLE IF EXISTS item;");                       
             s.executeUpdate("DROP TABLE IF EXISTS reportTime;");
 
             s.executeUpdate("CREATE TABLE container " + 
