@@ -3,7 +3,9 @@ package gui.main;
 
 import javax.swing.*;
 
+import data.DBDAOFactory;
 import data.SerComprehensiveDAO;
+import data.SerDAOFactory;
 
 import java.awt.event.*;
 import java.io.IOException;
@@ -152,17 +154,19 @@ public final class GUI extends JFrame implements IMainView {
 	//
 	
     public static void main(final String[] args) {
-        
-        // To do: add arg parsing.
-        // --------------------------------
-        Model.getInstance().setComprehensiveDAO(new SerComprehensiveDAO());
-        try {
-            Model.getInstance().getComprehensiveDAO().load();
+
+        if (args.length > 0 && args[0].equals("-d")) {
+            System.out.println("Setting to database mode.");
+            Model.getInstance().setDAOFactory(new DBDAOFactory());
         }
-        catch (IOException e1) {
-            e1.printStackTrace();
+        else if (args.length > 0 && args[0].equals("-s")) {
+            System.out.println("Setting to serialization mode.");
+            Model.getInstance().setDAOFactory(new SerDAOFactory());
         }
-        // --------------------------------
+        else {
+            System.out.println("Setting to serialization mode (default).");
+            Model.getInstance().setDAOFactory(new SerDAOFactory());            
+        }
         
      	try {
     		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
