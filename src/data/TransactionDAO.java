@@ -1,5 +1,6 @@
 package data;
 
+import java.io.*;
 import java.sql.Connection;
 
 /**
@@ -7,11 +8,11 @@ import java.sql.Connection;
  */
 public interface TransactionDAO {
 
-    public void startTransaction();
+    public void startTransaction() throws IOException;
     
-    public void endTransaction();
+    public void endTransaction() throws IOException;
     
-    public Connection getConnection();
+    public Connection getConnection() throws IOException;
     
     public void notifyTransactionFailed();
     

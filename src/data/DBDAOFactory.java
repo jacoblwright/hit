@@ -6,27 +6,35 @@ package data;
 public class DBDAOFactory implements DAOFactory {
 
     @Override
-    public void createContainerDAO() {
+    public ComponentDAO<ContainerDTO> createContainerDAO() {
+        return null;
     }
 
     @Override
-    public void createProductDAO() {
+    public ComponentDAO<ProductDTO> createProductDAO() {
+        return null;
     }
 
     @Override
-    public void createProductToContainerDAO() {
+    public ComponentDAO<ProductToContainerDTO> createProductToContainerDAO() {
+        return null;
     }
 
     @Override
-    public void createItemDAO() {
+    public ComponentDAO<ItemDTO> createItemDAO() {
+        return null;
     }
 
     @Override
-    public void createTransactionDAO() {
+    public TransactionDAO createTransactionDAO() {
+        return null;
     }
 
     @Override
-    public void createComprehensiveDAO() {
+    public ComprehensiveDAO createComprehensiveDAO() {
+        return null;
     }
+
+    
 
 }

@@ -6,16 +6,16 @@ package data;
  */
 public interface DAOFactory {
         
-    public void createContainerDAO();
+    public ComponentDAO<ContainerDTO> createContainerDAO();
     
-    public void createProductDAO();
+    public ComponentDAO<ProductDTO> createProductDAO();
     
-    public void createProductToContainerDAO();
+    public ComponentDAO<ProductToContainerDTO> createProductToContainerDAO();
     
-    public void createItemDAO();
+    public ComponentDAO<ItemDTO> createItemDAO();
     
-    public void createTransactionDAO();
+    public TransactionDAO createTransactionDAO();
     
-    public void createComprehensiveDAO();
+    public ComprehensiveDAO createComprehensiveDAO();
     
 }
