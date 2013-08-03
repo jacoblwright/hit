@@ -5,6 +5,7 @@ import gui.product.ProductData;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
@@ -33,7 +34,7 @@ public class ProductManager extends Observable implements Serializable{
 	 * and HashMap<Barcode, Product */ 
 	public ProductManager(){
 		assert true;
-		productsByContainer = new TreeMap<Container, Set<Product>>();
+		productsByContainer = new HashMap<Container, Set<Product>>();
 		productByUPC = new TreeMap<Barcode, Product>();
 	}
 	
