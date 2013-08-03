@@ -6,7 +6,7 @@ package data;
  */
 public interface DAOFactory {
         
-    public void createContainerDAO();
+    public ComponentDAO<ContainerDTO> createContainerDAO();
     
     public void createProductDAO();
     

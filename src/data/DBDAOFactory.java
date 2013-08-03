@@ -6,7 +6,8 @@ package data;
 public class DBDAOFactory implements DAOFactory {
 
     @Override
-    public void createContainerDAO() {
+    public ComponentDAO<ContainerDTO> createContainerDAO() {
+    	return new DBContainerDAO();
     }
 
     @Override

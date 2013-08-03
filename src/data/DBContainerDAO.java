@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
 import model.Model;
 
@@ -32,7 +31,8 @@ public class DBContainerDAO implements ComponentDAO<ContainerDTO> {
     	Statement keyStmt = null; 
     	ResultSet keyRS = null;
     	try {
-    		String sql = "INSERT INTO container (name, containerId, number, unit) VALUES (?, ?, ?,?)"; 
+    		String sql = "INSERT INTO container " +
+    				"(name, containerId, number, unit) VALUES (?, ?, ?,?)"; 
     		stmt = connection.prepareStatement(sql);
     		initializePreparedStatement(stmt, t);
     		
@@ -150,12 +150,13 @@ public class DBContainerDAO implements ComponentDAO<ContainerDTO> {
 		}
 	}
     
-    private void initializePreparedStatement(PreparedStatement stmt, ContainerDTO t) throws SQLException {
+    private void initializePreparedStatement(PreparedStatement stmt, ContainerDTO t)
+    		throws SQLException {
     	stmt.setString(1, t.getName()); 
 		
 		Integer containerId = t.getContainerId();
 		if(containerId == null) {
-			stmt.setNull(2, Type.INT);
+			stmt.setNull(2, Types.INTEGER);
 		}
 		else {
 			stmt.setInt(2, containerId); 

@@ -1,7 +1,3 @@
-package plugins;
-
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-
 @PluginImplementation
 public class AmazonAutoIdentityPlugin implements AutoIdentityPlugin {
 
@@ -11,5 +7,3 @@ public class AmazonAutoIdentityPlugin implements AutoIdentityPlugin {
 	}
 
 }
-
-

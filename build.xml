@@ -42,6 +42,8 @@
 	<property name="itext-home" location="${lib}/itext-5.1.0" />
 
 	<property name="commons-io-home" location="${lib}/commons-io-2.4" />
+	
+	<property name="jspf-home" location="${lib}/jspf-1.0.2" />
 
 	<property name="import-data-file" location="import.xml"/>
 	<property name="export-data-file" location="export.xml"/>
@@ -91,6 +93,20 @@
 			<include name="commons-io-2.4.jar" />
 		</fileset>
 	</path>
+	
+	<path id="jspf-classpath">
+			<fileset dir="${jspf-home}">
+				<include name="jspf.core-1.0.2.jar" />
+				<include name="jspf.remote-1.0.2.jar" />
+				<include name="jspf.remote.discovery-1.0.2.jar" />
+				<include name="jspf.remote.ermi-1.0.2.jar" />
+				<include name="jspf.remote.javascript-1.0.2.jar" />
+				<include name="jspf.remote.json-1.0.2.jar" />
+				<include name="jspf.remote.lipermi-1.0.2.jar" />
+				<include name="jspf.remote.xmlrpc-1.0.2.jar" />
+				<include name="jspf.remote.xmlrpcdelight-1.0.2.jar" />
+			</fileset>
+		</path>
 
 	<!-- ***************** -->
 	<!-- task definintions -->
@@ -135,6 +151,7 @@
 			<classpath refid="itext-classpath" />
 			<classpath refid="sqlite-classpath" />
 			<classpath refid="commons-io-classpath" />
+			<classpath refid="jspf-classpath" />
 		</javac>
 	</target>
 	
@@ -281,6 +298,7 @@
 			<classpath refid="itext-classpath" />
 			<classpath refid="sqlite-classpath" />
 			<classpath refid="commons-io-classpath" />
+			<classpath refid="jspf-classpath" />
 
 			<sysproperty key="net.sourceforge.cobertura.datafile"
 				value="${coverage-data-file}"/>
@@ -321,6 +339,7 @@
 		<javadoc destdir="${doc}" Package="true">
 			<classpath refid="itext-classpath" />
 			<classpath refid="commons-io-classpath" />
+			<classpath refid="jspf-classpath" />
 			<packageset dir="${src}">
 				<include name="common/**"/>
 				<include name="gui/**"/>

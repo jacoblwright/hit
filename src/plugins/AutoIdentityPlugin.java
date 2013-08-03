@@ -1,11 +1,13 @@
 package plugins;
 
+import net.xeoh.plugins.base.Plugin;
+
 /** Provides an interface for all plugins used for auto identification
  * 
  * @author andrew
  *
  */
-public interface AutoIdentityPlugin {
+public interface AutoIdentityPlugin extends Plugin {
 	
 	/** Find a string representing a barcode
 	 * 
