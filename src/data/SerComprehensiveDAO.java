@@ -105,6 +105,7 @@ public class SerComprehensiveDAO implements ComprehensiveDAO {
             }
             else {
                 reportTime = new ReportTime();
+                reportTime.setName(IOConfig.REMOVED_ITEMS_REPORT_TIME_NAME);
             }            
         
         }
@@ -147,8 +148,9 @@ public class SerComprehensiveDAO implements ComprehensiveDAO {
         containerManager = new ContainerManager();
         productManager = new ProductManager();
         itemManager = new ItemManager();
+        
         reportTime = new ReportTime();
-        reportTime.setName("removed_items");
+        reportTime.setName(IOConfig.REMOVED_ITEMS_REPORT_TIME_NAME);
         
     }
 

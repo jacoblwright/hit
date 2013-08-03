@@ -6,7 +6,7 @@ import java.util.Date;
 public class ReportTime implements Serializable {
 	
     private String name;
-	private Date lastReport;
+	private Date lastReport = null;
 	
 	public String getName() {
         return name;

@@ -22,7 +22,10 @@ public class IOConfig {
     
     private static File barcodeTagsFile;    
     private static File reportFilePDF;        
-    private static File reportFileHTML;        
+    private static File reportFileHTML;
+    
+    public static final String REMOVED_ITEMS_REPORT_TIME_NAME =
+            "removed_items";
     
     static {
         
