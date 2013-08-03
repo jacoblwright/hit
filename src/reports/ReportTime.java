@@ -3,11 +3,20 @@ package reports;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ReportTime implements Serializable{
+public class ReportTime implements Serializable {
 	
-	Date lastReport = null;
+    private String name;
+	private Date lastReport;
 	
-	public void setLastReport(Date date){
+	public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLastReport(Date date){
 		lastReport = date;
 	}
 	

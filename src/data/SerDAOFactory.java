@@ -22,7 +22,7 @@ public class SerDAOFactory implements DAOFactory {
     }
 
     @Override
-    public void createTransaction() {
+    public void createTransactionDAO() {
     }
 
     @Override

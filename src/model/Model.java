@@ -14,15 +14,15 @@ public class Model {
     private ProductManager productManager;
     private ItemManager itemManager;
     
-    //private UPCDescriptionFetcher upcDescriptionFetcher;
-    
     private ReportTime reportTime;
     
     private DAOFactory dAOFactory;
-    private Transaction transaction;
+    private TransactionDAO transaction;
     
     private ComprehensiveDAO comprehensiveDAO;
-        
+    
+    //private UPCDescriptionFetcher upcDescriptionFetcher;
+    
     private Model() {
         
         assert true;
@@ -101,11 +101,11 @@ public class Model {
         this.dAOFactory = dAOFactory;
     }
 
-    public Transaction getTransaction() {
+    public TransactionDAO getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(TransactionDAO transaction) {
         this.transaction = transaction;
     }
 

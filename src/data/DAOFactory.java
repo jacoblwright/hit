@@ -14,7 +14,7 @@ public interface DAOFactory {
     
     public void createItemDAO();
     
-    public void createTransaction();
+    public void createTransactionDAO();
     
     public void createComprehensiveDAO();
     

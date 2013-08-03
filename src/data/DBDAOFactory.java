@@ -22,7 +22,7 @@ public class DBDAOFactory implements DAOFactory {
     }
 
     @Override
-    public void createTransaction() {
+    public void createTransactionDAO() {
     }
 
     @Override
