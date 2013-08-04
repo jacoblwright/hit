@@ -1,13 +1,14 @@
 package data;
 
 import java.util.*;
+import java.io.*;
 
 /**
  * Provides an interface for creating, reading, updating, and deleting
  * information, represented by the generic data transfer object T, in a
  * database.
  */
-public interface ComponentDAO<T> {
+public interface ComponentDAO<T> extends Serializable {
     
     /**
      * Adds the specified DTO to the database.
