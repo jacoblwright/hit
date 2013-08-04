@@ -52,6 +52,7 @@ public class MainController extends Controller implements IMainController {
 			getModel().getComprehensiveDAO().save();
 			
 		} catch (IOException e) {
+			e.printStackTrace();
 			getView().displayErrorMessage("Error saving information");
 		}
 	}

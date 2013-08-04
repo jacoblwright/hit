@@ -20,6 +20,7 @@ public class ContainerManager extends Observable implements Serializable {
 	private Set<StorageUnit> storageUnits;
 	
 	private int uniqueId;
+	
 	private ComponentDAO<ContainerDTO> containerDAO;
 	
 	/**initializes uniqueId to 0

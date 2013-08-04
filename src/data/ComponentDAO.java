@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -7,7 +8,7 @@ import java.util.*;
  * information, represented by the generic data transfer object T, in a
  * database.
  */
-public interface ComponentDAO<T> {
+public interface ComponentDAO<T> extends Serializable {
     
     /**
      * Adds the specified DTO to the database.
