@@ -12,7 +12,8 @@ public class SerTransactionDAO implements TransactionDAO {
     }
 
     @Override
-    public void endTransaction() {
+    public boolean endTransaction() {
+        return true;
     }
 
     @Override

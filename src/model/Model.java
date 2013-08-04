@@ -18,7 +18,7 @@ public class Model {
     
     private ReportTime reportTime;
     
-    private DAOFactory dAOFactory;
+    private DAOFactory daoFactory;
     private TransactionDAO transaction;
     
     private ComprehensiveDAO comprehensiveDAO;
@@ -49,12 +49,12 @@ public class Model {
     
     public void initialize() throws IOException {
         
-        if (dAOFactory == null) {
+        if (daoFactory == null) {
             throw new IllegalStateException("DAOFactory has not been set.");
         }
         
-        transaction = dAOFactory.createTransactionDAO();
-        comprehensiveDAO = dAOFactory.createComprehensiveDAO();
+        transaction = daoFactory.createTransactionDAO();
+        comprehensiveDAO = daoFactory.createComprehensiveDAO();
         
         comprehensiveDAO.load();
         
@@ -109,11 +109,11 @@ public class Model {
     }
 
     public DAOFactory getDAOFactory() {
-        return dAOFactory;
+        return daoFactory;
     }
 
     public void setDAOFactory(DAOFactory dAOFactory) {
-        this.dAOFactory = dAOFactory;
+        this.daoFactory = dAOFactory;
     }
 
     public TransactionDAO getTransaction() {
