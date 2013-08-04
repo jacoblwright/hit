@@ -169,13 +169,7 @@ public class DBContainerDAO implements ComponentDAO<ContainerDTO> {
     }
     
     private void setConnection() {
-		try {
-			connection = getTransaction().getConnection();
-		} 
-		catch (IOException e) {
-			getTransaction().notifyTransactionFailed();
-			e.printStackTrace();
-		}
+		connection = getTransaction().getConnection();
 	}
     
     private TransactionDAO getTransaction() {
