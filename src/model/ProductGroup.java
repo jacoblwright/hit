@@ -135,17 +135,17 @@ public class ProductGroup extends Container {
 		return hash;
 	}
 
-	/**checks equality between two objects.
-	 * @pre						none
-	 * @param obj				obj in question fo equality		
-	 * @return boolean 			if this == obj return true, otherwise false.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		assert true;
-		return super.equals(obj) &&  
-				this.threeMonthSupply.equals( ((ProductGroup)obj).threeMonthSupply );
-	}
+//	/**checks equality between two objects.
+//	 * @pre						none
+//	 * @param obj				obj in question fo equality		
+//	 * @return boolean 			if this == obj return true, otherwise false.
+//	 */
+//	@Override
+//	public boolean equals(Object obj) {
+//		assert true;
+//		return super.equals(obj) &&  
+//				this.threeMonthSupply.equals( ((ProductGroup)obj).threeMonthSupply );
+//	}
 	
 	public boolean simpleEquals( Object obj ) {
 		assert true;
