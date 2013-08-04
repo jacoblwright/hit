@@ -155,6 +155,7 @@ public final class GUI extends JFrame implements IMainView {
 	
     public static void main(final String[] args) {
 
+        // --------------------------------
         if (args.length > 0 && args[0].equals("-d")) {
             System.out.println("Setting to database mode.");
             Model.getInstance().setDAOFactory(new DBDAOFactory());
@@ -167,6 +168,14 @@ public final class GUI extends JFrame implements IMainView {
             System.out.println("Setting to serialization mode (default).");
             Model.getInstance().setDAOFactory(new SerDAOFactory());            
         }
+        
+        try {
+            Model.getInstance().initialize();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        // --------------------------------
         
      	try {
     		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

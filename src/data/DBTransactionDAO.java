@@ -94,7 +94,7 @@ public class DBTransactionDAO implements TransactionDAO {
     }
 
     @Override
-    public Connection getConnection() throws IOException {
+    public Connection getConnection() {
         
         if (connection == null) {
             throw new IllegalStateException("A transation must be started " +
