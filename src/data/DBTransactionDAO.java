@@ -35,22 +35,30 @@ public class DBTransactionDAO implements TransactionDAO {
             throw new IOException(e.getMessage());
         }
         
+        connection = null;
+        
     }
 
     @Override
     public void startTransaction() throws IOException {
+        
+        if (connection != null) {
+            throw new IllegalStateException(
+                    "Transaction has not been ended.");
+        }
+        
+        transactionHasFailed = false;
         
         try {
 
             connection = DriverManager.getConnection(
                     "jdbc:sqlite:" + IOConfig.DATABASE_FILE_PATH);
             connection.setAutoCommit(false);
-
+                        
         }
         catch (SQLException e) {
             
             connection = null;
-            
             throw new IOException(e.getMessage());
         
         }
@@ -58,20 +66,28 @@ public class DBTransactionDAO implements TransactionDAO {
     }
 
     @Override
-    public void endTransaction() throws IOException {
+    public boolean endTransaction() throws IOException {
         
         if (connection == null) {
             throw new IllegalStateException(
-                    "A transaction has not been started.");
+                    "Transaction has not been started.");            
         }
+        
+        boolean transactionCommitted = false;
         
         try {
             
             if (transactionHasFailed) {
+                
                 connection.rollback();
+                transactionCommitted = false;
+                
             }
             else {
+                
                 connection.commit();
+                transactionCommitted = true;
+            
             }
             
         }
@@ -91,6 +107,8 @@ public class DBTransactionDAO implements TransactionDAO {
             
         }
         
+        return transactionCommitted;
+        
     }
 
     @Override
@@ -109,6 +127,20 @@ public class DBTransactionDAO implements TransactionDAO {
     public void notifyTransactionFailed() {
         transactionHasFailed = true;        
     }
+    
+    /**
+     * Reinitializes the database for testing purposes.
+     */
+    public void clear() {
+        
+        try {
+            initializeTables();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+    }    
     
     private void initializeTables() throws SQLException {
         

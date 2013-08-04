@@ -10,7 +10,10 @@ public interface TransactionDAO {
 
     public void startTransaction() throws IOException;
     
-    public void endTransaction() throws IOException;
+    /**
+     * Returns true if the transaction was committed, false otherwise.
+     */
+    public boolean endTransaction() throws IOException;
     
     public Connection getConnection();
     
