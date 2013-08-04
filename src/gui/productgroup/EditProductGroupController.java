@@ -1,5 +1,7 @@
 package gui.productgroup;
 
+import java.io.IOException;
+
 import model.Container;
 import model.ProductGroup;
 import model.Quantity;
@@ -105,11 +107,17 @@ public class EditProductGroupController extends Controller
 	 */
 	@Override
 	public void editProductGroup() {
-		Container container = setContainer();
-		if( !((ProductGroup) target.getTag()).simpleEquals( container ) ) {
-			Container oldContainer = (Container) target.getTag();
-			getModel().getContainerEditor().editContainer( (Container) target.getTag(), container );
-			//Add code to move product and items to this container
+		try {
+			Container container = setContainer();
+			if( !((ProductGroup) target.getTag()).simpleEquals( container ) ) {
+				Container oldContainer = (Container) target.getTag();
+				getModel().getTransaction().startTransaction();
+				getModel().getContainerEditor().editContainer(
+						(Container) target.getTag(), container);
+				getModel().getTransaction().endTransaction();
+			}
+		} catch(IOException e) {
+				//talk with team to see what to do here.
 		}
 	}
 	

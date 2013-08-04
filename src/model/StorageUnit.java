@@ -1,5 +1,7 @@
 package model;
 
+import data.ContainerDTO;
+
 
 /**
  * Storage Unit extends Container and implements the abstract methods.
@@ -59,5 +61,12 @@ public class StorageUnit extends Container {
 	private boolean nonEmptyName() {
 		return getName().trim().length() > 0;
 	}	
+	
+	public StorageUnit storageUnitConverter( ContainerDTO containerDTO ) {
+		this.setContainer(null);
+		this.setId(containerDTO.getId());
+		this.setName( containerDTO.getName() );
+		return this;
+	}
 
 }
