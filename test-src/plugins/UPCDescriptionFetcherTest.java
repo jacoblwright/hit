@@ -8,8 +8,10 @@ public class UPCDescriptionFetcherTest {
 	@Test
 	public void upcDescriptionFetcherTest() {
 		UPCDescriptionFetcher fetcher = new UPCDescriptionFetcher();
-		String description = fetcher.fetchUPCDescription("123456789012");
+		String description = fetcher.fetchUPCDescription("0040000011040");
+		assertNotNull(description);
 		
-		//assertTrue(description.equals("Hello World"));
+		String description2 = fetcher.fetchUPCDescription("076183164198");
+		assertNotNull(description2);
 	}
 }

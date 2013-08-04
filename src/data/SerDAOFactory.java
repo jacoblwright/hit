@@ -7,27 +7,32 @@ public class SerDAOFactory implements DAOFactory {
 
     @Override
     public ComponentDAO<ContainerDTO> createContainerDAO() {
-    	return new SerContainerDAO();
+        return new SerContainerDAO();
     }
 
     @Override
-    public void createProductDAO() {
+    public ComponentDAO<ProductDTO> createProductDAO() {
+        return new SerProductDAO();
     }
 
     @Override
-    public void createProductToContainerDAO() {
+    public ComponentDAO<ProductToContainerDTO> createProductToContainerDAO() {
+        return new SerProductToContainerDAO();
     }
 
     @Override
-    public void createItemDAO() {
+    public ComponentDAO<ItemDTO> createItemDAO() {
+        return new SerItemDAO();
     }
 
     @Override
-    public void createTransactionDAO() {
+    public TransactionDAO createTransactionDAO() {
+        return new SerTransactionDAO();
     }
 
     @Override
-    public void createComprehensiveDAO() {
+    public ComprehensiveDAO createComprehensiveDAO() {
+        return new SerComprehensiveDAO();
     }
 
 }

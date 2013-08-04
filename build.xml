@@ -97,14 +97,6 @@
 	<path id="jspf-classpath">
 			<fileset dir="${jspf-home}">
 				<include name="jspf.core-1.0.2.jar" />
-				<include name="jspf.remote-1.0.2.jar" />
-				<include name="jspf.remote.discovery-1.0.2.jar" />
-				<include name="jspf.remote.ermi-1.0.2.jar" />
-				<include name="jspf.remote.javascript-1.0.2.jar" />
-				<include name="jspf.remote.json-1.0.2.jar" />
-				<include name="jspf.remote.lipermi-1.0.2.jar" />
-				<include name="jspf.remote.xmlrpc-1.0.2.jar" />
-				<include name="jspf.remote.xmlrpcdelight-1.0.2.jar" />
 			</fileset>
 		</path>
 

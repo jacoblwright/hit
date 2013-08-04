@@ -1,5 +1,7 @@
 package data;
 
+import java.io.IOException;
+
 /**
  * Instantiates and returns database implementations of the various DAOs.
  */
@@ -7,27 +9,42 @@ public class DBDAOFactory implements DAOFactory {
 
     @Override
     public ComponentDAO<ContainerDTO> createContainerDAO() {
-    	return new DBContainerDAO();
+        return new DBContainerDAO();
     }
 
     @Override
-    public void createProductDAO() {
+    public ComponentDAO<ProductDTO> createProductDAO() {
+        return new DBProductDAO();
     }
 
     @Override
-    public void createProductToContainerDAO() {
+    public ComponentDAO<ProductToContainerDTO> createProductToContainerDAO() {
+        return new DBProductToContainerDAO();
     }
 
     @Override
-    public void createItemDAO() {
+    public ComponentDAO<ItemDTO> createItemDAO() {
+        return new DBItemDAO();
     }
 
     @Override
-    public void createTransactionDAO() {
+    public TransactionDAO createTransactionDAO() {
+        
+        try {
+            return new DBTransactionDAO();
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+            return null;
+            
+        }
+    
     }
 
     @Override
-    public void createComprehensiveDAO() {
+    public ComprehensiveDAO createComprehensiveDAO() {
+        return new DBComprehensiveDAO();
     }
 
 }

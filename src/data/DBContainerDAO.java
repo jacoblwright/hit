@@ -1,5 +1,6 @@
 package data;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -168,7 +169,13 @@ public class DBContainerDAO implements ComponentDAO<ContainerDTO> {
     }
     
     private void setConnection() {
-		connection = getTransaction().getConnection();
+		try {
+			connection = getTransaction().getConnection();
+		} 
+		catch (IOException e) {
+			getTransaction().notifyTransactionFailed();
+			e.printStackTrace();
+		}
 	}
     
     private TransactionDAO getTransaction() {
