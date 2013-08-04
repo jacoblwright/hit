@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.io.*;
 
+import data.ComponentDAO;
+import data.ContainerDTO;
+
 @SuppressWarnings("serial")
 public class ContainerManager extends Observable implements Serializable {
 	
@@ -14,6 +17,7 @@ public class ContainerManager extends Observable implements Serializable {
 	private Set<StorageUnit> storageUnits;
 	
 	private int uniqueId;
+	private ComponentDAO<ContainerDTO> containerDAO;
 	
 	/**initializes uniqueId to 0
 	 * @pre none
@@ -23,6 +27,7 @@ public class ContainerManager extends Observable implements Serializable {
 		assert true;
 		uniqueId = 0;
 		storageUnits = new TreeSet<StorageUnit>();
+		containerDAO = Model.getInstance().getDAOFactory().createContainerDAO();
 	}
 	
 	/** Returns all of the productGroup lists of the current container recursively.
@@ -290,6 +295,10 @@ public class ContainerManager extends Observable implements Serializable {
 		else {
 			return isUniqueStorageUnitName( container ) && container.isContainerValid();
 		}
+	}
+	
+	public void load() {
+		//TODO
 	}
 	
 	private ChangeObject getHintObject( Container container ) {

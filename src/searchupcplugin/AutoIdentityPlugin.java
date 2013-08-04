@@ -1,4 +1,4 @@
-package plugins;
+package searchupcplugin;
 
 import net.xeoh.plugins.base.Plugin;
 
