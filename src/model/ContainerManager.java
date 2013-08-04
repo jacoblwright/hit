@@ -2,10 +2,16 @@ package model;
 
 import gui.inventory.ProductContainerData;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Observable;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.io.*;
+
+import data.ComponentDAO;
+import data.ContainerDTO;
 
 @SuppressWarnings("serial")
 public class ContainerManager extends Observable implements Serializable {
@@ -15,6 +21,8 @@ public class ContainerManager extends Observable implements Serializable {
 	
 	private int uniqueId;
 	
+	private ComponentDAO<ContainerDTO> containerDAO;
+	
 	/**initializes uniqueId to 0
 	 * @pre none
 	 * @post uniqueId = 0;
@@ -23,6 +31,7 @@ public class ContainerManager extends Observable implements Serializable {
 		assert true;
 		uniqueId = 0;
 		storageUnits = new TreeSet<StorageUnit>();
+		containerDAO = Model.getInstance().getDAOFactory().createContainerDAO();
 	}
 	
 	/** Returns all of the productGroup lists of the current container recursively.
@@ -116,6 +125,7 @@ public class ContainerManager extends Observable implements Serializable {
 			throw new IllegalArgumentException();
 		}
 		addContainerToTree( parent, container );
+		containerDAO.create(new ContainerDTO(container));
 	}
 	
 	/** Initializes container and adds it to the parent.
@@ -176,6 +186,7 @@ public class ContainerManager extends Observable implements Serializable {
 			storageUnits.add( (StorageUnit) oldContainer ); //added for bug fix
 		}
 		
+		containerDAO.update(new ContainerDTO(oldContainer));
 		ChangeObject hint = getHintObject( oldContainer );
 		setChanged();
 		notifyObservers( hint );
@@ -211,6 +222,8 @@ public class ContainerManager extends Observable implements Serializable {
 		else {
 			hint = getHintObject( parent.getProductGroups().iterator().next() );
 		}
+		
+		containerDAO.delete(new ContainerDTO(container));
 		setChanged();
 		notifyObservers( hint );
 	}
@@ -292,6 +305,64 @@ public class ContainerManager extends Observable implements Serializable {
 		}
 	}
 	
+	public void load() {
+		Collection<ContainerDTO> productContainers = containerDAO.readAll();
+		TreeMap<Integer, Set<ProductGroup>> parentToChild = 
+				new TreeMap<Integer, Set<ProductGroup>>();
+		for(ContainerDTO containerDTO : productContainers) {
+			if(containerDTO.getContainerId() == null) {
+				storageUnits.add(new StorageUnit().storageUnitConverter(containerDTO));
+			}
+			else {
+				addToMap(containerDTO, parentToChild);
+			}
+		}
+		setProductGroups(parentToChild, null);
+	}
+	
+	private void addToMap(ContainerDTO containerDTO,
+			TreeMap<Integer, Set<ProductGroup>> parentToChild) {
+		if(parentToChild.containsKey(containerDTO.getContainerId())) {
+			parentToChild.get(containerDTO.getContainerId()).add(
+					new ProductGroup().productGroupConverter(containerDTO));
+		}
+		else {
+			Set<ProductGroup> productGroups = new TreeSet<ProductGroup>();
+			productGroups.add(new ProductGroup().productGroupConverter(containerDTO));
+			parentToChild.put(containerDTO.getContainerId(), productGroups);
+		}
+		
+	}
+	
+	private void setProductGroups(
+			TreeMap<Integer, Set<ProductGroup>> parentToChild, Set<ProductGroup> containers) {
+		if(containers == null) {
+			for(StorageUnit storageUnit : storageUnits) {
+				Set<ProductGroup> children = parentToChild.get(storageUnit.getId());
+				setChildren(parentToChild, children, storageUnit);
+			}
+		}
+		for(Container container : containers) {
+			Set<ProductGroup> children = parentToChild.get(container.getId());
+			setChildren(parentToChild, children, container);
+		}
+		
+	}
+	
+	private void setChildren(
+			TreeMap<Integer, Set<ProductGroup>> parentToChild,
+			Set<ProductGroup> children, 
+			Container container) {
+		if(children != null) {
+			for(Container child : children) {
+				child.setContainer(container);
+			}
+			container.setProductGroups(children);
+			setProductGroups(parentToChild, children);
+		}
+	}
+
+
 	private ChangeObject getHintObject( Container container ) {
 		ChangeObject result = new ChangeObject();
 		result.setChangeType( ChangeType.CONTAINER );

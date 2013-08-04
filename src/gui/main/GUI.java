@@ -3,7 +3,12 @@ package gui.main;
 
 import javax.swing.*;
 
+import data.DBDAOFactory;
+import data.SerComprehensiveDAO;
+import data.SerDAOFactory;
+
 import java.awt.event.*;
+import java.io.IOException;
 
 import gui.common.*;
 import gui.inventory.*;
@@ -12,7 +17,7 @@ import gui.reports.supply.*;
 import gui.reports.notices.*;
 import gui.reports.productstats.*;
 import gui.reports.removed.*;
-
+import model.*;
 
 @SuppressWarnings("serial")
 public final class GUI extends JFrame implements IMainView {
@@ -149,6 +154,29 @@ public final class GUI extends JFrame implements IMainView {
 	//
 	
     public static void main(final String[] args) {
+
+        // --------------------------------
+        if (args.length > 0 && args[0].equals("-d")) {
+            System.out.println("Setting to database mode.");
+            Model.getInstance().setDAOFactory(new DBDAOFactory());
+        }
+        else if (args.length > 0 && args[0].equals("-s")) {
+            System.out.println("Setting to serialization mode.");
+            Model.getInstance().setDAOFactory(new SerDAOFactory());
+        }
+        else {
+            System.out.println("Setting to serialization mode (default).");
+            Model.getInstance().setDAOFactory(new SerDAOFactory());            
+        }
+        
+        try {
+            Model.getInstance().initialize();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        // --------------------------------
+        
      	try {
     		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     	}
