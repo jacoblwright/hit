@@ -3,9 +3,7 @@ package plugins;
 import gui.main.GUI;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.security.CodeSource;
 import java.util.Collection;
 
@@ -48,7 +46,6 @@ public class UPCDescriptionFetcher {
 	}
 	
 	public String getCurrentDirectory() {
-		
 		CodeSource codeSource = GUI.class.getProtectionDomain().getCodeSource();
 		File jarFile = null;
 		try {
@@ -59,7 +56,6 @@ public class UPCDescriptionFetcher {
 		}
 		String jarDir = jarFile.getParentFile().getPath();
 		return jarDir;
-		
 	}
 
 }

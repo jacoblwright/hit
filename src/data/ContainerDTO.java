@@ -21,20 +21,16 @@ public class ContainerDTO {
     public ContainerDTO( Container container ) {
     	this.id = container.getId();
     	this.name = container.getName();
-    	if( container.getClass() != null ) {
+    	if( container.getContainer() != null ) {
     		this.containerId = container.getContainer().getId();
-    	}
-    	else {
-    		this.containerId = null;
-    	}
-    	if( container instanceof ProductGroup ) {
     		Quantity threeMonthSupply = ((ProductGroup)container).getThreeMonthSupply();
     		number = threeMonthSupply.getNumber();
     		unit = threeMonthSupply.getUnit();
     	}
     	else {
+    		this.containerId = null;
     		this.number = 0f;
-    		this.unit = SizeUnits.Unspecified;	// not sure if this is ok???
+    		this.unit = SizeUnits.Unspecified;
     	}
     }
    

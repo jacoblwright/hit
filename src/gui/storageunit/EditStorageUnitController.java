@@ -1,5 +1,7 @@
 package gui.storageunit;
 
+import java.io.IOException;
+
 import model.Container;
 import model.StorageUnit;
 import gui.common.*;
@@ -93,12 +95,17 @@ public class EditStorageUnitController extends Controller
 	 */
 	@Override
 	public void editStorageUnit() {
-		String name = getView().getStorageUnitName();
-		if( !name.equals( target.getName() ) ) {
-			Container newContainer = new StorageUnit( name );
-			Container oldContainer = (Container) target.getTag();
-			getModel().getContainerEditor().editContainer( oldContainer, newContainer );
-			
+		try {
+			String name = getView().getStorageUnitName();
+			if( !name.equals( target.getName() ) ) {
+				Container newContainer = new StorageUnit( name );
+				Container oldContainer = (Container) target.getTag();
+				getModel().getTransaction().startTransaction();
+				getModel().getContainerEditor().editContainer( oldContainer, newContainer );
+				getModel().getTransaction().endTransaction();
+			}
+		} catch(IOException e) {
+			// Talk with team about what to do here.
 		}
 	}
 

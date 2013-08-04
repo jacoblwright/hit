@@ -1,5 +1,6 @@
 package model;
 
+import data.ContainerDTO;
 import gui.common.SizeUnits;
 
 
@@ -170,5 +171,16 @@ public class ProductGroup extends Container {
 		assert true;
 		//return super.toString() + " ProductGroup [threeMonthSupply=" + threeMonthSupply + "]";
 		return super.toString();
+	}
+	
+	public ProductGroup productGroupConverter( ContainerDTO containerDTO ) {
+		this.setContainer(null);
+		this.setId(containerDTO.getId());
+		this.setName( containerDTO.getName() );
+		float number = containerDTO.getNumber();
+		Enum<SizeUnits> unit = containerDTO.getUnit();
+		Quantity q = new Quantity(number,unit);
+		this.setThreeMonthSupply(q);
+		return this;
 	}
 }

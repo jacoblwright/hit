@@ -1,5 +1,7 @@
 package gui.productgroup;
 
+import java.io.IOException;
+
 import model.Container;
 import model.ProductGroup;
 import model.Quantity;
@@ -90,11 +92,19 @@ public class AddProductGroupController extends Controller implements
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the add product group view.
+	 * @throws IOException 
 	 */
 	@Override
 	public void addProductGroup() {
 		Container container = setContainer();
-		getModel().getContainerEditor().addContainer( (Container) parent.getTag(), container );
+		try {
+			getModel().getTransaction().startTransaction();
+			getModel().getContainerEditor().addContainer((Container) parent.getTag(), container);
+			getModel().getTransaction().endTransaction();
+		} catch(IOException e) {
+			//talk with team to see what to do here.
+		}
+		
 	}
 	
 	private Container setContainer() {

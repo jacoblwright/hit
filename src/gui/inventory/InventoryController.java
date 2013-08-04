@@ -4,6 +4,7 @@ import gui.common.*;
 import gui.item.*;
 import gui.product.*;
 
+import java.io.IOException;
 // Just for debug testing
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -159,8 +160,14 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void deleteStorageUnit() {
-		ProductContainerData container = getView().getSelectedProductContainer();
-		getModel().getContainerEditor().deleteContainer( (Container) container.getTag() );
+		try {
+			ProductContainerData container = getView().getSelectedProductContainer();
+			getModel().getTransaction().startTransaction();
+			getModel().getContainerEditor().deleteContainer( (Container) container.getTag() );
+			getModel().getTransaction().startTransaction();
+		} catch(IOException e) {
+			//Ask team what to do here?
+		}
 	}
 
 	/**
