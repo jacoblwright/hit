@@ -131,5 +131,14 @@ public class Model {
     public void setComprehensiveDAO(ComprehensiveDAO comprehensiveDAO) {
         this.comprehensiveDAO = comprehensiveDAO;
     }
+
+    public UPCDescriptionFetcher getUpcDescriptionFetcher() {
+        return upcDescriptionFetcher;
+    }
+
+    public void setUpcDescriptionFetcher(
+            UPCDescriptionFetcher upcDescriptionFetcher) {
+        this.upcDescriptionFetcher = upcDescriptionFetcher;
+    }
     
 }

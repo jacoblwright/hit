@@ -19,7 +19,13 @@ public class DBReportTimeDAO implements ComponentDAO<ReportTimeDTO> {
                     "VALUES (?, ?);";
             PreparedStatement s = connection.prepareStatement(sql);
             s.setString(1, rtDTO.getName());
-            s.setDate(2, new java.sql.Date(rtDTO.getReportTime().getTime()));
+            if (rtDTO.getReportTime() == null) {
+                s.setDate(2, null);
+            }
+            else {
+                s.setDate(2, new java.sql.Date(
+                        rtDTO.getReportTime().getTime()));
+            }
             s.executeUpdate();
         
         }
@@ -48,8 +54,14 @@ public class DBReportTimeDAO implements ComponentDAO<ReportTimeDTO> {
 
                 ReportTimeDTO rtDTO = new ReportTimeDTO();
                 rtDTO.setName(rs.getString(1));
-                rtDTO.setReportTime(
-                        new java.util.Date(rs.getDate(2).getTime()));
+                java.sql.Date date = rs.getDate(2);
+                if (date == null) {
+                    rtDTO.setReportTime(null);
+                }
+                else {
+                    rtDTO.setReportTime(
+                            new java.util.Date(rs.getDate(2).getTime()));
+                }
                 results.add(rtDTO);
 
             }

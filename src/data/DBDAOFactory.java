@@ -28,6 +28,11 @@ public class DBDAOFactory implements DAOFactory {
     }
 
     @Override
+    public ComponentDAO<ReportTimeDTO> createReportTimeDAO() {
+        return new DBReportTimeDAO();
+    }
+
+    @Override
     public TransactionDAO createTransactionDAO() {
         
         try {

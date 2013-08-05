@@ -63,6 +63,13 @@ public class ItemManager extends Observable implements Serializable {
 		dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	}
 	
+	/**
+     * Loads the instance data of this manager from the database.
+     */
+    public void load() {
+        
+    }
+	
 	/** Gets all items in the given container and is associated with the given product.
 	 * 
 	 * @param container
