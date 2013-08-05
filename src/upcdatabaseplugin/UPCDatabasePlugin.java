@@ -3,7 +3,9 @@ package upcdatabaseplugin;
 import java.io.*;
 import java.net.*;
 import javax.xml.stream.*;
+import net.xeoh.plugins.base.annotations.PluginImplementation;
 
+@PluginImplementation
 public class UPCDatabasePlugin implements AutoIdentityPlugin {
 
     String urlBase = "http://api.upcdatabase.org/xml/" +

@@ -35,6 +35,7 @@ public class UPCDescriptionFetcher {
 		pluginManager.addPluginsFrom(new File( getCurrentDirectory() + "/plugins/").toURI());
 		Collection<AutoIdentityPlugin> plugins = 
 				pluginManager.getPlugins(AutoIdentityPlugin.class);
+		System.out.println("Size of list of plugins: " + plugins.size());
 		for(AutoIdentityPlugin plugin : plugins) {
 			upcDescription = plugin.getDescription(upc);
 			System.out.println(upcDescription);
