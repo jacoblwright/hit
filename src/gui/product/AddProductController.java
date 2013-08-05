@@ -5,6 +5,7 @@ import java.util.Date;
 import model.*;
 import gui.common.*;
 import gui.inventory.ProductContainerData;
+import plugins.UPCDescriptionFetcher;
 
 /**
  * Controller class for the add item view.
@@ -15,6 +16,7 @@ public class AddProductController extends Controller implements
 	String upc;
 	Container container;
 	Date productDate;
+	UPCDescriptionFetcher fetcher;
 	
 	/**
 	 * Constructor.
@@ -28,6 +30,7 @@ public class AddProductController extends Controller implements
 		upc = barcode;
 		container = cont;
 		productDate = date;
+		fetcher = new UPCDescriptionFetcher();
 		loadValues();
 		enableComponents();
 		construct();
@@ -75,7 +78,18 @@ public class AddProductController extends Controller implements
 		
 		if(getView().getBarcode() == null || getView().getBarcode().equals(""))
 			getView().displayErrorMessage("Barcode should not be empty");
-		
+		else {
+			Barcode tmp = new Barcode();
+			String curBarcode = getView().getBarcode();
+			if ( tmp.isValidBarcode(getView().getBarcode()) ){
+				if (getView().getDescription().isEmpty()){
+					String descr = fetcher.fetchUPCDescription(getView().getBarcode());
+					if (descr != null){
+						getView().setDescription(descr);
+					}
+				}
+			}
+		}
 		try{
 			if(getView().getDescription().isEmpty() ||
 					Integer.parseInt(getView().getSupply()) < 0 || 

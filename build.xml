@@ -149,9 +149,8 @@
 	
 	<property name="itext.jar" value="lib/itext-5.1.0/itextpdf-5.1.0.jar"/>
 	<property name="sqlite.jar" value="lib/sqlitejdbc-v056/sqlitejdbc-v056.jar"/>
-	<property name ="commons-io-2.4.jar" value="lib/commons-io-2.4/commons-io-2.4.jar"/>
-	<property name="jspf.core-1.0.2.jar" value="lib/jspf-1.02/jspf.core-1.0.2.jar"/>
-	
+	<property name="commons-io-2.4.jar" value="lib/commons-io-2.4/commons-io-2.4.jar"/>
+	<property name="jspf.core-1.0.2.jar" value="lib/jspf-1.0.2/jspf.core-1.0.2.jar"/>
 	
 	<target name="package" depends="compile"
         description="package the jar file" >
