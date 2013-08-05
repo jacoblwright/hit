@@ -50,8 +50,7 @@ public class DBComprehensiveDAO implements ComprehensiveDAO {
         productAndItemEditor = new ProductAndItemEditor(
                 containerManager, productManager, itemManager);
         
-        reportTime = new ReportTime();
-        reportTime.setName(IOConfig.REMOVED_ITEMS_REPORT_TIME_NAME);
+        reportTime = new ReportTime(IOConfig.REMOVED_ITEMS_REPORT_TIME_NAME);
         reportTime.load();
         
         Model m = Model.getInstance();

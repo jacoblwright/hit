@@ -96,6 +96,7 @@ public class DBContainerDAO implements ComponentDAO<ContainerDTO> {
     				"WHERE id = ?";
     		stmt = connection.prepareStatement(sql);
     		initializePreparedStatement(stmt, t);
+    		stmt.setInt(5, t.getId());
     	
 	    	if (stmt.executeUpdate() != 1) {
 	    		getTransaction().notifyTransactionFailed();
@@ -164,7 +165,7 @@ public class DBContainerDAO implements ComponentDAO<ContainerDTO> {
 		
 		stmt.setFloat(3, t.getNumber()); 
 		stmt.setString(4, t.getUnitStr());
-		stmt.setInt(5, t.getId());
+		
     }
     
     private void setConnection() {

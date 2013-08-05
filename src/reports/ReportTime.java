@@ -14,9 +14,9 @@ public class ReportTime implements Serializable {
 	
 	private ComponentDAO<ReportTimeDTO> rtDAO;
 	
-	public ReportTime() {
+	public ReportTime(String name) {
 	    
-	    name = "default";
+	    this.name = name;
 	    lastReport = null;
 	    
 	    rtDAO = Model.getInstance().getDAOFactory().createReportTimeDAO();
@@ -31,10 +31,17 @@ public class ReportTime implements Serializable {
             t.startTransaction();
             
             Collection<ReportTimeDTO> results = rtDAO.readAll();
+            boolean recordFound = false;
             for (ReportTimeDTO result : results) {
                 if (result.getName().equals(name)) {
+                    recordFound = true;
                     lastReport = result.getReportTime();
                 }
+            }
+            if (!recordFound) {
+                ReportTimeDTO rtDTO = new ReportTimeDTO();
+                rtDTO.setName(name);
+                rtDAO.create(rtDTO);
             }
             
             t.endTransaction();
