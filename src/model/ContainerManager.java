@@ -343,12 +343,11 @@ public class ContainerManager extends Observable implements Serializable {
 			}
 		}
 		else {
-			for(Container container : containers) {
-				Set<ProductGroup> children = parentToChild.get(container.getId());
-				setChildren(parentToChild, children, container);
-			}
+		    for(Container container : containers) {
+		        Set<ProductGroup> children = parentToChild.get(container.getId());
+		        setChildren(parentToChild, children, container);
+		    }
 		}
-		
 	}
 	
 	private void setChildren(

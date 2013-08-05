@@ -26,6 +26,11 @@ public class SerDAOFactory implements DAOFactory {
     }
 
     @Override
+    public ComponentDAO<ReportTimeDTO> createReportTimeDAO() {
+        return new SerReportTimeDAO();
+    }
+
+    @Override
     public TransactionDAO createTransactionDAO() {
         return new SerTransactionDAO();
     }

@@ -42,6 +42,8 @@ public class DBTransactionDAO implements TransactionDAO {
     @Override
     public void startTransaction() throws IOException {
         
+        //System.out.println("startTransaction()");
+        
         if (connection != null) {
             throw new IllegalStateException(
                     "Transaction has not been ended.");
@@ -67,6 +69,8 @@ public class DBTransactionDAO implements TransactionDAO {
 
     @Override
     public boolean endTransaction() throws IOException {
+        
+        //System.out.println("endTransaction()");
         
         if (connection == null) {
             throw new IllegalStateException(
