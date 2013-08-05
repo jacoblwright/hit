@@ -38,6 +38,13 @@ public class ProductManager extends Observable implements Serializable{
 		productByUPC = new TreeMap<Barcode, Product>();
 	}
 	
+	/**
+	 * Loads the instance data of this manager from the database.
+	 */
+	public void load() {
+	    
+	}
+	
 	/** Adds a product to the system
 	 * @pre 	product must not already exist in the map
 	 * @post	product is added to the set

@@ -14,6 +14,8 @@ public interface DAOFactory {
     
     public ComponentDAO<ItemDTO> createItemDAO();
     
+    public ComponentDAO<ReportTimeDTO> createReportTimeDAO();
+    
     public TransactionDAO createTransactionDAO();
     
     public ComprehensiveDAO createComprehensiveDAO();
