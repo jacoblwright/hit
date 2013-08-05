@@ -138,7 +138,7 @@ public class DBContainerDAO implements ComponentDAO<ContainerDTO> {
 				rs.close();
 			}
 	    	if (preStmt != null) {
-	    		stmt.close();
+	    		preStmt.close();
 	    	}
 	    	if (stmt != null) {
 	    		stmt.close();

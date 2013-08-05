@@ -56,9 +56,7 @@ public class Model {
         transaction = daoFactory.createTransactionDAO();
         comprehensiveDAO = daoFactory.createComprehensiveDAO();
         
-        transaction.startTransaction();
         comprehensiveDAO.load();
-        transaction.endTransaction();
         
     }
     

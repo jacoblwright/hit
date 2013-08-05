@@ -1,5 +1,7 @@
 package data;
 
+import java.io.IOException;
+
 import config.IOConfig;
 import model.*;
 import reports.ReportTime;
@@ -31,9 +33,18 @@ public class DBComprehensiveDAO implements ComprehensiveDAO {
         productManager = new ProductManager();
         itemManager = new ItemManager();
         
-        containerManager.load();
-        productManager.load();
-        itemManager.load();
+        try {
+            
+            Model.getInstance().getTransaction().startTransaction();
+            containerManager.load();
+            productManager.load();
+            itemManager.load();
+            Model.getInstance().getTransaction().endTransaction();
+        
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         
         containerEditor = new ContainerEditor(containerManager, itemManager);
         productAndItemEditor = new ProductAndItemEditor(
