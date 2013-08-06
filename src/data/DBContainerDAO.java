@@ -32,7 +32,7 @@ public class DBContainerDAO implements ComponentDAO<ContainerDTO> {
     	ResultSet keyRS = null;
     	try {
     		String sql = "INSERT INTO container " +
-    				"(name, containerId, number, unit) VALUES (?, ?, ?,?)"; 
+    				"(name, containerId, number, unit) VALUES (?, ?, ?, ?)"; 
     		stmt = connection.prepareStatement(sql);
     		initializePreparedStatement(stmt, t);
     		
