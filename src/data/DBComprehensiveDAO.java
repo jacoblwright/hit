@@ -29,20 +29,31 @@ public class DBComprehensiveDAO implements ComprehensiveDAO {
     @Override
     public void load() {
         
-        containerManager = new ContainerManager();
+        Model m = Model.getInstance();
+        
+        containerManager = new ContainerManager();             
         productManager = new ProductManager();
         itemManager = new ItemManager();
-        Model.getInstance().setContainerManager(containerManager);
-        Model.getInstance().setProductManager(productManager);
-        Model.getInstance().setItemManager(itemManager);
         
         try {
             
-            Model.getInstance().getTransaction().startTransaction();
+            m.getTransaction().startTransaction();            
             containerManager.load();
+            m.getTransaction().endTransaction();
+            
+            m.setContainerManager(containerManager);
+            
+            m.getTransaction().startTransaction();            
             productManager.load();
-            //itemManager.load();
-            Model.getInstance().getTransaction().endTransaction();
+            m.getTransaction().endTransaction();
+            
+            m.setProductManager(productManager);
+            
+            m.getTransaction().startTransaction();            
+            itemManager.load();
+            m.getTransaction().endTransaction();
+            
+            m.setItemManager(itemManager);     
         
         }
         catch (IOException e) {
@@ -50,20 +61,16 @@ public class DBComprehensiveDAO implements ComprehensiveDAO {
         }
         
         containerEditor = new ContainerEditor(containerManager, itemManager);
+        
+        m.setContainerEditor(containerEditor);
+        
         productAndItemEditor = new ProductAndItemEditor(
                 containerManager, productManager, itemManager);
         
+        m.setProductAndItemEditor(productAndItemEditor);
+        
         reportTime = new ReportTime(IOConfig.REMOVED_ITEMS_REPORT_TIME_NAME);
         reportTime.load();
-        
-        Model m = Model.getInstance();
-        
-        m.setContainerEditor(containerEditor);
-        m.setContainerManager(containerManager);
-        
-        m.setProductAndItemEditor(productAndItemEditor);
-        m.setProductManager(productManager);
-        m.setItemManager(itemManager);
         
         m.setReportTime(reportTime);
         
