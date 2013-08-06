@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.io.*;
+import data.*;
 
 /**
  * Manages all of the item manipulations, and indexing.
@@ -52,6 +53,8 @@ public class ItemManager extends Observable implements Serializable {
 	
 	private DateFormat dateFormat;
 	
+	private ComponentDAO<ItemDTO> dao;
+	
 	/**
 	* Constructs the ItemManager
 	*/
@@ -59,14 +62,23 @@ public class ItemManager extends Observable implements Serializable {
 		itemsByContainer = new TreeMap<Container, Set<Item>>();
 		itemByTag = new TreeMap<Barcode, Item>();
 		removedItems = new TreeSet<Item>();
-		removedItemsByDate = new HashMap<String, Set<Item>>();
+		removedItemsByDate = new TreeMap<String, Set<Item>>();
 		dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		dao = Model.getInstance().getDAOFactory().createItemDAO();
 	}
 	
 	/**
      * Loads the instance data of this manager from the database.
      */
     public void load() {
+    	
+    	for (ItemDTO it : dao.readAll()){
+    		Item i = it.createItem();
+    		
+    		if (i.getExitTime() == null){
+    			removeItem(i);
+    		}
+    	}
         
     }
 	
