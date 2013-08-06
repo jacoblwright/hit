@@ -21,7 +21,7 @@ public class BarcodePrinter extends Printer {
     
     private static final int NUM_OF_COLUMNS = 4;
     
-    private static final int MAX_DESCRIPTION_LENGTH = 50;
+    private static final int MAX_DESCRIPTION_LENGTH = 32;
     
     private static final int BARCODE_Y_OFFSET = -37;
     
@@ -133,12 +133,20 @@ public class BarcodePrinter extends Printer {
     
     private static String truncateDescription(String s) {
         
-        if (s.length() > 75) {
-            return s.substring(0, MAX_DESCRIPTION_LENGTH - 1) + "...";
+        System.out.println("Description: " + s);
+        
+        String result;
+        
+        if (s.length() > MAX_DESCRIPTION_LENGTH) {
+            result = s.substring(0, MAX_DESCRIPTION_LENGTH - 1) + "...";
         }
         else {
-            return s;
+            result = s;
         }
+        
+        System.out.println("Truncated description: " + s);
+        
+        return result;
         
     }
 

@@ -44,13 +44,13 @@ public class DBComprehensiveDAO implements ComprehensiveDAO {
             m.setContainerManager(containerManager);
             
             m.getTransaction().startTransaction();            
-            productManager.load();
+            //productManager.load();
             m.getTransaction().endTransaction();
             
             m.setProductManager(productManager);
             
             m.getTransaction().startTransaction();            
-            itemManager.load();
+            //itemManager.load();
             m.getTransaction().endTransaction();
             
             m.setItemManager(itemManager);     
