@@ -38,7 +38,7 @@ public class DBComprehensiveDAO implements ComprehensiveDAO {
             Model.getInstance().getTransaction().startTransaction();
             containerManager.load();
             productManager.load();
-            itemManager.load();
+            //itemManager.load();
             Model.getInstance().getTransaction().endTransaction();
         
         }

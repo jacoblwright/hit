@@ -422,7 +422,7 @@ public class InventoryController extends Controller
 		        getView().getSelectedProductContainer();
 		
 		try{
-		    
+			getModel().getTransaction().startTransaction();
 			if (productContainerData.getTag() == null) {			   
 				getModel().getProductManager().deleteProductFromSystem(product);
 			}
@@ -431,14 +431,16 @@ public class InventoryController extends Controller
 			    Container container = (Container)productContainerData.getTag();
 			    getModel().getProductManager().removeProductFromContainer(
 			            product, container);
-			    
 			}
-			    
-			productContainerSelectionChanged();
+			getModel().getTransaction().endTransaction();  
 			
+			productContainerSelectionChanged();
 		}
 		catch (IllegalArgumentException e){
 			getView().displayErrorMessage("Can't Delete Product");
+		}
+		catch(IOException e){
+			getView().displayErrorMessage("Can't Delete Product - 2");
 		}
 		
 	}
@@ -456,7 +458,15 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void editItem() {
-		getView().displayEditItemView();
+		try {
+			Model.getInstance().getTransaction().startTransaction();
+			getView().displayEditItemView();
+			Model.getInstance().getTransaction().endTransaction();
+		}
+		catch (IOException e){
+			System.out.println("An error occured with a transaction while editing an item");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -475,10 +485,17 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void removeItem() {
-		Item item = (Item) getView().getSelectedItem().getTag();
-		if(item != null)
-			getModel().getItemManager().removeItem(item);
-//		productSelectionChanged();
+		try {
+			Model.getInstance().getTransaction().startTransaction();
+			Item item = (Item) getView().getSelectedItem().getTag();
+			if(item != null)
+				getModel().getItemManager().removeItem(item);
+	//		productSelectionChanged();	
+			Model.getInstance().getTransaction().endTransaction();
+		}
+		catch (IOException e){
+			System.out.println("A transaction failed while removing an item");
+		}
 	}
 
 	/**

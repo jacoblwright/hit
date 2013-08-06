@@ -12,7 +12,7 @@ import model.*;
 public class ProductDTO {
     
     private int id;
-    private Date creationDate;
+    private java.sql.Date creationDate;
     private String upc;
     private String description;
     private float number;
@@ -22,7 +22,7 @@ public class ProductDTO {
 
     public void setProduct(Product product) {
         this.id = product.getId();
-        this.creationDate = product.getCreationDate();
+        this.creationDate = new java.sql.Date(product.getCreationDate().getTime());
         this.upc = product.getUPC().getBarcode();
         this.description = product.getDescription();
         this.number = product.getSize().getNumber();
@@ -44,7 +44,7 @@ public class ProductDTO {
 	}
 
 	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
+		this.creationDate = new java.sql.Date(creationDate.getTime());
 	}
 
 	public String getUpc() {
@@ -84,7 +84,12 @@ public class ProductDTO {
 	}
 	
 	public void setUnit(String unit) {
-		this.unit = SizeUnits.valueOf(unit);
+		String capUnit = "";
+		if(unit.equals("fluid ounces")){
+			capUnit = "FluidOunces";
+		}
+		else capUnit = unit.substring(0, 1).toUpperCase() + unit.substring(1);
+		this.unit = SizeUnits.valueOf(capUnit);
 	}
 
 	public int getShelfLife() {
