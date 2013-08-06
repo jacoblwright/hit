@@ -133,7 +133,7 @@ public class BarcodePrinter extends Printer {
     
     private static String truncateDescription(String s) {
         
-        System.out.println("Description: " + s);
+        //System.out.println("Description: " + s);
         
         String result;
         
@@ -144,7 +144,7 @@ public class BarcodePrinter extends Printer {
             result = s;
         }
         
-        System.out.println("Truncated description: " + s);
+        //System.out.println("Truncated description: " + s);
         
         return result;
         
