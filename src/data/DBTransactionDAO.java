@@ -20,8 +20,8 @@ public class DBTransactionDAO implements TransactionDAO {
             
             Class.forName("org.sqlite.JDBC");
 
-            File databaseFile = IOConfig.getDatabaseFile();
-            if (!(databaseFile.exists() && databaseFile.isFile())) {
+            File f = IOConfig.getDatabaseFile();
+            if (!(f.exists() && f.isFile())) {
 
                 initializeTables();
 
@@ -84,12 +84,14 @@ public class DBTransactionDAO implements TransactionDAO {
             if (transactionHasFailed) {
                 
                 connection.rollback();
+                System.out.println("Transaction rolled back.");
                 transactionCommitted = false;
                 
             }
             else {
                 
                 connection.commit();
+                System.out.println("Transaction committed.");
                 transactionCommitted = true;
             
             }
@@ -129,6 +131,7 @@ public class DBTransactionDAO implements TransactionDAO {
 
     @Override
     public void notifyTransactionFailed() {
+        System.out.println("Notification of transaction failure received.");
         transactionHasFailed = true;        
     }
     
@@ -149,6 +152,11 @@ public class DBTransactionDAO implements TransactionDAO {
     private void initializeTables() throws SQLException {
         
         try {
+            
+            File f = IOConfig.getDatabaseFile();
+            if (!f.getParentFile().exists()) {
+                f.getParentFile().mkdirs();
+            }
             
             connection = DriverManager.getConnection(
                     "jdbc:sqlite:" + IOConfig.DATABASE_FILE_PATH);
