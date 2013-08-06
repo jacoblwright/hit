@@ -322,7 +322,9 @@ public class ContainerManager extends Observable implements Serializable {
 				new TreeMap<Integer, Set<ProductGroup>>();
 		for(ContainerDTO containerDTO : productContainers) {
 			if(containerDTO.getContainerId() == -1) {
-				storageUnits.add(new StorageUnit().storageUnitConverter(containerDTO));
+				StorageUnit storageUnit = new StorageUnit().storageUnitConverter(containerDTO);
+				storageUnits.add(storageUnit);
+				idToContainer.put(storageUnit.getId(), storageUnit);
 			}
 			else {
 				addToMap(containerDTO, parentToChild);
@@ -333,15 +335,16 @@ public class ContainerManager extends Observable implements Serializable {
 	
 	private void addToMap(ContainerDTO containerDTO,
 			TreeMap<Integer, Set<ProductGroup>> parentToChild) {
+		ProductGroup productGroup = new ProductGroup().productGroupConverter(containerDTO);
 		if(parentToChild.containsKey(containerDTO.getContainerId())) {
-			parentToChild.get(containerDTO.getContainerId()).add(
-					new ProductGroup().productGroupConverter(containerDTO));
+			parentToChild.get(containerDTO.getContainerId()).add(productGroup);
 		}
 		else {
 			Set<ProductGroup> productGroups = new TreeSet<ProductGroup>();
-			productGroups.add(new ProductGroup().productGroupConverter(containerDTO));
+			productGroups.add(productGroup);
 			parentToChild.put(containerDTO.getContainerId(), productGroups);
 		}
+		idToContainer.put(productGroup.getId(), productGroup);
 		
 	}
 	
