@@ -23,8 +23,8 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
     	try {
     		String sql = "INSERT INTO product " +
     				"(creationDate, upc, description, number, unit, " +
-    				"shelfLife, threeMonthSupply, id) " +
-    				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; 
+    				"shelfLife, threeMonthSupply) " +
+    				"VALUES (?, ?, ?, ?, ?, ?, ?)"; 
     		stmt = connection.prepareStatement(sql);
     		initializePreparedStatement(stmt, t);
     		
@@ -157,13 +157,6 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
     	stmt.setInt(6, t.getShelfLife());
     	stmt.setInt(7, t.getThreeMonthSupply());
     	
-    	Integer productId = t.getId();
-    	if(productId == null) {
-			stmt.setNull(8, Types.INTEGER);
-		}
-		else {
-			stmt.setInt(8, productId); 
-		}
     }
     
     private void setConnection() {

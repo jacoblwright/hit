@@ -385,11 +385,10 @@ public class ProductManager extends Observable implements Serializable{
 	 * @throws IllegalArgumentException
 	 */
 	public Product getProductById(int id) throws IllegalArgumentException{
-//		if(!productByID.containsKey(id)){
-//			throw new IllegalArgumentException();
-//		}
-//		else 
-		return productByID.get(id);
+		if(!productByID.containsKey(id)){
+			throw new IllegalArgumentException();
+		}
+		else return productByID.get(id);
 	}
 	
 	/** Getter for the set of products mapped by a container
