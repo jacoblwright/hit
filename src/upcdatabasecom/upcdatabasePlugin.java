@@ -40,7 +40,7 @@ public class upcdatabasePlugin implements AutoIdentityPlugin {
 				
 				String descSearch = "<tr><td>Description</td><td></td><td>";
 				int start = page.indexOf(descSearch);
-				System.out.println(start);
+//				System.out.println(start);
 				if (start > 0){
 					start += descSearch.length();
 					int last = page.indexOf("</td></tr>", start);
