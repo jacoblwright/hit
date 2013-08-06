@@ -15,7 +15,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 @PluginImplementation
 public class SearchUPCPlugin implements AutoIdentityPlugin {
 
-	private String cvsSplitBy = ",";
+	private String cvsSplitBy = ",\"";
 	private String urlStr = "http://www.searchupc.com/handlers/upcsearch.ashx?" +
 			"request_type=1&access_token=67716161-6472-44C5-9460-DC76BE74C549&upc=";
 	public String getDescription(String upc) {

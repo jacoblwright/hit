@@ -310,7 +310,7 @@ public class ContainerManager extends Observable implements Serializable {
 		TreeMap<Integer, Set<ProductGroup>> parentToChild = 
 				new TreeMap<Integer, Set<ProductGroup>>();
 		for(ContainerDTO containerDTO : productContainers) {
-			if(containerDTO.getContainerId() == null) {
+			if(containerDTO.getContainerId() == -1) {
 				storageUnits.add(new StorageUnit().storageUnitConverter(containerDTO));
 			}
 			else {

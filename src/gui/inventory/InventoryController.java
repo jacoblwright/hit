@@ -164,7 +164,7 @@ public class InventoryController extends Controller
 			ProductContainerData container = getView().getSelectedProductContainer();
 			getModel().getTransaction().startTransaction();
 			getModel().getContainerEditor().deleteContainer( (Container) container.getTag() );
-			getModel().getTransaction().startTransaction();
+			getModel().getTransaction().endTransaction();
 		} catch(IOException e) {
 			//Ask team what to do here?
 		}
