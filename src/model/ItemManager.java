@@ -371,7 +371,7 @@ public void moveItem(Item itemToMove, Container target) {
 			throw new IllegalArgumentException("cannot complete item edit: after is invalid");
 		}
 		
-		
+		dao.update(new ItemDTO(before));
 		
 		notify(after);
 	}

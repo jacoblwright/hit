@@ -1,5 +1,7 @@
 package gui.product;
 
+import java.io.IOException;
+
 import model.Product;
 import gui.common.*;
 
@@ -133,7 +135,16 @@ public class EditProductController extends Controller
 			getView().displayErrorMessage("Can't edit to invalid product.");
 		}
 		
-		else getModel().getProductManager().editProduct((Product)product.getTag(), newProduct);
+		else { 
+			try{
+				getModel().getTransaction().startTransaction();
+				getModel().getProductManager().editProduct((Product)product.getTag(), newProduct);
+				getModel().getTransaction().endTransaction();
+			}
+			catch(IOException e){
+				getView().displayErrorMessage("Problem Editing Item with Database");
+			}
+		}
 		
 	}
 

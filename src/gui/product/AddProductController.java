@@ -1,6 +1,7 @@
 package gui.product;
 
 import java.awt.EventQueue;
+import java.io.IOException;
 import java.util.Date;
 
 import model.*;
@@ -146,20 +147,22 @@ public class AddProductController extends Controller implements
 						getSizeValue()),Integer.parseInt(getView().getShelfLife()), 
 				Integer.parseInt(getView().getSupply()) );
 		
-		System.out.println(productDate);
-		//product.setCreationDate(productDate);
-		
 		if(!getModel().getProductManager().isProductValid(product)){
 			getView().displayErrorMessage("Can't add invalid product.");
 			return;
 		}
 		
 		try{
+			getModel().getTransaction().startTransaction();
 			getModel().getProductAndItemEditor().setNewlyAddedProduct(product);
+			getModel().getTransaction().endTransaction();
 //			getModel().getProductManager().addNewProduct(product, container);
 		}
 		catch (IllegalArgumentException e){
 			getView().displayErrorMessage("Can't add valid product");
+		}
+		catch (IOException e){
+			getView().displayErrorMessage("Input Error");
 		}
 
 		

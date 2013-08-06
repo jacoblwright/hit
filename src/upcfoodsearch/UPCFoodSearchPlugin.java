@@ -9,12 +9,12 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import plugins.AutoIdentityPlugin;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 @PluginImplementation
 public class UPCFoodSearchPlugin implements AutoIdentityPlugin{
 
-	@Override
 	public String getDescription(String upc) {
 		
 		String descr = null;
