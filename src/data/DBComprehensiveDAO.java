@@ -32,6 +32,9 @@ public class DBComprehensiveDAO implements ComprehensiveDAO {
         containerManager = new ContainerManager();
         productManager = new ProductManager();
         itemManager = new ItemManager();
+        Model.getInstance().setContainerManager(containerManager);
+        Model.getInstance().setProductManager(productManager);
+        Model.getInstance().setItemManager(itemManager);
         
         try {
             
