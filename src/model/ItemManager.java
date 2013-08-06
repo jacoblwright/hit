@@ -76,22 +76,26 @@ public class ItemManager extends Observable implements Serializable {
     		// Build Item
     		Item i = it.createItem();
 
-    		i.setContainer(Model.getInstance().getContainerManager().
+    		assert Model.getInstance().getContainerManager() != null;
+    		
+			i.setContainer(Model.getInstance().getContainerManager().
     				getContainerById(it.getContainerId()));
     		
     		i.setProduct(Model.getInstance().getProductManager().
     				getProductById(it.getProductId()));
     		
     		// Update indexes and data structures
-    		if (i.getExitTime() == null){
+    		if (i.getExitTime() != null && i.getContainer() == null){
     			removedItems.add(i);
     			updateItemsByDateIndex(i, it.getExitTime());
     		}
-    		else{
-    			assert i.getContainer() != null;
-    			
+    		else if (i.getExitTime() == null && i.getContainer() != null){
     			updateItemsByContainerIndex(i);
     			updateItemByTagIndex(i);
+    		}
+    		else
+    		{
+    			System.out.println("Skipping read itemDTO: " + it);
     		}
     	}
         
@@ -367,7 +371,7 @@ public void moveItem(Item itemToMove, Container target) {
 			throw new IllegalArgumentException("cannot complete item edit: after is invalid");
 		}
 		
-		
+		dao.update(new ItemDTO(before));
 		
 		notify(after);
 	}
