@@ -148,14 +148,6 @@ public class AddItemBatchController extends ItemBatchController implements
 		else 
 			getView().enableItemAction(false);
 	}
-	
-//	@Override
-//		public void barcodeChanged() {
-//			if(getView().getUseScanner() == true && !getView().getBarcode().isEmpty()){
-//				timer.start();
-//			}
-//			enableComponents();
-//		}
 
 	/**
 	 * This method is called when the "Count" field in the

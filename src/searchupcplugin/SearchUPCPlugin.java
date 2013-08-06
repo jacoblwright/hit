@@ -20,6 +20,7 @@ public class SearchUPCPlugin implements AutoIdentityPlugin {
 			"request_type=1&access_token=67716161-6472-44C5-9460-DC76BE74C549&upc=";
 	public String getDescription(String upc) {
 		String upcBarcode = null;
+		
 		try {
 			URL url = new URL(urlStr + upc);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -49,6 +50,7 @@ public class SearchUPCPlugin implements AutoIdentityPlugin {
 		
 		return upcBarcode;
 	}
+	
 	private String removeQuotes(String description) {
 		return description.substring(1,description.length()-1);
 	}

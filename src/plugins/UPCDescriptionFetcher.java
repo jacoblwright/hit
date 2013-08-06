@@ -20,6 +20,15 @@ import net.xeoh.plugins.base.util.PluginManagerUtil;
  */
 public class UPCDescriptionFetcher {
 	
+	private Collection<AutoIdentityPlugin> plugins;
+	
+	public UPCDescriptionFetcher() {
+		PluginManager pm = PluginManagerFactory.createPluginManager();
+		PluginManagerUtil pluginManager = new PluginManagerUtil(pm);
+		pluginManager.addPluginsFrom(new File( getCurrentDirectory() + "/plugins/").toURI());
+		plugins = pluginManager.getPlugins(AutoIdentityPlugin.class);
+	}
+	
 	/** Used for managing plugins */
 	//private PluginManagerUtil pluginManager;
 	
@@ -28,14 +37,9 @@ public class UPCDescriptionFetcher {
 	 * @param upc 	the upc being search for
 	 * @return	the description of the upc
 	 */
-	public String fetchUPCDescription(String upc){
+	public String fetchUPCDescription(String upc) {
 		String upcDescription = null;
-		PluginManager pm = PluginManagerFactory.createPluginManager();
-		PluginManagerUtil pluginManager = new PluginManagerUtil(pm);
-		pluginManager.addPluginsFrom(new File( getCurrentDirectory() + "/plugins/").toURI());
-		Collection<AutoIdentityPlugin> plugins = 
-				pluginManager.getPlugins(AutoIdentityPlugin.class);
-		System.out.println("Size of list of plugins: " + plugins.size());
+		System.out.println("plugins.size(): " + plugins.size());
 		for(AutoIdentityPlugin plugin : plugins) {
 			upcDescription = plugin.getDescription(upc);
 			System.out.println(upcDescription);
