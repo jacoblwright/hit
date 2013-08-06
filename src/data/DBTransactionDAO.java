@@ -150,6 +150,11 @@ public class DBTransactionDAO implements TransactionDAO {
         
         try {
             
+            File f = new File(IOConfig.DATABASE_FILE_PATH);
+            if (!f.getParentFile().exists()) {
+                f.getParentFile().mkdirs();
+            }
+            
             connection = DriverManager.getConnection(
                     "jdbc:sqlite:" + IOConfig.DATABASE_FILE_PATH);
             connection.setAutoCommit(false);

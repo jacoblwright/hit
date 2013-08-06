@@ -39,6 +39,7 @@ public class UPCDescriptionFetcher {
 	 */
 	public String fetchUPCDescription(String upc) {
 		String upcDescription = null;
+		System.out.println("plugins.size(): " + plugins.size());
 		for(AutoIdentityPlugin plugin : plugins) {
 			upcDescription = plugin.getDescription(upc);
 			System.out.println(upcDescription);
