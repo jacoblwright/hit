@@ -4,6 +4,7 @@ import gui.inventory.ProductContainerData;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
 import java.util.TreeMap;
@@ -18,6 +19,8 @@ public class ContainerManager extends Observable implements Serializable {
 	
 	/** Map where the key is the storage unit and the value is a list of Containers	*/
 	private Set<StorageUnit> storageUnits;
+	
+	private Map<Integer, Container> idToContainer = new TreeMap<Integer, Container>();
 	
 	private int uniqueId;
 	
@@ -48,6 +51,10 @@ public class ContainerManager extends Observable implements Serializable {
 		TreeSet<Container> result = new TreeSet<Container>();
 		recursivelyGetDescendents( container, result );
 		return result;
+	}
+	
+	public Container getContainerById(int id) {
+		return idToContainer.get(id);
 	}
 	
 	/**Recursively gets all of the productGroups from the given container.
@@ -125,7 +132,6 @@ public class ContainerManager extends Observable implements Serializable {
 			throw new IllegalArgumentException();
 		}
 		addContainerToTree( parent, container );
-		containerDAO.create(new ContainerDTO(container));
 	}
 	
 	/** Initializes container and adds it to the parent.
@@ -138,13 +144,17 @@ public class ContainerManager extends Observable implements Serializable {
 	private void addContainerToTree(Container parent, Container container) {
 		assert container != null;
 		container.setContainer( parent );
-		container.setId( uniqueId++ );
+		//container.setId( uniqueId++ );
 		if( container instanceof ProductGroup ) {
 			parent.addProductGroup( ( ProductGroup ) container );
 		}
 		else {
 			storageUnits.add( (StorageUnit) container );
 		}
+		ContainerDTO containerDTO = new ContainerDTO(container);
+		containerDAO.create(containerDTO);
+		container.setId(containerDTO.getId());
+		idToContainer.put(container.getId(), container);
 		ChangeObject hint = getHintObject( container );
 		setChanged();
 		notifyObservers( hint );
@@ -224,6 +234,7 @@ public class ContainerManager extends Observable implements Serializable {
 		}
 		
 		containerDAO.delete(new ContainerDTO(container));
+		idToContainer.remove(container.getId());
 		setChanged();
 		notifyObservers( hint );
 	}
