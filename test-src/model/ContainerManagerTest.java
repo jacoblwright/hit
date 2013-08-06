@@ -4,12 +4,15 @@ import static org.junit.Assert.*;
 
 import gui.common.SizeUnits;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.*;
+
+import data.ContainerDTO;
 
 public class ContainerManagerTest {
 
@@ -24,6 +27,8 @@ public class ContainerManagerTest {
 	
 	private StorageUnit su1;
 	private StorageUnit su2;
+	
+	private Collection<ContainerDTO> containersDTO;
 	
 	@Before
 	public void setUp() {

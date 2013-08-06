@@ -28,7 +28,7 @@ public class ContainerDTO {
     		unit = threeMonthSupply.getUnit();
     	}
     	else {
-    		this.containerId = null;
+    		this.containerId = -1;
     		this.number = 0f;
     		this.unit = SizeUnits.Unspecified;
     	}

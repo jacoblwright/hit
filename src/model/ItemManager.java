@@ -74,6 +74,8 @@ public class ItemManager extends Observable implements Serializable {
     	
     	for (ItemDTO it : dao.readAll()){
     		Item i = it.createItem();
+    		i.setContainer(Model.getInstance().getContainerManager().
+    				getContainerById(it.getContainerId()));
     		
     		if (i.getExitTime() == null){
     			removeItem(i);
