@@ -40,8 +40,9 @@ public class ProductManager extends Observable implements Serializable{
 	/** Maps an ID to a product */
 	private Map <Integer, Product> productByID;
 	
-	private DBProductDAO productDAO;
-	private DBProductToContainerDAO productToContainerDAO;
+	private ComponentDAO<ProductDTO> productDAO;
+	private ComponentDAO<ProductToContainerDTO> productToContainerDAO;
+
 	
 	/** Constructs the ProductManager by initializing a HashMap<Container, Set<Product> 
 	 * and HashMap<Barcode, Product */ 
@@ -50,8 +51,8 @@ public class ProductManager extends Observable implements Serializable{
 		productsByContainer = new HashMap<Container, Set<Product>>();
 		productByUPC = new TreeMap<Barcode, Product>();
 		productByID = new TreeMap<Integer, Product>();
-		productDAO = new DBProductDAO();
-		productToContainerDAO = new DBProductToContainerDAO();
+		productDAO = Model.getInstance().getDAOFactory().createProductDAO();
+		productToContainerDAO = Model.getInstance().getDAOFactory().createProductToContainerDAO();
 	}
 	
 	/**
@@ -68,7 +69,10 @@ public class ProductManager extends Observable implements Serializable{
 	    
 	    Collection<ProductToContainerDTO> allProdToContDTO= productToContainerDAO.readAll();
 	    for(ProductToContainerDTO prodToContDTO : allProdToContDTO){
-	    	
+	    	Container container = Model.getInstance().getContainerManager().
+	    			getContainerById(prodToContDTO.getContainerID());
+	    	Product product = getProductById(prodToContDTO.getProductID());
+	    	addProductToContainer(product, container);
 	    }
 	}
 	
@@ -97,6 +101,17 @@ public class ProductManager extends Observable implements Serializable{
 		addProductToContainer(product, container);
 		productByUPC.put(product.getUPC(), product);
 		
+		ProductDTO productDTO = new ProductDTO();
+		productDTO.setProduct(product);
+		productDAO.create(productDTO);
+		
+		ProductToContainerDTO prodToCont = new ProductToContainerDTO();
+		prodToCont.setContainerID(container.getId());
+		prodToCont.setProductID(productDTO.getId());
+		productToContainerDAO.create(prodToCont);
+		
+		productByID.put(productDTO.getId(), product);
+		
 		notify(null);
 	}
 	
@@ -118,6 +133,10 @@ public class ProductManager extends Observable implements Serializable{
 		before.setShelfLife(after.getShelfLife());
 		before.setSize(after.getSize().getUnit(), after.getSize().getNumber());
 		before.setThreeMonthSupply(after.getThreeMonthSupply());
+		
+		ProductDTO productDTO = new ProductDTO();
+		productDTO.setProduct(before);
+		productDAO.update(productDTO);
 		
 		notify(before);
 	}
@@ -144,6 +163,16 @@ public class ProductManager extends Observable implements Serializable{
 		removeProductFromContainer(product, before);
 		addProductToContainer(product, after);
 		
+		ProductToContainerDTO prodToContDTO = new ProductToContainerDTO();
+		prodToContDTO.setContainerID(before.getId());
+		prodToContDTO.setProductID(product.getId());
+		productToContainerDAO.delete(prodToContDTO);
+		
+		ProductToContainerDTO prodToContDTO2 = new ProductToContainerDTO();
+		prodToContDTO2.setContainerID(after.getId());
+		prodToContDTO2.setProductID(product.getId());
+		productToContainerDAO.create(prodToContDTO2);
+		
 		notify(product);
 	}
 	/** Adds product to specific container
@@ -154,6 +183,7 @@ public class ProductManager extends Observable implements Serializable{
 	public void addProductToContainer(Product product, Container container){
 		
 	    //System.out.println("PM:addProductToContainer");
+		System.out.println(container);
 	    
 		product.addContainer(container);
 		
@@ -167,6 +197,12 @@ public class ProductManager extends Observable implements Serializable{
 			productSet.add(product);
 			productsByContainer.put(container, productSet);
 		}
+		
+		ProductToContainerDTO prodToContDTO = new ProductToContainerDTO();
+		prodToContDTO.setContainerID(container.getId());
+		prodToContDTO.setProductID(product.getId());
+		productToContainerDAO.create(prodToContDTO);
+		
 		notify(product);
 	}
 	
@@ -188,6 +224,12 @@ public class ProductManager extends Observable implements Serializable{
 			throw new IllegalArgumentException();
 
 		productsByContainer.get(container).remove(product);
+		
+		ProductToContainerDTO prodToContDTO = new ProductToContainerDTO();
+		prodToContDTO.setContainerID(container.getId());
+		prodToContDTO.setProductID(product.getId());
+		productToContainerDAO.delete(prodToContDTO);
+		
 		notify(product);
 	}
 	
@@ -203,6 +245,11 @@ public class ProductManager extends Observable implements Serializable{
 			Container tempCon = (Container)it.next();
 			productsByContainer.get(tempCon).remove(product);
 		}
+		
+		ProductDTO productDTO = new ProductDTO();
+		productDTO.setId(product.getId());
+		productDAO.delete(productDTO);
+		
 		notify(null);
 	}
 	
