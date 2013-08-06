@@ -75,6 +75,7 @@ public class ItemManager extends Observable implements Serializable {
     		
     		// Build Item
     		Item i = it.createItem();
+
     		i.setContainer(Model.getInstance().getContainerManager().
     				getContainerById(it.getContainerId()));
     		

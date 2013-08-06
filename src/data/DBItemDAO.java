@@ -20,8 +20,8 @@ public class DBItemDAO implements ComponentDAO<ItemDTO> {
     	try{
     		
     		Connection con = Model.getInstance().getTransaction().getConnection();
-    		String sql = "INSERT INTO container " +
-    				"(containerId, productID, tag, entryDate, exitTime) VALUES (?, ?, ?,?)";
+    		String sql = "INSERT INTO item " +
+    				"(containerId, productId, tag, entryDate, exitTime) VALUES (?, ?, ?, ?, ?)";
     		pstmt = con.prepareStatement(sql);
     		
     		
@@ -34,8 +34,13 @@ public class DBItemDAO implements ComponentDAO<ItemDTO> {
     		}
     		pstmt.setInt(2, e.getProductId());
     		pstmt.setString(3, e.getTag()); 
-    		pstmt.setDate(4, (Date) e.getEntryDate());
-    		pstmt.setDate(5, (Date) e.getExitTime());
+    		pstmt.setDate(4, new java.sql.Date(e.getEntryDate().getTime()));
+    		if (e.getExitTime() != null){
+    			pstmt.setDate(5, new java.sql.Date(e.getEntryDate().getTime()));
+    		}
+    		else {
+    			pstmt.setNull(5, Types.INTEGER);
+    		}
     		
     		if (pstmt.executeUpdate() == 1){
     			stmt = con.createStatement();
@@ -77,8 +82,13 @@ public class DBItemDAO implements ComponentDAO<ItemDTO> {
 	        	trans.setContainerId(rs.getInt("containerID"));
 	        	trans.setProductId(rs.getInt("productID"));
 	        	trans.setTag(rs.getString("tag"));
-	        	trans.setEntryDate(rs.getDate("entryDate"));
-	        	trans.setExitTime(rs.getDate("exitTime"));
+	        	trans.setEntryDate(new java.util.Date(rs.getDate("entryDate").getTime()));
+	        	if (rs.getDate("exitTime") != null){
+	        		trans.setExitTime(new java.util.Date(rs.getDate("exitTime").getTime()));
+	        	}
+	        	else {
+	        		trans.setExitTime(null);
+	        	}
 	        	
 	        	ret.add(trans);
 	        }
