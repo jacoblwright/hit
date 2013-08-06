@@ -22,7 +22,9 @@ public class ItemDTO {
     public ItemDTO(Item item){
     	this.id = item.getId();
     	this.productId = item.getProduct().getId();
-    	this.containerId = item.getContainer().getId();
+    	if (item.getContainer() != null) this.containerId = item.getContainer().getId();
+    	else this.containerId = -1;
+    	
     	this.tag = item.getTag().getBarcode();
     	this.entryDate = item.getEntryDate();
     	this.exitTime = item.getExitTime();

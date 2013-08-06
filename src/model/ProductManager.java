@@ -183,7 +183,6 @@ public class ProductManager extends Observable implements Serializable{
 	public void addProductToContainer(Product product, Container container){
 		
 	    //System.out.println("PM:addProductToContainer");
-		System.out.println(container);
 	    
 		product.addContainer(container);
 		
