@@ -378,24 +378,24 @@ public class ProductAndItemEditor {
                  containerManager.getDescendents(storageUnit);
          containersInStorageUnit.add(storageUnit);
          
-         System.out.println("--------");
-         System.out.println("Collection 1: the set of Containers in this " +
-         		"SU, including the SU itself:");
-         System.out.println(containersInStorageUnit);
+         //System.out.println("--------");
+         //System.out.println("Collection 1: the set of Containers in this " +
+         		//"SU, including the SU itself:");
+         //System.out.println(containersInStorageUnit);
          
          Set<Container> containersOfProduct = product.getContainers();
          
-         System.out.println("Collection 2: this Item's Product's set of " +
-         		"Containers:");
-         System.out.println(containersOfProduct);
+         //System.out.println("Collection 2: this Item's Product's set of " +
+         		//"Containers:");
+         //System.out.println(containersOfProduct);
          
          Container result = null;
          for (Container containerInStorageUnit : containersInStorageUnit) {
              
-             System.out.print("Does Collection 2 contain " +
-                     containerInStorageUnit + "? ");
-             System.out.println(
-                     containersOfProduct.contains(containerInStorageUnit));
+             //System.out.print("Does Collection 2 contain " +
+                     //containerInStorageUnit + "? ");
+             //System.out.println(
+                     //containersOfProduct.contains(containerInStorageUnit));
              
              if (containersOfProduct.contains(containerInStorageUnit)) {
                  result = containerInStorageUnit;
