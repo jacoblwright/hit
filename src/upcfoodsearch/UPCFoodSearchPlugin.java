@@ -54,7 +54,9 @@ public class UPCFoodSearchPlugin implements AutoIdentityPlugin{
 		if (matcher.find()) {
 		  if(matcher.group(1).equals("Not Found"))
 				  return null;
-		  else return matcher.group(1);
+		  else {
+			  return matcher.group(1);
+		  }
 		}
 		else return null;
 	}

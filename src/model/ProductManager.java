@@ -30,6 +30,9 @@ public class ProductManager extends Observable implements Serializable{
 	/** Maps a barcode to a product. */
 	private Map <Barcode, Product> productByUPC;
 	
+	/** Maps an ID to a product */
+	private Map <Integer, Product> productByID;
+	
 	/** Constructs the ProductManager by initializing a HashMap<Container, Set<Product> 
 	 * and HashMap<Barcode, Product */ 
 	public ProductManager(){
@@ -295,6 +298,19 @@ public class ProductManager extends Observable implements Serializable{
 	public Map <Barcode, Product> getProductsByUPC(){
 		assert true;
 		return productByUPC;
+	}
+	
+	/** Returns a product designated by an id
+	 * 
+	 * @param id	the id of the product
+	 * @return	the product that corresponds to the id
+	 * @throws IllegalArgumentException
+	 */
+	public Product getProductById(int id) throws IllegalArgumentException{
+		if(!productByID.containsKey(id)){
+			throw new IllegalArgumentException();
+		}
+		else return productByID.get(id);
 	}
 	
 	/** Getter for the set of products mapped by a container

@@ -11,7 +11,7 @@ public class UPCFoodSearchPluginTest {
 	@Test
 	public void getDescriptionTest() {
 		UPCFoodSearchPlugin search = new UPCFoodSearchPlugin();
-		System.out.println(search.getDescription("023896177007"));	
+		System.out.println(search.getDescription("041789002175"));	
 	}
 
 }
