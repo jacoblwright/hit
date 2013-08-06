@@ -422,7 +422,7 @@ public class InventoryController extends Controller
 		        getView().getSelectedProductContainer();
 		
 		try{
-		    
+			getModel().getTransaction().startTransaction();
 			if (productContainerData.getTag() == null) {			   
 				getModel().getProductManager().deleteProductFromSystem(product);
 			}
@@ -431,14 +431,16 @@ public class InventoryController extends Controller
 			    Container container = (Container)productContainerData.getTag();
 			    getModel().getProductManager().removeProductFromContainer(
 			            product, container);
-			    
 			}
-			    
-			productContainerSelectionChanged();
+			getModel().getTransaction().endTransaction();  
 			
+			productContainerSelectionChanged();
 		}
 		catch (IllegalArgumentException e){
 			getView().displayErrorMessage("Can't Delete Product");
+		}
+		catch(IOException e){
+			getView().displayErrorMessage("Can't Delete Product - 2");
 		}
 		
 	}
