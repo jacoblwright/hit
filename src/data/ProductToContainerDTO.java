@@ -1,6 +1,7 @@
 package data;
 
 import model.*;
+
 import java.util.*;
 
 /**
@@ -8,20 +9,39 @@ import java.util.*;
  */
 public class ProductToContainerDTO {
     
-    private Product product;
-    private Set<Container> containers;
+	private int id;
+    private int productID;
+    private int containerID;
     
-    public Product getProduct() {
-        return product;
-    }
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    public Set<Container> getContainers() {
-        return containers;
-    }
-    public void setContainers(Set<Container> containers) {
-        this.containers = containers;
+    public void ProductToContainerDTO(Product product, Container container) {
+    	this.productID = product.getId();
+    	this.containerID = container.getId();
     }
 
+	public int getProductID() {
+		return productID;
+	}
+
+	public void setProductID(int productID) {
+		this.productID = productID;
+	}
+
+	public int getContainerID() {
+		return containerID;
+	}
+
+	public void setContainerID(int containerID) {
+		this.containerID = containerID;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
+    
 }

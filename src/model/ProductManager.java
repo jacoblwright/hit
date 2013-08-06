@@ -13,6 +13,13 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import data.ComponentDAO;
+import data.ContainerDTO;
+import data.DBProductDAO;
+import data.DBProductToContainerDAO;
+import data.ProductDTO;
+import data.ProductToContainerDTO;
+
 import gui.common.*;
 
 /** Manages alterations to all the Products in the system and handles passing the Product's 
@@ -30,19 +37,47 @@ public class ProductManager extends Observable implements Serializable{
 	/** Maps a barcode to a product. */
 	private Map <Barcode, Product> productByUPC;
 	
+	/** Maps an ID to a product */
+	private Map <Integer, Product> productByID;
+	
+	private DBProductDAO productDAO;
+	private DBProductToContainerDAO productToContainerDAO;
+	
 	/** Constructs the ProductManager by initializing a HashMap<Container, Set<Product> 
 	 * and HashMap<Barcode, Product */ 
 	public ProductManager(){
 		assert true;
 		productsByContainer = new HashMap<Container, Set<Product>>();
 		productByUPC = new TreeMap<Barcode, Product>();
+		productByID = new TreeMap<Integer, Product>();
+		productDAO = new DBProductDAO();
+		productToContainerDAO = new DBProductToContainerDAO();
 	}
 	
 	/**
 	 * Loads the instance data of this manager from the database.
 	 */
 	public void load() {
+		Collection<ProductDTO> allProductDTO = productDAO.readAll();
+		
+	    for(ProductDTO productDTO : allProductDTO){
+	    	Product product = loadProduct(productDTO);
+	    	productByUPC.put(product.getUPC(), product);
+	    	productByID.put(product.getId(), product);
+	    }
 	    
+	    Collection<ProductToContainerDTO> allProdToContDTO= productToContainerDAO.readAll();
+	    for(ProductToContainerDTO prodToContDTO : allProdToContDTO){
+	    	
+	    }
+	}
+	
+	public Product loadProduct(ProductDTO productDTO){
+		Product product = new Product(productDTO.getUpc(), productDTO.getDescription(), 
+							productDTO.getUnit(), productDTO.getNumber(),productDTO.getShelfLife(), 
+							productDTO.getThreeMonthSupply());
+		product.setId(productDTO.getId());
+		return product;
 	}
 	
 	/** Adds a product to the system
@@ -295,6 +330,19 @@ public class ProductManager extends Observable implements Serializable{
 	public Map <Barcode, Product> getProductsByUPC(){
 		assert true;
 		return productByUPC;
+	}
+	
+	/** Returns a product designated by an id
+	 * 
+	 * @param id	the id of the product
+	 * @return	the product that corresponds to the id
+	 * @throws IllegalArgumentException
+	 */
+	public Product getProductById(int id) throws IllegalArgumentException{
+		if(!productByID.containsKey(id)){
+			throw new IllegalArgumentException();
+		}
+		else return productByID.get(id);
 	}
 	
 	/** Getter for the set of products mapped by a container
