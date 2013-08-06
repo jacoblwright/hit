@@ -1,5 +1,6 @@
 package gui.product;
 
+import java.awt.EventQueue;
 import java.util.Date;
 
 import model.*;
@@ -17,6 +18,7 @@ public class AddProductController extends Controller implements
 	Container container;
 	Date productDate;
 	UPCDescriptionFetcher fetcher;
+	String searchMessage;
 	
 	/**
 	 * Constructor.
@@ -30,11 +32,15 @@ public class AddProductController extends Controller implements
 		upc = barcode;
 		container = cont;
 		productDate = date;
-		fetcher = new UPCDescriptionFetcher();
-		loadValues();
+		searchMessage = "I'm searching, geez.";
+		
+		getView().setDescription(searchMessage);
+		getView().enableDescription(false);
+
 		enableComponents();
 		construct();
 		getModel().getProductAndItemEditor().setNewlyAddedProduct(null);
+		
 	}
 
 	//
@@ -66,30 +72,19 @@ public class AddProductController extends Controller implements
 	@Override
 	protected void enableComponents() {
 		getView().enableBarcode(false);
-		getView().enableDescription(true);
 		getView().enableShelfLife(true);
 		getView().enableSupply(true);
-		
+
+		getView().setBarcode(upc);
+		getView().setShelfLife("0");
+		getView().setSupply("0");
 		if(getView().getSizeUnit() == SizeUnits.Count){
 			getView().setSizeValue("1");
 			getView().enableSizeValue(false);
 		}
 		else getView().enableSizeValue(true);
-		
-		if(getView().getBarcode() == null || getView().getBarcode().equals(""))
-			getView().displayErrorMessage("Barcode should not be empty");
-		else {
-			Barcode tmp = new Barcode();
-			String curBarcode = getView().getBarcode();
-			if ( tmp.isValidBarcode(getView().getBarcode()) ){
-				if (getView().getDescription().isEmpty()){
-					String descr = fetcher.fetchUPCDescription(getView().getBarcode());
-					if (descr != null){
-						getView().setDescription(descr);
-					}
-				}
-			}
-		}
+
+
 		try{
 			if(getView().getDescription().isEmpty() ||
 					Integer.parseInt(getView().getSupply()) < 0 || 
@@ -114,9 +109,15 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-		getView().setBarcode(upc);
-		getView().setShelfLife("0");
-		getView().setSupply("0");
+//		EventQueue.invokeLater(new Runnable() {
+//			@Override
+//			public void run() {
+//				searchForDescription();		
+//			}
+//		});
+
+		searchForDescription();
+		
 	}
 
 	//
@@ -129,8 +130,7 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
-		enableComponents();
-
+//		enableComponents();
 	}
 	
 	/**
@@ -163,6 +163,31 @@ public class AddProductController extends Controller implements
 		}
 
 		
+	}
+	
+	public void searchForDescription(){
+		if(getView().getBarcode() == null || 
+				getView().getBarcode().equals("") ||
+				getView().getBarcode().equals(searchMessage))
+			getView().displayErrorMessage("Barcode should not be empty");
+		else {
+			Barcode tmp = new Barcode();
+
+			if ( tmp.isValidBarcode(getView().getBarcode()) ){
+
+				fetcher = new UPCDescriptionFetcher();
+				String descr = fetcher.fetchUPCDescription(getView().getBarcode());
+				
+				if (descr != null){
+					getView().setDescription(descr);
+				}
+				else {
+					getView().setDescription("");
+				}
+				getView().enableDescription(true);
+			
+			}
+		}
 	}
 
 }

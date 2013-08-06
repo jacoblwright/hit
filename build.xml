@@ -134,7 +134,7 @@
 		<delete dir="${style-reports}"/>
 		<delete dir="${coverage-build}"/>
 		<delete dir="${coverage-reports}"/>
-		<delete dir="${doc}"/>		
+		<delete dir="${doc}"/>
 	</target>
 	
 	<target name="compile" depends="init"
@@ -164,12 +164,16 @@
 				<exclude name="**/_svn/**"/>
 			</fileset>
 		</copy>
+		<mkdir dir="${dist}/lib/plugins"/>
+		<copy todir="${dist}/lib/plugins">
+			<fileset dir="plugins"/>
+		</copy>
 		<jar jarfile="${dist}/lib/inventory-tracker.jar" basedir="${build}" 
 				excludes="**/*Taglet*.class **/*StudentVersion*.class **/*WGet*.class">
 			<manifest>
 				<attribute name="Main-Class" value="gui.main.GUI"/>
 				<attribute name="Class-Path" 
-					value="${sqlite.jar} ${itext.jar} ${commons-io-2.4.jar}" />
+					value="${sqlite.jar} ${itext.jar} ${commons-io-2.4.jar} ${jspf.core-1.0.2.jar}" />
 			</manifest>
 		</jar>
 	</target>

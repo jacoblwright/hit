@@ -52,7 +52,7 @@ public class SearchUPCPlugin implements AutoIdentityPlugin {
 	}
 	
 	private String removeQuotes(String description) {
-		return description.substring(1,description.length()-1);
+		return description.substring(1,description.length());
 	}
 
 }
