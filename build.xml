@@ -169,7 +169,7 @@
 			<manifest>
 				<attribute name="Main-Class" value="gui.main.GUI"/>
 				<attribute name="Class-Path" 
-					value="${sqlite.jar} ${itext.jar} ${commons-io-2.4.jar}" />
+					value="${sqlite.jar} ${itext.jar} ${commons-io-2.4.jar} ${jspf.core-1.0.2.jar}" />
 			</manifest>
 		</jar>
 	</target>
