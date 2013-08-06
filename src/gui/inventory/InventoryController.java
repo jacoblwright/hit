@@ -456,7 +456,15 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void editItem() {
-		getView().displayEditItemView();
+		try {
+			Model.getInstance().getTransaction().startTransaction();
+			getView().displayEditItemView();
+			Model.getInstance().getTransaction().endTransaction();
+		}
+		catch (IOException e){
+			System.out.println("An error occured with a transaction while editing an item");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -475,10 +483,17 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void removeItem() {
-		Item item = (Item) getView().getSelectedItem().getTag();
-		if(item != null)
-			getModel().getItemManager().removeItem(item);
-//		productSelectionChanged();
+		try {
+			Model.getInstance().getTransaction().startTransaction();
+			Item item = (Item) getView().getSelectedItem().getTag();
+			if(item != null)
+				getModel().getItemManager().removeItem(item);
+	//		productSelectionChanged();	
+			Model.getInstance().getTransaction().endTransaction();
+		}
+		catch (IOException e){
+			System.out.println("A transaction failed while removing an item");
+		}
 	}
 
 	/**

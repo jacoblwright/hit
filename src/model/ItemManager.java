@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
 import java.util.Observable;
@@ -73,12 +72,25 @@ public class ItemManager extends Observable implements Serializable {
     public void load() {
     	
     	for (ItemDTO it : dao.readAll()){
+    		
+    		// Build Item
     		Item i = it.createItem();
     		i.setContainer(Model.getInstance().getContainerManager().
     				getContainerById(it.getContainerId()));
     		
+    		i.setProduct(Model.getInstance().getProductManager().
+    				getProductById(it.getProductId()));
+    		
+    		// Update indexes and data structures
     		if (i.getExitTime() == null){
-    			removeItem(i);
+    			removedItems.add(i);
+    			updateItemsByDateIndex(i, it.getExitTime());
+    		}
+    		else{
+    			assert i.getContainer() != null;
+    			
+    			updateItemsByContainerIndex(i);
+    			updateItemByTagIndex(i);
     		}
     	}
         
@@ -161,18 +173,28 @@ public class ItemManager extends Observable implements Serializable {
 			throw new IllegalArgumentException("Item cannot be added.");
 		}
 		
+		updateItemsByContainerIndex(itemToAdd);
+		
+		updateItemByTagIndex(itemToAdd);
+		
+		dao.create(new ItemDTO(itemToAdd));
+		
+		notify(null);
+	}
+	
+	public void updateItemsByContainerIndex(Item itemToAdd){
 		// starts new collection if index does not have container key
 		if (!itemsByContainer.containsKey(itemToAdd.getContainer())) {
 			itemsByContainer.put(itemToAdd.getContainer(), new TreeSet<Item>());
 		}
 		
 		itemsByContainer.get(itemToAdd.getContainer()).add(itemToAdd);
-		
+	}
+	
+	public void updateItemByTagIndex(Item itemToAdd){
 		if (!itemByTag.containsKey(itemToAdd.getTag())){
 			itemByTag.put(itemToAdd.getTag(), itemToAdd);
 		}
-		
-		notify(null);
 	}
 
 	/** Deletes item complete from the model, whether it has only been added,
@@ -273,6 +295,10 @@ public void moveItem(Item itemToMove, Container target) {
 	
 	// add it back to the appropriate container
 	addItem(itemToMove);
+	
+	dao.update(new ItemDTO(itemToMove));
+	
+	notify(itemToMove);
 }
 	
 	
@@ -296,11 +322,24 @@ public void moveItem(Item itemToMove, Container target) {
 		}
 		// update container index
 		itemsByContainer.get(itemToRemove.getContainer()).remove(itemToRemove);
+
 		Date exitDate = new Date();
-		String exitDate_str = dateFormat.format(exitDate); // capture date at midnight
 		
 		itemToRemove.setExitTime(exitDate);
 		itemToRemove.setContainer(null);
+		
+		updateItemsByDateIndex(itemToRemove, exitDate);
+		
+		removedItems.add(itemToRemove);
+		
+		dao.update(new ItemDTO(itemToRemove));
+		
+		notify(null);
+	}
+	
+	private void updateItemsByDateIndex(Item itemToRemove, Date exitDate){
+		
+		String exitDate_str = dateFormat.format(exitDate); // capture date at midnight
 		
 		if (removedItemsByDate.containsKey(exitDate_str)){
 			removedItemsByDate.get(exitDate_str).add(itemToRemove);
@@ -310,10 +349,6 @@ public void moveItem(Item itemToMove, Container target) {
 			newSet.add(itemToRemove);
 			removedItemsByDate.put(exitDate_str, newSet);
 		}
-		
-		removedItems.add(itemToRemove);
-		
-		notify(null);
 	}
 	
 	/** Change only to the item's entry date.
@@ -330,6 +365,8 @@ public void moveItem(Item itemToMove, Container target) {
 		else{
 			throw new IllegalArgumentException("cannot complete item edit: after is invalid");
 		}
+		
+		
 		
 		notify(after);
 	}
