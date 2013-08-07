@@ -131,7 +131,7 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
-//		enableComponents();
+		enableComponents();
 	}
 	
 	/**
