@@ -119,7 +119,12 @@ public class DBItemDAO implements ComponentDAO<ItemDTO> {
     		pstmt.setInt(2, e.getContainerId());
     		pstmt.setString(3, e.getTag());
     		pstmt.setDate(4, new java.sql.Date(e.getEntryDate().getTime()));
-    		pstmt.setDate(5, new java.sql.Date(e.getExitTime().getTime()));
+    		if(e.getExitTime() == null) {
+    			pstmt.setNull(5, Types.DATE);
+    		}
+    		else {
+    			pstmt.setDate(5, new java.sql.Date(e.getExitTime().getTime()));
+    		}
     		pstmt.setInt(6, e.getId());
     		pstmt.executeUpdate();
     	}

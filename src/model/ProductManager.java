@@ -69,7 +69,9 @@ public class ProductManager extends Observable implements Serializable{
 	    
 	    Collection<ProductToContainerDTO> allProdToContDTO= productToContainerDAO.readAll();
 	    for(ProductToContainerDTO prodToContDTO : allProdToContDTO){
-	    	Container container = Model.getInstance().getContainerManager().getContainerById(prodToContDTO.getContainerID());
+	    	Container container = 
+	    			Model.getInstance().getContainerManager().getContainerById(
+	    					prodToContDTO.getContainerID());
 	    	Product product = getProductById(prodToContDTO.getProductID());
 	    	if(product != null && container != null) {
 	    		addProductToContainer(product, container);

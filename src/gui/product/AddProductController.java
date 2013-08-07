@@ -37,11 +37,31 @@ public class AddProductController extends Controller implements
 		
 		getView().setDescription(searchMessage);
 		getView().enableDescription(false);
-
-		enableComponents();
-		construct();
+		
+		getView().setBarcode(barcode);
+		getView().enableOK(false);
+		
+		setDefaultValues();
+		setDefaultEnable(false);
+		getView().enableBarcode(false);
+		loadValues();
 		getModel().getProductAndItemEditor().setNewlyAddedProduct(null);
 		
+	}
+
+	private void setDefaultValues() {
+		getView().setShelfLife("0");
+		getView().setSupply("0");
+		getView().setSizeValue("1");
+		getView().setSizeUnit(SizeUnits.Count);
+	}
+
+	private void setDefaultEnable(boolean b) {
+		getView().enableDescription(b);
+		getView().enableSizeUnit(b);
+		getView().enableShelfLife(b);
+		getView().enableSupply(b);
+		getView().enableSizeValue(b);
 	}
 
 	//
@@ -72,13 +92,12 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableSizeUnit(true);
 		getView().enableBarcode(false);
 		getView().enableShelfLife(true);
 		getView().enableSupply(true);
 
 		getView().setBarcode(upc);
-		getView().setShelfLife("0");
-		getView().setSupply("0");
 		if(getView().getSizeUnit() == SizeUnits.Count){
 			getView().setSizeValue("1");
 			getView().enableSizeValue(false);
@@ -110,14 +129,16 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-//		EventQueue.invokeLater(new Runnable() {
-//			@Override
-//			public void run() {
-//				searchForDescription();		
-//			}
-//		});
+		getView().enableOK(false);
+		Thread thread = new Thread(new Runnable() {
 
-		searchForDescription();
+			@Override
+			public void run() {
+				searchForDescription();
+			}
+		});
+		thread.start();
+		getView().setDescription("Auto-Identifying - Please Wait");
 		
 	}
 
@@ -167,26 +188,31 @@ public class AddProductController extends Controller implements
 	}
 	
 	public void searchForDescription(){
+		
 		if(getView().getBarcode() == null || 
 				getView().getBarcode().equals("") ||
 				getView().getBarcode().equals(searchMessage))
+		{
 			getView().displayErrorMessage("Barcode should not be empty");
+		}
 		else {
 			Barcode tmp = new Barcode();
 
 			if ( tmp.isValidBarcode(getView().getBarcode()) ){
 
-				fetcher = new UPCDescriptionFetcher();
-				String descr = fetcher.fetchUPCDescription(getView().getBarcode());
+				String descr = getModel().getUpcDescriptionFetcher().fetchUPCDescription(
+						getView().getBarcode());
 				
 				if (descr != null){
 					getView().setDescription(descr);
+					getView().enableOK(true);
 				}
 				else {
 					getView().setDescription("");
+					getView().enableOK(false);
 				}
 				getView().enableDescription(true);
-			
+				enableComponents();
 			}
 		}
 	}
