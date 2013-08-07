@@ -231,6 +231,7 @@ public class AddItemBatchController extends ItemBatchController implements
 			newProducts.push(null);
 		}
 		else{
+			
 			getView().displayAddProductView();
 			
 			Barcode barcode = new Barcode();

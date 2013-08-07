@@ -58,6 +58,8 @@ public class Model {
         
         comprehensiveDAO.load();
         
+        this.upcDescriptionFetcher = new UPCDescriptionFetcher();
+        
     }
     
     public ContainerEditor getContainerEditor() {
