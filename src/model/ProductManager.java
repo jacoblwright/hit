@@ -69,7 +69,6 @@ public class ProductManager extends Observable implements Serializable{
 	    
 	    Collection<ProductToContainerDTO> allProdToContDTO= productToContainerDAO.readAll();
 	    for(ProductToContainerDTO prodToContDTO : allProdToContDTO){
-	    	System.out.println(prodToContDTO.getContainerID());
 	    	Container container = Model.getInstance().getContainerManager().getContainerById(prodToContDTO.getContainerID());
 	    	Product product = getProductById(prodToContDTO.getProductID());
 	    	addProductToContainer(product, container);
@@ -382,6 +381,7 @@ public class ProductManager extends Observable implements Serializable{
 	 */
 	public Product getProductById(int id) throws IllegalArgumentException{
 		if(!productByID.containsKey(id)){
+			System.out.println("Illegal Product ID: " + id);
 			throw new IllegalArgumentException();
 		}
 		else return productByID.get(id);

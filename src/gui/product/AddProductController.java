@@ -131,7 +131,7 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
-//		enableComponents();
+		enableComponents();
 	}
 	
 	/**
@@ -164,8 +164,6 @@ public class AddProductController extends Controller implements
 		catch (IOException e){
 			getView().displayErrorMessage("Input Error");
 		}
-
-		
 	}
 	
 	public void searchForDescription(){

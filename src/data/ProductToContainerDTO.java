@@ -42,6 +42,9 @@ public class ProductToContainerDTO {
 		this.id = id;
 	}
 	
-	
+	public String toString(){
+		return "ProductToContainerDTO [id: " + id + ", productID: " + productID + 
+				", containerId: " + containerID;
+	}
     
 }
