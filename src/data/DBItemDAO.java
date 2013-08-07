@@ -139,7 +139,6 @@ public class DBItemDAO implements ComponentDAO<ItemDTO> {
     	PreparedStatement pstmt = null;
     	Statement stmt = null;
     	ResultSet rs = null;
-    	
     	try{
     		Connection con = Model.getInstance().getTransaction().getConnection();
     		String sql = "DELTE FROM item WHERE id = ?";

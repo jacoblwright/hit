@@ -21,6 +21,7 @@ public class DBProductToContainerDAO
 
     @Override
     public void create(ProductToContainerDTO t) {
+    	System.out.println(t);
     	setConnection();
     	PreparedStatement stmt = null; 
     	Statement keyStmt = null; 
@@ -93,6 +94,7 @@ public class DBProductToContainerDAO
     		String sql = "DELETE FROM productToContainer " +
     				"WHERE productId = ? AND containerId = ?";
     		stmt = connection.prepareStatement(sql);
+    		initializePreparedStatement(stmt, t);
 	    	if (stmt.executeUpdate() != 1) {
 	    		getTransaction().notifyTransactionFailed();
 	    	}

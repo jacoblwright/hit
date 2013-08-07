@@ -341,6 +341,11 @@ public class AddItemBatchController extends ItemBatchController implements
 	public void doAction(){
 		addItem();
 	}
+	
+	public void barcodeChanged(){
+		super.barcodeChanged();
+		enableComponents();
+	}
 
 //    @Override
 //    public void actionPerformed(ActionEvent e) {
