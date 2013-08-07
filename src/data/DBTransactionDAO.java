@@ -182,7 +182,7 @@ public class DBTransactionDAO implements TransactionDAO {
             s.executeUpdate("CREATE TABLE product " + 
                     "(" + 
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
-                    "creationDate DATETIME NOT NULL, " + 
+                    "creationDate VARCHAR(255) NOT NULL, " + 
                     "upc VARCHAR(255) NOT NULL, " + 
                     "description VARCHAR(255) NOT NULL, " + 
                     "number FLOAT NOT NULL, " + 

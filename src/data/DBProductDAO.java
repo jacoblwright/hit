@@ -15,7 +15,6 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
 	
     @Override
     public void create(ProductDTO t) {
-    	System.out.println(t);
     	setConnection();
     	PreparedStatement stmt = null; 
     	Statement keyStmt = null; 
@@ -63,7 +62,7 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
     	    	ProductDTO prodDTO = new ProductDTO();
     	    	prodDTO.setId(rs.getInt("id"));
     	    	prodDTO.setDescription(rs.getString("description"));
-    	    	prodDTO.setCreationDate(rs.getDate("creationDate"));
+    	    	prodDTO.setCreationDate(new Date(rs.getDate("creationDate").getTime()));
     	    	prodDTO.setUpc(rs.getString("upc"));
     	    	prodDTO.setNumber(rs.getFloat("number"));
     	    	prodDTO.setUnit(rs.getString("unit"));
@@ -84,6 +83,7 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
 
     @Override
     public void update(ProductDTO t) {
+    	System.out.println(t);
     	setConnection();
     	PreparedStatement stmt = null;
     	try {
@@ -149,8 +149,8 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
     
     private void initializePreparedStatement(PreparedStatement stmt, ProductDTO t)
     		throws SQLException {
-    	
-    	stmt.setDate(1, (Date) t.getCreationDate());
+    	java.sql.Date sqlDate = new java.sql.Date(t.getCreationDate().getTime());
+    	stmt.setDate(1, new java.sql.Date(t.getCreationDate().getTime()));
     	stmt.setString(2, t.getUpc());
     	stmt.setString(3, t.getDescription());
     	stmt.setFloat(4, t.getNumber());

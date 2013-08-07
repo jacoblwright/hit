@@ -94,6 +94,7 @@ public class DBProductToContainerDAO
     		String sql = "DELETE FROM productToContainer " +
     				"WHERE productId = ? AND containerId = ?";
     		stmt = connection.prepareStatement(sql);
+    		initializePreparedStatement(stmt, t);
 	    	if (stmt.executeUpdate() != 1) {
 	    		getTransaction().notifyTransactionFailed();
 	    	}

@@ -12,7 +12,7 @@ import model.*;
 public class ProductDTO {
     
     private int id;
-    private java.sql.Date creationDate;
+    private Date creationDate;
     private String upc;
     private String description;
     private float number;
@@ -22,7 +22,7 @@ public class ProductDTO {
 
     public void setProduct(Product product) {
         this.id = product.getId();
-        this.creationDate = new java.sql.Date(product.getCreationDate().getTime());
+        this.creationDate = product.getCreationDate();
         this.upc = product.getUPC().getBarcode();
         this.description = product.getDescription();
         this.number = product.getSize().getNumber();
@@ -43,8 +43,8 @@ public class ProductDTO {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = new java.sql.Date(creationDate.getTime());
+	public void setCreationDate(Date date) {
+		this.creationDate = date;
 	}
 
 	public String getUpc() {
@@ -108,9 +108,6 @@ public class ProductDTO {
 		this.threeMonthSupply = threeMonthSupply;
 	} 
     
-    public String toString(){
-    	return "ProductDTO [id: " + id;
-    }
     
 
 }
