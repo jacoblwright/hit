@@ -15,6 +15,7 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
 	
     @Override
     public void create(ProductDTO t) {
+    	System.out.println(t);
     	setConnection();
     	PreparedStatement stmt = null; 
     	Statement keyStmt = null; 

@@ -108,7 +108,9 @@ public class ProductDTO {
 		this.threeMonthSupply = threeMonthSupply;
 	} 
     
-    
+    public String toString(){
+    	return "ProductDTO [id: " + id;
+    }
     
 
 }

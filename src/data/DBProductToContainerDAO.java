@@ -21,6 +21,7 @@ public class DBProductToContainerDAO
 
     @Override
     public void create(ProductToContainerDTO t) {
+    	System.out.println(t);
     	setConnection();
     	PreparedStatement stmt = null; 
     	Statement keyStmt = null; 
