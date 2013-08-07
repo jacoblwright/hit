@@ -104,6 +104,7 @@ public class ProductManager extends Observable implements Serializable{
 		ProductDTO productDTO = new ProductDTO();
 		productDTO.setProduct(product);
 		productDAO.create(productDTO);
+		product.setId(productDTO.getId());
 		
 		ProductToContainerDTO prodToCont = new ProductToContainerDTO();
 		prodToCont.setContainerID(container.getId());
@@ -196,11 +197,6 @@ public class ProductManager extends Observable implements Serializable{
 			productSet.add(product);
 			productsByContainer.put(container, productSet);
 		}
-		
-		ProductToContainerDTO prodToContDTO = new ProductToContainerDTO();
-		prodToContDTO.setContainerID(container.getId());
-		prodToContDTO.setProductID(product.getId());
-		productToContainerDAO.create(prodToContDTO);
 		
 		notify(product);
 	}
