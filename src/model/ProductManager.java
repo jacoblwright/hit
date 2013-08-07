@@ -70,9 +70,12 @@ public class ProductManager extends Observable implements Serializable{
 	    Collection<ProductToContainerDTO> allProdToContDTO= productToContainerDAO.readAll();
 	    for(ProductToContainerDTO prodToContDTO : allProdToContDTO){
 	    	System.out.println(prodToContDTO.getContainerID());
-	    	Container container = Model.getInstance().getContainerManager().getContainerById(prodToContDTO.getContainerID());
+	    	Container container = Model.getInstance().getContainerManager().
+	    			getContainerById(prodToContDTO.getContainerID());
 	    	Product product = getProductById(prodToContDTO.getProductID());
-	    	addProductToContainer(product, container);
+	    	if(product != null && container != null) {
+	    		addProductToContainer(product, container);
+	    	}
 	    }
 	}
 	
@@ -248,7 +251,8 @@ public class ProductManager extends Observable implements Serializable{
 		notify(null);
 	}
 	
-	/** Return true if after is a valid Product, false otherwise. A valid Product contains a Barcode
+	/** Return true if after is a valid Product, false otherwise. 
+	 * A valid Product contains a Barcode
 	 * that contains a non-empty upc, a non-empty description, a Quantity that has a
 	 * 
 	 * @param product	the product behing checked for validity
@@ -381,10 +385,7 @@ public class ProductManager extends Observable implements Serializable{
 	 * @throws IllegalArgumentException
 	 */
 	public Product getProductById(int id) throws IllegalArgumentException{
-		if(!productByID.containsKey(id)){
-			throw new IllegalArgumentException();
-		}
-		else return productByID.get(id);
+		return productByID.get(id);
 	}
 	
 	/** Getter for the set of products mapped by a container

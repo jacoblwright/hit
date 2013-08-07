@@ -111,10 +111,16 @@ public class DBItemDAO implements ComponentDAO<ItemDTO> {
     	
     	try{
     		Connection con = Model.getInstance().getTransaction().getConnection();
-    		String sql = "UPDATE item SET entryDate = ? WHERE id = ?";
+    		String sql = "UPDATE item SET " +
+    				"productId = ?, containerId = ?, tag = ?, entryDate = ?, exitTime = ? " +
+    				"WHERE id = ?";
     		pstmt = con.prepareStatement(sql);
-    		pstmt.setDate(1, new java.sql.Date(e.getEntryDate().getTime()));
-    		pstmt.setInt(2, e.getId());
+    		pstmt.setInt(1, e.getProductId());
+    		pstmt.setInt(2, e.getContainerId());
+    		pstmt.setString(3, e.getTag());
+    		pstmt.setDate(4, new java.sql.Date(e.getEntryDate().getTime()));
+    		pstmt.setDate(5, new java.sql.Date(e.getExitTime().getTime()));
+    		pstmt.setInt(6, e.getId());
     		pstmt.executeUpdate();
     	}
     	catch (SQLException err) { 
