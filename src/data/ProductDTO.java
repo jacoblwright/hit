@@ -108,6 +108,11 @@ public class ProductDTO {
 		this.threeMonthSupply = threeMonthSupply;
 	} 
     
-    
+    public String toString(){
+    	return "ProductDTO [id: " + id + ", creationDate: " + creationDate.toString() +
+    			", upc: " + upc + ", description: " + description + ", number: " + number +
+    			", unit: " + unit + ", shelfLife: " + shelfLife + ", threeMonthSupply: " +
+    			threeMonthSupply + "]";
+	}
 
 }

@@ -93,6 +93,7 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
     				"threeMonthSupply = ? " + "WHERE id = ?";
     		stmt = connection.prepareStatement(sql);
     		initializePreparedStatement(stmt, t);
+    		stmt.setInt(8, t.getId());
     	
 	    	if (stmt.executeUpdate() != 1) {
 	    		getTransaction().notifyTransactionFailed();
@@ -149,7 +150,6 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
     
     private void initializePreparedStatement(PreparedStatement stmt, ProductDTO t)
     		throws SQLException {
-    	java.sql.Date sqlDate = new java.sql.Date(t.getCreationDate().getTime());
     	stmt.setDate(1, new java.sql.Date(t.getCreationDate().getTime()));
     	stmt.setString(2, t.getUpc());
     	stmt.setString(3, t.getDescription());
@@ -157,7 +157,6 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
     	stmt.setString(5, t.getUnitStr());
     	stmt.setInt(6, t.getShelfLife());
     	stmt.setInt(7, t.getThreeMonthSupply());
-    	
     }
     
     private void setConnection() {
