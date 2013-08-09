@@ -603,9 +603,15 @@ public class InventoryController extends Controller
 		    // This branch is when tree root is selected.
 		    System.out.println("InventoryController.addProductToContainer():" +
 		    		" branch where tree root is selected");
-		    
-		    paie.moveProductWhenTreeRootIsSelected(
-		            product, targetContainer);
+		    try {
+				getModel().getTransaction().startTransaction();
+			    paie.moveProductWhenTreeRootIsSelected(
+			            product, targetContainer);
+			    getModel().getTransaction().endTransaction();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		    
 		}
 		else {
@@ -616,9 +622,14 @@ public class InventoryController extends Controller
 		    
 		    Container sourceContainer = 
 		            (Container)getView().getSelectedProductContainer().getTag();
-
-		    paie.moveProduct(
-		            product, sourceContainer, targetContainer);
+		    try {
+				getModel().getTransaction().startTransaction();
+			    paie.moveProduct(
+			            product, sourceContainer, targetContainer);
+			    getModel().getTransaction().endTransaction();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 		}
 		
@@ -638,7 +649,15 @@ public class InventoryController extends Controller
 		Container targetContainer = (Container) containerData.getTag();
 		Item itemToMove = (Item) itemData.getTag();
 		if ( (targetContainer != null) && itemToMove != null ){
-			getModel().getProductAndItemEditor().moveItem(itemToMove, targetContainer);
+			try{
+				getModel().getTransaction().startTransaction();
+				getModel().getProductAndItemEditor().moveItem(itemToMove, targetContainer);
+				getModel().getTransaction().endTransaction();
+
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 	}
 	

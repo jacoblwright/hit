@@ -223,7 +223,7 @@ public class Product extends Entity implements Comparable<Product>{
                 + ", shelfLife=" + shelfLife + ", threeMonthSupply="
                 + threeMonthSupply + ", containers=" + containers + "]";
         */
-        return "Product [upc=" + upc + ", description=" + description +
+        return "Product [id= " + getId() + ", upc=" + upc + ", description=" + description +
         		", date=" + creationDate +"]"; 
     }
     

@@ -28,16 +28,13 @@ public class DBProductDAO implements ComponentDAO<ProductDTO> {
     		stmt = connection.prepareStatement(sql);
     		initializePreparedStatement(stmt, t);
     		
-	    	if (stmt.executeUpdate() == 1) {
-		    	keyStmt = connection.createStatement();
-		    	keyRS = keyStmt.executeQuery("select last_insert_rowid()"); 
-		    	keyRS.next();
-		    	int id = keyRS.getInt(1);
-		    	t.setId(id);
-	    	}  
-	    	else {
-	    		getTransaction().notifyTransactionFailed();
-	    	}
+	    	stmt.executeUpdate();
+	    	keyStmt = connection.createStatement();
+	    	keyRS = keyStmt.executeQuery("select last_insert_rowid()"); 
+	    	keyRS.next();
+	    	int id = keyRS.getInt(1);
+	    	t.setId(id);
+
     	}
     	catch (SQLException e) { 
     		getTransaction().notifyTransactionFailed();

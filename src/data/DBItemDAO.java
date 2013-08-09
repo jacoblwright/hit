@@ -126,7 +126,8 @@ public class DBItemDAO implements ComponentDAO<ItemDTO> {
     			pstmt.setDate(5, new java.sql.Date(e.getExitTime().getTime()));
     		}
     		pstmt.setInt(6, e.getId());
-    		pstmt.executeUpdate();
+    		int result = pstmt.executeUpdate();
+    		System.out.println("updating: " + e.toString());
     	}
     	catch (SQLException err) { 
     		Model.getInstance().getTransaction().notifyTransactionFailed();

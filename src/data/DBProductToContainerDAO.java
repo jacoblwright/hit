@@ -21,7 +21,6 @@ public class DBProductToContainerDAO
 
     @Override
     public void create(ProductToContainerDTO t) {
-    	System.out.println(t);
     	setConnection();
     	PreparedStatement stmt = null; 
     	Statement keyStmt = null; 
@@ -32,16 +31,14 @@ public class DBProductToContainerDAO
     		stmt = connection.prepareStatement(sql);
     		initializePreparedStatement(stmt, t);
     		
-	    	if (stmt.executeUpdate() == 1) {
-		    	keyStmt = connection.createStatement();
-		    	keyRS = keyStmt.executeQuery("select last_insert_rowid()"); 
-		    	keyRS.next();
-		    	int id = keyRS.getInt(1);
-		    	t.setId(id);
-	    	}  
-	    	else {
-	    		getTransaction().notifyTransactionFailed();
-	    	}
+	    	stmt.executeUpdate();
+	    	keyStmt = connection.createStatement();
+	    	keyRS = keyStmt.executeQuery("select last_insert_rowid()"); 
+	    	keyRS.next();
+	    	int id = keyRS.getInt(1);
+	    	t.setId(id);
+	    	System.out.println("PTCDAO Created: " + t);
+
     	}
     	catch (SQLException e) { 
     		getTransaction().notifyTransactionFailed();
@@ -97,6 +94,9 @@ public class DBProductToContainerDAO
     		initializePreparedStatement(stmt, t);
 	    	if (stmt.executeUpdate() != 1) {
 	    		getTransaction().notifyTransactionFailed();
+	    	}
+	    	else {
+	    		System.out.println("PTCDAO Deleted: " + t);
 	    	}
     	}
     	catch (SQLException sqlE) {
