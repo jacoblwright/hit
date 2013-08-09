@@ -243,13 +243,13 @@ public class ProductStatRecord implements Record, Comparable<ProductStatRecord> 
 				", size= " + (int)size.getNumber() + " " + size.getUnit().toString() +
 				", threeMonthSupply= " + Integer.toString(threeMonthSupply) +
 				", currentSupply= " + Integer.toString(currentSupply) +
-				", averageSupply= " + df.format(Double.toString(averageSupply)) +
+				", averageSupply= " + Double.toString(averageSupply) +
 				", minimumSupply= " + Integer.toString(minimumSupply) +
 				", maximumSupply= " + Integer.toString(maximumSupply) +
 				", shelfLife= " + Integer.toString(shelfLife) + " months" +
-				", usedAverageAge= " + df.format(Double.toString(usedAge)) +
+				", usedAverageAge= " + Double.toString(usedAge) +
 				", usedMaximumAge= " + Integer.toString(maximumAge) +
-				", currentAverageSupply= " + df.format(Double.toString(currentAverageSupply)) +
+				", currentAverageSupply= " + Double.toString(currentAverageSupply) +
 				", currentMaximumSupply= " + Integer.toString(maximumCurrentSupply) + "\n";
 	}
 	
