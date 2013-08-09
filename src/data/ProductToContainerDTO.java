@@ -44,7 +44,7 @@ public class ProductToContainerDTO {
 	
 	public String toString(){
 		return "ProductToContainerDTO [id: " + id + ", productID: " + productID + 
-				", containerId: " + containerID;
+				", containerId: " + containerID + " ]";
 	}
     
 }

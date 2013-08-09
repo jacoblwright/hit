@@ -100,19 +100,14 @@ public class ProductManager extends Observable implements Serializable{
 		if(upcExists(product.getUPC().getBarcode())){
 			throw new IllegalArgumentException();
 		}
-
-		addProductToContainer(product, container);
-		productByUPC.put(product.getUPC(), product);
 		
 		ProductDTO productDTO = new ProductDTO();
 		productDTO.setProduct(product);
 		productDAO.create(productDTO);
 		product.setId(productDTO.getId());
-		
-		ProductToContainerDTO prodToCont = new ProductToContainerDTO();
-		prodToCont.setContainerID(container.getId());
-		prodToCont.setProductID(productDTO.getId());
-		productToContainerDAO.create(prodToCont);
+
+		addProductToContainer(product, container);
+		productByUPC.put(product.getUPC(), product);
 		
 		productByID.put(productDTO.getId(), product);
 		
@@ -163,19 +158,8 @@ public class ProductManager extends Observable implements Serializable{
 		
 		if(!product.getContainers().contains(before))
 			throw new IllegalStateException();
-		
 		removeProductFromContainer(product, before);
 		addProductToContainer(product, after);
-		
-		ProductToContainerDTO prodToContDTO = new ProductToContainerDTO();
-		prodToContDTO.setContainerID(before.getId());
-		prodToContDTO.setProductID(product.getId());
-		productToContainerDAO.delete(prodToContDTO);
-		
-		ProductToContainerDTO prodToContDTO2 = new ProductToContainerDTO();
-		prodToContDTO2.setContainerID(after.getId());
-		prodToContDTO2.setProductID(product.getId());
-		productToContainerDAO.create(prodToContDTO2);
 		
 		notify(product);
 	}
@@ -200,6 +184,11 @@ public class ProductManager extends Observable implements Serializable{
 			productSet.add(product);
 			productsByContainer.put(container, productSet);
 		}
+		
+		ProductToContainerDTO prodToCont = new ProductToContainerDTO();
+		prodToCont.setContainerID(container.getId());
+		prodToCont.setProductID(product.getId());
+		productToContainerDAO.create(prodToCont);
 		
 		notify(product);
 	}
