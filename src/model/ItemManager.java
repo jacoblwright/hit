@@ -181,8 +181,9 @@ public class ItemManager extends Observable implements Serializable {
 		updateItemsByContainerIndex(itemToAdd);
 		
 		updateItemByTagIndex(itemToAdd);
-		
-		dao.create(new ItemDTO(itemToAdd));
+		ItemDTO lala = new ItemDTO(itemToAdd);
+		dao.create(lala);
+		itemToAdd.setId(lala.getId());
 		
 		notify(null);
 	}
@@ -295,11 +296,9 @@ public void moveItem(Item itemToMove, Container target) {
 	Collection<Item> tmp = itemsByContainer.get(itemToMove.getContainer());
 	tmp.remove(itemToMove);
 	
-	// change container pointer since addItem can't
-	itemToMove.setContainer(target);
-	
 	// add it back to the appropriate container
-	addItem(itemToMove);
+	itemToMove.setContainer(target);
+	updateItemsByContainerIndex(itemToMove);
 	
 	dao.update(new ItemDTO(itemToMove));
 	

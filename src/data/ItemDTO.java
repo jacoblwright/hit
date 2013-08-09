@@ -89,4 +89,9 @@ public class ItemDTO {
     	return newItem;
     }
     
+    @Override
+    public String toString(){
+    	return "ItemDTO [ id=" + this.getId() + " containerID=" + this.getContainerId() + " ]";
+    }
+    
 }
