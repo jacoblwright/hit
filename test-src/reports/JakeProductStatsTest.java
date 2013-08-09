@@ -258,16 +258,6 @@ public class JakeProductStatsTest {
         }
 	}
 
-	private void addItemToTree(Item item, StorageUnit su, Product product) {
-	 List<Item> items = new ArrayList<Item>();
-     items.add(item);
-     Model.getInstance().getProductAndItemEditor().setNewlyAddedProduct(product);  
-     AddItemsToSU addItem = new AddItemsToSU(items, su);
-     addItem.execute();
-		
-	}
-
-
 	@Test
 	public void productWithNoactivityTest() {
 		System.out.println("Testing products with no activity");
@@ -573,6 +563,14 @@ public class JakeProductStatsTest {
         	System.out.println(record.getValuesAsStrings());
         }
 	}
-
+	
+	private void addItemToTree(Item item, StorageUnit su, Product product) {
+		 List<Item> items = new ArrayList<Item>();
+	     items.add(item);
+	     Model.getInstance().getProductAndItemEditor().setNewlyAddedProduct(product);  
+	     AddItemsToSU addItem = new AddItemsToSU(items, su);
+	     addItem.execute();
+			
+	}
 
 }
