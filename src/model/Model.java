@@ -5,6 +5,8 @@ import data.*;
 import plugins.*;
 import java.io.*;
 
+import config.IOConfig;
+
 public class Model {
     
     private static Model instance = null;
@@ -141,6 +143,30 @@ public class Model {
     public void setUpcDescriptionFetcher(
             UPCDescriptionFetcher upcDescriptionFetcher) {
         this.upcDescriptionFetcher = upcDescriptionFetcher;
+    }
+    
+    /**
+     * Method for testing purposes. 
+     */
+    public void clear() {
+        
+        if (daoFactory == null) {
+            throw new IllegalStateException("DAOFactory has not been set.");
+        }
+        
+        containerManager = new ContainerManager();
+        productManager = new ProductManager();
+        itemManager = new ItemManager();
+        
+        containerEditor = new ContainerEditor(containerManager, itemManager);
+        productAndItemEditor = new ProductAndItemEditor(
+                containerManager, productManager, itemManager);
+        
+        reportTime = new ReportTime(IOConfig.REMOVED_ITEMS_REPORT_TIME_NAME);
+        
+        transaction = daoFactory.createTransactionDAO();
+        comprehensiveDAO = daoFactory.createComprehensiveDAO();
+        
     }
     
 }
