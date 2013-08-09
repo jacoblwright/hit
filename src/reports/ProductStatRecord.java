@@ -208,12 +208,17 @@ public class ProductStatRecord implements Record, Comparable<ProductStatRecord> 
 
 	@Override
     public List<String> getValuesAsStrings() {
-		List<String> productAttributes = new ArrayList();
+		List<String> productAttributes = new ArrayList<String>();
 		
 		productAttributes.add(description);
 		productAttributes.add(barcode);
 		productAttributes.add(df.format(size.getNumber()) + " " + size.getUnit().toString());
-		productAttributes.add(Integer.toString(threeMonthSupply));
+		if(threeMonthSupply == 0) {
+			productAttributes.add("");
+		}
+		else {
+			productAttributes.add(Integer.toString(threeMonthSupply));
+		}
 		
 		productAttributes.add(Integer.toString(currentSupply) + " / " + 
 								df.format(averageSupply));
